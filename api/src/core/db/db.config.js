@@ -3,6 +3,8 @@ const envConf = require('../config');
 
 const connectDatabase = () => {
   const mongoDbUrl = `mongodb://${envConf.mongo_username}:${envConf.mongo_password}@${envConf.mongo_host}:${envConf.mongo_port}/${envConf.mongo_db_name}`;
+
+  //const mongoDbUrlNonUser = `mongodb://${envConf.mongo_host}:${envConf.mongo_port}/${envConf.mongo_db_name}`;
   mongoose.Promise = global.Promise;
   // Connecting to the database
   mongoose

@@ -10,7 +10,7 @@ const envConf = require('./core/config');
 // db
 const connectDatabase = require('./core/db/db.config');
 const router = require('./router');
-//import passport from './auth/passport';
+const passport = require('./auth/passport');
 
 /**
  * routing config
@@ -33,7 +33,7 @@ const middleware = (app) => {
   app.use(cors({ origin: '*' }));
 
   // passport
-  // app.use(passport.initialize());
+  app.use(passport.initialize());
 };
 
 /**
