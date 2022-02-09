@@ -1,16 +1,16 @@
 // load env
-require('dotenv').config();
+import 'dotenv/config';
 
-const express = require('express');
-const helmet = require('helmet');
-const cors = require('cors');
-const morgan = require('morgan');
-const envConf = require('./core/config');
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import morgan from 'morgan';
 
 // db
-const connectDatabase = require('./core/db/db.config');
-const router = require('./router');
-const passport = require('./auth/passport');
+import connectDatabase from './core/db/db.config.js';
+import passport from './auth/passport/index.js';
+import envConf from './core/config/index.js';
+import router from './router.js';
 
 /**
  * routing config

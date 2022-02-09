@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const envConf = require('../config');
+import mongoose from 'mongoose';
+import envConf from '../config/index.js';
 
 const connectDatabase = () => {
   const mongoDbUrl = `mongodb://${envConf.mongo_username}:${envConf.mongo_password}@${envConf.mongo_host}:${envConf.mongo_port}/${envConf.mongo_db_name}`;
@@ -21,4 +21,4 @@ const connectDatabase = () => {
     });
 };
 
-module.exports = connectDatabase;
+export default connectDatabase;

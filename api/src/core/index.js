@@ -1,20 +1,20 @@
-const validationResult = require('express-validator');
-const jwt = require('jsonwebtoken');
-const envConf = require('./config');
+import { validationResult } from 'express-validator';
+import jwt from 'jsonwebtoken';
+import envConf from './config/index.js';
 
-const createAccessToken = (payload) => {
+export const createAccessToken = (payload) => {
   return jwt.sign(payload, envConf.access_token, {
     expiresIn: 60, // 60 seconds
   });
 };
 
-const createRefreshToken = (payload) => {
+export const createRefreshToken = (payload) => {
   return jwt.sign(payload, envConf.refresh_token, {
     expiresIn: 60 * 60 * 24, // one day
   });
 };
 
-const verifyRefreshToken = (rtoken) => {
+export const verifyRefreshToken = (rtoken) => {
   return jwt.verify(rtoken, envConf.refresh_token, (err, decoded) => {
     // check error
     if (err) {
@@ -30,22 +30,13 @@ const verifyRefreshToken = (rtoken) => {
   });
 };
 
-const validateResult = (req, res) => {
-  //const errors = validationResult(req);
+export const validateResult = (req, res) => {
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(422).json({ errors: errors.array() });
     return errors;
   }
 };
 
-const hashPassword = () => {};
-const unhashPassword = () => {};
-
-module.exports = {
-  createAccessToken,
-  createRefreshToken,
-  verifyRefreshToken,
-  validationResult,
-  hashPassword,
-  unhashPassword,
-};
+export const hashPassword = () => {};
+export const unhashPassword = () => {};

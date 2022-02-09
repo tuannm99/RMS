@@ -1,13 +1,16 @@
-const accountService = require('../account/service');
-const {
+import { Router } from 'express';
+import { validateLogin, validateRegister } from './validation.js';
+import accountService from '../account/service.js';
+import {
   createAccessToken,
   createRefreshToken,
   verifyRefreshToken,
-} = require('../core');
-const passport = require('passport');
+  validateResult,
+} from '../core/index.js';
+import passport from 'passport';
 
 const register = async (req, res) => {
-  //if (validateResult(req, res)) return;
+  if (validateResult(req, res)) return;
 
   const { username, password } = req.body;
   try {
@@ -15,12 +18,13 @@ const register = async (req, res) => {
 
     res.status(200).json({ msg: 'user created!' });
   } catch (e) {
+    console.log(e);
     res.status(401).json({ msg: 'user existed!', e });
   }
 };
 
 const login = async (req, res) => {
-  //if (validateResult(req, res)) return;
+  if (validateResult(req, res)) return;
 
   const { username, password } = req.body;
   try {
@@ -29,6 +33,7 @@ const login = async (req, res) => {
 
     if (!user) {
       res.status(401).json({ msg: 'No such user found', user });
+      return;
     }
 
     if (user.password === password) {
@@ -87,10 +92,10 @@ const refreshToken = (req, res) => {
 };
 
 // router
-const router = require('express').Router();
+const router = Router();
 
-router.post('/login', login);
-router.post('/register', register);
+router.post('/login', validateLogin(), login);
+router.post('/register', validateRegister(), register);
 router.post('/logout', logout);
 router.post('/forgot-pass', forgotPass);
 router.post('/refresh-token', refreshToken);
@@ -103,4 +108,4 @@ router.get(
   }
 );
 
-module.exports = router;
+export default router;
