@@ -12,4 +12,4 @@ const envConf = {
   mongo_db_name: process.env.MONGO_DB_NAME,
 };
 
-module.exports = envConf;
+export default envConf;
