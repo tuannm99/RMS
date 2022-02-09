@@ -1,5 +1,4 @@
 import { Account } from '../core/db/schema/account.js';
-import envConf from '../core/config/index.js';
 
 const create = async (username, password) => {
   const user = new Account({ username, password });

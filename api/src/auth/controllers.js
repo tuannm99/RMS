@@ -68,7 +68,7 @@ const logout = async (req, res) => {
   const { username } = req.body;
   // remove refreshToken
   try {
-    await userService.updateRefreshToken(username, null);
+    await accountService.updateRefreshToken(username, null);
     res.status(200).json({ msg: 'logout successful!' });
   } catch (e) {
     //handle error
