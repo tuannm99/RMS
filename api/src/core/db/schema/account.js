@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const accountSchema = new mongoose.Schema({
   username: { required: true, type: String, unique: true },
@@ -10,4 +10,4 @@ const accountSchema = new mongoose.Schema({
   rtoken: { type: String },
 });
 
-export const Account = mongoose.model('Account', accountSchema);
+module.exports = mongoose.model('Account', accountSchema);

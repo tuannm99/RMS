@@ -1,17 +1,14 @@
-import { Router } from 'express';
-import { validateLogin, validateRegister } from './validation.js';
-import accountService from '../account/service.js';
-import {
+const { validateLogin, validateRegister } = require('./validation');
+const { validateResult } = require('../core');
+const accountService = require('../account/service');
+const {
   createAccessToken,
   createRefreshToken,
   verifyRefreshToken,
-  validateResult,
-} from '../core/index.js';
-import passport from 'passport';
+} = require('../core');
+const passport = require('passport');
 
 const register = async (req, res) => {
-  if (validateResult(req, res)) return;
-
   const { username, password } = req.body;
   try {
     await accountService.create(username, password);
@@ -24,8 +21,6 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  if (validateResult(req, res)) return;
-
   const { username, password } = req.body;
   try {
     // we get the user with the name and save the resolved promise returned
@@ -92,10 +87,10 @@ const refreshToken = (req, res) => {
 };
 
 // router
-const router = Router();
+const router = require('express').Router();
 
-router.post('/login', validateLogin(), login);
-router.post('/register', validateRegister(), register);
+router.post('/login', validateLogin(), validateResult, login);
+router.post('/register', validateRegister(), validateResult, register);
 router.post('/logout', logout);
 router.post('/forgot-pass', forgotPass);
 router.post('/refresh-token', refreshToken);
@@ -108,4 +103,4 @@ router.get(
   }
 );
 
-export default router;
+module.exports = router;

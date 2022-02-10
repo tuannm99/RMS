@@ -1,4 +1,4 @@
-import { Account } from '../core/db/schema/account.js';
+const Account = require('../core/db/schema/account');
 
 const create = async (username, password) => {
   const user = new Account({ username, password });
@@ -13,4 +13,4 @@ const updateRefreshToken = async (username, rtoken) => {
   return await Account.updateOne({ username }, { rtoken: rtoken });
 };
 
-export default { create, getByUsername, updateRefreshToken };
+module.exports = { create, getByUsername, updateRefreshToken };

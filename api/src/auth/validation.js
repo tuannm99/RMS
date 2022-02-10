@@ -1,15 +1,23 @@
-import { body } from 'express-validator';
+const { body } = require('express-validator');
 
-export const validateLogin = () => {
+exports.validateLogin = () => {
   return [
-    body('username', 'usernamme must be at least 4 character').isLength({
-      min: 4,
-    }),
-    // password must be at least 5 chars long
-    body('password').isLength({ min: 5 }),
+    body('username', 'username must be have at least 4 character')
+      .notEmpty()
+      .isLength({
+        min: 4,
+      }),
+    body('password').isLength({ min: 5 }).notEmpty(),
   ];
 };
 
-export const validateRegister = () => {
-  return [body('username'), body('password').isLength({ min: 5 })];
+exports.validateRegister = () => {
+  return [
+    body('username').notEmpty(),
+    body('password', 'password must be have at least 5 character')
+      .notEmpty()
+      .isLength({
+        min: 5,
+      }),
+  ];
 };

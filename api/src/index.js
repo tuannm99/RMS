@@ -1,16 +1,17 @@
 // load env
-import 'dotenv/config';
+require('dotenv').config();
 
-import express from 'express';
-import helmet from 'helmet';
-import cors from 'cors';
-import morgan from 'morgan';
+const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
+const morgan = require('morgan');
+const envConf = require('./core/config');
 
 // db
-import connectDatabase from './core/db/db.config.js';
-import passport from './auth/passport/index.js';
-import envConf from './core/config/index.js';
-import router from './router.js';
+const connectDatabase = require('./core/db/db.config');
+
+const router = require('./router');
+const passport = require('./auth/passport');
 
 /**
  * routing config
@@ -40,7 +41,7 @@ const middleware = (app) => {
  * initialize express application
  * @return app - express instance
  */
-const bootstrap = () => {
+bootstrap = () => {
   const app = express();
 
   // use middleware
@@ -62,3 +63,5 @@ const port = envConf.node_port || 5000;
 bootstrap().listen(port, () => {
   console.log(`app running on port ${port}`);
 });
+
+module.exports = bootstrap;

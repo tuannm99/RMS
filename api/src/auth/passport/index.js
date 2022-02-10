@@ -1,7 +1,7 @@
-import passport from 'passport';
-import { jwtStrategy } from './jwtStrategy.js';
+const passport = require('passport');
+const { jwtStrategy } = require('./jwtStrategy');
 
 // use the strategy
 passport.use(jwtStrategy);
 
-export default passport;
+module.exports = passport;
