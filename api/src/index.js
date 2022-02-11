@@ -5,10 +5,6 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
-const envConf = require('./core/config');
-
-// db
-const connectDatabase = require('./core/db/db.config');
 
 const router = require('./router');
 const passport = require('./auth/passport');
@@ -54,14 +50,5 @@ bootstrap = () => {
   });
   return app;
 };
-
-connectDatabase();
-
-const port = envConf.node_port || 5000;
-
-// running
-bootstrap().listen(port, () => {
-  console.log(`app running on port ${port}`);
-});
 
 module.exports = bootstrap;
