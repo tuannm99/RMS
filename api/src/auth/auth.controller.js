@@ -1,17 +1,14 @@
-const { validateLogin, validateRegister } = require('./validation');
-const { validateResult } = require('../core');
-const accountService = require('../account/service');
+const accountService = require('../account/account.service');
 const {
   createAccessToken,
   createRefreshToken,
   verifyRefreshToken,
-} = require('../core');
-const passport = require('passport');
+} = require('../core/utils');
 
-const register = async (req, res) => {
+register = async (req, res) => {
   const { username, password } = req.body;
   try {
-    await accountService.create(username, password);
+    await accountService.createByUsernamePassword(username, password);
 
     res.status(200).json({ msg: 'user created!' });
   } catch (e) {
@@ -20,7 +17,7 @@ const register = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+login = async (req, res) => {
   const { username, password } = req.body;
   try {
     // we get the user with the name and save the resolved promise returned
@@ -59,7 +56,7 @@ const login = async (req, res) => {
   }
 };
 
-const logout = async (req, res) => {
+logout = async (req, res) => {
   const { username } = req.body;
   // remove refreshToken
   try {
@@ -71,11 +68,11 @@ const logout = async (req, res) => {
   }
 };
 
-const forgotPass = async (req, res) => {
+forgotPass = async (req, res) => {
   // TODO: need implimentation
 };
 
-const refreshToken = (req, res) => {
+refreshToken = (req, res) => {
   const { refreshToken } = req.body;
   // verify refreshToken
   try {
@@ -86,21 +83,4 @@ const refreshToken = (req, res) => {
   }
 };
 
-// router
-const router = require('express').Router();
-
-router.post('/login', validateLogin(), validateResult, login);
-router.post('/register', validateRegister(), validateResult, register);
-router.post('/logout', logout);
-router.post('/forgot-pass', forgotPass);
-router.post('/refresh-token', refreshToken);
-
-router.get(
-  '/protected',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    res.json({ msg: 'protected resource' });
-  }
-);
-
-module.exports = router;
+module.exports = { login, logout, register, forgotPass, refreshToken };

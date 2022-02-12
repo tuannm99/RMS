@@ -1,18 +1,11 @@
+const { testApp, prepareTest } = require('..');
 const supertest = require('supertest');
 
-/**
- * Complete product example.
- */
-const productComplete = {
-  name: 'iPhone 11',
-  price: 699,
-  description:
-    'A new dual‑camera system captures more of what you see and love. ',
-};
+prepareTest();
 
 const userInput = {
   username: 'minhtuan',
-  password: '123456',
+  password: '1234556',
 };
 
 describe('given the username and password are valid', () => {
@@ -22,11 +15,12 @@ describe('given the username and password are valid', () => {
     //// @ts-ignore
     //.mockReturnValueOnce(userPayload);
 
-    //const { statusCode, body } = await supertest(testApp)
-    //.post('/api/v1/auth/login')
-    //.send(userInput);
+    const { statusCode, body, error } = await supertest(testApp)
+      .post('/api/v1/auth/login')
+      .send(userInput);
+    console.log(error);
 
-    expect(200).toBe(200);
+    expect(statusCode).toBe(200);
 
     //expect(body).toEqual(userPayload);
 

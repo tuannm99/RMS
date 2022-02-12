@@ -29,11 +29,5 @@
     "mongodb-memory-server": "^8.3.0",
     "nodemon": "^2.0.15",
     "supertest": "^6.2.2"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ]
   }
 }
