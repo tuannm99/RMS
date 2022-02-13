@@ -26,7 +26,7 @@ exports.verifyRefreshToken = (rtoken) => {
       username: decoded.username,
       role: decoded.role,
     };
-    return createAccessToken(payload);
+    return this.createAccessToken(payload);
   });
 };
 
