@@ -5,17 +5,21 @@ const {
   verifyRefreshToken,
 } = require('../core/utils');
 
-register = async (req, res) => {
+const httpStatus = require('http-status');
+const ApiError = require('../core/apiError');
+const catchAsync = require('../core/catchAsync');
+
+register = catchAsync(async (req, res, next) => {
   const { username, password } = req.body;
   try {
     await accountService.createByUsernamePassword(username, password);
 
     res.status(200).json({ msg: 'user created!' });
   } catch (e) {
-    console.log(e);
+    throw new ApiError(httpStatus.NOT_FOUND, 'duplicate user');
     res.status(401).json({ msg: 'user existed!', e });
   }
-};
+});
 
 login = async (req, res) => {
   const { username, password } = req.body;

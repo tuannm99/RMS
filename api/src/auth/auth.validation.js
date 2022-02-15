@@ -1,4 +1,5 @@
 const { body } = require('express-validator');
+const { validateResult } = require('../core/utils');
 
 exports.validateLogin = () => {
   return [
@@ -8,6 +9,7 @@ exports.validateLogin = () => {
         min: 6,
       }),
     body('password').isLength({ min: 5 }).notEmpty(),
+    validateResult,
   ];
 };
 
@@ -19,5 +21,6 @@ exports.validateRegister = () => {
       .isLength({
         min: 5,
       }),
+    validateResult,
   ];
 };

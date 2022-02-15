@@ -9,13 +9,7 @@ const morgan = require('morgan');
 const router = require('./router');
 const passport = require('./auth/passport');
 
-/**
- * routing config
- * @param app - express instance
- */
-const routerMiddleware = (app) => {
-  app.use('/api/v1', router);
-};
+const { errorConverter, errorHandler } = require('./core/global.middleware');
 
 /**
  * middleware config
@@ -23,6 +17,7 @@ const routerMiddleware = (app) => {
  */
 const middleware = (app) => {
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(helmet());
   app.use(morgan('combined'));
 
@@ -31,6 +26,14 @@ const middleware = (app) => {
 
   // passport
   app.use(passport.initialize());
+
+  // router
+  app.use('/api/v1', router);
+  // convert error to ApiError, if needed
+  app.use(errorConverter);
+
+  // handle error
+  app.use(errorHandler);
 };
 
 /**
@@ -42,12 +45,12 @@ bootstrap = () => {
 
   // use middleware
   middleware(app);
-  routerMiddleware(app);
 
   // default route
-  app.get('/', (req, res) => {
-    res.send({ msg: 'hello world!' });
+  app.get('/health-check', (req, res) => {
+    res.send({ msg: 'ok' });
   });
+
   return app;
 };
 

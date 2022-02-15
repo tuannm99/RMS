@@ -1,18 +1,12 @@
 const { validateLogin, validateRegister } = require('./auth.validation');
-const { validateResult } = require('../core/utils');
 const passport = require('passport');
 const authController = require('./auth.controller');
 
 // router
 const router = require('express').Router();
 
-router.post('/login', validateLogin(), validateResult, authController.login);
-router.post(
-  '/register',
-  validateRegister(),
-  validateResult,
-  authController.register
-);
+router.post('/login', validateLogin(), authController.login);
+router.post('/register', validateRegister(), authController.register);
 router.post('/logout', authController.logout);
 router.post('/forgot-pass', authController.forgotPass);
 router.post('/refresh-token', authController.refreshToken);
