@@ -1,90 +1,47 @@
-const accountService = require('../account/account.service');
-const {
-  createAccessToken,
-  createRefreshToken,
-  verifyRefreshToken,
-} = require('../core/utils');
-
 const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
 const catchAsync = require('../core/catchAsync');
 
-register = catchAsync(async (req, res, next) => {
-  const { username, password } = req.body;
-  try {
-    await accountService.createByUsernamePassword(username, password);
+const accountService = require('../account/account.service');
+const authService = require('./auth.service');
 
-    res.status(200).json({ msg: 'user created!' });
-  } catch (e) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'duplicate user');
-    res.status(401).json({ msg: 'user existed!', e });
-  }
+const registerHandler = catchAsync(async (req, res) => {
+  const { username, password } = req.body;
+  const a = await accountService.createByUsernamePassword(username, password);
+  res.status(httpStatus.OK).json({ account: a, msg: 'user created!' });
 });
 
-login = async (req, res) => {
+const loginHandler = catchAsync(async (req, res) => {
   const { username, password } = req.body;
-  try {
-    // we get the user with the name and save the resolved promise returned
-    const user = await accountService.getByUsername(username);
+  const userPayload = await authService.loginByUsernamePassword(
+    username,
+    password
+  );
+  res.status(httpStatus.OK).json(userPayload);
+});
 
-    if (!user) {
-      res.status(401).json({ msg: 'No such user found', user });
-      return;
-    }
-
-    if (user.password === password) {
-      // from now on we’ll identify the user by the id and the id is
-      // the only personalized value that goes into our token
-      const payload = {
-        _id: user._id,
-        username: user.username,
-        role: user.role,
-      };
-      const token = createAccessToken(payload);
-      const refreshToken = createRefreshToken(payload);
-      // update refresh token
-
-      await accountService.updateRefreshToken(username, refreshToken);
-
-      res.status(200).json({
-        token: token,
-        refreshToken: refreshToken,
-        user_id: user._id,
-        msg: 'login successful!',
-      });
-    } else {
-      res.status(401).json({ msg: 'Password is incorrect' });
-    }
-  } catch (e) {
-    res.status(401).json({ msg: e });
-  }
-};
-
-logout = async (req, res) => {
+const logoutHandler = catchAsync(async (req, res) => {
   const { username } = req.body;
   // remove refreshToken
-  try {
-    await accountService.updateRefreshToken(username, null);
-    res.status(200).json({ msg: 'logout successful!' });
-  } catch (e) {
-    //handle error
-    res.status(401).json({ msg: e });
-  }
-};
+  await accountService.updateRefreshToken(username, null);
+  res.status(httpStatus.OK).json({ msg: 'logout successful!' });
+});
 
-forgotPass = async (req, res) => {
+const forgotPassHandler = catchAsync(async (req, res) => {
   // TODO: need implimentation
-};
+});
 
-refreshToken = (req, res) => {
+const refreshTokenHandler = catchAsync(async (req, res) => {
   const { refreshToken } = req.body;
   // verify refreshToken
-  try {
-    const newToken = verifyRefreshToken(refreshToken);
-    res.status(200).json({ msg: 'token updated', newToken });
-  } catch (error) {
-    res.status(401).json({ msg: 'Unauthorized access.', error });
-  }
-};
+  const newToken = await authService.verifyRefreshToken(refreshToken);
+  res.status(httpStatus.OK).json({ msg: 'token updated', newToken });
+});
 
-module.exports = { login, logout, register, forgotPass, refreshToken };
+module.exports = {
+  logoutHandler,
+  loginHandler,
+  registerHandler,
+  forgotPassHandler,
+  refreshTokenHandler,
+};

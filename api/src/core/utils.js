@@ -1,34 +1,4 @@
 const { validationResult } = require('express-validator');
-const envConf = require('./config');
-const jwt = require('jsonwebtoken');
-
-exports.createAccessToken = (payload) => {
-  return jwt.sign(payload, envConf.access_token, {
-    expiresIn: 60, // 60 seconds
-  });
-};
-
-exports.createRefreshToken = (payload) => {
-  return jwt.sign(payload, envConf.refresh_token, {
-    expiresIn: 60 * 60 * 24, // one day
-  });
-};
-
-exports.verifyRefreshToken = (rtoken) => {
-  return jwt.verify(rtoken, envConf.refresh_token, (err, decoded) => {
-    // check error
-    if (err) {
-      throw err;
-    }
-    // get payload
-    const payload = {
-      _id: decoded._id,
-      username: decoded.username,
-      role: decoded.role,
-    };
-    return this.createAccessToken(payload);
-  });
-};
 
 exports.validateResult = (req, res, next) => {
   const errors = validationResult(req);
