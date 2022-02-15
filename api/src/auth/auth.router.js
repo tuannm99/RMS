@@ -15,8 +15,9 @@ router.get(
   '/protected',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    res.json({ msg: 'protected resource' });
+    res.json('protected resource');
   }
 );
+router.get('/get-accounts', authController.getAccountHandler);
 
 module.exports = router;

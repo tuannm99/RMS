@@ -28,8 +28,25 @@ const updateRefreshToken = async (username, rtoken) => {
   }
 };
 
+/**
+ * Query for users
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
+ */
+const getAccounts = async (filter, options) => {
+  // search contains by username
+  filter.username = { $regex: filter.username, $options: 'i' };
+  const users = await Account.paginate(filter, options);
+  return users;
+};
+
 module.exports = {
   createByUsernamePassword,
   getByUsername,
   updateRefreshToken,
+  getAccounts,
 };
