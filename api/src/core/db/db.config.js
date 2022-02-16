@@ -3,13 +3,13 @@ const envConf = require('../config');
 const logger = require('../logger');
 
 const connectDatabase = () => {
-  const mongoDbUrl = `mongodb://${envConf.mongo_username}:${envConf.mongo_password}@${envConf.mongo_host}:${envConf.mongo_port}/${envConf.mongo_db_name}`;
+  // const mongoDbUrl = `mongodb://${envConf.mongo_username}:${envConf.mongo_password}@${envConf.mongo_host}:${envConf.mongo_port}/${envConf.mongo_db_name}`;
 
-  //const mongoDbUrlNonUser = `mongodb://${envConf.mongo_host}:${envConf.mongo_port}/${envConf.mongo_db_name}`;
+  const mongoDbUrlNonUser = `mongodb://${envConf.mongo_host}:${envConf.mongo_port}/${envConf.mongo_db_name}`;
   mongoose.Promise = global.Promise;
   // Connecting to the database
   mongoose
-    .connect(mongoDbUrl, {
+    .connect(mongoDbUrlNonUser, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
