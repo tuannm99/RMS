@@ -13,7 +13,7 @@ const connectDatabase = () => {
   mongoose.Promise = global.Promise;
   // Connecting to the database
   mongoose
-    .connect(mongoDbUrlNonUser, {
+    .connect(mongoDbUrl, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
