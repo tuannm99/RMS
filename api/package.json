@@ -1,17 +1,19 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "",
+  "description": "backend server for RMS system",
   "main": "index.js",
   "scripts": {
     "start": "node ./server.js",
     "start:dev": "nodemon ./server.js",
+    "gendoc": "apidoc -i src -o ../docs",
     "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apidoc": "^0.50.4",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
