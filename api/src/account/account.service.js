@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
-const Account = require('../core/db/schema/account');
+const { Account } = require('../core/db/schema');
 
 // TODO: nead refactor
 const createByUsernamePassword = async (username, password) => {

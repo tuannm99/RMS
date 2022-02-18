@@ -1,6 +1,6 @@
 const passportJWT = require('passport-jwt');
 const envConf = require('../../core/config');
-const Account = require('../../core/db/schema/account');
+const Account = require('../../core/db/schema/account.schema');
 
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;

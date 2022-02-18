@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  app:
+    image: tuannm99/rms:latest
+    networks: my_network
+    volumes:
+      - ./:/rms-app
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB_NAME=${MONGO_DB_NAME}
+      - ACCESS_TOKEN_SECRECT=${ACCESS_TOKEN_SECRECT}
+      - REFRESH_TOKEN_SECRECT=${REFRESH_TOKEN_SECRECT}
+      - PORT=${PORT}
+
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    depends_on:
+        - db
+  
+  db:
+    image: mongo:latest
+    networks: my_network
+    ports:
+      - "27018:27017"
+    volumes:
+      - ../../docker/data/mongo:/data/db
+    restart: unless-stopped
