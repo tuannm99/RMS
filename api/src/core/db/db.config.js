@@ -3,12 +3,7 @@ const envConf = require('../config');
 const logger = require('../logger');
 
 const connectDatabase = () => {
-  let mongoDbUrl;
-  if (envConf.mongo_username && envConf.mongo_password) {
-    mongoDbUrl = `mongodb://${envConf.mongo_username}:${envConf.mongo_password}@${envConf.mongo_host}:${envConf.mongo_port}/${envConf.mongo_db_name}`;
-  } else {
-    mongoDbUrl = `mongodb://${envConf.mongo_host}:${envConf.mongo_port}/${envConf.mongo_db_name}`;
-  }
+  const mongoDbUrl = `${envConf.mongo.url}/${envConf.mongo.db_name}`;
 
   mongoose.Promise = global.Promise;
   // Connecting to the database

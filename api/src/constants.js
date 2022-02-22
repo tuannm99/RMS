@@ -5,6 +5,9 @@ const tokenTypes = {
   VERIFY_EMAIL: 'verifyEmail',
 };
 
+// TODO: fix role
+const roles = ['employee', 'admin'];
+
 module.exports = {
   tokenTypes,
 };

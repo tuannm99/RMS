@@ -1,25 +1,25 @@
 const passportJWT = require('passport-jwt');
 const envConf = require('../../core/config');
-const Account = require('../../core/db/schema/account.schema');
+const { User } = require('../../core/db/schema');
+const { tokenTypes } = require('../../constants');
 
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: envConf.access_token,
+  secretOrKey: envConf.jwt.secret,
 };
 
-// lets create our strategy for web token
 exports.jwtStrategy = new JwtStrategy(jwtOptions, async (jwt_payload, done) => {
   console.log('payload received', jwt_payload);
   try {
-    const account = await Account.findOne({ _id: jwt_payload._id });
-    if (!account) return done(null, false);
+    if (jwt_payload.type !== tokenTypes.ACCESS) {
+      throw new Error('Invalid Token Type');
+    }
 
-    // if user not find rtoken mean user aldready logged out
-    // require login again
-    if (account.rtoken === null) return done(null, false);
+    const account = await User.findById(jwt_payload.sub);
+    if (!account) return done(null, false);
 
     if (account) {
       return done(null, account);
