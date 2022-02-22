@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import jobService from "../../services/jobService";
-import PublicPage from "../../components/publicHomePage";
-import { Select } from "antd";
-import { Input, Space } from "antd";
-import { Link } from "react-router-dom";
-import "./gird.css";
-import "./style.css";
+import React, { useEffect, useState } from 'react';
+import jobService from '../../services/jobService';
+import PublicPage from '../../components/publicHomePage';
+import { Select } from 'antd';
+import { Input, Space } from 'antd';
+import { Link } from 'react-router-dom';
+import './gird.css';
+import './style.css';
 
 function Home(props) {
   const { Option } = Select;
@@ -13,7 +13,7 @@ function Home(props) {
   const [dataJob, setdataJob] = useState([]);
 
   const [params, setParams] = useState({
-    search: "",
+    search: '',
   });
   const onSearch = (value) => {
     setParams({ ...params, search: value });
@@ -33,7 +33,7 @@ function Home(props) {
   }
 
   const handleData = (item) => {
-    localStorage.setItem("job", JSON.stringify(item));
+    localStorage.setItem('job', JSON.stringify(item));
     console.log(localStorage);
   };
 
@@ -95,12 +95,12 @@ function Home(props) {
             </div>
             <div className="pulic-item">
               {dataJob.map((item) => {
-                if (item.typeJob === "finance") {
+                if (item.typeJob === 'finance') {
                   return (
                     <div key={item.id}>
                       <Link
                         to={`/PublicJob/${item.id}`}
-                        style={{ textDecoration: "none" }}
+                        style={{ textDecoration: 'none' }}
                         onClick={() => handleData(item)}
                       >
                         <PublicPage
@@ -131,7 +131,7 @@ function Home(props) {
             </div>
             <div className="pulic-item">
               {dataJob.map((item) => {
-                if (item.typeJob === "sales") {
+                if (item.typeJob === 'sales') {
                   return (
                     <div key={item.id}>
                       <PublicPage

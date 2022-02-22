@@ -1,18 +1,18 @@
-import React from "react";
-import { Menu } from "antd";
+import React from 'react';
+import { Menu } from 'antd';
 import {
   DashboardFilled,
   WalletFilled,
   ContactsFilled,
   FundViewOutlined,
   CheckCircleFilled,
-} from "@ant-design/icons";
-import { NavLink, useMatch } from "react-router-dom";
+} from '@ant-design/icons';
+import { NavLink, useMatch } from 'react-router-dom';
 
 const { SubMenu } = Menu;
 function MenuPrivate(props) {
   return (
-    <Menu theme="dark" mode="inline" defaultSelectedKeys={useMatch("/") && "1"}>
+    <Menu theme="dark" mode="inline" defaultSelectedKeys={useMatch('/') && '1'}>
       <Menu.Item key="1" icon={<DashboardFilled />}>
         <NavLink to="/">Dashboard</NavLink>
       </Menu.Item>

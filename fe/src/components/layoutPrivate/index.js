@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Layout } from "antd";
-import SiderBarPrivate from "../siderBarPrivate";
-import HeaderPrivate from "../headerPrivate";
-import FooterPrivate from "../footerPrivate";
-import RouterLayout from "../routerLayout/PrivateRouter";
+import React, { useState } from 'react';
+import { Layout } from 'antd';
+import SiderBarPrivate from '../siderBarPrivate';
+import HeaderPrivate from '../headerPrivate';
+import FooterPrivate from '../footerPrivate';
+import RouterLayout from '../routerLayout/PrivateRouter';
 const { Content } = Layout;
 function LayoutPrivate(props) {
   const [collapsed, setCollapsed] = useState(false);
@@ -18,7 +18,7 @@ function LayoutPrivate(props) {
         <Content
           className="site-layout-background"
           style={{
-            margin: "24px 16px",
+            margin: '24px 16px',
             padding: 24,
             minHeight: 280,
           }}

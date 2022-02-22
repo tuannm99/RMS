@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 import {
   DashboardPage,
   RecruitPage,
   TaskRecruitmentPage,
   ConversationRecruitmentPage,
-} from "../../pages/index";
-import { Routes, Route } from "react-router-dom";
+} from '../../pages/index';
+import { Routes, Route } from 'react-router-dom';
 function PrivateRouter(props) {
   return (
     <Routes>

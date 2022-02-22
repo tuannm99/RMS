@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
-import DetailPublic from "../../components/publicDetail";
-import "./style.css";
+import DetailPublic from '../../components/publicDetail';
+import './style.css';
 
 function HomeDetail(props) {
-  const loggedInJob = JSON.parse(localStorage.getItem("job"));
+  const loggedInJob = JSON.parse(localStorage.getItem('job'));
 
   return (
     <>

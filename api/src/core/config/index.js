@@ -8,9 +8,7 @@ const envConf = {
 
   mongo: {
     url: process.env.MONGO_URL,
-    db_name:
-      process.env.MONGO_DB_NAME +
-      (process.env.NODE_ENV === 'test' ? '-test' : ''),
+    db_name: process.env.MONGO_DB_NAME + (process.env.NODE_ENV === 'test' ? '-test' : ''),
   },
 
   email: {

@@ -1,6 +1,6 @@
-import React from "react";
-import { Layout } from "antd";
-import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
+import React from 'react';
+import { Layout } from 'antd';
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 function HeaderPrivate(props) {
@@ -9,7 +9,7 @@ function HeaderPrivate(props) {
       {React.createElement(
         props.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
         {
-          className: "trigger fs-20 ml-16 mt-20",
+          className: 'trigger fs-20 ml-16 mt-20',
           onClick: props.toggle,
         }
       )}
