@@ -1,5 +1,4 @@
 const httpStatus = require('http-status');
-const ApiError = require('../core/apiError');
 const catchAsync = require('../core/catchAsync');
 const { pick } = require('../core/utils');
 
@@ -9,7 +8,7 @@ const userService = require('../user/user.service');
 
 // Done
 const registerHandler = catchAsync(async (req, res) => {
-  const user = await userService.createAccount(req.body);
+  const user = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user);
   res.status(httpStatus.CREATED).json({ user, tokens });
 });
@@ -47,7 +46,7 @@ const refreshTokenHandler = catchAsync(async (req, res) => {
 const getAccountHandler = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['username', 'rtoken', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await userService.getAccounts(filter, options);
+  const result = await userService.getUsers(filter, options);
   res.status(httpStatus.OK).json(result);
 });
 

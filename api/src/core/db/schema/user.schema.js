@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
-const { roles } = require('../../../constants');
+const { ROLES } = require('../../../constants');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
@@ -39,7 +39,11 @@ const userSchema = mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
   avatar: String,
-  role: { type: String, enum: roles, default: 'employee' },
+  role: {
+    type: String,
+    enum: [ROLES.employee, ROLES.hiringManager, ROLES.hiringManager, ROLES.guest],
+    default: ROLES.employee,
+  },
 });
 
 userSchema.plugin(toJSON);

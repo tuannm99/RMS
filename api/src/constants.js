@@ -6,8 +6,14 @@ const tokenTypes = {
 };
 
 // TODO: fix role
-const roles = ['employee', 'admin'];
+const ROLES = {
+  admin: 'admin',
+  hiringManager: 'hiringManager',
+  guest: 'guest',
+  employee: 'employee',
+};
 
 module.exports = {
   tokenTypes,
+  ROLES,
 };
