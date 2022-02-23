@@ -25,14 +25,12 @@ router.get(
 module.exports = router;
 
 /**
- * @api {get} /user/:id Request User information
- * @apiName GetUser
- * @apiGroup User
+ * @api {post} /api/v1/auth/login Login by username and password
+ * @apiName login
+ * @apiGroup Auth
  *
- * @apiParam {Number} id Users unique ID.
- *
- * @apiSuccess {String} firstname Firstname of the User.
- * @apiSuccess {String} lastname  Lastname of the User.
+ * @apiBody {String} username Username of the User.
+ * @apiBody {String} password Password of the User.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK

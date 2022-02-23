@@ -6,7 +6,6 @@ const config = require('./config');
 const logger = require('./logger');
 
 const ApiError = require('./apiError');
-const { ROLES } = require('../constants');
 
 // middleware convert error to ApiError
 const errorConverter = (err, req, res, next) => {
@@ -23,8 +22,11 @@ const errorConverter = (err, req, res, next) => {
   next(error);
 };
 
+/**
+ *middleware to handle error and send error formated request
+ *
+ */
 // eslint-disable-next-line no-unused-vars
-// middleware to handle error and send error formated request
 const errorHandler = (err, req, res, next) => {
   logger.info('error handler');
   let { statusCode, message } = err;
@@ -55,9 +57,8 @@ const _verifyCallback = (req, resolve, reject, requiredRoles) => async (err, use
   }
   req.user = user;
 
-  console.log(user);
-  console.log(requiredRoles);
-
+  // console.log(user);
+  // console.log(requiredRoles);
   if (requiredRoles.length && !requiredRoles.includes(user.role)) {
     return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
   }

@@ -5,7 +5,6 @@ const { pick } = require('../core/utils');
 const authService = require('./auth.service');
 const tokenService = require('../token/token.service');
 const userService = require('../user/user.service');
-
 // Done
 const registerHandler = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
