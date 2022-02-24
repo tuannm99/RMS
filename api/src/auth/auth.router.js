@@ -1,3 +1,4 @@
+const express = require('express');
 const { validateLogin, validateRegister } = require('./auth.validation');
 const { checkAuth } = require('../core/global.middleware');
 const { ROLES } = require('../constants');
@@ -5,7 +6,7 @@ const { ROLES } = require('../constants');
 const authController = require('./auth.controller');
 
 // router
-const router = require('express').Router();
+const router = express.Router();
 
 router.post('/login', validateLogin(), authController.loginHandler);
 router.post('/register', validateRegister(), authController.registerHandler);
