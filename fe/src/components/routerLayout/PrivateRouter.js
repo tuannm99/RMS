@@ -4,6 +4,7 @@ import {
   RecruitPage,
   TaskRecruitmentPage,
   ConversationRecruitmentPage,
+  ProfilePage,
 } from '../../pages/index';
 import { Routes, Route } from 'react-router-dom';
 function PrivateRouter(props) {
@@ -13,6 +14,7 @@ function PrivateRouter(props) {
       <Route path="/recruit" element={<RecruitPage />} />
       <Route path="/conversation" element={<ConversationRecruitmentPage />} />
       <Route path="/taskRecruitment" element={<TaskRecruitmentPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 }
