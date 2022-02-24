@@ -4,11 +4,9 @@ const { Job } = require('../core/db/schema');
 
 const createJob = async (title, department, jobType, jobDescription, skill) => {
   const jd = new Job({ title, department, jobType, jobDescription, skill });
-  try {
-    return await jd.save();
-  } catch (e) {
-    throw e;
-  }
+
+  // eslint-disable-next-line no-return-await
+  return await jd.save();
 };
 
 const getAllJob = async () => {
@@ -48,5 +46,4 @@ module.exports = {
   getJobById,
   editJobById,
   deleteJobById,
-
 };

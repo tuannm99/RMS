@@ -5,14 +5,23 @@ const { pick } = require('../core/utils');
 const authService = require('./auth.service');
 const tokenService = require('../token/token.service');
 const userService = require('../user/user.service');
-// Done
+
+/**
+ * middleware handler register
+ * @param {string} req
+ * @param {string} res
+ */
 const registerHandler = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user);
   res.status(httpStatus.CREATED).json({ user, tokens });
 });
 
-// Done
+/**
+ * middleware handler login
+ * @param {string} req
+ * @param {string} res
+ */
 const loginHandler = catchAsync(async (req, res) => {
   const { username, password } = req.body;
   const user = await authService.loginByUsernamePassword(username, password);
@@ -26,6 +35,7 @@ const logoutHandler = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json();
 });
 
+// eslint-disable-next-line no-unused-vars
 const forgotPassHandler = catchAsync(async (req, res) => {
   // TODO: need implimentation
 });
