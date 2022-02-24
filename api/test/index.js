@@ -1,5 +1,5 @@
-const bootstrap = require('../src');
 const mongoose = require('mongoose');
+const bootstrap = require('../src');
 
 const connectDatabase = require('../src/core/db/db.config');
 

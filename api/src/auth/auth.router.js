@@ -33,6 +33,13 @@ module.exports = router;
  * @apiBody {String} username Username of the User.
  * @apiBody {String} password Password of the User.
  *
+ * @apiParamExample {json} Body:
+ *     {
+ *       "username": "yourusername",
+ *       "password": "mypassword"
+ *     }
+ *
+ *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
