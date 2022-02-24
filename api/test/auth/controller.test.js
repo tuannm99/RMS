@@ -5,7 +5,7 @@ prepareTest();
 
 const userInput = {
   username: 'minhtuan',
-  password: '1234556',
+  password: '123@123ab',
 };
 
 describe('given the username and password are valid', () => {
