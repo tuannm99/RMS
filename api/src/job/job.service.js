@@ -2,13 +2,22 @@ const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
 const { Job } = require('../core/db/schema');
 
-const createJob = async (title, department, jobType, jobDescription, skill) => {
-  const jd = new Job({ title, department, jobType, jobDescription, skill });
+/**
+ * create new job
+ * @param {string} jobData
+ * @returns {job}
+ */
+const createJob = async (jobData) => {
+  const jd = new Job(jobData);
 
   // eslint-disable-next-line no-return-await
   return await jd.save();
 };
 
+/**
+ * show full job
+ * @returns {Promise<listJob>}
+ */
 const getAllJob = async () => {
   const listJob = await Job.find();
   if (!listJob) {
@@ -17,6 +26,11 @@ const getAllJob = async () => {
   return listJob;
 };
 
+/**
+ * show job by id
+ * @param {object} id
+ * @returns {Promise<job>}
+ */
 const getJobById = async (id) => {
   const job = await Job.findById(id);
   if (!job) {
@@ -25,6 +39,12 @@ const getJobById = async (id) => {
   return job;
 };
 
+/**
+ * edit job by id
+ * @param {object} id
+ * @param {object} jobData
+ * @returns {Promise<job>}
+ */
 const editJobById = async (id, jobData) => {
   const job = await Job.findByIdAndUpdate(id, jobData);
   if (!job) {
@@ -33,6 +53,10 @@ const editJobById = async (id, jobData) => {
   return job;
 };
 
+/**
+ * delete job by id
+ * @param {object} id
+ */
 const deleteJobById = async (id) => {
   const job = await Job.findByIdAndDelete(id);
   if (!job) {

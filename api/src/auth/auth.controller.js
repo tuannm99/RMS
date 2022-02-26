@@ -29,7 +29,11 @@ const loginHandler = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json({ user, tokens });
 });
 
-// Done
+/**
+ * middleware handler logout
+ * @param {string} req
+ * @param {string} res
+ */
 const logoutHandler = catchAsync(async (req, res) => {
   await authService.logout(req.body.refreshToken);
   res.status(httpStatus.OK).json();
@@ -40,7 +44,11 @@ const forgotPassHandler = catchAsync(async (req, res) => {
   // TODO: need implimentation
 });
 
-// Done
+/**
+ * middleware handler refresh token
+ * @param {string} req
+ * @param {string} res
+ */
 const refreshTokenHandler = catchAsync(async (req, res) => {
   const { refreshToken } = req.body;
   // get new access Token
@@ -48,9 +56,10 @@ const refreshTokenHandler = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json({ msg: 'token updated', newToken });
 });
 
-/*
+/**
  * pagination demo
- *
+ * @param {string} req
+ * @param {string} res
  */
 const getAccountHandler = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['username', 'rtoken', 'role']);

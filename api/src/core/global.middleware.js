@@ -6,8 +6,13 @@ const config = require('./config');
 const logger = require('./logger');
 
 const ApiError = require('./apiError');
-
-// middleware convert error to ApiError
+/**
+ * middleware convert error to ApiError
+ * @param {string} err
+ * @param {string} req
+ * @param {string} res
+ * @param {string} next
+ */
 const errorConverter = (err, req, res, next) => {
   logger.info('error converter');
   let error = err;
