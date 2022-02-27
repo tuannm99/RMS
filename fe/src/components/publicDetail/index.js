@@ -1,13 +1,17 @@
-import React from "react";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import React from 'react';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+
 function DetailPublic(props) {
   const { data } = props;
-
   return (
     <>
       <div className={props.detailHeader}>
         <div className={props.HeaderContent}>
           <div className={props.detailHeaderLeft}>
+            <Link to={`/recruit`}>
+              <ArrowLeftOutlined style={{ fontSize: '20px' }} />
+            </Link>
             <h3>{data.typeJob}</h3>
             <h1>{data.title}</h1>
             <div className={props.detailHeaderSub}>
