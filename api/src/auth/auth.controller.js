@@ -1,52 +1,70 @@
 const httpStatus = require('http-status');
-const ApiError = require('../core/apiError');
 const catchAsync = require('../core/catchAsync');
 const { pick } = require('../core/utils');
 
-const accountService = require('../account/account.service');
 const authService = require('./auth.service');
+const tokenService = require('../token/token.service');
+const userService = require('../user/user.service');
 
+/**
+ * middleware handler register
+ * @param {string} req
+ * @param {string} res
+ */
 const registerHandler = catchAsync(async (req, res) => {
-  const { username, password } = req.body;
-  const a = await accountService.createByUsernamePassword(username, password);
-  res.status(httpStatus.OK).json({ account: a, msg: 'user created!' });
+  const user = await userService.createUser(req.body);
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.status(httpStatus.CREATED).json({ user, tokens });
 });
 
+/**
+ * middleware handler login
+ * @param {string} req
+ * @param {string} res
+ */
 const loginHandler = catchAsync(async (req, res) => {
   const { username, password } = req.body;
-  const userPayload = await authService.loginByUsernamePassword(
-    username,
-    password
-  );
-  res.status(httpStatus.OK).json(userPayload);
+  const user = await authService.loginByUsernamePassword(username, password);
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.status(httpStatus.OK).json({ user, tokens });
 });
 
+/**
+ * middleware handler logout
+ * @param {string} req
+ * @param {string} res
+ */
 const logoutHandler = catchAsync(async (req, res) => {
-  const { username } = req.body;
-  // remove refreshToken
-  await accountService.updateRefreshToken(username, null);
-  res.status(httpStatus.OK).json({ msg: 'logout successful!' });
+  await authService.logout(req.body.refreshToken);
+  res.status(httpStatus.OK).json();
 });
 
+// eslint-disable-next-line no-unused-vars
 const forgotPassHandler = catchAsync(async (req, res) => {
   // TODO: need implimentation
 });
 
+/**
+ * middleware handler refresh token
+ * @param {string} req
+ * @param {string} res
+ */
 const refreshTokenHandler = catchAsync(async (req, res) => {
   const { refreshToken } = req.body;
-  // verify refreshToken
-  const newToken = await authService.verifyRefreshToken(refreshToken);
+  // get new access Token
+  const newToken = await authService.refreshAuth(refreshToken);
   res.status(httpStatus.OK).json({ msg: 'token updated', newToken });
 });
 
-/*
+/**
  * pagination demo
- *
+ * @param {string} req
+ * @param {string} res
  */
 const getAccountHandler = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['username', 'rtoken', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await accountService.getAccounts(filter, options);
+  const result = await userService.getUsers(filter, options);
   res.status(httpStatus.OK).json(result);
 });
 

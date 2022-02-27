@@ -1,9 +1,9 @@
-import React from "react";
-import { Layout, Menu } from "antd";
-import logo from "../../assets/image/logo/logo.png";
-import MenuPrivate from "../menuPrivate";
-import { NavLink } from "react-router-dom";
-import "./styles.css";
+import React from 'react';
+import { Layout, Menu } from 'antd';
+import logo from '../../assets/image/logo/logo.png';
+import MenuPrivate from '../menuPrivate';
+import { NavLink } from 'react-router-dom';
+import './styles.css';
 const { Sider } = Layout;
 function SiderBarPrivate(props) {
   return (
@@ -11,7 +11,7 @@ function SiderBarPrivate(props) {
       trigger={null}
       collapsible
       collapsed={props.collapsed}
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: '100vh' }}
     >
       <div className="logo">
         <NavLink to="/">

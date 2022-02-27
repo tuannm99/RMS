@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import jobService from '../../services/jobService';
 import Recruit from '../../components/recruit';
@@ -7,6 +8,9 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button, Breadcrumb, Modal, Input, Form, Select } from 'antd';
+=======
+import React from 'react';
+>>>>>>> 6f6f96d24360db3ecdf1943da5798ebb7de85bac
 
 function RecruitPage(props) {
   const [dataJob, setdataJob] = useState([]);

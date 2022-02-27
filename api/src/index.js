@@ -40,7 +40,7 @@ const middleware = (app) => {
  * initialize express application
  * @return app - express instance
  */
-bootstrap = () => {
+const bootstrap = () => {
   const app = express();
 
   // use middleware

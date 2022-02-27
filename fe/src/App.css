@@ -1,4 +1,4 @@
-@import "antd/dist/antd.css";
+@import 'antd/dist/antd.css';
 #components-layout-demo-responsive .logo {
   height: 32px;
   margin: 16px;
@@ -14,6 +14,9 @@
 }
 .fr {
   float: right;
+}
+.fl {
+  float: left;
 }
 /* CONTAINER */
 .container {
@@ -157,6 +160,65 @@
   margin-left: 32px;
 }
 
+.mr-0 {
+  margin-right: 0px;
+}
+.mr-8 {
+  margin-right: 8px;
+}
+
+.mr-16 {
+  margin-right: 16px;
+}
+
+.mr-12 {
+  margin-right: 12px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.mr-24 {
+  margin-right: 24px;
+}
+.mr-28 {
+  margin-right: 28px;
+}
+.mr-32 {
+  margin-right: 32px;
+}
+
+/* padding */
+/* margin left */
+.pl-0 {
+  padding-left: 0px;
+}
+.pl-8 {
+  padding-left: 8px;
+}
+
+.pl-16 {
+  padding-left: 16px;
+}
+
+.pl-12 {
+  padding-left: 12px;
+}
+
+.pl-20 {
+  padding-left: 20px;
+}
+
+.pl-24 {
+  padding-left: 24px;
+}
+.pl-28 {
+  padding-left: 28px;
+}
+.pl-32 {
+  padding-left: 32px;
+}
 /* border */
 .border {
   border: none;

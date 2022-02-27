@@ -1,7 +1,10 @@
 import React from 'react';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+<<<<<<< HEAD
 import { Link } from 'react-router-dom';
 
+=======
+>>>>>>> 6f6f96d24360db3ecdf1943da5798ebb7de85bac
 function DetailPublic(props) {
   const { data } = props;
   return (

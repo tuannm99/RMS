@@ -1,3 +1,4 @@
+const passport = require('passport');
 const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 
@@ -5,7 +6,13 @@ const config = require('./config');
 const logger = require('./logger');
 
 const ApiError = require('./apiError');
-
+/**
+ * middleware convert error to ApiError
+ * @param {string} err
+ * @param {string} req
+ * @param {string} res
+ * @param {string} next
+ */
 const errorConverter = (err, req, res, next) => {
   logger.info('error converter');
   let error = err;
@@ -20,6 +27,10 @@ const errorConverter = (err, req, res, next) => {
   next(error);
 };
 
+/**
+ *middleware to handle error and send error formated request
+ *
+ */
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
   logger.info('error handler');
@@ -44,7 +55,39 @@ const errorHandler = (err, req, res, next) => {
   res.status(statusCode).send(response);
 };
 
+// handling authenticate/authorization
+const _verifyCallback = (req, resolve, reject, requiredRoles) => async (err, user, info) => {
+  if (err || info || !user) {
+    return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
+  }
+  req.user = user;
+
+  // console.log(user);
+  // console.log(requiredRoles);
+  if (requiredRoles.length && !requiredRoles.includes(user.role)) {
+    return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
+  }
+
+  resolve();
+};
+
+// middleware using passport-jwt to authenticate
+const checkAuth =
+  (...requiredRoles) =>
+  async (req, res, next) => {
+    return new Promise((resolve, reject) => {
+      passport.authenticate(
+        'jwt',
+        { session: false },
+        _verifyCallback(req, resolve, reject, requiredRoles)
+      )(req, res, next);
+    })
+      .then(() => next())
+      .catch((err) => next(err));
+  };
+
 module.exports = {
   errorConverter,
   errorHandler,
+  checkAuth,
 };

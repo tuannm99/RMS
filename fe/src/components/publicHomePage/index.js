@@ -1,5 +1,5 @@
-import React from "react";
-import { RightOutlined } from "@ant-design/icons";
+import React from 'react';
+import { RightOutlined } from '@ant-design/icons';
 function PublicPage(props) {
   const { data } = props;
   return (
@@ -18,7 +18,7 @@ function PublicPage(props) {
           <span>{data.typeTime}</span>
         </div>
         <div className="public-icon">
-          <RightOutlined style={{ fontSize: "23px", color: "#7b40a0" }} />
+          <RightOutlined style={{ fontSize: '23px', color: '#7b40a0' }} />
         </div>
       </div>
     </>

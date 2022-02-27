@@ -1,62 +1,48 @@
-const accountService = require('../account/account.service');
-const envConf = require('../core/config');
-const jwt = require('jsonwebtoken');
-const ApiError = require('../core/apiError');
 const httpStatus = require('http-status');
 
-const createAccessToken = (payload) => {
-  return jwt.sign(payload, envConf.access_token, {
-    expiresIn: 60, // 60 seconds
-  });
-};
+const userService = require('../user/user.service');
+const tokenService = require('../token/token.service');
+const ApiError = require('../core/apiError');
 
-const createRefreshToken = (payload) => {
-  return jwt.sign(payload, envConf.refresh_token, {
-    expiresIn: 60 * 60 * 24, // one day
-  });
-};
+const { tokenTypes } = require('../constants');
 
-const verifyRefreshToken = async (rtoken) => {
-  return jwt.verify(rtoken, envConf.refresh_token, (err, decoded) => {
-    // check error
-    if (err) {
-      throw new ApiError(httpStatus.UNAUTHORIZED, err);
-    }
-    // get payload
-    const payload = {
-      _id: decoded._id,
-      username: decoded.username,
-      role: decoded.role,
-    };
-    return createAccessToken(payload);
-  });
-};
-
+/**
+ * Login with username and password
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise<User>}
+ */
 const loginByUsernamePassword = async (username, password) => {
-  const user = await accountService.getByUsername(username);
+  const user = await userService.getUserByUsername(username);
+  if (!user || !(await user.isPasswordMatch(password))) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+  }
+  return user;
+};
 
-  if (user.password === password) {
-    // from now on we’ll identify the user by the id and the id is
-    // the only personalized value that goes into our token
-    const payload = {
-      _id: user._id,
-      username: user.username,
-      role: user.role,
-    };
-    const token = createAccessToken(payload);
-    const refreshToken = createRefreshToken(payload);
-    // update refresh token
+/**
+ * Logout
+ * @param {string} refreshToken
+ */
+const logout = async (refreshToken) => {
+  // remove refresh token
+  await tokenService.deleteByRefreshToken(refreshToken);
+};
 
-    await accountService.updateRefreshToken(username, refreshToken);
-    return {
-      token: token,
-      refreshToken: refreshToken,
-      user_id: user._id,
-      msg: 'login successful!',
-    };
-  } else {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'password is incorrect');
+/**
+ * refreshing access token
+ * @param {string} refreshToken
+ * @returns {Promise} new token
+ */
+const refreshAuth = async (refreshToken) => {
+  try {
+    const refreshTokenDoc = await tokenService.verifyToken(refreshToken, tokenTypes.REFRESH);
+    const user = await userService.getUserById(refreshTokenDoc.userId);
+    await refreshTokenDoc.remove();
+    return await tokenService.generateAuthTokens(user);
+  } catch (error) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
   }
 };
 
-module.exports = { loginByUsernamePassword, verifyRefreshToken };
+module.exports = { loginByUsernamePassword, logout, refreshAuth };

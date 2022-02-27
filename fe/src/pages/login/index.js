@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Checkbox } from "antd";
-import "./style.css";
+import React, { useState } from 'react';
+import { Form, Input, Button, Checkbox } from 'antd';
+import './style.css';
+
 function Login(props) {
   return (
     <div className="login">
@@ -25,7 +26,7 @@ function Login(props) {
             label="Username"
             name="username"
             className="login-email"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Input />
           </Form.Item>
@@ -34,7 +35,7 @@ function Login(props) {
             label="Password"
             name="password"
             className="login-password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <Input />
           </Form.Item>

@@ -1,0 +1,16 @@
+.header-right {
+  display: inline;
+  float: right;
+}
+.header-right-search-box {
+  border: none;
+  width: 200px;
+  border-bottom: 1px solid #ddd;
+}
+.header-right-add-new {
+  background-color: #264966;
+  color: #fff;
+}
+.header-right-avatar {
+  margin-bottom: 2px;
+}

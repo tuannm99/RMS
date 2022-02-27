@@ -1,16 +1,14 @@
 const { validationResult } = require('express-validator');
+const httpStatus = require('http-status');
 
 exports.validateResult = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    res.status(422).json({ errors: errors.array() });
+    res.status(httpStatus.UNPROCESSABLE_ENTITY).json({ errors: errors.array() });
     return errors;
   }
   next();
 };
-
-const hashPassword = () => {};
-const unhashPassword = () => {};
 
 /**
  * Create an object composed of the picked object properties
