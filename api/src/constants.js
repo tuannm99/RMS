@@ -13,7 +13,12 @@ const ROLES = {
   employee: 'employee',
 };
 
+const EVENTS = {
+  sendMail: 'sendMail',
+};
+
 module.exports = {
   tokenTypes,
   ROLES,
+  EVENTS,
 };

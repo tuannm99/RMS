@@ -8,6 +8,7 @@ const morgan = require('morgan');
 
 const router = require('./router');
 const passport = require('./auth/passport');
+const { initializeEvent } = require('./events');
 
 const { errorConverter, errorHandler } = require('./core/global.middleware');
 
@@ -45,6 +46,9 @@ const bootstrap = () => {
 
   // use middleware
   middleware(app);
+
+  // event
+  initializeEvent();
 
   // default route
   app.get('/health-check', (req, res) => {
