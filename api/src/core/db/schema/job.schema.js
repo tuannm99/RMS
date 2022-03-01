@@ -10,7 +10,7 @@ const jobSchema = new mongoose.Schema({
   skill: { required: true, type: String },
   minSalary: { type: Number },
   maxSalary: { type: Number },
-  current: { type: Number },
+  current: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

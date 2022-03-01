@@ -26,8 +26,8 @@ function initializeEvent() {
 /**
  * send email handler
  */
-function sendMail() {
-  emitter.emit(EVENTS.sendMail, { msg: 'ok', to: 'gm.tuannm99@gmail.com' });
+function sendMail(to) {
+  emitter.emit(EVENTS.sendMail, { msg: 'nice to meet u', to });
 }
 
 module.exports = { initializeEvent, sendMail };

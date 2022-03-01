@@ -16,7 +16,7 @@ const createJob = async (jobData) => {
 
 /**
  * show full job
- * @returns {Promise<listJob>}
+ * @returns {Promise<Job>}
  */
 const getAllJob = async () => {
   const listJob = await Job.find();
