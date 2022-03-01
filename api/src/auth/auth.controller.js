@@ -1,6 +1,5 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../core/catchAsync');
-const { pick } = require('../core/utils');
 
 const authService = require('./auth.service');
 const tokenService = require('../token/token.service');
@@ -56,23 +55,10 @@ const refreshTokenHandler = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json({ msg: 'token updated', newToken });
 });
 
-/**
- * pagination demo
- * @param {string} req
- * @param {string} res
- */
-const getAccountHandler = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['username', 'rtoken', 'role']);
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await userService.getUsers(filter, options);
-  res.status(httpStatus.OK).json(result);
-});
-
 module.exports = {
   logoutHandler,
   loginHandler,
   registerHandler,
   forgotPassHandler,
   refreshTokenHandler,
-  getAccountHandler,
 };
