@@ -29,9 +29,9 @@ function ProtectedLayout(props) {
   const toggle = () => {
     setCollapsed(!collapsed);
   };
-  console.log(b);
-  const now = new Date();
-  console.log(now);
+  // console.log(b);
+  // const now = new Date();
+  // console.log(now);
 
   // useEffect(() => {
   //   const intervalTime = setInterval(() => {
@@ -47,7 +47,7 @@ function ProtectedLayout(props) {
   //   return () => {
   //     clearInterval(intervalTime);
   //   };
-  // }, [timerToken]);
+  // }, [token]);
 
   return (
     <Layout>
