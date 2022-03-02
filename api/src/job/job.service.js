@@ -5,7 +5,7 @@ const { Job } = require('../core/db/schema');
 /**
  * create new job
  * @param {string} jobData
- * @returns {Job}
+ * @returns {Promise<Job>}
  */
 const createJob = async (jobData) => {
   const jd = new Job(jobData);
@@ -16,7 +16,7 @@ const createJob = async (jobData) => {
 
 /**
  * show full job
- * @returns {Promise<Job>}
+ * @returns {Promise<Job[]>}
  */
 const getAllJob = async () => {
   const listJob = await Job.find();

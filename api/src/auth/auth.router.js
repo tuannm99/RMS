@@ -1,7 +1,5 @@
 const express = require('express');
 const { validateLogin, validateRegister } = require('./auth.validation');
-const { checkAuth } = require('../core/global.middleware');
-const { ROLES } = require('../constants');
 
 const authController = require('./auth.controller');
 
@@ -13,15 +11,6 @@ router.post('/register', validateRegister(), authController.registerHandler);
 router.post('/logout', authController.logoutHandler);
 router.post('/forgot-pass', authController.forgotPassHandler);
 router.post('/refresh-token', authController.refreshTokenHandler);
-
-router.get('/protected', checkAuth(), (req, res) => {
-  res.json('protected resource');
-});
-router.get(
-  '/get-accounts',
-  checkAuth(ROLES.admin, ROLES.employee),
-  authController.getAccountHandler
-);
 
 module.exports = router;
 

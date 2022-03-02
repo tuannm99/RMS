@@ -13,6 +13,7 @@ const ROLES = {
   employee: 'employee',
 };
 
+// Event for async task
 const EVENTS = {
   sendMail: 'sendMail',
 };

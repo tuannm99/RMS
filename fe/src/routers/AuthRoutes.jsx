@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   DashboardPage,
   RecruitPage,
@@ -6,10 +6,11 @@ import {
   DetailRecruitPage,
   ConversationRecruitmentPage,
   ProfilePage,
-} from '../../pages/index';
+} from '../pages';
 
 import { Routes, Route } from 'react-router-dom';
-function PrivateRouter(props) {
+
+function AuthRoutes(props) {
   return (
     <Routes>
       <Route path="/" element={<DashboardPage />} />
@@ -22,4 +23,4 @@ function PrivateRouter(props) {
   );
 }
 
-export default PrivateRouter;
+export default AuthRoutes;
