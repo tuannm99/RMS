@@ -13,7 +13,20 @@ const ROLES = {
   employee: 'employee',
 };
 
+// Event for async task
+const EVENTS = {
+  sendMail: 'sendMail',
+};
+
+const statusCandidate = {
+  reject: 'reject',
+  open: 'open',
+  approve: 'approve',
+};
+
 module.exports = {
   tokenTypes,
   ROLES,
+  EVENTS,
+  statusCandidate,
 };

@@ -9,8 +9,7 @@ const jobService = require('./job.service');
  * @param {object} res
  */
 const addJobPosting = catchAsync(async (req, res) => {
-  const { title, department, jobType, jobDescription, skill } = req.body;
-  const jobPosting = await jobService.createJob(title, department, jobType, jobDescription, skill);
+  const jobPosting = await jobService.createJob(req.body);
   res.status(httpStatus.OK).json(jobPosting);
 });
 

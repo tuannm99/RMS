@@ -25,68 +25,19 @@
   color: #696969;
   padding-bottom: 50px;
 }
-.login-email {
-  text-align: center;
+
+.login-form {
+  padding: 0 30px;
 }
-.login-email input {
-  width: 80%;
-  height: 35px;
-  border: 1px solid #c9c6c6;
-  border-radius: 5px;
+.login-form_input {
+  border-radius: 4px;
+  height: 40px;
 }
-.login-password {
-  text-align: center;
-}
-.login-password input {
-  width: 80%;
-  height: 35px;
-  border: 1px solid #c9c6c6;
-  border-radius: 5px;
-}
-.login-checkbox {
-  padding-left: 54px;
-  padding-top: 10px;
-}
-.login-checkbox label {
-  padding-bottom: 10px;
-  color: #696969;
-}
-.login-checkbox input {
-  padding-left: 30px;
-  height: 12px;
-  width: 28px;
-  cursor: pointer;
-}
-.login-button {
-  text-align: center;
-  padding-top: 30px;
-}
-.login-button button {
-  width: 80%;
-  height: 35px;
-  background-color: #63ace5;
-  border: white;
+.login-form-button {
+  width: 100%;
+  height: 40px;
   border-radius: 10px;
-  cursor: pointer;
-  color: white;
-  font-size: 14px;
-}
-.login-right span {
-  text-align: center;
-  padding-top: 40px;
-  color: #696969;
-}
-.login-icon {
-  text-align: center;
-  padding-top: 20px;
-}
-.login-icon a {
   font-size: 20px;
-}
-.login-facebook {
-  color: #125185;
-  padding-right: 5px;
-}
-.login-twitter {
-  color: #1d9bf0;
+  background-color: rgba(16, 6, 105, 0.726);
+  border: none;
 }

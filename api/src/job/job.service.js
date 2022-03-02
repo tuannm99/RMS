@@ -5,7 +5,7 @@ const { Job } = require('../core/db/schema');
 /**
  * create new job
  * @param {string} jobData
- * @returns {job}
+ * @returns {Promise<Job>}
  */
 const createJob = async (jobData) => {
   const jd = new Job(jobData);
@@ -16,7 +16,7 @@ const createJob = async (jobData) => {
 
 /**
  * show full job
- * @returns {Promise<listJob>}
+ * @returns {Promise<Job[]>}
  */
 const getAllJob = async () => {
   const listJob = await Job.find();
@@ -29,7 +29,7 @@ const getAllJob = async () => {
 /**
  * show job by id
  * @param {object} id
- * @returns {Promise<job>}
+ * @returns {Promise<Job>}
  */
 const getJobById = async (id) => {
   const job = await Job.findById(id);
@@ -43,7 +43,7 @@ const getJobById = async (id) => {
  * edit job by id
  * @param {object} id
  * @param {object} jobData
- * @returns {Promise<job>}
+ * @returns {Promise<Job>}
  */
 const editJobById = async (id, jobData) => {
   const job = await Job.findByIdAndUpdate(id, jobData);

@@ -2,15 +2,16 @@ const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
 const jobSchema = new mongoose.Schema({
-  title: { required: true, type: String },
-  department: { required: true, type: String },
-  jobType: { required: true, type: String },
+  title: { require: true, type: String },
+  department: { require: true, type: String },
+  jobType: { require: true, type: String },
   location: { type: String },
-  jobDescription: { required: true, type: String },
-  skill: { required: true, type: String },
+  jobDescription: { type: String },
+  skill: { type: String },
+  experience: { type: String },
   minSalary: { type: Number },
   maxSalary: { type: Number },
-  current: { type: Number },
+  currency: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
