@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import { SiderBarPrivate, HeaderPrivate } from '../components';
 import moment from 'moment';
 
-import { AuthRoutes } from '../routers';
+import AuthRoutes from '../routers/AuthRoutes';
 
 const { Content } = Layout;
 
@@ -19,19 +19,19 @@ const { Content } = Layout;
 // }
 
 function ProtectedLayout(props) {
-  let tokens = JSON.parse(localStorage.getItem('tokens'));
+  //let tokens = JSON.parse(localStorage.getItem('tokens'));
   const [collapsed, setCollapsed] = useState(false);
   const [timerToken, setTimerToken] = useState();
-  const [token, setTokens] = useState(tokens.access.token);
+  //const [token, setTokens] = useState(tokens.access.token);
 
-  const b = moment.utc(tokens.access.expires).toDate();
+  //const b = moment.utc(tokens.access.expires).toDate();
   // console.log(formatDate(b));
   const toggle = () => {
     setCollapsed(!collapsed);
   };
-  console.log(b);
-  const now = new Date();
-  console.log(now);
+  // console.log(b);
+  // const now = new Date();
+  // console.log(now);
 
   // useEffect(() => {
   //   const intervalTime = setInterval(() => {
@@ -47,7 +47,7 @@ function ProtectedLayout(props) {
   //   return () => {
   //     clearInterval(intervalTime);
   //   };
-  // }, [timerToken]);
+  // }, [token]);
 
   return (
     <Layout>

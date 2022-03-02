@@ -10,7 +10,7 @@ function* sendLoginRequest({ payload, resolve }) {
   try {
     yield put(setLoading(true));
     const response = yield call(loginRequestService, payload);
-    console.log(response.data);
+    console.log(response);
     if (response.status === 200) {
       resolve(response);
     }

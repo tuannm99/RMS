@@ -26,8 +26,8 @@ function Login(props) {
 
   const onFinish = async (values) => {
     const params = {
-      username: values.username, //"admineh",
-      password: values.password, //"Estella1230",
+      username: values.username,
+      password: values.password,
     };
     if (!values.username && !values.password) {
       notification.open({
