@@ -33,7 +33,7 @@ router.delete(
 module.exports = router;
 
 /**
- * @api {post} /api/v1/users 1. Get All Users
+ * @api {get} /api/v1/users 1. Get All Users
  * @apiName Get All User
  * @apiGroup User
  * @apiPermission admin

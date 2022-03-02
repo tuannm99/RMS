@@ -40,7 +40,7 @@ const getCandidate = catchAsync(async (req, res) => {
  */
 const editCandidatePosting = catchAsync(async (req, res) => {
   const candidateEdited = await candidateService.editCandidateById(req.params.id, req.body);
-  res.status(httpStatus.OK).json({ candidateEdited, message: 'successful' });
+  res.status(httpStatus.OK).json(candidateEdited);
 });
 
 /**
@@ -50,7 +50,7 @@ const editCandidatePosting = catchAsync(async (req, res) => {
  */
 const deleteCandidatePosting = catchAsync(async (req, res) => {
   const candidateDeleted = await candidateService.deleteCandidateById(req.params.id);
-  res.status(httpStatus.OK).json({ candidateDeleted, message: 'successful' });
+  res.status(httpStatus.OK).json(candidateDeleted);
 });
 
 module.exports = {
