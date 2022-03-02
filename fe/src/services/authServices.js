@@ -1,5 +1,5 @@
 import request from '../utils/request';
-const BASE_API = 'http://42.114.132.111:5000/api/v1/auth';
+const BASE_API = 'http://rms-fpt.ddns.net:5000/api/v1/auth';
 
 //login
 export function loginRequestService(params) {

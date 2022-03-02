@@ -60,3 +60,11 @@
 .Detail-id {
   display: none;
 }
+.recruit-modal-salary {
+  display: flex;
+  width: 60%;
+}
+.recruit-modal-iconRight {
+  padding-top: 4px;
+  padding-right: 48px;
+}

@@ -187,7 +187,7 @@ function RecruitPage(props) {
 
                 <div className="recruit-modal-exp">
                   <h5>Experience </h5>
-                  <Form.Item name="exp" rules={[{ required: false }]}>
+                  <Form.Item name="experience" rules={[{ required: false }]}>
                     <Select
                       defaultValue=" "
                       style={{ width: 300 }}
@@ -202,39 +202,22 @@ function RecruitPage(props) {
                 </div>
               </div>
               <h5>Salary</h5>
-              <Form.Item name="minSalary" rules={[{ required: false }]}>
-                <Input.Group compact>
-                  <Select defaultValue="1">
-                    <Option value="1">Between</Option>
-                    <Option value="2">Except</Option>
-                  </Select>
-                  <Input
-                    name="minSalary"
-                    style={{ width: 100, textAlign: 'center' }}
-                    placeholder="Minimum"
-                  />
-                  <Input
-                    className="site-input-split"
-                    style={{
-                      width: 30,
-                      borderLeft: 0,
-                      borderRight: 0,
-                      pointerEvents: 'none',
-                    }}
-                    placeholder="~"
-                    disabled
-                  />
-                  <Input
-                    name="maxSalary"
-                    className="site-input-right"
-                    style={{
-                      width: 100,
-                      textAlign: 'center',
-                    }}
-                    placeholder="Maximum"
-                  />
-                </Input.Group>
-              </Form.Item>
+              <div className="recruit-modal-salary">
+                <Form.Item
+                  name="minSalary"
+                  className="recruit-modal_location"
+                  rules={[{ required: false }]}
+                >
+                  <Input placeholder="minSalary" />
+                </Form.Item>
+                <Form.Item
+                  name="maxSalary"
+                  className="recruit-modal_location"
+                  rules={[{ required: false }]}
+                >
+                  <Input placeholder="maxSalary" />
+                </Form.Item>
+              </div>
             </Form>
           </div>
         </Modal>

@@ -5,18 +5,8 @@ import jobService from '../../services/jobService';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { toast } from 'react-toastify';
-import {
-  Breadcrumb,
-  Button,
-  Table,
-  Space,
-  Popconfirm,
-  Modal,
-  Input,
-  InputNumber,
-  Form,
-  Select,
-} from 'antd';
+import { RightOutlined } from '@ant-design/icons';
+import { Breadcrumb, Button, Modal, Input, Form, Select } from 'antd';
 import { Link } from 'react-router-dom';
 
 function DetailRecruitPage(props) {
@@ -24,7 +14,6 @@ function DetailRecruitPage(props) {
   const [formModal] = Form.useForm();
   const [visible, setVisible] = useState(false);
   const [dataJobID, setDataJobID] = useState({});
-  const [dataJob, setDataJob] = useState('');
   const { Option } = Select;
 
   const handleCancel = () => {
@@ -46,11 +35,10 @@ function DetailRecruitPage(props) {
       formModal.setFieldsValue({
         id: res.id,
         title: res.title,
-        description: res.description,
-        description: res.description,
+        jobDescription: res.jobDescription,
         typeTime: res.typeTime,
         address: res.address,
-        exp: res.exp,
+        experience: res.experience,
         skill: res.skill,
         minSalary: res.minSalary,
         maxSalary: res.maxSalary,
@@ -141,19 +129,19 @@ function DetailRecruitPage(props) {
               >
                 <Input placeholder="address" />
               </Form.Item>
-              <Form.Item name="description" className="recruit-editor">
+              <Form.Item name="jobDescription" className="recruit-editor">
                 <h5>Description</h5>
                 <CKEditor
                   type=""
                   className="recruit-editor_content"
                   editor={ClassicEditor}
-                  data={`${dataJobID.description} </br></br></br></br></br></br></br>`}
+                  data={`${dataJobID.jobDescription}`}
                   onReady={(editor) => {
                     console.log('Editor is ready to use!', editor);
                   }}
                   onChange={(event, editor) => {
                     const data = editor.getData();
-                    console.log({ event, editor, data });
+                    setDataJobID({ ...dataJobID, jobDescription: data });
                   }}
                   onBlur={(event, editor) => {
                     console.log('Blur.', editor);
@@ -166,14 +154,14 @@ function DetailRecruitPage(props) {
               <div className="recruit-modal-work">
                 <div className="recruit-modal-skill">
                   <h5>Skills</h5>
-                  <Form.Item name="Skill" rules={[{ required: false }]}>
+                  <Form.Item name="skill" rules={[{ required: false }]}>
                     <Input placeholder="skill" />
                   </Form.Item>
                 </div>
 
                 <div className="recruit-modal-exp">
                   <h5>Experience </h5>
-                  <Form.Item name="exp" rules={[{ required: false }]}>
+                  <Form.Item name="experience" rules={[{ required: false }]}>
                     <Select defaultValue="" style={{ width: 300 }}>
                       <Option value="Internship">Internship</Option>
                       <Option value="Entry level">Entry level</Option>
@@ -184,37 +172,25 @@ function DetailRecruitPage(props) {
                 </div>
               </div>
               <h5>Salary</h5>
-              <Input.Group compact>
-                <Select defaultValue="1">
-                  <Option value="1">Between</Option>
-                  <Option value="2">Except</Option>
-                </Select>
-                <Input
+              <div className="recruit-modal-salary">
+                <Form.Item
                   name="minSalary"
-                  style={{ width: 100, textAlign: 'center' }}
-                  placeholder="Minimum"
-                />
-                <Input
-                  className="site-input-split"
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                  }}
-                  placeholder="~"
-                  disabled
-                />
-                <Input
+                  className="recruit-modal_location"
+                  rules={[{ required: false }]}
+                >
+                  <Input placeholder="minSalary" />
+                </Form.Item>
+                <div className="recruit-modal-iconRight">
+                  <RightOutlined />
+                </div>
+                <Form.Item
                   name="maxSalary"
-                  className="site-input-right"
-                  style={{
-                    width: 100,
-                    textAlign: 'center',
-                  }}
-                  placeholder="Maximum"
-                />
-              </Input.Group>
+                  className="recruit-modal_location"
+                  rules={[{ required: false }]}
+                >
+                  <Input placeholder="maxSalary" />
+                </Form.Item>
+              </div>
               <Form.Item
                 className="Detail-id"
                 name="id"
