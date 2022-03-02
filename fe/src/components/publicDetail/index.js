@@ -13,10 +13,10 @@ function DetailPublic(props) {
             <Link to={`/recruit`}>
               <ArrowLeftOutlined style={{ fontSize: '20px' }} />
             </Link>
-            <h3>{data.typeJob}</h3>
+            <h3>{data.department}</h3>
             <h1>{data.title}</h1>
             <div className={props.detailHeaderSub}>
-              <span>{data.address}</span> | <span>{data.typeTime}</span>
+              <span>{data.location}</span> | <span>{data.jobType}</span>
             </div>
           </div>
           <div className={props.detailHeaderRight}>

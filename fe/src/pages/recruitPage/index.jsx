@@ -4,8 +4,8 @@ import Recruit from '../../components/recruit';
 import './style.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import { Row, Col, Button, Breadcrumb, Modal, Input, Form, Select } from 'antd';
 
 function RecruitPage(props) {
@@ -58,6 +58,9 @@ function RecruitPage(props) {
         loadDataJobs();
       });
     }
+    toast.success('Create Job Successful!', {
+      autoClose: 3000,
+    });
     handleCancel();
   };
 
@@ -68,10 +71,6 @@ function RecruitPage(props) {
     setVisible(true);
   };
 
-  const handleData = (item) => {
-    localStorage.setItem('job', JSON.stringify(item));
-    console.log(localStorage);
-  };
   return (
     <>
       <div className="Recruit-head">
@@ -89,7 +88,9 @@ function RecruitPage(props) {
           width={1200}
           footer={
             <>
-              <Button onClick={openPreview}>Preview</Button>
+              <Button onClick={openPreview} form="formModal">
+                Preview
+              </Button>
 
               <Button type="primary" htmlType="submit" form="formModal">
                 Save
@@ -115,7 +116,7 @@ function RecruitPage(props) {
                 <div className="recruit-select-1">
                   {' '}
                   <h5>Department </h5>
-                  <Form.Item name="typeJob" rules={[{ required: false }]}>
+                  <Form.Item name="department" rules={[{ required: false }]}>
                     <Select
                       defaultValue=" "
                       style={{ width: 300 }}
@@ -132,7 +133,7 @@ function RecruitPage(props) {
                 <div className="recruit-select-1">
                   {' '}
                   <h5>Job Type </h5>
-                  <Form.Item name="typeTime" rules={[{ required: false }]}>
+                  <Form.Item name="jobType" rules={[{ required: false }]}>
                     <Select
                       defaultValue=" "
                       style={{ width: 300 }}
@@ -141,16 +142,13 @@ function RecruitPage(props) {
                       <Option value="Full Time">Full Time</Option>
                       <Option value="Pass Time">Pass Time</Option>
                       <Option value="Internship">Internship</Option>
-                      <Option value="Fixed Term Contract">
-                        Fixed Term Contract
-                      </Option>
                     </Select>
                   </Form.Item>
                 </div>
               </div>
               <h5>Add new location </h5>
               <Form.Item
-                name="address"
+                name="location"
                 className="recruit-modal_location"
                 rules={[{ required: false }]}
               >
@@ -163,7 +161,7 @@ function RecruitPage(props) {
                   className="recruit-editor_content"
                   name="description"
                   editor={ClassicEditor}
-                  data="</br></br></br></br></br></br></br>"
+                  data={`${dataJob.description} </br></br></br></br></br></br></br>`}
                   onReady={(editor) => {
                     console.log('Editor is ready to use!', editor);
                   }}
@@ -182,14 +180,14 @@ function RecruitPage(props) {
               <div className="recruit-modal-work">
                 <div className="recruit-modal-skill">
                   <h5>Skills</h5>
-                  <Form.Item name="Skill" rules={[{ required: false }]}>
+                  <Form.Item name="skill" rules={[{ required: false }]}>
                     <Input placeholder="skill" />
                   </Form.Item>
                 </div>
 
                 <div className="recruit-modal-exp">
                   <h5>Experience </h5>
-                  <Form.Item name="Exp" rules={[{ required: false }]}>
+                  <Form.Item name="exp" rules={[{ required: false }]}>
                     <Select
                       defaultValue=" "
                       style={{ width: 300 }}
@@ -204,35 +202,39 @@ function RecruitPage(props) {
                 </div>
               </div>
               <h5>Salary</h5>
-              <Input.Group compact>
-                <Select defaultValue="1">
-                  <Option value="1">Between</Option>
-                  <Option value="2">Except</Option>
-                </Select>
-                <Input
-                  style={{ width: 100, textAlign: 'center' }}
-                  placeholder="Minimum"
-                />
-                <Input
-                  className="site-input-split"
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                  }}
-                  placeholder="~"
-                  disabled
-                />
-                <Input
-                  className="site-input-right"
-                  style={{
-                    width: 100,
-                    textAlign: 'center',
-                  }}
-                  placeholder="Maximum"
-                />
-              </Input.Group>
+              <Form.Item name="minSalary" rules={[{ required: false }]}>
+                <Input.Group compact>
+                  <Select defaultValue="1">
+                    <Option value="1">Between</Option>
+                    <Option value="2">Except</Option>
+                  </Select>
+                  <Input
+                    name="minSalary"
+                    style={{ width: 100, textAlign: 'center' }}
+                    placeholder="Minimum"
+                  />
+                  <Input
+                    className="site-input-split"
+                    style={{
+                      width: 30,
+                      borderLeft: 0,
+                      borderRight: 0,
+                      pointerEvents: 'none',
+                    }}
+                    placeholder="~"
+                    disabled
+                  />
+                  <Input
+                    name="maxSalary"
+                    className="site-input-right"
+                    style={{
+                      width: 100,
+                      textAlign: 'center',
+                    }}
+                    placeholder="Maximum"
+                  />
+                </Input.Group>
+              </Form.Item>
             </Form>
           </div>
         </Modal>

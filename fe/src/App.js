@@ -5,6 +5,9 @@ import Home from '../../fe/src/pages/publicComponent';
 import HomeDetail from '../../fe/src/pages/publicDetail';
 import Login from './pages/login';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   return (
     <>
@@ -16,6 +19,19 @@ function App() {
           <Route path="/PublicJob/:id" element={<HomeDetail />} />
         </Routes>
       </Router>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      {/* Same as */}
+      <ToastContainer />
     </>
   );
 }
