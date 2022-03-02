@@ -10,11 +10,33 @@ router.delete('/:id', jobController.deleteJobPosting);
 module.exports = router;
 
 /**
- * @api {get} /api/v1/jobs 1.Get all job form list job
- * @apiName get all job
+ * @api {post} /api/v1/jobs 1. Add job
+ * @apiName add job
  * @apiGroup Job
  *
  * @apiHeader {String} Content-Type application/json
+ *
+ * @apiParam (Body) {String} title
+ * @apiParam (Body) {String} department
+ * @apiParam (Body) {String} jobType
+ * @apiParam (Body) {String} location
+ * @apiParam (Body) {String} jobDescription
+ * @apiParam (Body) {String} skill
+ * @apiParam (Body) {Number} minSalary
+ * @apiParam (Body) {Number} maxSalary
+ * @apiParam (Body) {String} currency
+ * @apiParamExample (Body) {json} Body-Example:
+ *     {
+ *        "title":"can tuyen nguoi 123",
+ *        "department":"part time + full time",
+ *        "jobType":"full Time",
+ *        "location": "Ha Noi",
+ *        "jobDescription":"job very good",
+ *        "skill":"nodejs",
+ *        "minSalary": "1000",
+ *        "maxSalary": "1500",
+ *        "currency": "USD"
+ *     }
  *
  * @apisuccess {Object}   user
  * @apiSuccess {String}   user.username
