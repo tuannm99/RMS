@@ -14,8 +14,9 @@ const handleError = (error) => {
 };
 
 request.interceptors.request.use((config) => {
-  const tokens = JSON.parse(localStorage.getItem('tokens'));
-  config.headers.Authorization = `Bearer ${tokens.access.token}`;
+  const tokens = localStorage.getItem('token');
+  config.headers.Authorization = `Bearer ${tokens}`;
+
   return config;
 });
 

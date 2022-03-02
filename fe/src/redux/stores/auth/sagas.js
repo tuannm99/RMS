@@ -3,7 +3,7 @@ import {
   loginRequestService,
   refreshTokenRequestService,
 } from '../../../services/authServices';
-import { saveDataLogin, setLoading } from './actions';
+import { saveDataLogin, setLoading, saveRefreshTokenRequest } from './actions';
 import { LOGIN_REQUEST, REFRESH_TOKEN_REQUEST } from './constants';
 
 function* sendLoginRequest({ payload, resolve }) {
@@ -25,7 +25,8 @@ function* sendLoginRequest({ payload, resolve }) {
 function* updateToken({ payload }) {
   try {
     const res = yield call(refreshTokenRequestService, payload);
-    yield put(saveDataLogin(res));
+    console.log(res.data.newToken);
+    yield put(saveRefreshTokenRequest(res.data.newToken));
   } catch (error) {
     console.log(error);
   }
