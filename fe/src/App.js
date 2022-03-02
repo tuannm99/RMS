@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import LayoutPrivate from './components/layoutPrivate';
+import { ProtectedLayout } from './layout';
 import Home from './pages/publicComponent';
 import HomeDetail from './pages/publicDetail';
 import Login from './pages/login';
@@ -12,7 +12,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route end path="/*" element={<LayoutPrivate />} />
+          <Route end path="/*" element={<ProtectedLayout />} />
           <Route path="/PublicJob" element={<Home />} />
           <Route path="/PublicJob/:id" element={<HomeDetail />} />
         </Routes>
