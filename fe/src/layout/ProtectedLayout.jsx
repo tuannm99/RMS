@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { refreshTokenRequest } from '../redux/stores/auth/actions';
 import { selectLoading, selectUserInfor } from '../redux/stores/auth/selectors';
-import { AuthRoutes } from '../routers';
+import AuthRoutes from '../routers/AuthRoutes';
 
 const { Content } = Layout;
 
