@@ -40,7 +40,7 @@ const getJob = catchAsync(async (req, res) => {
  */
 const editJobPosting = catchAsync(async (req, res) => {
   const jobEdited = await jobService.editJobById(req.params.id, req.body);
-  res.status(httpStatus.OK).json({ jobEdited, message: 'successful' });
+  res.status(httpStatus.OK).json(jobEdited);
 });
 
 /**
@@ -50,7 +50,7 @@ const editJobPosting = catchAsync(async (req, res) => {
  */
 const deleteJobPosting = catchAsync(async (req, res) => {
   const jobDeleted = await jobService.deleteJobById(req.params.id);
-  res.status(httpStatus.OK).json({ jobDeleted, message: 'successful' });
+  res.status(httpStatus.OK).json(jobDeleted);
 });
 
 module.exports = {
