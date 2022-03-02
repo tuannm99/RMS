@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const url = {
-  baseUrl: 'https://61d98462ce86530017e3cb2e.mockapi.io',
+  baseUrl: 'http://rms-fpt.ddns.net:5000/api/v1',
   Jobs: '/Jobs',
 };
 

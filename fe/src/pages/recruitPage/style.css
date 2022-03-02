@@ -29,7 +29,7 @@
 }
 .cart-local {
   display: flex;
-  padding-left: 15px;
+  justify-content: center;
   padding-top: 50px;
   padding-bottom: 10.5px;
 }
@@ -128,7 +128,8 @@
   }
   .cart-local {
     display: flex;
-    padding-left: 70px;
+    justify-content: center;
+
     padding-top: 50px;
     padding-bottom: 60.5px;
   }
