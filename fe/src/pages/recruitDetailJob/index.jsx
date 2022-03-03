@@ -60,7 +60,10 @@ function DetailRecruitPage(props) {
   };
 
   const onFinish = (values) => {
-    const body = { ...values, jobDescription: ckeditorData };
+    const body = {
+      ...values,
+      jobDescription: ckeditorData === '' ? dataJobID : ckeditorData,
+    };
     jobService.updateJobs(values.id, body).then((res) => {
       loadDataJob();
     });
