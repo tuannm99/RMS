@@ -1,10 +1,9 @@
 import React from 'react';
-
-import { Row, Col, Button, Breadcrumb, Modal, Input, Form, Select } from 'antd';
-import { Link } from 'react-router-dom';
 import './style.css';
+
 function DetailJobComponent(props) {
   const { data } = props;
+
   return (
     <>
       <div>
@@ -22,6 +21,7 @@ function DetailJobComponent(props) {
             <span>{data.skill}</span>
           </div>
         </div>
+
         <div className={props.detailJobContentRight}>
           <h1>Job Posting Details</h1>
           <p>Department</p>
@@ -36,6 +36,7 @@ function DetailJobComponent(props) {
           <h5>
             $: {data.minSalary} - {data.maxSalary}
           </h5>
+
           <div className={props.detailJobCreate}>
             Create on February 11th 2022 , at 3.34 pm (17 days ago)
           </div>

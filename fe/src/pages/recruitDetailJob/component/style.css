@@ -1,6 +1,6 @@
 .DetailJob-Content-center {
   width: 67%;
-  min-height: 77.3vh;
+  height: 700px;
   float: left;
   padding-left: 30px;
   padding-right: 20px;
@@ -17,7 +17,7 @@
 }
 .DetailJob-content-right h5 {
   line-height: 3px;
-  padding-bottom: 15px;
+  padding-bottom: 35px;
 }
 .DetailJob-head {
   padding-bottom: 5px;
@@ -28,6 +28,7 @@
 }
 .DetailJob-content-right {
   width: 30%;
+  height: 700px;
   display: block;
   float: right;
   background-color: white;
@@ -49,7 +50,7 @@
   padding: 30px;
   text-align: center;
   background-color: #dfe3e7;
-  margin-top: 82px;
+  margin-top: 116px;
 }
 .detailJob-header {
   display: flex;

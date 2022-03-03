@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import DetailJobComponent from './component/detailJobComponent';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import jobService from '../../services/jobService';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { toast } from 'react-toastify';
 import { RightOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Modal, Input, Form, Select } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import {
+  Breadcrumb,
+  Button,
+  Modal,
+  Input,
+  Form,
+  Select,
+  Popconfirm,
+} from 'antd';
 import { Link } from 'react-router-dom';
 
 function DetailRecruitPage(props) {
@@ -15,6 +24,7 @@ function DetailRecruitPage(props) {
   const [visible, setVisible] = useState(false);
   const [dataJobID, setDataJobID] = useState({});
   const [ckeditorData, setCkeditorData] = useState('');
+  const navigate = useNavigate();
 
   const { Option } = Select;
 
@@ -33,20 +43,19 @@ function DetailRecruitPage(props) {
   };
 
   const openModal = (id) => {
-    jobService.getIdJobs(id).then((res) => {
-      formModal.setFieldsValue({
-        id: res.id,
-        title: res.title,
-        jobDescription: res.jobDescription,
-        jobType: res.jobType,
-        location: res.location,
-        experience: res.experience,
-        skill: res.skill,
-        minSalary: res.minSalary,
-        maxSalary: res.maxSalary,
-        department: res.department,
-      });
+    formModal.setFieldsValue({
+      id: dataJobID.id,
+      title: dataJobID.title,
+      jobDescription: dataJobID.jobDescription,
+      jobType: dataJobID.jobType,
+      location: dataJobID.location,
+      experience: dataJobID.experience,
+      skill: dataJobID.skill,
+      minSalary: dataJobID.minSalary,
+      maxSalary: dataJobID.maxSalary,
+      department: dataJobID.department,
     });
+
     setVisible(true);
   };
 
@@ -62,6 +71,17 @@ function DetailRecruitPage(props) {
     handleCancel();
   };
 
+  const handleDelete = (id) => {
+    jobService.deleteJobs(id).then((res) => {
+      loadDataJob();
+      navigate('/recruit');
+    });
+    toast.success('Delete Job  Successful!', {
+      autoClose: 3000,
+    });
+    handleCancel();
+  };
+
   return (
     <>
       <div className="detailJob-header">
@@ -72,9 +92,17 @@ function DetailRecruitPage(props) {
           </Link>
           <Breadcrumb.Item>Detail Job</Breadcrumb.Item>
         </Breadcrumb>
-        <Button className="Recruit-button" onClick={() => openModal(id)}>
-          Edit Detail
-        </Button>
+        <div>
+          <Button className="Recruit-button" onClick={() => openModal(id)}>
+            Edit Detail
+          </Button>
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => handleDelete(id)}
+          >
+            <Button>Delete</Button>
+          </Popconfirm>
+        </div>
         <Modal
           title=" Edit Detail"
           visible={visible}
