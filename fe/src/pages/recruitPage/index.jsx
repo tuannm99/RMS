@@ -13,6 +13,7 @@ function RecruitPage(props) {
   const [formModal] = Form.useForm();
   const [visible, setVisible] = useState(false);
   const { Option } = Select;
+  const [ckeditorData, setCkeditorData] = useState('');
 
   useEffect(() => {
     loadDataJobs();
@@ -45,19 +46,11 @@ function RecruitPage(props) {
   };
 
   const onFinish = (values) => {
-    const index = dataJob.findIndex((item) => item.id === values.id);
-    console.log(values);
-    if (index > -1) {
-      jobService.createJobs(values.id, values).then((res) => {
-        console.log(res);
-        loadDataJobs();
-      });
-    } else {
-      jobService.createJobs(values).then((res) => {
-        console.log(res);
-        loadDataJobs();
-      });
-    }
+    const body = { ...values, jobDescription: ckeditorData };
+    jobService.createJobs(body).then((res) => {
+      loadDataJobs();
+    });
+
     toast.success('Create Job Successful!', {
       autoClose: 3000,
     });
@@ -154,26 +147,15 @@ function RecruitPage(props) {
               >
                 <Input placeholder="address" />
               </Form.Item>
-              <Form.Item name="description" className="recruit-editor">
-                <h5>Description</h5>
+              <Form.Item name="jobDescription" className="recruit-editor">
                 <CKEditor
-                  type=""
+                  type="string"
                   className="recruit-editor_content"
-                  name="description"
                   editor={ClassicEditor}
-                  data={`${dataJob.description} </br></br></br></br></br></br></br>`}
-                  onReady={(editor) => {
-                    console.log('Editor is ready to use!', editor);
-                  }}
+                  data={`${dataJob.jobDescription}`}
                   onChange={(event, editor) => {
                     const data = editor.getData();
-                    console.log({ event, editor, data });
-                  }}
-                  onBlur={(event, editor) => {
-                    console.log('Blur.', editor);
-                  }}
-                  onFocus={(event, editor) => {
-                    console.log('Focus.', editor);
+                    setCkeditorData(data);
                   }}
                 />
               </Form.Item>
