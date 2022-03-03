@@ -1,8 +1,8 @@
 import {
-  SAVE_LOADING,
   SAVE_LOGIN_DATA,
   SET_LOADING,
   SAVE_REFRESH_TOKEN_REQUEST,
+  SAVE_LOGOUT_REQUEST,
 } from './constants';
 import produce from 'immer';
 
@@ -27,6 +27,13 @@ export default function authReducers(state = INIT_STATE_LOGIN, action) {
         localStorage.setItem('expires', tokensReducer.access.expires);
         localStorage.setItem('refreshToken', tokensReducer.refresh.token);
         draft.profile = tokensReducer;
+        break;
+      case SAVE_LOGOUT_REQUEST:
+        const logout = action.payload;
+        localStorage.removeItem('token');
+        localStorage.removeItem('expires');
+        localStorage.removeItem('refreshToken');
+        draft.profile = logout;
         break;
       default:
         return state;
