@@ -69,11 +69,11 @@ function Login(props) {
             name="username"
             rules={[
               { required: true, message: 'Please input your Username!' },
-              // {
-              //   pattern: new RegExp('^[A-Za-z][A-Za-z0-9_]{7,29}$'),
-              //   message:
-              //     'Username starts with a letter, is 8 to 30 characters long and can be lowercase, uppercase or "_"',
-              // },
+              {
+                pattern: new RegExp('^[A-Za-z][A-Za-z0-9_]{5,29}$'),
+                message:
+                  'Username starts with a letter, is 6 to 30 characters long and can be lowercase, uppercase or "_"',
+              },
             ]}
           >
             <Input
@@ -86,13 +86,11 @@ function Login(props) {
             name="password"
             rules={[
               { required: true, message: 'Please input your Password!' },
-              // {
-              //   pattern: new RegExp(
-              //     '^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{6,20}$'
-              //   ),
-              //   message:
-              //     'Password must have minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
-              // },
+              {
+                pattern: new RegExp('^[A-Za-z][A-Za-z0-9_]{5,29}$'),
+                message:
+                  'Password starts with a letter, is 6 to 30 characters long and can be lowercase, uppercase or "_"',
+              },
             ]}
           >
             <Input
