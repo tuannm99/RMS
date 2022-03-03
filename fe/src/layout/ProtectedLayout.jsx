@@ -15,7 +15,7 @@ const { Content } = Layout;
 function ProtectedLayout(props) {
   const navigate = useNavigate();
   const { refreshTokenRequest } = props;
-  const { infoUser, isLoading } = props;
+  const { isLoading } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [timerToken, setTimerToken] = useState();
   const expires = localStorage.getItem('expires');
@@ -62,7 +62,6 @@ function ProtectedLayout(props) {
           }}
         >
           <AuthRoutes />
-          {/* {timerToken} */}
         </Content>
       </Layout>
     </Layout>
@@ -70,7 +69,6 @@ function ProtectedLayout(props) {
 }
 const mapStateToProps = createStructuredSelector({
   isLoading: selectLoading,
-  infoUser: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({
   refreshTokenRequest: (payload) => dispatch(refreshTokenRequest(payload)),

@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Checkbox, notification, Col, Row } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  notification,
+  Col,
+  Row,
+  Spin,
+} from 'antd';
 import './style.css';
 import bg_login from '../../assets/image/bg_login.jpeg';
 import { createStructuredSelector } from 'reselect';
@@ -21,7 +30,7 @@ import {
 function Login(props) {
   const navigation = useNavigate();
   const { loginRequest } = props;
-
+  const { isLoading } = props;
   const onFinish = async (values) => {
     const params = {
       username: values.username,
@@ -99,7 +108,7 @@ function Login(props) {
                   htmlType="submit"
                   className="login-form-button"
                 >
-                  Log in
+                  {isLoading && <Spin />} Log in
                 </Button>
               </Form.Item>
             </Form>
@@ -111,7 +120,6 @@ function Login(props) {
 }
 const mapStateToProps = createStructuredSelector({
   isLoading: selectLoading,
-  infoUser: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({
   loginRequest: (payload) => actions.loginRequest(dispatch)(payload),
