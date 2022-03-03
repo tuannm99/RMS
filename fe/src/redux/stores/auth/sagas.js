@@ -20,7 +20,6 @@ function* sendLoginRequest({ payload, resolve }) {
   try {
     yield put(setLoading(true));
     const response = yield call(loginRequestService, payload);
-    console.log(response);
     if (response.status === 200) {
       resolve(response);
     }
@@ -35,7 +34,6 @@ function* sendLoginRequest({ payload, resolve }) {
 function* updateToken({ payload }) {
   try {
     const res = yield call(refreshTokenRequestService, payload);
-    console.log(res.data.newToken);
     yield put(saveRefreshTokenRequest(res.data.newToken));
   } catch (error) {
     console.log(error);
@@ -45,7 +43,6 @@ function* updateToken({ payload }) {
 function* sendLogoutRequest({ payload }) {
   try {
     const res = yield call(logoutRequestService, payload);
-    console.log(res);
     yield put(saveLogoutRequest(res.data));
   } catch (error) {
     console.log(error);

@@ -18,10 +18,15 @@ function ProtectedLayout(props) {
   const { infoUser, isLoading } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [timerToken, setTimerToken] = useState();
-  const token = localStorage.getItem('token');
   const expires = localStorage.getItem('expires');
+  const token = localStorage.getItem('token');
   const refreshToken = localStorage.getItem('refreshToken');
+
   useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+
     const intervalTime = setInterval(() => {
       const now = new Date();
       setTimerToken(now.getTime());
@@ -31,16 +36,11 @@ function ProtectedLayout(props) {
     };
   }, []);
 
-  if (!token) {
-    navigate('/login');
-  }
-
   const params = {
     refreshToken: refreshToken,
   };
   if (timerToken > moment.utc(expires).toDate().getTime()) {
     refreshTokenRequest(params);
-    console.log('a');
   }
 
   const toggle = () => {

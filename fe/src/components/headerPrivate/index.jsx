@@ -28,6 +28,7 @@ function HeaderPrivate(props) {
       refreshToken: token,
     };
     logoutRequest(params);
+    navigate('/login');
   };
   const menuJob = (
     <Menu>
