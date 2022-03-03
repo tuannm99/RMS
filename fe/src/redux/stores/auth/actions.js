@@ -4,6 +4,7 @@ import {
   SAVE_LOGIN_DATA,
   SET_LOADING,
   REFRESH_TOKEN_REQUEST,
+  SAVE_REFRESH_TOKEN_REQUEST,
 } from './constants';
 
 export function setLoading(payload) {
@@ -30,6 +31,13 @@ export const saveDataLogin = (payload) => ({
 export function refreshTokenRequest(payload) {
   return {
     type: REFRESH_TOKEN_REQUEST,
+    payload,
+  };
+}
+
+export function saveRefreshTokenRequest(payload) {
+  return {
+    type: SAVE_REFRESH_TOKEN_REQUEST,
     payload,
   };
 }

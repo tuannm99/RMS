@@ -203,7 +203,7 @@ module.exports = router;
  */
 
 /**
- * @api {get} /api/v1/users 4. Get All jobs
+ * @api {get} /api/v1/jobs 4. Get All jobs
  * @apiName Get All jobs
  * @apiGroup Job
  * @apiPermission admin, hiringManager
@@ -216,18 +216,18 @@ module.exports = router;
  * @apiQuery {String} [sortBy="createdAt:asc"] sort by any field of the return collection, Ex:<span> createdAt:asc|createdAt:desc </span>
  *
  * @apisuccess {Array}    results
- * @apiSuccess {String}   .title
- * @apiSuccess {String}   .department
- * @apiSuccess {String}   .jobType
- * @apiSuccess {String}   .jobDescription
- * @apiSuccess {String}   .skill
- * @apisuccess {Date}     .createdAt
- * @apiSuccess {Date}     .updatedAt
- * @apiSuccess {String}   .currency
- * @apiSuccess {String}   .location
- * @apiSuccess {Number}   .maxSalary
- * @apiSuccess {Number}   .minSalary
- * @apiSuccess {String}   .id
+ * @apiSuccess {String}   title
+ * @apiSuccess {String}   department
+ * @apiSuccess {String}   jobType
+ * @apiSuccess {String}   jobDescription
+ * @apiSuccess {String}   skill
+ * @apisuccess {Date}     createdAt
+ * @apiSuccess {Date}     updatedAt
+ * @apiSuccess {String}   currency
+ * @apiSuccess {String}   location
+ * @apiSuccess {Number}   maxSalary
+ * @apiSuccess {Number}   minSalary
+ * @apiSuccess {String}   id
  * @apisuccess {Number}   page
  * @apiSuccess {Number}   limit
  * @apiSuccess {Number}   totalPages
@@ -275,6 +275,66 @@ module.exports = router;
  *         "createdAt": "2022-03-01T08:39:58.730Z",
  *         "updatedAt": "2022-03-01T08:39:58.730Z",
  *         "id": "621ddbdef867a3ae0fc88af8"
+ *     }
+ *
+ * @apiError NotFound Job not found.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "code": 400,
+ *       "message": "User not found",
+ *       "stack": ".......",
+ *     }
+ */
+
+/**
+ * @api {get} /api/v1/jobs/:id 4. Job detail
+ * @apiName job detail
+ * @apiGroup Job
+ * @apiPermission admin, hiringManager, guest, employee
+ *
+ * @apiHeader {String} Content-Type application/json
+ * @apiHeader {String} Authorization Bearer Token.....
+ *
+ * @apiQuery {Number} [limit=10] limit the number of return data
+ * @apiQuery {Number} [page=1]   choosing page
+ * @apiQuery {String} [sortBy="createdAt:asc"] sort by any field of the return collection, Ex:<span> createdAt:asc|createdAt:desc </span>
+ *
+ * @apiParam (Param) {String} id
+ *
+ * @apisuccess {Array}    results
+ * @apiSuccess {String}   title
+ * @apiSuccess {String}   department
+ * @apiSuccess {String}   jobType
+ * @apiSuccess {String}   jobDescription
+ * @apiSuccess {String}   skill
+ * @apisuccess {Date}     createdAt
+ * @apiSuccess {Date}     updatedAt
+ * @apiSuccess {String}   currency
+ * @apiSuccess {String}   location
+ * @apiSuccess {Number}   maxSalary
+ * @apiSuccess {Number}   minSalary
+ * @apiSuccess {String}   id
+ * @apisuccess {Number}   page
+ * @apiSuccess {Number}   limit
+ * @apiSuccess {Number}   totalPages
+ * @apiSuccess {Number}   totalResults
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *         "title": "tuyen nhan vien",
+ *         "department": "part time + full time",
+ *         "jobType": "full Time",
+ *         "jobDescription": "job very good",
+ *         "skill": "nodejs",
+ *         "createdAt": "2022-02-24T05:51:26.635Z",
+ *         "updatedAt": "2022-02-24T05:51:26.635Z",
+ *         "currency": "USD",
+ *         "location": "Ha Noi",
+ *         "maxSalary": 1500,
+ *         "minSalary": 1000,
+ *         "id": "62171cdeaa07d7c168612c1d"
  *     }
  *
  * @apiError NotFound Job not found.

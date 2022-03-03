@@ -2,52 +2,50 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Layout } from 'antd';
 import { SiderBarPrivate, HeaderPrivate } from '../components';
 import moment from 'moment';
-
+import { useNavigate } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { refreshTokenRequest } from '../redux/stores/auth/actions';
+import { selectLoading, selectUserInfor } from '../redux/stores/auth/selectors';
 import AuthRoutes from '../routers/AuthRoutes';
 
 const { Content } = Layout;
 
-// function formatDate(date) {
-//   if (!date) return '';
-//   const year = date.getFullYear();
-//   const month = date.getMonth();
-//   const day = date.getDay();
-//   const hours = date.getHours();
-//   const minutes = date.getMinutes();
-//   const seconds = date.getSeconds();
-//   return ${year}${month}${day}${hours}${minutes}${seconds};
-// }
-
 function ProtectedLayout(props) {
-  // let tokens = JSON.parse(localStorage.getItem('tokens'));
+  const navigate = useNavigate();
+  const { refreshTokenRequest } = props;
+  const { infoUser, isLoading } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [timerToken, setTimerToken] = useState();
-  //const [token, setTokens] = useState(tokens.access.token);
+  const token = localStorage.getItem('token');
+  const expires = localStorage.getItem('expires');
+  const refreshToken = localStorage.getItem('refreshToken');
+  useEffect(() => {
+    const intervalTime = setInterval(() => {
+      const now = new Date();
+      setTimerToken(now.getTime());
+    }, 1000);
+    return () => {
+      clearInterval(intervalTime);
+    };
+  }, []);
 
-  // const b = moment.utc(tokens.access.expires).toDate();
-  // console.log(formatDate(b));
+  if (!token) {
+    navigate('/login');
+  }
+
+  const params = {
+    refreshToken: refreshToken,
+  };
+  if (timerToken > moment.utc(expires).toDate().getTime()) {
+    refreshTokenRequest(params);
+    console.log('a');
+  }
+
   const toggle = () => {
     setCollapsed(!collapsed);
   };
-  // console.log(b);
-  // const now = new Date();
-  // console.log(now);
-
-  // useEffect(() => {
-  //   const intervalTime = setInterval(() => {
-  //     const now = new Date();
-  //     setTimerToken(now.getTime());
-  //   }, 1000);
-  //   if (timerToken > b.getTime()) {
-  //     console.log(b);
-  //     console.log(timerToken);
-  //   } else {
-  //     console.log(b);
-  //   }
-  //   return () => {
-  //     clearInterval(intervalTime);
-  //   };
-  // }, [token]);
 
   return (
     <Layout>
@@ -70,5 +68,14 @@ function ProtectedLayout(props) {
     </Layout>
   );
 }
+const mapStateToProps = createStructuredSelector({
+  isLoading: selectLoading,
+  infoUser: selectUserInfor,
+});
+const mapDispatchToProps = (dispatch) => ({
+  refreshTokenRequest: (payload) => dispatch(refreshTokenRequest(payload)),
+});
 
-export default ProtectedLayout;
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(ProtectedLayout);

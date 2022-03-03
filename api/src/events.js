@@ -8,13 +8,20 @@ const emitter = new Event();
 
 /**
  * define all event
+ * - using pub/sub pattern for large bussiness logic
  */
 function initializeEvent() {
   logger.info('initializeEvent');
 
+  // |---------------- Consumer ------------------------|
+  // |__________________________________________________|
+
+  /**
+   * consumer for send mail
+   */
   emitter.on(EVENTS.sendMail, async (data) => {
     try {
-      await mailService.testSendMail(data.to);
+      await mailService.sendEmail(data.to, data.subject, data.text, data.html);
     } catch (e) {
       logger.error(e);
     }
@@ -23,11 +30,20 @@ function initializeEvent() {
   // define other event here
 }
 
+// |---------------- Producer ------------------------|
+// |                                                  |
+// |__________________________________________________|
+
 /**
- * send email handler
+ * Producer for send an email
+ * @param {Object} data
+ * @param {string} data.to
+ * @param {string} data.subject
+ * @param {string} data.text
+ * @param {string} data.html
  */
-function sendMail(to) {
-  emitter.emit(EVENTS.sendMail, { msg: 'nice to meet u', to });
+function sendMailProducer(data) {
+  emitter.emit(EVENTS.sendMail, data);
 }
 
-module.exports = { initializeEvent, sendMail };
+module.exports = { initializeEvent, sendMailProducer };

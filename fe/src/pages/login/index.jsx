@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Checkbox, notification } from 'antd';
 import './style.css';
 import bg_login from '../../assets/image/bg_login.jpeg';
@@ -22,33 +22,31 @@ function Login(props) {
   const navigation = useNavigate();
   const { selectLoading, selectUserInfor } = props;
   const { loginRequest } = props;
-  const { getFieldDecorator } = props;
+  useEffect(() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expires');
+    localStorage.removeItem('refreshToken');
+  }, []);
 
   const onFinish = async (values) => {
     const params = {
       username: values.username,
       password: values.password,
     };
-    if (!values.username && !values.password) {
+    console.log(params);
+    const data = await loginRequest(params);
+    console.log(data);
+    if (data.statusText === 'OK') {
+      navigation('/');
       notification.open({
-        message: 'Nhập tên với pass đi',
+        message: `'Đăng Nhập Thành công'`,
         icon: <CheckOutlined style={{ color: 'green' }} />,
       });
     } else {
-      const data = await loginRequest(params);
-      console.log(data);
-      if (data.status === 200) {
-        navigation('/');
-        notification.open({
-          message: `'Đăng Nhập Thành công'`,
-          icon: <CheckOutlined style={{ color: 'green' }} />,
-        });
-      } else {
-        notification.open({
-          message: 'Sai username hoac password',
-          icon: <CloseOutlined style={{ color: 'red' }} />,
-        });
-      }
+      notification.open({
+        message: 'Sai username hoac password',
+        icon: <CloseOutlined style={{ color: 'red' }} />,
+      });
     }
   };
 
