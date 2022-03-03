@@ -15,33 +15,33 @@ const { Content } = Layout;
 function ProtectedLayout(props) {
   const navigate = useNavigate();
   const { refreshTokenRequest } = props;
-  const { infoUser, isLoading } = props;
+  const { isLoading } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [timerToken, setTimerToken] = useState();
-  const token = localStorage.getItem('token');
   const expires = localStorage.getItem('expires');
+  const token = localStorage.getItem('token');
   const refreshToken = localStorage.getItem('refreshToken');
+  let params = {
+    refreshToken: refreshToken,
+  };
+
   useEffect(() => {
     const intervalTime = setInterval(() => {
       const now = new Date();
       setTimerToken(now.getTime());
     }, 1000);
+
+    if (!token) {
+      navigate('/login');
+    }
+
+    if (timerToken > moment.utc(expires).toDate().getTime()) {
+      refreshTokenRequest(params);
+    }
     return () => {
       clearInterval(intervalTime);
     };
-  }, []);
-
-  if (!token) {
-    navigate('/login');
-  }
-
-  const params = {
-    refreshToken: refreshToken,
-  };
-  if (timerToken > moment.utc(expires).toDate().getTime()) {
-    refreshTokenRequest(params);
-    console.log('a');
-  }
+  }, [params]);
 
   const toggle = () => {
     setCollapsed(!collapsed);
@@ -62,7 +62,6 @@ function ProtectedLayout(props) {
           }}
         >
           <AuthRoutes />
-          {/* {timerToken} */}
         </Content>
       </Layout>
     </Layout>
@@ -70,7 +69,6 @@ function ProtectedLayout(props) {
 }
 const mapStateToProps = createStructuredSelector({
   isLoading: selectLoading,
-  infoUser: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({
   refreshTokenRequest: (payload) => dispatch(refreshTokenRequest(payload)),

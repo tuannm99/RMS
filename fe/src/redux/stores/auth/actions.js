@@ -5,6 +5,8 @@ import {
   SET_LOADING,
   REFRESH_TOKEN_REQUEST,
   SAVE_REFRESH_TOKEN_REQUEST,
+  LOGOUT_REQUEST,
+  SAVE_LOGOUT_REQUEST,
 } from './constants';
 
 export function setLoading(payload) {
@@ -38,6 +40,20 @@ export function refreshTokenRequest(payload) {
 export function saveRefreshTokenRequest(payload) {
   return {
     type: SAVE_REFRESH_TOKEN_REQUEST,
+    payload,
+  };
+}
+
+export function logoutRequest(payload) {
+  return {
+    type: LOGOUT_REQUEST,
+    payload,
+  };
+}
+
+export function saveLogoutRequest(payload) {
+  return {
+    type: SAVE_LOGOUT_REQUEST,
     payload,
   };
 }

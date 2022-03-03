@@ -10,17 +10,28 @@ import {
   ShoppingOutlined,
   ReadOutlined,
 } from '@ant-design/icons';
-import { NavLink } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './styles.css';
+import * as action from '../../redux/stores/auth/actions';
 
 const { Header } = Layout;
 
 function HeaderPrivate(props) {
-  const handleMenuClick = (e) => {
-    console.log('click', e);
+  const { logoutRequest } = props;
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    const token = localStorage.getItem('refreshToken');
+    const params = {
+      refreshToken: token,
+    };
+    logoutRequest(params);
+    navigate('/login');
   };
   const menuJob = (
-    <Menu onClick={handleMenuClick}>
+    <Menu>
       <Menu.Item key="1" icon={<ShoppingOutlined />}>
         Job posting
       </Menu.Item>
@@ -33,11 +44,11 @@ function HeaderPrivate(props) {
     </Menu>
   );
   const menuUser = (
-    <Menu onClick={handleMenuClick}>
+    <Menu>
       <Menu.Item key="1" icon={<ShoppingOutlined />}>
         <NavLink to="/profile">Profile</NavLink>
       </Menu.Item>
-      <Menu.Item key="2" icon={<TeamOutlined />}>
+      <Menu.Item key="2" icon={<TeamOutlined />} onClick={handleLogout}>
         Logout
       </Menu.Item>
     </Menu>
@@ -72,4 +83,11 @@ function HeaderPrivate(props) {
   );
 }
 
-export default HeaderPrivate;
+const mapStateToProps = createStructuredSelector({});
+const mapDispatchToProps = (dispatch) => ({
+  logoutRequest: (payload) => dispatch(action.logoutRequest(payload)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(HeaderPrivate);

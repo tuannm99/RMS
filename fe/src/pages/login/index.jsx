@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Checkbox, notification } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  notification,
+  Col,
+  Row,
+  Spin,
+} from 'antd';
 import './style.css';
 import bg_login from '../../assets/image/bg_login.jpeg';
 import { createStructuredSelector } from 'reselect';
@@ -20,23 +29,19 @@ import {
 
 function Login(props) {
   const navigation = useNavigate();
-  const { selectLoading, selectUserInfor } = props;
   const { loginRequest } = props;
-  useEffect(() => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expires');
-    localStorage.removeItem('refreshToken');
-  }, []);
-
+  const { isLoading } = props;
   const onFinish = async (values) => {
     const params = {
       username: values.username,
       password: values.password,
     };
-    console.log(params);
     const data = await loginRequest(params);
-    console.log(data);
-    if (data.statusText === 'OK') {
+    if (values.remember === true && values.username !== '') {
+      localStorage.setItem('username', values.username);
+      localStorage.setItem('checked', values.remember);
+    }
+    if (data) {
       navigation('/');
       notification.open({
         message: `'Đăng Nhập Thành công'`,
@@ -44,7 +49,7 @@ function Login(props) {
       });
     } else {
       notification.open({
-        message: 'Sai username hoac password',
+        message: `'Sai tên đăng nhập hoặc mật khẩu!'`,
         icon: <CloseOutlined style={{ color: 'red' }} />,
       });
     }
@@ -52,83 +57,69 @@ function Login(props) {
 
   return (
     <div className="login">
-      <div className="login-left">
-        <div className="login-left-img">
+      <Row>
+        <Col span={18} className="login-left">
           <img src={bg_login} alt="" />
-        </div>
-      </div>
-      <div className="login-right">
-        <h3>Login to continue</h3>
-        <Form
-          name="normal_login"
-          className="login-form"
-          initialValues={{ remember: false }}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            name="username"
-            rules={[
-              { required: true, message: 'Please input your Username!' },
-              // {
-              //   pattern: new RegExp('^[A-Za-z][A-Za-z0-9_]{7,29}$'),
-              //   message:
-              //     'Username starts with a letter, is 8 to 30 characters long and can be lowercase, uppercase or "_"',
-              // },
-            ]}
-          >
-            <Input
-              className="login-form_input"
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
-            />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[
-              { required: true, message: 'Please input your Password!' },
-              // {
-              //   pattern: new RegExp(
-              //     '^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{6,20}$'
-              //   ),
-              //   message:
-              //     'Password must have minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
-              // },
-            ]}
-          >
-            <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              className="login-form_input"
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
-            {/* <a className="login-form-forgot" href="">
-              Forgot password
-            </a> */}
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
+        </Col>
+        <Col span={6}>
+          <div className="login-right">
+            <h3>Login to continue</h3>
+            <Form
+              className="login-form"
+              name="normal_login"
+              onFinish={onFinish}
             >
-              Log in
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+              <Form.Item
+                name="username"
+                rules={[
+                  { required: true, message: 'Please input your username!' },
+                  { min: 6, message: 'Username must be minimum 6 characters.' },
+                ]}
+              >
+                <Input
+                  className="login-form_input"
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Username"
+                />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: 'Please input your username!' },
+                  { min: 5, message: 'Password must be minimum 5 characters.' },
+                ]}
+              >
+                <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  className="login-form_input"
+                  type="password"
+                  placeholder="Password"
+                />
+              </Form.Item>
+              <Form.Item>
+                <a className="login-form-forgot" href="">
+                  Forgot password
+                </a>
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button"
+                >
+                  {isLoading && <Spin />} Log in
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 }
 const mapStateToProps = createStructuredSelector({
   isLoading: selectLoading,
-  infoUser: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({
   loginRequest: (payload) => actions.loginRequest(dispatch)(payload),
