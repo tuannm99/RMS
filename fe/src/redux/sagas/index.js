@@ -7,5 +7,6 @@ export default function* () {
     //login
     authSagas.sagaLogin(),
     authSagas.updateTokenSaga(),
+    authSagas.logoutSaga(),
   ]);
 }
