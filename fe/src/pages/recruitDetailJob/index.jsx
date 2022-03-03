@@ -33,19 +33,17 @@ function DetailRecruitPage(props) {
   };
 
   const openModal = (id) => {
-    jobService.getIdJobs(id).then((res) => {
-      formModal.setFieldsValue({
-        id: res.id,
-        title: res.title,
-        jobDescription: res.jobDescription,
-        jobType: res.jobType,
-        location: res.location,
-        experience: res.experience,
-        skill: res.skill,
-        minSalary: res.minSalary,
-        maxSalary: res.maxSalary,
-        department: res.department,
-      });
+    formModal.setFieldsValue({
+      id: dataJobID.id,
+      title: dataJobID.title,
+      jobDescription: dataJobID.jobDescription,
+      jobType: dataJobID.jobType,
+      location: dataJobID.location,
+      experience: dataJobID.experience,
+      skill: dataJobID.skill,
+      minSalary: dataJobID.minSalary,
+      maxSalary: dataJobID.maxSalary,
+      department: dataJobID.department,
     });
     setVisible(true);
   };
