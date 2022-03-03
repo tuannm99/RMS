@@ -21,27 +21,27 @@ function ProtectedLayout(props) {
   const expires = localStorage.getItem('expires');
   const token = localStorage.getItem('token');
   const refreshToken = localStorage.getItem('refreshToken');
+  let params = {
+    refreshToken: refreshToken,
+  };
 
   useEffect(() => {
-    if (!token) {
-      navigate('/login');
-    }
-
     const intervalTime = setInterval(() => {
       const now = new Date();
       setTimerToken(now.getTime());
     }, 1000);
+
+    if (!token) {
+      navigate('/login');
+    }
+
+    if (timerToken > moment.utc(expires).toDate().getTime()) {
+      refreshTokenRequest(params);
+    }
     return () => {
       clearInterval(intervalTime);
     };
-  }, []);
-
-  const params = {
-    refreshToken: refreshToken,
-  };
-  if (timerToken > moment.utc(expires).toDate().getTime()) {
-    refreshTokenRequest(params);
-  }
+  }, [params]);
 
   const toggle = () => {
     setCollapsed(!collapsed);
