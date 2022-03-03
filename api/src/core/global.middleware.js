@@ -14,7 +14,6 @@ const ApiError = require('./apiError');
  * @param {string} next
  */
 const errorConverter = (err, req, res, next) => {
-  logger.info('error converter');
   let error = err;
   if (!(error instanceof ApiError)) {
     const statusCode =
@@ -33,7 +32,6 @@ const errorConverter = (err, req, res, next) => {
  */
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
-  logger.info('error handler');
   let { statusCode, message } = err;
   if (config.node_env === 'production' && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;
@@ -62,8 +60,7 @@ const _verifyCallback = (req, resolve, reject, requiredRoles) => async (err, use
   }
   req.user = user;
 
-  // console.log(user);
-  // console.log(requiredRoles);
+  // check user role for request
   if (requiredRoles.length && !requiredRoles.includes(user.role)) {
     return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
   }

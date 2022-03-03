@@ -19,6 +19,7 @@ if (config.env !== 'test') {
  * @param {string} to
  * @param {string} subject
  * @param {string} text
+ * @param {string} html
  * @returns {Promise}
  */
 const sendEmail = async (to, subject, text, html) => {
@@ -26,21 +27,7 @@ const sendEmail = async (to, subject, text, html) => {
   await transport.sendMail(msg);
 };
 
-/**
- * Send reset password email
- * @param {string} to
- * @param {string} token
- * @returns {Promise}
- */
-const testSendMail = async (to) => {
-  const subject = 'Test Mail';
-  const content = 'Hello';
-  const html = ``;
-  await sendEmail(to, subject, content, html);
-};
-
 module.exports = {
   transport,
   sendEmail,
-  testSendMail,
 };

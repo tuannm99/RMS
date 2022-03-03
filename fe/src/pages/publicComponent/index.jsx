@@ -92,11 +92,10 @@ function Home(props) {
           <div className="col l-12 m-12 c-12">
             <div className="public-title-job">
               <h1>finance</h1>
-              <div className="public-role">3 Open roles</div>
             </div>
             <div className="pulic-item">
               {dataJob.map((item) => {
-                if (item.typeJob === 'finance') {
+                if (item.department === 'Finance') {
                   return (
                     <div key={item.id}>
                       <Link
@@ -132,7 +131,7 @@ function Home(props) {
             </div>
             <div className="pulic-item">
               {dataJob.map((item) => {
-                if (item.typeJob === 'sales') {
+                if (item.department === 'Sale') {
                   return (
                     <div key={item.id}>
                       <PublicPage
