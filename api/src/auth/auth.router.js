@@ -1,5 +1,5 @@
 const express = require('express');
-const { loginDto } = require('./auth.validation');
+const { loginDto, registerDto, refreshTokenDto, logoutDto } = require('./auth.validation');
 const utils = require('../core/utils');
 
 const authController = require('./auth.controller');
@@ -8,10 +8,10 @@ const authController = require('./auth.controller');
 const router = express.Router();
 
 router.post('/login', utils.validate(loginDto), authController.loginHandler);
-router.post('/register', authController.registerHandler);
-router.post('/logout', authController.logoutHandler);
+router.post('/register', utils.validate(registerDto), authController.registerHandler);
+router.post('/logout', utils.validate(logoutDto), authController.logoutHandler);
+router.post('/refresh-token', utils.validate(refreshTokenDto), authController.refreshTokenHandler);
 router.post('/forgot-pass', authController.forgotPassHandler);
-router.post('/refresh-token', authController.refreshTokenHandler);
 
 module.exports = router;
 
