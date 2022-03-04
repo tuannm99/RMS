@@ -1,13 +1,20 @@
-const { validationResult } = require('express-validator');
 const httpStatus = require('http-status');
+const Joi = require('joi');
+const ApiError = require('./apiError');
 
-exports.validateResult = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    res.status(httpStatus.UNPROCESSABLE_ENTITY).json({ errors: errors.array() });
-    return errors;
+exports.validate = (schema) => (req, res, next) => {
+  const validSchema = this.pick(schema, ['params', 'query', 'body']);
+  const object = this.pick(req, Object.keys(validSchema));
+  const { value, error } = Joi.compile(validSchema)
+    .prefs({ errors: { label: 'key' }, abortEarly: false })
+    .validate(object);
+
+  if (error) {
+    const errorMessage = error.details.map((details) => details.message).join(', ');
+    return next(new ApiError(httpStatus.UNPROCESSABLE_ENTITY, errorMessage));
   }
-  next();
+  Object.assign(req, value);
+  return next();
 };
 
 /**

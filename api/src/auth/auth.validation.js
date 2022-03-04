@@ -1,22 +1,10 @@
-const { body } = require('express-validator');
-const { validateResult } = require('../core/utils');
+const Joi = require('joi');
 
-exports.validateLogin = () => {
-  return [
-    body('username', 'username must be have at least 6 character').notEmpty().isLength({
-      min: 6,
-    }),
-    body('password').isLength({ min: 5 }).notEmpty(),
-    validateResult,
-  ];
+const loginDto = {
+  body: Joi.object().keys({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+  }),
 };
 
-exports.validateRegister = () => {
-  return [
-    body('username').notEmpty(),
-    body('password', 'password must be have at least 5 character').notEmpty().isLength({
-      min: 5,
-    }),
-    validateResult,
-  ];
-};
+module.exports = { loginDto };

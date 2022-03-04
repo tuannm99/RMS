@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import DetailJobComponent from './component/detailJobComponent';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import jobService from '../../services/jobService';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { toast } from 'react-toastify';
 import { RightOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Modal, Input, Form, Select } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import {
+  Breadcrumb,
+  Button,
+  Modal,
+  Input,
+  Form,
+  Select,
+  Popconfirm,
+} from 'antd';
 import { Link } from 'react-router-dom';
 
 function DetailRecruitPage(props) {
@@ -15,6 +24,7 @@ function DetailRecruitPage(props) {
   const [visible, setVisible] = useState(false);
   const [dataJobID, setDataJobID] = useState({});
   const [ckeditorData, setCkeditorData] = useState('');
+  const navigate = useNavigate();
 
   const { Option } = Select;
 
@@ -45,16 +55,31 @@ function DetailRecruitPage(props) {
       maxSalary: dataJobID.maxSalary,
       department: dataJobID.department,
     });
+
     setVisible(true);
   };
 
   const onFinish = (values) => {
-    const body = { ...values, jobDescription: ckeditorData };
+    const body = {
+      ...values,
+      jobDescription: ckeditorData === '' ? dataJobID : ckeditorData,
+    };
     jobService.updateJobs(values.id, body).then((res) => {
       loadDataJob();
     });
 
     toast.success('Edit Job Detail Successful!', {
+      autoClose: 3000,
+    });
+    handleCancel();
+  };
+
+  const handleDelete = (id) => {
+    jobService.deleteJobs(id).then((res) => {
+      loadDataJob();
+      navigate('/recruit');
+    });
+    toast.success('Delete Job  Successful!', {
       autoClose: 3000,
     });
     handleCancel();
@@ -70,9 +95,17 @@ function DetailRecruitPage(props) {
           </Link>
           <Breadcrumb.Item>Detail Job</Breadcrumb.Item>
         </Breadcrumb>
-        <Button className="Recruit-button" onClick={() => openModal(id)}>
-          Edit Detail
-        </Button>
+        <div>
+          <Button className="Recruit-button" onClick={() => openModal(id)}>
+            Edit Detail
+          </Button>
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => handleDelete(id)}
+          >
+            <Button>Delete</Button>
+          </Popconfirm>
+        </div>
         <Modal
           title=" Edit Detail"
           visible={visible}
