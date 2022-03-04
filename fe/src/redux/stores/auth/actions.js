@@ -30,12 +30,17 @@ export const saveDataLogin = (payload) => ({
   payload,
 });
 
-export function refreshTokenRequest(payload) {
-  return {
-    type: REFRESH_TOKEN_REQUEST,
-    payload,
-  };
-}
+export const refreshTokenRequest = (dispatch) => (payload) =>
+  new Promise((resolve) =>
+    dispatch({ type: REFRESH_TOKEN_REQUEST, payload, resolve })
+  );
+
+// export function refreshTokenRequest(payload) {
+//   return {
+//     type: REFRESH_TOKEN_REQUEST,
+//     payload,
+//   };
+// }
 
 export function saveRefreshTokenRequest(payload) {
   return {
