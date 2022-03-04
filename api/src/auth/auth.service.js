@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const { TokenExpiredError } = require('jsonwebtoken');
 
 const userService = require('../user/user.service');
 const tokenService = require('../token/token.service');
@@ -41,7 +42,9 @@ const refreshAuth = async (refreshToken) => {
     await refreshTokenDoc.remove();
     return await tokenService.generateAuthTokens(user);
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
+    if (error instanceof TokenExpiredError)
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Token Expired');
+    else throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
   }
 };
 
