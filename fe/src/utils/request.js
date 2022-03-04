@@ -15,8 +15,9 @@ const handleError = (error) => {
 
 request.interceptors.request.use((config) => {
   const tokens = localStorage.getItem('token');
-  config.headers.Authorization = `Bearer ${tokens}`;
-
+  if (tokens) {
+    config.headers.Authorization = `Bearer ${tokens}`;
+  }
   return config;
 });
 

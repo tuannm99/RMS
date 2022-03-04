@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Layout } from 'antd';
+import { Layout, notification } from 'antd';
 import { SiderBarPrivate, HeaderPrivate } from '../components';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
@@ -15,10 +15,11 @@ const { Content } = Layout;
 function ProtectedLayout(props) {
   const navigate = useNavigate();
   const { refreshTokenRequest } = props;
+  const { selectUser } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [timerToken, setTimerToken] = useState();
   const expires = localStorage.getItem('expires');
-  const token = localStorage.getItem('token');
+  const tokenLocal = localStorage.getItem('token');
   const refreshToken = localStorage.getItem('refreshToken');
   let params = {
     refreshToken: refreshToken,
@@ -30,23 +31,32 @@ function ProtectedLayout(props) {
       setTimerToken(now.getTime());
     }, 1000);
 
-    if (!token) {
-      navigate('/login');
-    }
-
     return () => {
       clearInterval(intervalTime);
     };
   }, []);
 
-  useEffect(async () => {
+  useEffect(() => {
+    refreshTokenFunction();
+  }, [params]);
+
+  useEffect(() => {
+    if (!tokenLocal) {
+      navigate('/login');
+    }
+  }, [tokenLocal]);
+
+  const refreshTokenFunction = async () => {
     if (timerToken > moment.utc(expires).toDate().getTime()) {
-      const refresh = await refreshTokenRequest(params);
+      let refresh = await refreshTokenRequest(params);
       if (!refresh) {
         navigate('/login');
+        notification.open({
+          message: 'Please authenticate',
+        });
       }
     }
-  }, [params]);
+  };
 
   const toggle = () => {
     setCollapsed(!collapsed);
@@ -74,6 +84,7 @@ function ProtectedLayout(props) {
 }
 const mapStateToProps = createStructuredSelector({
   isLoading: selectLoading,
+  selectUser: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({
   refreshTokenRequest: (payload) => refreshTokenRequest(dispatch)(payload),

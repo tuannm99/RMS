@@ -20,12 +20,12 @@ function* sendLoginRequest({ payload, resolve }) {
   try {
     yield put(setLoading(true));
     const response = yield call(loginRequestService, payload);
-    console.log(response);
+    console.log(response.data);
     if (response.status === 200) {
       resolve(response);
     }
     yield put(setLoading(false));
-    yield put(saveDataLogin(response.data));
+    yield put(saveDataLogin(response.data.tokens));
   } catch (err) {
     console.error(err);
     resolve(null);

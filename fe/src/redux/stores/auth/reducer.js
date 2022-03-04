@@ -15,9 +15,9 @@ export default function authReducers(state = INIT_STATE_LOGIN, action) {
         break;
       case SAVE_LOGIN_DATA:
         const authority = action.payload;
-        localStorage.setItem('token', authority.tokens.access.token);
-        localStorage.setItem('expires', authority.tokens.access.expires);
-        localStorage.setItem('refreshToken', authority.tokens.refresh.token);
+        localStorage.setItem('token', authority.access.token);
+        localStorage.setItem('expires', authority.access.expires);
+        localStorage.setItem('refreshToken', authority.refresh.token);
         draft.profile = authority;
         break;
       case SAVE_REFRESH_TOKEN_REQUEST:
