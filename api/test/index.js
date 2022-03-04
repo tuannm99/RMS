@@ -1,16 +1,27 @@
 const mongoose = require('mongoose');
-const bootstrap = require('../src');
-const connectDatabase = require('../src/core/db/db.config');
 
-// expressjs instance
-exports.testApp = bootstrap();
+// // expressjs instance
+// exports.testApp = bootstrap();
 
 exports.prepareTest = () => {
   beforeAll(async () => {
-    connectDatabase(process.env.MONGO_DB_TEST);
+    await mongoose.connect('mongodb://userdeptrai:12345678@rms-fpt.ddns.net:27017/RMS_TEST', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
   });
 
   afterAll(async () => {
+    const { db } = mongoose.connection;
+    // Get all collections
+    const collections = await db.listCollections().toArray();
+
+    // Create an array of collection names and drop each collection
+    collections
+      .map((collection) => collection.name)
+      .forEach(async (collectionName) => {
+        db.dropCollection(collectionName);
+      });
     await mongoose.connection.close();
   });
 };
