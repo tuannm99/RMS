@@ -29,9 +29,7 @@ export default function authReducers(state = INIT_STATE_LOGIN, action) {
         break;
       case SAVE_LOGOUT_REQUEST:
         const logout = action.payload;
-        localStorage.removeItem('token');
-        localStorage.removeItem('expires');
-        localStorage.removeItem('refreshToken');
+        localStorage.clear();
         draft.profile = logout;
         break;
       default:

@@ -9,20 +9,28 @@ const request = axios.create({
 
 const handleError = (error) => {
   const { response = {} } = error;
+
   const { data, status, statusText } = response;
   return { data, status, statusText };
 };
 
 request.interceptors.request.use((config) => {
   const tokens = localStorage.getItem('token');
-  if (tokens) {
-    config.headers.Authorization = `Bearer ${tokens}`;
-  }
+  config.headers.Authorization = tokens ? `Bearer ${tokens}` : '';
   return config;
 });
 
-request.interceptors.response.use((response) => {
-  return response;
-}, handleError);
+request.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error.response ? error.response.status : null;
+    if (status === 401 || status === 404) {
+      window.location.pathname = '/login';
+      localStorage.clear();
+    }
+
+    return error;
+  }
+);
 
 export default request;

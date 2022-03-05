@@ -35,7 +35,6 @@ function* sendLoginRequest({ payload, resolve }) {
 function* updateToken({ payload, resolve }) {
   try {
     const res = yield call(refreshTokenRequestService, payload);
-    console.log(res);
     if (res.status === 200) {
       resolve(res);
     }

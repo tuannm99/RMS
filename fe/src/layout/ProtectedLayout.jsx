@@ -15,12 +15,12 @@ const { Content } = Layout;
 function ProtectedLayout(props) {
   const navigate = useNavigate();
   const { refreshTokenRequest } = props;
-  const { selectUser } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [timerToken, setTimerToken] = useState();
   const expires = localStorage.getItem('expires');
   const tokenLocal = localStorage.getItem('token');
   const refreshToken = localStorage.getItem('refreshToken');
+
   let params = {
     refreshToken: refreshToken,
   };
@@ -30,7 +30,6 @@ function ProtectedLayout(props) {
       const now = new Date();
       setTimerToken(now.getTime());
     }, 1000);
-
     return () => {
       clearInterval(intervalTime);
     };
@@ -47,9 +46,10 @@ function ProtectedLayout(props) {
   }, [tokenLocal]);
 
   const refreshTokenFunction = async () => {
-    if (timerToken > moment.utc(expires).toDate().getTime()) {
+    if (timerToken > moment.utc(expires).toDate().getTime() || !expires) {
       let refresh = await refreshTokenRequest(params);
       if (!refresh) {
+        localStorage.clear();
         navigate('/login');
         notification.open({
           message: 'Please authenticate',

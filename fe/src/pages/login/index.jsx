@@ -37,10 +37,6 @@ function Login(props) {
       password: values.password,
     };
     const data = await loginRequest(params);
-    if (values.remember === true && values.username !== '') {
-      localStorage.setItem('username', values.username);
-      localStorage.setItem('checked', values.remember);
-    }
     if (data) {
       navigation('/');
       notification.open({
