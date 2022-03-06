@@ -85,7 +85,7 @@ const generateAuthTokens = async (user) => {
   const accessTokenExpires = moment().add(1, 'minutes');
   const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
 
-  const refreshTokenExpires = moment().add(1, 'hours');
+  const refreshTokenExpires = moment().add(5, 'minutes');
   const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
 
   await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
