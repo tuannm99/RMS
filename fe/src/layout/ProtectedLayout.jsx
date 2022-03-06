@@ -40,21 +40,17 @@ function ProtectedLayout(props) {
   }, [params]);
 
   useEffect(() => {
-    if (!tokenLocal) {
+    if (!tokenLocal || !refreshToken) {
       navigate('/login');
     }
-  }, [tokenLocal]);
+  }, [tokenLocal, refreshToken]);
 
   const refreshTokenFunction = async () => {
-    if (timerToken > moment.utc(expires).toDate().getTime() || !expires) {
-      let refresh = await refreshTokenRequest(params);
-      if (!refresh) {
-        localStorage.clear();
-        navigate('/login');
-        notification.open({
-          message: 'Please authenticate',
-        });
-      }
+    if (
+      timerToken + 20000 > moment.utc(expires).toDate().getTime() ||
+      !expires
+    ) {
+      refreshTokenRequest(params);
     }
   };
 
@@ -87,7 +83,7 @@ const mapStateToProps = createStructuredSelector({
   selectUser: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({
-  refreshTokenRequest: (payload) => refreshTokenRequest(dispatch)(payload),
+  refreshTokenRequest: (payload) => dispatch(refreshTokenRequest(payload)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

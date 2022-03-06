@@ -32,16 +32,13 @@ function* sendLoginRequest({ payload, resolve }) {
   }
 }
 
-function* updateToken({ payload, resolve }) {
+function* updateToken({ payload }) {
   try {
     const res = yield call(refreshTokenRequestService, payload);
-    if (res.status === 200) {
-      resolve(res);
-    }
+    console.log(res);
     yield put(saveRefreshTokenRequest(res.data.newToken));
   } catch (error) {
     console.log(error);
-    resolve(null);
   }
 }
 

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { logoutRequestService } from '../services/authServices';
 
 const request = axios.create({
   timeout: 60000,
@@ -6,13 +7,6 @@ const request = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
-const handleError = (error) => {
-  const { response = {} } = error;
-
-  const { data, status, statusText } = response;
-  return { data, status, statusText };
-};
 
 request.interceptors.request.use((config) => {
   const tokens = localStorage.getItem('token');
@@ -22,13 +16,14 @@ request.interceptors.request.use((config) => {
 
 request.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
+    const token_refresh = localStorage.getItem('refreshToken');
     const status = error.response ? error.response.status : null;
-    if (status === 401 || status === 404) {
+    if (status === 401) {
+      await logoutRequestService({ refreshToken: token_refresh });
       window.location.pathname = '/login';
       localStorage.clear();
     }
-
     return error;
   }
 );
