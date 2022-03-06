@@ -27,7 +27,6 @@ function* sendLoginRequest({ payload, resolve }) {
     yield put(setLoading(false));
     yield put(saveDataLogin(response.data.tokens));
   } catch (err) {
-    console.error(err);
     resolve(null);
   }
 }

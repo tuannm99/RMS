@@ -16,15 +16,15 @@ request.interceptors.request.use((config) => {
 
 request.interceptors.response.use(
   (response) => response,
-  async (error) => {
+  (error) => {
     const token_refresh = localStorage.getItem('refreshToken');
     const status = error.response ? error.response.status : null;
     if (status === 401) {
-      await logoutRequestService({ refreshToken: token_refresh });
+      logoutRequestService({ refreshToken: token_refresh });
       window.location.pathname = '/login';
       localStorage.clear();
     }
-    return error;
+    return error.response;
   }
 );
 
