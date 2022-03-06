@@ -1,11 +1,11 @@
-const tokenTypes = {
+const TOKEN_TYPES = {
   ACCESS: 'access',
   REFRESH: 'refresh',
   RESET_PASSWORD: 'resetPassword',
   VERIFY_EMAIL: 'verifyEmail',
 };
 
-// TODO: fix role
+// Role
 const ROLES = {
   admin: 'admin',
   hiringManager: 'hiringManager',
@@ -13,20 +13,30 @@ const ROLES = {
   employee: 'employee',
 };
 
-// Event for async task
-const EVENTS = {
-  sendMail: 'sendMail',
-};
-
-const statusCandidate = {
+// Candidate status
+const CANDIDATE_STATUS = {
   reject: 'reject',
   open: 'open',
   approve: 'approve',
 };
 
+// Interview Stages
+const STAGES = {
+  contact: 'contact',
+  test: 'test',
+  technical: 'technical',
+  cultureFit: 'cultureFit',
+};
+
+// Event for async task
+const EVENTS = {
+  sendMail: 'sendMail',
+};
+
 module.exports = {
-  tokenTypes,
+  tokenTypes: TOKEN_TYPES,
   ROLES,
   EVENTS,
-  statusCandidate,
+  STAGES,
+  statusCandidate: CANDIDATE_STATUS,
 };
