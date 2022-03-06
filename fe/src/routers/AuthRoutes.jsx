@@ -6,6 +6,7 @@ import {
   DetailRecruitPage,
   ConversationRecruitmentPage,
   ProfilePage,
+  EmployeePage,
 } from '../pages';
 
 import { Routes, Route } from 'react-router-dom';
@@ -19,6 +20,7 @@ function AuthRoutes(props) {
       <Route path="/conversation" element={<ConversationRecruitmentPage />} />
       <Route path="/taskRecruitment" element={<TaskRecruitmentPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/employee" element={<EmployeePage />} />
     </Routes>
   );
 }

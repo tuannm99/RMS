@@ -22,6 +22,7 @@ request.interceptors.response.use(
     if (status === 401) {
       logoutRequestService({ refreshToken: token_refresh });
       window.location.pathname = '/login';
+      alert('Account expires or error authentication, please login again!');
       localStorage.clear();
     }
     return error.response;
