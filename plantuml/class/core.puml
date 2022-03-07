@@ -1,0 +1,37 @@
+@startuml auth class diagram
+!theme materia-outline
+skinparam classAttributeIconSize 0
+
+package core {
+
+  class config {
+    + {field} envConf: object
+  }
+  class ApiError {}
+  class catchAsync {
+      + {method} CatchAsync(): function
+  }
+  class globalMiddleware {
+      - {method} _verifyCallback(req: Request, resolve: Resolve, reject: Reject, requiredRoles: array): void
+      + {method} errorConverter(err: Error, req: Request, res: Response, next: NextCallBack): void
+      + {method} errorConverter(err: Error, req: Request, res: Response, next: NextCallBack): void
+      + {method} checkAuth(...object): void
+  }
+  class logger {
+  }
+  class moganConfig {}
+  class utils {}
+
+  package db{
+
+    package schema {}
+    class dbConfig {    
+        + {field} connectDatabase(): mongoose.Connection
+    }
+  }
+
+  ApiError  ..|> Error
+}
+
+
+@enduml

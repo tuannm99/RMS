@@ -1,26 +1,34 @@
 @startuml auth class diagram
 !theme materia-outline
-class auth.controller{
 
-  + registerHandler(req, res): void
-  + loginHandler(req, res): void
-  + logoutHandler(req, res): void
-  + forgotPassHandler(req, res): void
-  + refreshTokenHandler(req, res): void
+skinparam classAttributeIconSize 0
+class auth.controller{
+  - {field} authService: object
+  - {field} tokenService: object
+  - {field} userService: object
+
+  + {method} registerHandler(req: express.Request, res: express.Response): void
+  + {method} loginHandler(req: express.Request, res: express.Response): void
+  + {method} logoutHandler(req: express.Request, res: express.Response): void
+  + {method} forgotPassHandler(req: express.Request, res: express.Response): void
+  + {method} refreshTokenHandler(req: express.Request, res: express.Response): void
 }
 
 class auth.service{
-  + loginByUsernamePassword(username, password): void
-  + logout(refreshToken): void
-  + refreshAuth(refreshToken): void
+  + {method} loginByUsernamePassword(username: string, password:string): void
+  + {method} logout(refreshToken: string): void
+  + {method} refreshAuth(refreshToken: string): void
 }
 
 class auth.router{
-  + router: express.Router()
+  + {field} router: express.Router
 }
 
 class auth.validation{
-  + loginDto(): void
+  + {method} loginDto: object
+  + {method} registerDto: object
+  + {method} logoutDto: object
+  + {method} refreshTokenDto: object
 }
 
 ' class user.controller{
@@ -35,20 +43,28 @@ class auth.validation{
 ' }
 
 class user.service{
-  + createUser(userBody): void
-  + getUserByUsername(username): void
-  + getUsers(filter, options): void
-  + getUserById(id): void
-  + updateUserById(userId, updateBody): void
-  + deleteUserById(userId): void
+  + {method} createUser(userBody: object): void
+  + {method} getUserByUsername(username: string): void
+  + {method} getUsers(filter: object, options: object): void
+  + {method} getUserById(id: string): void
+  + {method} updateUserById(userId: string, updateBody: object): void
+  + {method} deleteUserById(userId: string): void
 }
 
 class token.service{
-  + generateToken(userId, expires, type, secret): void
-  + saveToken(token, userId, expires, type, blacklisted): void
-  + verifyToken(token, type): void
-  + deleteByRefreshToken(refreshToken): void
-  + generateAuthTokens(user): void
+  + {method} generateToken(userId: string, expires: Moment, type: string, secret: string): void
+  + {method} saveToken(token: string, userId: string, expires: Moment, type: string, blacklisted: boolean): void
+  + {method} verifyToken(token: string, type: string): void
+  + {method} deleteByRefreshToken(refreshToken: string): void
+  + {method} generateAuthTokens(user: object): void
+}
+
+class schema.Token {
+
+}
+
+class schema.User {
+
 }
 
 auth.router ..> auth.validation
@@ -58,4 +74,6 @@ auth.service ..> user.service
 auth.service ..> token.service
 auth.controller ..> user.service
 auth.controller ..> token.service
+user.service ..> schema.User
+token.service ..> schema.Token
 @enduml
