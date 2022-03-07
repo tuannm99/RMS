@@ -1,0 +1,61 @@
+@startuml auth class diagram
+!theme materia-outline
+class auth.controller{
+
+  + registerHandler(req, res): void
+  + loginHandler(req, res): void
+  + logoutHandler(req, res): void
+  + forgotPassHandler(req, res): void
+  + refreshTokenHandler(req, res): void
+}
+
+class auth.service{
+  + loginByUsernamePassword(username, password): void
+  + logout(refreshToken): void
+  + refreshAuth(refreshToken): void
+}
+
+class auth.router{
+  + router: express.Router()
+}
+
+class auth.validation{
+  + loginDto(): void
+}
+
+' class user.controller{
+'   + getAllUsersHandler(req, res): void
+'   + getUserHandler(req, res): void
+'   + updateUserHandler(req, res): void
+'   + deleteUserHandler(req, res): void
+' }
+
+' class user.router{
+'   + router: express.Router()
+' }
+
+class user.service{
+  + createUser(userBody): void
+  + getUserByUsername(username): void
+  + getUsers(filter, options): void
+  + getUserById(id): void
+  + updateUserById(userId, updateBody): void
+  + deleteUserById(userId): void
+}
+
+class token.service{
+  + generateToken(userId, expires, type, secret): void
+  + saveToken(token, userId, expires, type, blacklisted): void
+  + verifyToken(token, type): void
+  + deleteByRefreshToken(refreshToken): void
+  + generateAuthTokens(user): void
+}
+
+auth.router ..> auth.validation
+auth.controller ..> auth.service
+auth.router ..>	 auth.controller
+auth.service ..> user.service
+auth.service ..> token.service
+auth.controller ..> user.service
+auth.controller ..> token.service
+@enduml
