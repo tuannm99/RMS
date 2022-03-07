@@ -66,8 +66,8 @@ function ProtectedLayout(props) {
         <Content
           className="site-layout-background"
           style={{
-            margin: '24px 16px',
-            padding: 24,
+            margin: '0 16px',
+            padding: '8px 24px',
             minHeight: 280,
             backgroundColor: 'rgb(240, 242, 245)',
           }}
