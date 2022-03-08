@@ -11,7 +11,7 @@ export function hasResponseError(response, action, ...params) {
   if (statusCode === null || statusCode === undefined || statusCode === '')
     return false;
   const token_refresh = localStorage.getItem('refreshToken');
-  if (statusCode === 401) {
+  if (statusCode === 401 && window.location.pathname !== '/login') {
     logoutRequestService({ refreshToken: token_refresh });
     window.location.pathname = '/login';
     alert('Account expires or error authentication, please login again!');
