@@ -1,34 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Form,
-  Input,
-  Button,
-  Checkbox,
-  notification,
-  Col,
-  Row,
-  Spin,
-} from 'antd';
+import React from 'react';
+import { Form, Input, Button, Col, Row, Spin } from 'antd';
 import './style.css';
 import bg_login from '../../assets/image/bg_login.jpeg';
 import { createStructuredSelector } from 'reselect';
-import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import {
-  selectLoading,
-  selectUserInfor,
-} from '../../redux/stores/auth/selectors';
+import { selectLoading } from '../../redux/stores/auth/selectors';
 import * as actions from '../../redux/stores/auth/actions';
-import {
-  LockOutlined,
-  CheckOutlined,
-  CloseOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 function Login(props) {
-  const navigation = useNavigate();
   const { loginRequest } = props;
   const { isLoading } = props;
   const onFinish = async (values) => {
@@ -36,19 +17,7 @@ function Login(props) {
       username: values.username,
       password: values.password,
     };
-    const data = await loginRequest(params);
-    if (data) {
-      navigation('/');
-      notification.open({
-        message: `'Đăng Nhập Thành công'`,
-        icon: <CheckOutlined style={{ color: 'green' }} />,
-      });
-    } else {
-      notification.open({
-        message: `'Sai tên đăng nhập hoặc mật khẩu!'`,
-        icon: <CloseOutlined style={{ color: 'red' }} />,
-      });
-    }
+    loginRequest(params);
   };
 
   return (
@@ -118,7 +87,7 @@ const mapStateToProps = createStructuredSelector({
   isLoading: selectLoading,
 });
 const mapDispatchToProps = (dispatch) => ({
-  loginRequest: (payload) => actions.loginRequest(dispatch)(payload),
+  loginRequest: (payload) => dispatch(actions.loginRequest(payload)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

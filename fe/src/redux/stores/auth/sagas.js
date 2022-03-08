@@ -4,6 +4,7 @@ import {
   refreshTokenRequestService,
   logoutRequestService,
 } from '../../../services/authServices';
+import { hasResponseError } from '../../../utils/utils';
 import {
   saveDataLogin,
   setLoading,
@@ -15,25 +16,39 @@ import {
   REFRESH_TOKEN_REQUEST,
   LOGOUT_REQUEST,
 } from './constants';
+import { CloseOutlined } from '@ant-design/icons';
+import { notification } from 'antd';
 
-function* sendLoginRequest({ payload, resolve }) {
+function* sendLoginRequest({ payload }) {
   try {
     yield put(setLoading(true));
     const response = yield call(loginRequestService, payload);
-    console.log(response.data);
-    if (response.status === 200) {
-      resolve(response);
+    if (hasResponseError(response)) {
+      console.log(response);
+      yield put(setLoading(false));
+      notification.open({
+        message: `${response.data.message} `,
+        placement: 'topRight',
+        icon: <CloseOutlined style={{ color: 'green' }} />,
+        style: { zIndex: '10000000' },
+      });
+      return;
     }
-    yield put(setLoading(false));
     yield put(saveDataLogin(response.data.tokens));
-  } catch (err) {
-    resolve(null);
+    window.location.href = '/';
+    yield put(setLoading(false));
+  } catch (error) {
+    console.log(error);
   }
 }
 
 function* updateToken({ payload }) {
   try {
     const res = yield call(refreshTokenRequestService, payload);
+    if (hasResponseError(res)) {
+      console.log(res);
+      return;
+    }
     console.log(res);
     yield put(saveRefreshTokenRequest(res.data.newToken));
   } catch (error) {

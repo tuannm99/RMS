@@ -42,6 +42,7 @@ function ProtectedLayout(props) {
   useEffect(() => {
     if (!tokenLocal || !refreshToken) {
       navigate('/login');
+      localStorage.clear();
     }
   }, [tokenLocal, refreshToken]);
 
