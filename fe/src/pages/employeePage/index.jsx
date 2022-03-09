@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './styles.css';
 import {
   Card,
@@ -15,6 +15,7 @@ import {
   Divider,
   Drawer,
   Button,
+  Spin,
 } from 'antd';
 import {
   EditOutlined,
@@ -26,112 +27,63 @@ import {
   PhoneOutlined,
   AlignRightOutlined,
 } from '@ant-design/icons';
-import DrawerFrom from './components/DrawerFrom';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { getAllUserRequest } from '../../redux/stores/employee/actions';
+import {
+  selectDataUser,
+  selectLoading,
+} from '../../redux/stores/employee/selectors';
+import { UserDetail, generateColumns } from './components';
+import { getDetailUsersServices } from '../../services/employeeServices';
 
 const { Meta } = Card;
 const { Search } = Input;
 const { Option } = Select;
+
 function EmployeePage(props) {
   const [typeContent, setTypeContent] = useState(true);
-  const [drawer, setDrawer] = useState(false);
-  const [drawer1, setDrawer1] = useState(false);
+  const [visibleUser, setVisibleUser] = useState(false);
+  const [user, setUser] = useState({});
+  const { isLoading, dataUser } = props;
+  const { getAllUserRequest } = props;
 
-  const showDrawer1 = () => {
-    setDrawer1(true);
-  };
-
-  const onClose1 = () => {
-    setDrawer1(false);
-  };
-  const showDrawer = () => {
-    setDrawer(true);
+  const showUserDetail = (id) => {
+    setVisibleUser(true);
+    getDetailUsersServices(id).then((res) => setUser(res.data));
   };
 
-  const onClose = () => {
-    setDrawer(false);
+  const onCloseUser = () => {
+    console.log(visibleUser);
+    setVisibleUser(false);
   };
-  const DescriptionItem = ({ title, content }) => (
-    <div className="site-description-item-profile-wrapper">
-      <p className="site-description-item-profile-p-label">{title}:</p>
-      {content}
-    </div>
+
+  const handleDelete = async (id) => {};
+
+  const editUser = (id) => {};
+
+  const userColumns = useMemo(
+    () =>
+      generateColumns({
+        delteSt: handleDelete,
+        edit: editUser,
+      }),
+    [handleDelete, editUser]
   );
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (tags) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
-        </Space>
-      ),
-    },
-  ];
 
-  const data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-    },
-  ];
+  useEffect(() => {
+    getAllUserRequest();
+  }, []);
 
   const handleTypeContent = () => {
     setTypeContent(!typeContent);
   };
+
+  const handleEdit = () => {
+    console.log('hello');
+  };
+
   return (
     <>
       <Row className="employee_tool">
@@ -152,7 +104,11 @@ function EmployeePage(props) {
           </Select>
         </Col>
         <Col span={8}>
-          <Search placeholder="Employee Search" enterButton />
+          <Search
+            style={{ maxWidth: 400, textAlign: 'center' }}
+            placeholder="Employee Search"
+            enterButton
+          />
         </Col>
         <Col span={7} className="fr">
           {typeContent ? (
@@ -183,142 +139,64 @@ function EmployeePage(props) {
         </Col>
       </Row>
       <div className="btn_add_employee">
-        <Button className="mt-12" onClick={showDrawer1}>
-          Add Employee
-        </Button>
+        <Button className="mt-12">Add Employee</Button>
       </div>
       {typeContent ? (
         <div className="employee_content">
-          <Card
-            style={{ width: 270, margin: 10 }}
-            actions={[
-              <SettingOutlined key="setting" />,
-              <EditOutlined key="edit" />,
-              <EllipsisOutlined key="ellipsis" />,
-            ]}
-            hoverable="true"
-            onClick={showDrawer}
-          >
-            <Meta
-              avatar={<Avatar size={64} icon={<UserOutlined />} />}
-              title="Ngo Van"
-              description="Business"
-            />
-            <p className="mb-0 mt-24">
-              <MailOutlined />
-            </p>
-            <span>lbrennan@freshteam.com</span>
-            <p className="mb-0">
-              <PhoneOutlined />
-            </p>
-            <span>0795148134</span>
-          </Card>
+          {dataUser.map((item) => (
+            <Card
+              style={{ width: 270, margin: 10 }}
+              actions={[
+                <SettingOutlined key="setting" />,
+                <EditOutlined key="edit" onClick={handleEdit} />,
+                <EllipsisOutlined key="ellipsis" />,
+              ]}
+              hoverable="true"
+              onClick={() => showUserDetail(item.id)}
+              key={item.username}
+            >
+              <Meta
+                avatar={
+                  !item.avatar ? (
+                    <Avatar size={64} icon={<UserOutlined />} />
+                  ) : (
+                    <Avatar size={64} src={item.avatar} />
+                  )
+                }
+                title={
+                  item.firstName && item.lastName
+                    ? `${item.firstName} ${item.lastName}`
+                    : item.username
+                }
+                description={item.role}
+              />
+              <p className="mb-0 mt-24">
+                <MailOutlined />
+              </p>
+              <span>{item.email}</span>
+              <p className="mb-0">
+                <PhoneOutlined />
+              </p>
+              <span>0795148134</span>
+            </Card>
+          ))}
         </div>
       ) : (
-        <Table columns={columns} dataSource={data} className="mt-16" />
+        <Table columns={userColumns} dataSource={dataUser} className="mt-16" />
       )}
-      <Drawer
-        width={640}
-        placement="right"
-        closable={false}
-        onClose={onClose}
-        visible={drawer}
-      >
-        <p
-          className="site-description-item-profile-p"
-          style={{ marginBottom: 24 }}
-        >
-          User Profile
-        </p>
-        <p className="site-description-item-profile-p">Personal</p>
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Full Name" content="Lily" />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Account" content="AntDesign@example.com" />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="City" content="HangZhou" />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Country" content="China🇨🇳" />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Birthday" content="February 2,1900" />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Website" content="-" />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <DescriptionItem
-              title="Message"
-              content="Make things as simple as possible but no simpler."
-            />
-          </Col>
-        </Row>
-        <Divider />
-        <p className="site-description-item-profile-p">Company</p>
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Position" content="Programmer" />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Responsibilities" content="Coding" />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Department" content="XTech" />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Supervisor" content={<a>Lin</a>} />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <DescriptionItem
-              title="Skills"
-              content="C / C + +, data structures, software engineering, operating systems, computer networks, databases, compiler theory, computer architecture, Microcomputer Principle and Interface Technology, Computer English, Java, ASP, etc."
-            />
-          </Col>
-        </Row>
-        <Divider />
-        <p className="site-description-item-profile-p">Contacts</p>
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Email" content="AntDesign@example.com" />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Phone Number" content="+86 181 0000 0000" />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <DescriptionItem
-              title="Github"
-              content={
-                <a href="http://github.com/ant-design/ant-design/">
-                  github.com/ant-design/ant-design/
-                </a>
-              }
-            />
-          </Col>
-        </Row>
-      </Drawer>
-      <DrawerFrom
-        showDrawer1={showDrawer1}
-        onClose1={onClose1}
-        drawer1={drawer1}
-      />
+      <UserDetail visible={visibleUser} onclose={onCloseUser} user={user} />
     </>
   );
 }
 
-export default EmployeePage;
+const mapStateToProps = createStructuredSelector({
+  isLoading: selectLoading,
+  dataUser: selectDataUser,
+});
+const mapDispatchToProps = (dispatch) => ({
+  getAllUserRequest: (payload) => dispatch(getAllUserRequest(payload)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(EmployeePage);
