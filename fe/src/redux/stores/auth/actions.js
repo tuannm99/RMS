@@ -22,8 +22,12 @@ export function saveLoading(payload) {
     payload,
   };
 }
-export const loginRequest = (dispatch) => (payload) =>
-  new Promise((resolve) => dispatch({ type: LOGIN_REQUEST, payload, resolve }));
+export function loginRequest(payload) {
+  return {
+    type: LOGIN_REQUEST,
+    payload,
+  };
+}
 
 export const saveDataLogin = (payload) => ({
   type: SAVE_LOGIN_DATA,

@@ -1,0 +1,37 @@
+@startuml regsiterSequence
+!theme mars
+
+autonumber 1.1
+actor User
+control  authController
+boundary userService
+boundary tokenService
+database Mongodb
+
+User -> authController: registerHandler()
+activate authController
+authController -> authController: validateDto
+authController ->> userService: createUser()
+activate userService
+userService -> userService: validateEmail/User()
+userService -> Mongodb: getUser()
+activate Mongodb
+Mongodb --> userService: success
+deactivate Mongodb
+userService --> authController: userData
+deactivate userService
+deactivate authController
+
+authController ->> tokenService: generateAuthToken()
+activate authController
+activate tokenService
+tokenService -> tokenService: validateToken()
+tokenService -> Mongodb: getToken()
+activate Mongodb
+Mongodb --> tokenService: success
+deactivate Mongodb
+tokenService --> authController: tokenData
+deactivate tokenService
+authController --> User
+deactivate authController
+@enduml

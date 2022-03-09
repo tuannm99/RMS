@@ -1,11 +1,14 @@
 const router = require('express').Router();
+
+const { checkAuth } = require('../core/global.middleware');
+const { ROLES } = require('../constants');
 const jobController = require('./job.controller');
 
-router.get('/', jobController.getAllJob);
-router.get('/:id', jobController.getJob);
-router.post('/', jobController.addJobPosting);
-router.put('/:id', jobController.editJobPosting);
-router.delete('/:id', jobController.deleteJobPosting);
+router.get('/', checkAuth(ROLES.hiringManager), jobController.getAllJob);
+router.get('/:id', checkAuth(ROLES.hiringManager), jobController.getJob);
+router.post('/', checkAuth(ROLES.hiringManager), jobController.addJobPosting);
+router.put('/:id', checkAuth(ROLES.hiringManager), jobController.editJobPosting);
+router.delete('/:id', checkAuth(ROLES.hiringManager), jobController.deleteJobPosting);
 
 module.exports = router;
 
@@ -13,7 +16,7 @@ module.exports = router;
  * @api {post} /api/v1/jobs 1. Add job
  * @apiName add job
  * @apiGroup Job
- * @apiPermission admin, hiringManager
+ * @apiPermission hiringManager
  *
  * @apiHeader {String} Content-Type application/json
  * @apiHeader {String} Authorization Bearer Token.....
@@ -92,7 +95,7 @@ module.exports = router;
  * @api {put} /api/v1/jobs/:id 2. Edit job by id
  * @apiName edit job by id
  * @apiGroup Job
- * @apiPermission admin, hiringManager
+ * @apiPermission hiringManager
  *
  * @apiHeader {String} Content-Type application/json
  * @apiHeader {String} Authorization Bearer Token.....
@@ -173,7 +176,7 @@ module.exports = router;
  * @api {delete} /api/v1/jobs/:id 3. Delete job by id
  * @apiName delete job by id
  * @apiGroup Job
- * @apiPermission admin, hiringManager
+ * @apiPermission hiringManager
  *
  * @apiHeader {String} Content-Type application/json
  * @apiHeader {String} Authorization Bearer Token.....
@@ -206,7 +209,7 @@ module.exports = router;
  * @api {get} /api/v1/jobs 4. Get All jobs
  * @apiName Get All jobs
  * @apiGroup Job
- * @apiPermission admin, hiringManager
+ * @apiPermission hiringManager
  *
  * @apiHeader {String} Content-Type application/json
  * @apiHeader {String} Authorization Bearer Token.....
@@ -292,7 +295,7 @@ module.exports = router;
  * @api {get} /api/v1/jobs/:id 4. Job detail
  * @apiName job detail
  * @apiGroup Job
- * @apiPermission admin, hiringManager, guest, employee
+ * @apiPermission admin, hiringManager, employee
  *
  * @apiHeader {String} Content-Type application/json
  * @apiHeader {String} Authorization Bearer Token.....

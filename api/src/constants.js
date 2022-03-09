@@ -20,6 +20,13 @@ const CANDIDATE_STATUS = {
   approve: 'approve',
 };
 
+// Job status
+const JOB_STATUS = {
+  published: 'published',
+  onHold: 'onHold',
+  deleted: 'deleted',
+};
+
 // Interview Stages
 const STAGES = {
   contact: 'contact',
@@ -38,5 +45,6 @@ module.exports = {
   ROLES,
   EVENTS,
   STAGES,
+  JOB_STATUS,
   statusCandidate: CANDIDATE_STATUS,
 };
