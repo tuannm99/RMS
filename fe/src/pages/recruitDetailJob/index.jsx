@@ -37,13 +37,14 @@ function DetailRecruitPage(props) {
   };
 
   useEffect(() => {
-    const fetchJob = async () => {
-      const jobDetail = await getJobsDetail(id);
-      setJob(jobDetail.data);
-      console.log(jobDetail);
-    };
     fetchJob();
   }, []);
+
+  const fetchJob = async () => {
+    const jobDetail = await getJobsDetail(id);
+    setJob(jobDetail.data);
+    console.log(jobDetail);
+  };
 
   const openModal = (id) => {
     formModal.setFieldsValue({
@@ -68,8 +69,11 @@ function DetailRecruitPage(props) {
       jobDescription: ckeditorData === '' ? job.jobDescription : ckeditorData,
     };
     try {
-      const res = await updateJobs(jobValue.id, body);
-      console.log(body);
+      updateJobs(jobValue.id, body).then((res) => {
+        setJob(res.data);
+        console.log(res);
+        fetchJob();
+      });
       toast.success('Edit Job Detail Successful!', {
         autoClose: 3000,
       });

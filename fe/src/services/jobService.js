@@ -17,16 +17,17 @@ export function getJobsDetail(id) {
   });
 }
 
-export function createJobs() {
+export function createJobs(body) {
   return request(`${BASE_API}/jobs`, {
     method: 'POST',
+    data: body,
   });
 }
 
 export function updateJobs(id, body) {
   return request(`${BASE_API}/Jobs/${id}`, {
     method: 'PUT',
-    body: body,
+    data: body,
   });
 }
 

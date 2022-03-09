@@ -45,7 +45,7 @@ function RecruitPage(props) {
 
   const onFinish = async (values) => {
     const body = { ...values, jobDescription: ckeditorData };
-    const res = await createJobs(values);
+    await createJobs(values);
     console.log(values);
     getJobs();
     toast.success('Create Job Successful!', {
