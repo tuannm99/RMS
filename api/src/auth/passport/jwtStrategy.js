@@ -1,7 +1,7 @@
 const passportJWT = require('passport-jwt');
 const envConf = require('../../core/config');
 const { User } = require('../../core/db/schema');
-const { tokenTypes } = require('../../constants');
+const { TOKEN_TYPES } = require('../../constants');
 const logger = require('../../core/logger');
 
 const { fromAuthHeaderAsBearerToken } = passportJWT.ExtractJwt;
@@ -15,7 +15,7 @@ const jwtOptions = {
 exports.jwtStrategy = new JwtStrategy(jwtOptions, async (jwtPayload, done) => {
   logger.info('payload received', jwtPayload);
   try {
-    if (jwtPayload.type !== tokenTypes.ACCESS) {
+    if (jwtPayload.type !== TOKEN_TYPES.access) {
       throw new Error('Invalid Token Type');
     }
 

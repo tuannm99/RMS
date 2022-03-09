@@ -1,8 +1,8 @@
 const TOKEN_TYPES = {
-  ACCESS: 'access',
-  REFRESH: 'refresh',
-  RESET_PASSWORD: 'resetPassword',
-  VERIFY_EMAIL: 'verifyEmail',
+  access: 'access',
+  refresh: 'refresh',
+  resetPassword: 'resetPassword',
+  verifyEmail: 'verifyEmail',
 };
 
 // Role
@@ -35,16 +35,25 @@ const STAGES = {
   cultureFit: 'cultureFit',
 };
 
+// Role
+const FEEDBACK = {
+  strongHire: 'strongHire',
+  hire: 'hire',
+  noHire: 'noHire',
+  strongNoHire: 'strongNoHire',
+};
+
 // Event for async task
 const EVENTS = {
   sendMail: 'sendMail',
 };
 
 module.exports = {
-  tokenTypes: TOKEN_TYPES,
+  TOKEN_TYPES,
   ROLES,
   EVENTS,
   STAGES,
   JOB_STATUS,
-  statusCandidate: CANDIDATE_STATUS,
+  FEEDBACK,
+  CANDIDATE_STATUS,
 };

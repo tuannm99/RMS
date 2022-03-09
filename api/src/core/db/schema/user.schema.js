@@ -36,8 +36,10 @@ const userSchema = mongoose.Schema({
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  firstName: { type: String },
-  lastName: { type: String },
+  name: {
+    firstName: { type: String },
+    lastName: { type: String },
+  },
   avatar: String,
   role: {
     type: String,

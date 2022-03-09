@@ -24,7 +24,6 @@ function* sendLoginRequest({ payload }) {
     yield put(setLoading(true));
     const response = yield call(loginRequestService, payload);
     if (hasResponseError(response)) {
-      console.log(response);
       yield put(setLoading(false));
       notification.open({
         message: `${response.data.message} `,
@@ -46,10 +45,8 @@ function* updateToken({ payload }) {
   try {
     const res = yield call(refreshTokenRequestService, payload);
     if (hasResponseError(res)) {
-      console.log(res);
       return;
     }
-    console.log(res);
     yield put(saveRefreshTokenRequest(res.data.newToken));
   } catch (error) {
     console.log(error);

@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Layout, notification } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Layout } from 'antd';
 import { SiderBarPrivate, HeaderPrivate } from '../components';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
@@ -46,7 +46,7 @@ function ProtectedLayout(props) {
     }
   }, [tokenLocal, refreshToken]);
 
-  const refreshTokenFunction = async () => {
+  const refreshTokenFunction = () => {
     if (
       timerToken + 20000 > moment.utc(expires).toDate().getTime() ||
       !expires

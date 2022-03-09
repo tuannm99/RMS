@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { toJSON } = require('./plugins');
-const { tokenTypes } = require('../../../constants');
+const { TOKEN_TYPES } = require('../../../constants');
 
 const tokenSchema = mongoose.Schema(
   {
@@ -16,7 +16,7 @@ const tokenSchema = mongoose.Schema(
     },
     type: {
       type: String,
-      enum: [tokenTypes.REFRESH, tokenTypes.RESET_PASSWORD, tokenTypes.VERIFY_EMAIL],
+      enum: [TOKEN_TYPES.refresh, TOKEN_TYPES.resetPassword, TOKEN_TYPES.verifyEmail],
       required: true,
     },
     expires: {

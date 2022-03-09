@@ -1,4 +1,5 @@
 import HeaderPrivate from './headerPrivate';
 import SiderBarPrivate from './siderBarPrivate';
+import DrawerComponent from './drawer';
 
-export { HeaderPrivate, SiderBarPrivate };
+export { HeaderPrivate, SiderBarPrivate, DrawerComponent };
