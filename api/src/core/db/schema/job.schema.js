@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
 const jobSchema = new mongoose.Schema({
+  userId: { required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   title: { require: true, type: String },
   department: { require: true, type: String },
   jobType: { require: true, type: String },

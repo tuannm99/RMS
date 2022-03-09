@@ -97,8 +97,9 @@ module.exports = router;
  * @apiParam (Body) {String}   password
  * @apiParam (Body) {String}   email
  * @apiParam (Body) {String}   [role]
- * @apiParam (Body) {String}   [firstName]
- * @apiParam (Body) {String}   [lastName]
+ * @apiParam (Body) {Object}   [name]
+ * @apiParam (Body) {String}   [name.firstName]
+ * @apiParam (Body) {String}   [name.lastName]
  * @apiParam (Body) {String}   [avatar]
  * @apiParamExample {json} Body-Example:
  *     {
@@ -106,8 +107,10 @@ module.exports = router;
  *       "password": "mypassword",
  *       "email": "guestle@gmail.com",
  *       "role": "guest",
- *       "firstName": "caca",
- *       "lastName": "guest",
+ *       "name": {
+ *            "firstName": "caca",
+ *            "lastName": "guest",
+ *       }
  *       "avatar": "string",
  *     }
  *
