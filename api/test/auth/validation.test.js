@@ -19,6 +19,10 @@ describe('test validation auth', () => {
         password: '123ab@123',
         email: 'wfjweij@gmail.com',
         role: 'admin',
+        name: {
+          firstName: 'tuan',
+          lastName: 'nguyen',
+        },
       },
       authValidation.registerDto.body
     );
