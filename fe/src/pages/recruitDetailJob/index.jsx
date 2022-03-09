@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import DetailJobComponent from './component/detailJobComponent';
 import { useParams } from 'react-router-dom';
-import jobService from '../../services/jobService';
+import {
+  getJobsDetail,
+  updateJobs,
+  deleteJobs,
+} from '../../services/jobService';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { toast } from 'react-toastify';
@@ -22,7 +26,7 @@ function DetailRecruitPage(props) {
   let { id } = useParams();
   const [formModal] = Form.useForm();
   const [visible, setVisible] = useState(false);
-  const [dataJobID, setDataJobID] = useState({});
+  const [job, setJob] = useState({});
   const [ckeditorData, setCkeditorData] = useState('');
   const navigate = useNavigate();
 
@@ -33,52 +37,53 @@ function DetailRecruitPage(props) {
   };
 
   useEffect(() => {
-    loadDataJob();
+    const fetchJob = async () => {
+      const jobDetail = await getJobsDetail(id);
+      setJob(jobDetail.data);
+      console.log(jobDetail);
+    };
+    fetchJob();
   }, []);
-
-  const loadDataJob = () => {
-    jobService.getIdJobs(id).then((res) => {
-      setDataJobID(res);
-    });
-  };
 
   const openModal = (id) => {
     formModal.setFieldsValue({
-      id: dataJobID.id,
-      title: dataJobID.title,
-      jobDescription: dataJobID.jobDescription,
-      jobType: dataJobID.jobType,
-      location: dataJobID.location,
-      experience: dataJobID.experience,
-      skill: dataJobID.skill,
-      minSalary: dataJobID.minSalary,
-      maxSalary: dataJobID.maxSalary,
-      department: dataJobID.department,
+      id: job.id,
+      title: job.title,
+      jobDescription: job.jobDescription,
+      jobType: job.jobType,
+      location: job.location,
+      experience: job.experience,
+      skill: job.skill,
+      minSalary: job.minSalary,
+      maxSalary: job.maxSalary,
+      department: job.department,
     });
 
     setVisible(true);
   };
 
-  const onFinish = (values) => {
+  const onFinish = async (jobValue) => {
     const body = {
-      ...values,
-      jobDescription: ckeditorData === '' ? dataJobID : ckeditorData,
+      ...jobValue,
+      jobDescription: ckeditorData === '' ? job.jobDescription : ckeditorData,
     };
-    jobService.updateJobs(values.id, body).then((res) => {
-      loadDataJob();
-    });
-
-    toast.success('Edit Job Detail Successful!', {
-      autoClose: 3000,
-    });
+    try {
+      const res = await updateJobs(jobValue.id, body);
+      console.log(body);
+      toast.success('Edit Job Detail Successful!', {
+        autoClose: 3000,
+      });
+    } catch (error) {
+      console.log(error);
+    }
     handleCancel();
+    // setJob(body);
   };
 
-  const handleDelete = (id) => {
-    jobService.deleteJobs(id).then((res) => {
-      loadDataJob();
-      navigate('/recruit');
-    });
+  const handleDelete = async (values) => {
+    const res = await deleteJobs(values);
+    console.log(res);
+    navigate('/recruit');
     toast.success('Delete Job  Successful!', {
       autoClose: 3000,
     });
@@ -171,7 +176,7 @@ function DetailRecruitPage(props) {
                   type="string"
                   className="recruit-editor_content"
                   editor={ClassicEditor}
-                  data={`${dataJobID.jobDescription}`}
+                  data={`${job.jobDescription}`}
                   onChange={(event, editor) => {
                     const data = editor.getData();
                     setCkeditorData(data);
@@ -230,7 +235,7 @@ function DetailRecruitPage(props) {
         </Modal>
       </div>
       <DetailJobComponent
-        data={dataJobID}
+        data={job}
         detailJobContentCenter="DetailJob-Content-center"
         detailJobHead="DetailJob-head"
         HeaderContent="DetailJob-container"

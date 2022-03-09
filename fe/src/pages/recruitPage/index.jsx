@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import jobService from '../../services/jobService';
+
 import Recruit from '../../components/recruit';
 import './style.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { toast } from 'react-toastify';
-
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { selectJobs, selectLoading } from '../../redux/stores/job/selectors';
+import * as actions from '../../redux/stores/job/actions';
+import { createJobs, getJobsRequestService } from '../../services/jobService';
 import { Row, Col, Button, Breadcrumb, Modal, Input, Form, Select } from 'antd';
 
 function RecruitPage(props) {
-  const [dataJob, setdataJob] = useState([]);
   const [formModal] = Form.useForm();
   const [visible, setVisible] = useState(false);
   const { Option } = Select;
   const [ckeditorData, setCkeditorData] = useState('');
+  const { getJobs, selectJobs } = props;
 
   useEffect(() => {
-    loadDataJobs();
+    getJobs();
   }, []);
-
-  const loadDataJobs = () => {
-    jobService.getListJobs().then((res) => {
-      setdataJob(res);
-      console.log(res);
-    });
-  };
 
   const colStyles = {
     flexBasis: '20%',
@@ -36,7 +34,7 @@ function RecruitPage(props) {
   const createJob = () => {
     formModal.resetFields();
     formModal.setFieldsValue({
-      id: dataJob.length + 1,
+      id: selectJobs.length + 1,
     });
     setVisible(true);
   };
@@ -45,12 +43,11 @@ function RecruitPage(props) {
     setVisible(false);
   };
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     const body = { ...values, jobDescription: ckeditorData };
-    jobService.createJobs(body).then((res) => {
-      loadDataJobs();
-    });
-
+    const res = await createJobs(values);
+    console.log(values);
+    getJobs();
     toast.success('Create Job Successful!', {
       autoClose: 3000,
     });
@@ -59,7 +56,7 @@ function RecruitPage(props) {
 
   const openPreview = () => {
     formModal.setFieldsValue({
-      id: dataJob.length + 1,
+      id: selectJobs.length + 1,
     });
     setVisible(true);
   };
@@ -152,7 +149,7 @@ function RecruitPage(props) {
                   type="string"
                   className="recruit-editor_content"
                   editor={ClassicEditor}
-                  data={`${dataJob.jobDescription}`}
+                  data={`${selectJobs.jobDescription}`}
                   onChange={(event, editor) => {
                     const data = editor.getData();
                     setCkeditorData(data);
@@ -206,11 +203,12 @@ function RecruitPage(props) {
       </div>
 
       <Row type="flex" gutter={30}>
-        {dataJob.map((item) => {
+        {selectJobs.map((item) => {
           return (
             <Col className="recuid-card" key={item.id} style={{ ...colStyles }}>
               <Recruit
                 data={item}
+                jobId={item.id}
                 cardJD="card-jd"
                 cartHeader="cart-header"
                 cartTitle="cart-title"
@@ -227,4 +225,15 @@ function RecruitPage(props) {
   );
 }
 
-export default RecruitPage;
+const mapStateToProps = createStructuredSelector({
+  isLoading: selectLoading,
+  selectJobs: selectJobs,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getJobs: (payload) => dispatch(actions.getJobs(payload)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(RecruitPage);
