@@ -81,7 +81,6 @@ function DetailRecruitPage(props) {
       console.log(error);
     }
     handleCancel();
-    // setJob(body);
   };
 
   const handleDelete = async (values) => {
