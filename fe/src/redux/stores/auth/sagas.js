@@ -33,7 +33,7 @@ function* sendLoginRequest({ payload }) {
       });
       return;
     }
-    yield put(saveDataLogin(response.data.tokens));
+    yield put(saveDataLogin(response.data));
     window.location.href = '/';
     yield put(setLoading(false));
   } catch (error) {

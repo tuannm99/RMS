@@ -29,15 +29,12 @@ export function loginRequest(payload) {
   };
 }
 
-export const saveDataLogin = (payload) => ({
-  type: SAVE_LOGIN_DATA,
-  payload,
-});
-
-// export const refreshTokenRequest = (dispatch) => (payload) =>
-//   new Promise((resolve) =>
-//     dispatch({ type: REFRESH_TOKEN_REQUEST, payload, resolve })
-//   );
+export function saveDataLogin(payload) {
+  return {
+    type: SAVE_LOGIN_DATA,
+    payload,
+  };
+}
 
 export function refreshTokenRequest(payload) {
   return {
