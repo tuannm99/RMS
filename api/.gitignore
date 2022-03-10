@@ -2,5 +2,6 @@
 /.vscode
 /coverage
 /dist
+/uploads
 
 .env
