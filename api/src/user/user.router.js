@@ -4,6 +4,8 @@ const { checkAuth } = require('../core/global.middleware');
 const { ROLES } = require('../constants');
 const userController = require('./user.controller');
 
+const { upload } = require('../core/multer');
+
 // router
 const router = express.Router();
 
@@ -17,6 +19,12 @@ router.put(
   '/:id',
   checkAuth(ROLES.admin, ROLES.employee, ROLES.hiringManager),
   userController.updateUserHandler
+);
+router.put(
+  '/:id/avatar',
+  checkAuth(),
+  upload.single('avatar'),
+  userController.updateUserAvatarHandler
 );
 router.delete('/:id', checkAuth(ROLES.admin), userController.deleteUserHandler);
 
@@ -179,7 +187,7 @@ module.exports = router;
  * @apiHeader {String} Content-Type application/json
  * @apiHeader {String} Authorization Bearer Token.....
  *
- * @apiParam (Param) {String} id
+ * @apiParam (Param) {String} id   An user id
  *
  * @apiParam (Body) {String} username
  * @apiParam (Body) {String} email
@@ -189,12 +197,10 @@ module.exports = router;
  * @apiParam (Body) {String} role
  * @apiParamExample (Body) {json} Body-Example:
  *    {
- *        "username": "vanngo1",
  *        "email": "vannthe1301642@fpt.edu.vn",
  *        "firstName": "van",
  *        "lastName": "ngo",
- *        "avatar": "string",
- *        "role": "admin"
+ *        ...
  *    }
  *
  * @apiSuccess {String}     username

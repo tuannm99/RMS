@@ -75,6 +75,19 @@ const updateUserById = async (userId, updateBody) => {
 };
 
 /**
+ * Update user avatar by id
+ * @param {ObjectId} userId
+ * @param {Object} avatar
+ * @returns {Promise<User>}
+ */
+const updateUserAvatarById = async (userId, avatar) => {
+  const user = await getUserById(userId);
+  Object.assign(user, { avatar });
+  await user.save();
+  return user;
+};
+
+/**
  * Delete user by id
  * @param {ObjectId} userId
  * @returns {Promise<User>}
@@ -92,6 +105,7 @@ module.exports = {
   createUser,
   deleteUserById,
   updateUserById,
+  updateUserAvatarById,
   getUsers,
   getUserById,
   getUserByUsername,
