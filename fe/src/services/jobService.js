@@ -1,23 +1,38 @@
-import api from './api';
+import request from '../utils/request';
 
-const getListJobs = () => api.get(api.url.Jobs).then((res) => res.data);
+const BASE_API = 'http://rms-fpt.ddns.net:5000/api/v1';
 
-const getIdJobs = (id) =>
-  api.get(`${api.url.Jobs}/${id}`).then((res) => res.data);
+//get jobs
+export function getJobsRequestService(params) {
+  return request(`${BASE_API}/Jobs`, {
+    method: 'GET',
+    data: params,
+  });
+}
 
-const createJobs = (data) =>
-  api.post(api.url.Jobs, data).then((res) => res.data);
+//get job detail
+export function getJobsDetail(id) {
+  return request(`${BASE_API}/Jobs/${id}`, {
+    method: 'GET',
+  });
+}
 
-const updateJobs = (id, data) =>
-  api.put(`${api.url.Jobs}/${id}`, data).then((res) => res.data);
+export function createJobs(body) {
+  return request(`${BASE_API}/jobs`, {
+    method: 'POST',
+    data: body,
+  });
+}
 
-const deleteJobs = (id) =>
-  api.delete(`${api.url.Jobs}/${id}`).then((res) => res.data);
-const jobService = {
-  getListJobs,
-  getIdJobs,
-  createJobs,
-  updateJobs,
-  deleteJobs,
-};
-export default jobService;
+export function updateJobs(id, body) {
+  return request(`${BASE_API}/Jobs/${id}`, {
+    method: 'PUT',
+    data: body,
+  });
+}
+
+export function deleteJobs(id) {
+  return request(`${BASE_API}/Jobs/${id}`, {
+    method: 'DELETE',
+  });
+}
