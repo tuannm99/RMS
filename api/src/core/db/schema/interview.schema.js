@@ -3,8 +3,8 @@ const { toJSON, paginate } = require('./plugins');
 const { FEEDBACK } = require('../../../constants');
 
 const interviewSchema = new mongoose.Schema({
-  interviewer: { required: true, type: mongoose.Types.ObjectId, ref: 'User' },
-  candidateId: { required: true, type: mongoose.Types.ObjectId, ref: 'Candidate' },
+  interviewer: { type: mongoose.Types.ObjectId, ref: 'User' },
+  candidateId: { type: mongoose.Types.ObjectId, ref: 'Candidate' },
   feedback: {
     overallRecommendation: {
       required: true,

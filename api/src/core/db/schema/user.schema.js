@@ -40,7 +40,15 @@ const userSchema = mongoose.Schema({
     firstName: { type: String },
     lastName: { type: String },
   },
-  avatar: String,
+  avatar: {
+    mimetype: String,
+    originalname: String,
+    encoding: String,
+    destination: String,
+    filename: String,
+    path: String,
+    imageBuffer: Buffer,
+  },
   role: {
     type: String,
     enum: [ROLES.employee, ROLES.hiringManager, ROLES.admin, ROLES.guest],
