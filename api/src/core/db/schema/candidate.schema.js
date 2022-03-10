@@ -1,10 +1,20 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const { toJSON, paginate } = require('./plugins');
-const { statusCandidate } = require('../../../constants');
+const { STAGES, CANDIDATE_STATUS } = require('../../../constants');
 
 const candidateSchema = new mongoose.Schema({
-  title: { required: true, type: String },
+  jobId: { required: true, type: mongoose.Types.ObjectId, ref: 'Job' },
+  interviewId: [{ required: true, type: mongoose.Types.ObjectId, ref: 'Interview' }],
+  status: {
+    type: String,
+    enum: [CANDIDATE_STATUS.reject, CANDIDATE_STATUS.open, CANDIDATE_STATUS.approve],
+  },
+  stages: {
+    type: String,
+    enum: [STAGES.contact, STAGES.cultureFit, STAGES.technical, STAGES.test],
+    default: STAGES.contact,
+  },
   firstName: { type: String },
   midName: { type: String },
   lastName: { type: String },
@@ -21,26 +31,24 @@ const candidateSchema = new mongoose.Schema({
     },
   },
   phone: { type: Number },
-  hyperlink: { type: String },
-  employer: {
-    designation: { type: String },
-    bussinessName: { type: String },
-    from: { type: Date },
-    to: { type: Date },
-    summary: { type: String },
-  },
-  education: {
-    degree: { type: String },
-    universityName: { type: String },
-    fieldOfStudy: { type: String },
-    grade: { type: String },
-    from: { type: Date },
-    end: { type: Date },
-  },
-  cv: { type: String },
-  statusCandidate: {
-    type: String,
-    enum: [statusCandidate.reject, statusCandidate.open, statusCandidate.approve],
+  resume: {
+    cv: { type: String },
+    hyperlink: { type: String },
+    employer: {
+      designation: { type: String },
+      bussinessName: { type: String },
+      from: { type: Date },
+      to: { type: Date },
+      summary: { type: String },
+    },
+    education: {
+      degree: { type: String },
+      universityName: { type: String },
+      fieldOfStudy: { type: String },
+      grade: { type: String },
+      from: { type: Date },
+      end: { type: Date },
+    },
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

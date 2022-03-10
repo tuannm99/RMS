@@ -13,6 +13,10 @@ const registerDto = {
     password: Joi.string().required(),
     email: Joi.string().email().required(),
     role: Joi.string(),
+    name: {
+      firstName: Joi.string(),
+      lastName: Joi.string(),
+    },
   }),
 };
 

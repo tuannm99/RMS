@@ -5,7 +5,7 @@ const userService = require('../user/user.service');
 const tokenService = require('../token/token.service');
 const ApiError = require('../core/apiError');
 
-const { tokenTypes } = require('../constants');
+const { TOKEN_TYPES } = require('../constants');
 
 /**
  * Login with username and password
@@ -37,7 +37,7 @@ const logout = async (refreshToken) => {
  */
 const refreshAuth = async (refreshToken) => {
   try {
-    const refreshTokenDoc = await tokenService.verifyToken(refreshToken, tokenTypes.REFRESH);
+    const refreshTokenDoc = await tokenService.verifyToken(refreshToken, TOKEN_TYPES.refresh);
     const user = await userService.getUserById(refreshTokenDoc.userId);
     await refreshTokenDoc.remove();
     return await tokenService.generateAuthTokens(user);

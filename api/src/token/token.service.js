@@ -4,7 +4,7 @@ const httpStatus = require('http-status');
 const config = require('../core/config');
 
 const { Token } = require('../core/db/schema');
-const { tokenTypes } = require('../constants');
+const { TOKEN_TYPES } = require('../constants');
 const ApiError = require('../core/apiError');
 
 /**
@@ -83,12 +83,12 @@ const deleteByRefreshToken = async (refreshToken) => {
  */
 const generateAuthTokens = async (user) => {
   const accessTokenExpires = moment().add(1, 'minutes');
-  const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
+  const accessToken = generateToken(user.id, accessTokenExpires, TOKEN_TYPES.access);
 
-  const refreshTokenExpires = moment().add(5, 'minutes');
-  const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
+  const refreshTokenExpires = moment().add(1, 'hours');
+  const refreshToken = generateToken(user.id, refreshTokenExpires, TOKEN_TYPES.refresh);
 
-  await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
+  await saveToken(refreshToken, user.id, refreshTokenExpires, TOKEN_TYPES.refresh);
 
   return {
     access: {

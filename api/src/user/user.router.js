@@ -38,8 +38,9 @@ module.exports = router;
  *
  * @apisuccess {Array}    results
  * @apiSuccess {String}   .username
- * @apiSuccess {String}   .firstName
- * @apiSuccess {String}   .lastName
+ * @apiSuccess {Object}   .name
+ * @apiSuccess {String}   .name.firstName
+ * @apiSuccess {String}   .name.lastName
  * @apiSuccess {String}   .avatar
  * @apiSuccess {String}   .email
  * @apiSuccess {String}   .role
@@ -58,8 +59,10 @@ module.exports = router;
  *             {
  *                 "username": "vanngo",
  *                 "email": "ngotrongvan1999@gmail.com",
- *                 "firstName": "van",
- *                 "lastName": "ngo",
+ *                  "name": {
+ *                       "firstName": "van",
+ *                       "lastName": "ngo",
+ *                  }
  *                 "avatar": "string",
  *                 "role": "guest",
  *                 "createdAt": "2022-03-02T02:06:53.274Z",
@@ -101,7 +104,7 @@ module.exports = router;
  */
 
 /**
- * @api {put} /api/v1/users/:id 2. User detail
+ * @api {get} /api/v1/users/:id 2. User detail
  * @apiName User detail
  * @apiGroup User
  * @apiPermission admin, employee
@@ -118,8 +121,9 @@ module.exports = router;
  *
  * @apisuccess {Array}    results
  * @apiSuccess {String}   .username
- * @apiSuccess {String}   .firstName
- * @apiSuccess {String}   .lastName
+ * @apiSuccess {Object}   .name
+ * @apiSuccess {String}   .name.firstName
+ * @apiSuccess {String}   .name.lastName
  * @apiSuccess {String}   .avatar
  * @apiSuccess {String}   .email
  * @apiSuccess {String}   .role
@@ -138,8 +142,10 @@ module.exports = router;
  *             {
  *                 "username": "vanngo",
  *                 "email": "ngotrongvan1999@gmail.com",
- *                 "firstName": "van",
- *                 "lastName": "ngo",
+ *                 "name": {
+ *                      "firstName": "caca",
+ *                      "lastName": "guest",
+ *                 }
  *                 "avatar": "string",
  *                 "role": "guest",
  *                 "createdAt": "2022-03-02T02:06:53.274Z",
