@@ -2,7 +2,7 @@ const Joi = require('joi');
 const authValidation = require('../../src/auth/auth.validation');
 
 describe('test validation auth', () => {
-  it('should /login username/password is correct', async () => {
+  it('/login: should username/password is correct', async () => {
     Joi.assert(
       {
         username: 'minhtuan',
@@ -12,7 +12,7 @@ describe('test validation auth', () => {
     );
   });
 
-  it('should /register is correct', async () => {
+  it('/register: should is correct', async () => {
     Joi.assert(
       {
         username: 'minhtuan',
@@ -28,7 +28,7 @@ describe('test validation auth', () => {
     );
   });
 
-  it('should /logout: refreshToken is correct', async () => {
+  it('/logout: should refreshToken is correct', async () => {
     Joi.assert(
       {
         refreshToken: 'asdskwqjofqjf...',
@@ -37,7 +37,7 @@ describe('test validation auth', () => {
     );
   });
 
-  it('should /refresh-token: refreshToken is correct', async () => {
+  it('/refresh-token: should refreshToken is correct', async () => {
     Joi.assert(
       {
         refreshToken: 'asdskwqjofqjf...',
