@@ -4,8 +4,8 @@ const { toJSON, paginate } = require('./plugins');
 const { STAGES, CANDIDATE_STATUS } = require('../../../constants');
 
 const candidateSchema = new mongoose.Schema({
-  jobId: { required: true, type: mongoose.Types.ObjectId, ref: 'Job' },
-  interviewId: [{ required: true, type: mongoose.Types.ObjectId, ref: 'Interview' }],
+  jobId: { type: mongoose.Types.ObjectId, ref: 'Job' },
+  interviewId: [{ type: mongoose.Types.ObjectId, ref: 'Interview' }],
   status: {
     type: String,
     enum: [CANDIDATE_STATUS.reject, CANDIDATE_STATUS.open, CANDIDATE_STATUS.approve],
