@@ -20,17 +20,18 @@ import {
 import {
   EditOutlined,
   DeleteOutlined,
-  SettingOutlined,
-  MenuFoldOutlined,
   UserOutlined,
   MailOutlined,
   PhoneOutlined,
-  AlignRightOutlined,
 } from '@ant-design/icons';
 import { hasResponseError } from '../../utils/utils';
-import { UserDetail, generateColumns, UserEdit_Add } from './components';
+import { UserEdit_Add } from './components';
 import * as services from '../../services/employeeServices';
 import { toast } from 'react-toastify';
+import { selectUserInfor } from '../../redux/stores/auth/selectors';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 const { Meta } = Card;
 const { Search } = Input;
@@ -38,28 +39,12 @@ const { Option } = Select;
 
 function EmployeePage(props) {
   const [typeContent, setTypeContent] = useState(true);
-  const [visibleUser, setVisibleUser] = useState(false);
   const [visibleEditUser, setVisibleEditUser] = useState(false);
   const [user, setUser] = useState({});
   const [users, setUsers] = useState();
 
-  const showUserDetail = (id) => {
-    setVisibleUser(true);
-    services.getDetailUsersServices(id).then((res) => {
-      if (hasResponseError(res)) {
-        toast.error(`${res.data.message}`, {
-          autoClose: 3000,
-        });
-        return;
-      }
-      setUser(res.data);
-    });
-  };
-
-  const onCloseUser = () => {
-    setVisibleUser(false);
-  };
-
+  const { userAccount } = props;
+  console.log(userAccount);
   const showUserEdit = (id) => {
     setVisibleEditUser(true);
   };
@@ -76,21 +61,14 @@ function EmployeePage(props) {
     setTypeContent(!typeContent);
   };
 
-  const userColumns = useMemo(
-    () =>
-      generateColumns({
-        delteSt: handleDelete,
-        edit: editUser,
-      }),
-    [handleDelete, editUser]
-  );
-
   useEffect(() => {
     services.getAllUsersServices().then((res) => {
       if (hasResponseError(res)) {
+        toast.error(`${res.data.message}`);
         return;
       }
-      setUsers(res.data.results);
+      setUsers(res.data);
+      console.log(res);
     });
   }, []);
 
@@ -120,32 +98,13 @@ function EmployeePage(props) {
             enterButton
           />
         </Col>
-        <Col span={7} className="fr">
-          {typeContent ? (
-            <Pagination
-              simple
-              defaultCurrent={2}
-              total={50}
-              className="fr mt-4"
-            />
-          ) : (
-            ''
-          )}
-        </Col>
-        <Col span={1}>
-          <Tooltip
-            placement="bottomRight"
-            title={typeContent ? 'List view' : 'Title view'}
-            className="mt-4 fr"
-          >
-            <div onClick={handleTypeContent}>
-              {typeContent ? (
-                <MenuFoldOutlined className="fs-24" />
-              ) : (
-                <AlignRightOutlined className="fs-24" />
-              )}
-            </div>
-          </Tooltip>
+        <Col span={8} className="fr">
+          <Pagination
+            simple
+            defaultCurrent={2}
+            total={50}
+            className="fr mt-4"
+          />
         </Col>
       </Row>
       <div className="btn_add_employee">
@@ -153,23 +112,27 @@ function EmployeePage(props) {
           Add Employee
         </Button>
       </div>
-      {typeContent ? (
-        <div className="employee_content">
+      <div className="employee_content mt-16">
+        <Row gutter={16}>
           {users &&
-            users.map((item) => (
-              <Card
-                style={{ width: 270, margin: 10 }}
-                actions={[
-                  <EditOutlined
-                    key="edit"
-                    onClick={() => showUserEdit(item.id)}
-                  />,
-                  <DeleteOutlined key="delete" />,
-                ]}
-                hoverable="true"
+            users?.results.map((item) => (
+              <Col
+                md={{ span: 8 }}
+                xl={{ span: 6 }}
+                xxl={{ span: 4 }}
                 key={item.id}
               >
-                <div onClick={() => showUserDetail(item.id)}>
+                <Card
+                  style={{ width: '100%' }}
+                  actions={[
+                    <EditOutlined
+                      key="edit"
+                      onClick={() => showUserEdit(item.id)}
+                    />,
+                    <DeleteOutlined key="delete" />,
+                  ]}
+                  hoverable="true"
+                >
                   <Meta
                     avatar={
                       !item.avatar ? (
@@ -193,14 +156,11 @@ function EmployeePage(props) {
                     <PhoneOutlined />
                   </p>
                   <span>0795148134</span>
-                </div>
-              </Card>
+                </Card>
+              </Col>
             ))}
-        </div>
-      ) : (
-        <Table columns={userColumns} dataSource={users} className="mt-16" />
-      )}
-      <UserDetail visible={visibleUser} onclose={onCloseUser} user={user} />
+        </Row>
+      </div>
       <UserEdit_Add
         visible={visibleEditUser}
         onclose={onCloseEditUser}
@@ -209,5 +169,7 @@ function EmployeePage(props) {
     </>
   );
 }
-
-export default EmployeePage;
+const mapStateToProps = createStructuredSelector({
+  userAccount: selectUserInfor,
+});
+export default connect(mapStateToProps)(EmployeePage);

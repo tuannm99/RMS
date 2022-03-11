@@ -48,7 +48,7 @@
     "eslint-plugin-security": "^1.4.0",
     "jest": "^27.5.1",
     "lint-staged": "^11.0.0",
-    "mongodb-memory-server": "^8.3.0",
+    "mongodb-memory-server": "^8.4.0",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "supertest": "^6.2.2"

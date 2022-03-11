@@ -238,8 +238,8 @@ function UserEdit_Add({ onclose, visible, user }) {
           </Col>
           <Col span={12}>
             <Form.Item
-              name="Department"
-              label="Phone"
+              name="responsibilities"
+              label="Responsibilities"
               rules={[{ required: true, message: 'Please enter user name' }]}
             >
               <Input placeholder="Please enter user name" />
@@ -247,6 +247,15 @@ function UserEdit_Add({ onclose, visible, user }) {
           </Col>
         </Row>
         <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              name="department"
+              label="Department"
+              rules={[{ required: true, message: 'Please enter user name' }]}
+            >
+              <Input placeholder="Please enter user name" />
+            </Form.Item>
+          </Col>
           <Col span={24}>
             <Form.Item
               name="skill"

@@ -44,8 +44,8 @@ function ProfilePage(props) {
         <Divider orientation="left">Personal</Divider>
         <Row className="pl-16">
           <Col span={12}>
-            <p className="profile-inf-title-detail">Gender</p>
-            <p className="profile-inf-content-detail">Male</p>
+            <p className="profile-inf-title-detail">Name</p>
+            <p className="profile-inf-content-detail">Ngô Trọng Văn</p>
           </Col>
           <Col span={12}>
             <p className="profile-inf-title-detail">Date of Birth</p>
@@ -58,13 +58,12 @@ function ProfilePage(props) {
             </p>
           </Col>
           <Col span={12}>
-            <p className="profile-inf-title-detail">Marital Status</p>
-            <p className="profile-inf-content-detail">-</p>
+            <p className="profile-inf-title-detail">Role</p>
+            <p className="profile-inf-content-detail">Admin</p>
           </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Languages</p>
-            <p className="profile-inf-content-detail">-</p>
-          </Col>
+        </Row>
+        <Divider orientation="left">Contact</Divider>
+        <Row className="pl-16">
           <Col span={12}>
             <p className="profile-inf-title-detail">Mail</p>
             <p className="profile-inf-content-detail">
@@ -75,40 +74,28 @@ function ProfilePage(props) {
             <p className="profile-inf-title-detail">Phone</p>
             <p className="profile-inf-content-detail">01928374623</p>
           </Col>
+          <Col span={12}>
+            <p className="profile-inf-title-detail">Facebook</p>
+            <p className="profile-inf-content-detail">dqdqdqdqdqqdq</p>
+          </Col>
         </Row>
-        <Divider orientation="left">Job</Divider>
+        <Divider orientation="left">Company</Divider>
         <Row className="pl-16">
           <Col span={12}>
-            <p className="profile-inf-title-detail">Employee Id</p>
-            <p className="profile-inf-content-detail">E001</p>
+            <p className="profile-inf-title-detail">Position</p>
+            <p className="profile-inf-content-detail">leader</p>
           </Col>
           <Col span={12}>
-            <p className="profile-inf-title-detail">Employee Status</p>
-            <p className="profile-inf-content-detail">Active</p>
-          </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Date Of Joining</p>
-            <p className="profile-inf-content-detail">Feb-11-2022</p>
-          </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Employee Type</p>
-            <p className="profile-inf-content-detail">Full Time</p>
+            <p className="profile-inf-title-detail">Responsibilities</p>
+            <p className="profile-inf-content-detail">Coding</p>
           </Col>
           <Col span={12}>
             <p className="profile-inf-title-detail">Department</p>
-            <p className="profile-inf-content-detail">Administration</p>
+            <p className="profile-inf-content-detail">Xtech</p>
           </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Designation or Title</p>
-            <p className="profile-inf-content-detail">-</p>
-          </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Primary Team</p>
-            <p className="profile-inf-content-detail">Business</p>
-          </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Level</p>
-            <p className="profile-inf-content-detail">-</p>
+          <Col span={24}>
+            <p className="profile-inf-title-detail">Skill</p>
+            <p className="profile-inf-content-detail">01928374623</p>
           </Col>
         </Row>
       </Col>

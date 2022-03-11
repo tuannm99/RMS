@@ -33,6 +33,7 @@ function* sendLoginRequest({ payload, resolve }) {
       });
       return;
     }
+
     resolve(response.data.user);
     yield put(saveDataLogin(response.data));
     yield put(setLoading(false));
