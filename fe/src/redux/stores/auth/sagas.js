@@ -19,7 +19,7 @@ import {
 import { CloseOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 
-function* sendLoginRequest({ payload }) {
+function* sendLoginRequest({ payload, resolve }) {
   try {
     yield put(setLoading(true));
     const response = yield call(loginRequestService, payload);
@@ -33,8 +33,8 @@ function* sendLoginRequest({ payload }) {
       });
       return;
     }
+    resolve(response.data.user);
     yield put(saveDataLogin(response.data));
-    window.location.href = '/';
     yield put(setLoading(false));
   } catch (error) {
     console.log(error);

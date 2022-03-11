@@ -34,12 +34,14 @@ const userSchema = mongoose.Schema({
       }
     },
   },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-  name: {
-    firstName: { type: String },
-    lastName: { type: String },
-  },
+  firstName: { type: String },
+  lastName: { type: String },
+  middleName: { type: String },
+  phone: { type: Number },
+  fullName: { type: String },
+  dateOfBirth: { type: Date },
+  languages: { type: String },
+  matefialStatus: { type: String },
   avatar: {
     mimetype: String,
     originalname: String,
@@ -54,6 +56,17 @@ const userSchema = mongoose.Schema({
     enum: [ROLES.employee, ROLES.hiringManager, ROLES.admin, ROLES.guest],
     default: ROLES.employee,
   },
+  jobStatus: {
+    employeeId: { type: String, unique: true },
+    employeeStatus: { type: String },
+    employeeType: { type: String },
+    dateOfJoining: { type: Date, default: Date.now },
+    department: { type: String },
+    primaryTeam: { type: String },
+    level: { type: String },
+  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 userSchema.plugin(toJSON);

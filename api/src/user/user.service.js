@@ -1,5 +1,8 @@
 const httpStatus = require('http-status');
+const jwt = require('jsonwebtoken');
+
 const ApiError = require('../core/apiError');
+const config = require('../core/config');
 const { User } = require('../core/db/schema');
 
 /**
@@ -14,6 +17,9 @@ const createUser = async (userBody) => {
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
+  // generate employeeId
+  const countUser = await User.find({}).count();
+  userBody.jobStatus = { employeeId: `EPL${countUser}` };
   return User.create(userBody);
 };
 
@@ -29,6 +35,18 @@ const getUserByUsername = async (username) => {
 };
 
 /**
+ * Get Id from token
+ * @param {string} authorization
+ * @returns {Promise<string>} userId
+ */
+const getUserIdFromHeaderToken = async (authorization) => {
+  // remove "Bearer "
+  const token = authorization.substring(7, authorization.length);
+  const payload = jwt.verify(token, config.jwt.secret);
+  return payload.sub;
+};
+
+/**
  * Query for users
  * @param {Object} filter - Mongo filter
  * @param {Object} options - Query options
@@ -38,8 +56,8 @@ const getUserByUsername = async (username) => {
  * @returns {Promise<QueryResult>}
  */
 const getUsers = async (filter, options) => {
-  // // search contains by username
-  // filter.username = { $regex: filter.username, $options: 'i' };
+  // // search contains by name
+  filter.fullname = { $regex: filter.username, $options: 'i' };
   const users = await User.paginate(filter, options);
   return users;
 };
@@ -52,6 +70,7 @@ const getUsers = async (filter, options) => {
 const getUserById = async (id) => {
   const user = await User.findById(id);
   if (!user) throw new ApiError(httpStatus.BAD_REQUEST, 'User not found');
+  user.name = { firstName: user.firstName, lastName: user.lastName };
   return user;
 };
 
@@ -103,4 +122,5 @@ module.exports = {
   getUsers,
   getUserById,
   getUserByUsername,
+  getUserIdFromHeaderToken,
 };
