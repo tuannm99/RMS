@@ -9,7 +9,14 @@ const interviewSchema = new mongoose.Schema({
     overallRecommendation: {
       required: true,
       type: String,
-      enum: [FEEDBACK.hire, FEEDBACK.noHire, FEEDBACK.strongHire, FEEDBACK.strongNoHire],
+      enum: [
+        FEEDBACK.hire,
+        FEEDBACK.noHire,
+        FEEDBACK.strongHire,
+        FEEDBACK.strongNoHire,
+        FEEDBACK.notYet,
+      ],
+      default: [FEEDBACK.notYet],
     },
     rate: { type: Number, enum: [0, 1, 2, 3, 4, 5] }, // 0 -> 5 star
     commemt: { type: String },

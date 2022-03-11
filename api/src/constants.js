@@ -41,6 +41,7 @@ const FEEDBACK = {
   hire: 'hire',
   noHire: 'noHire',
   strongNoHire: 'strongNoHire',
+  notYet: 'notYet',
 };
 
 // Event for async task

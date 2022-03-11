@@ -7,10 +7,20 @@ const { pick } = require('../core/utils');
 const userService = require('./user.service');
 
 /**
+ * create user
+ * @param {string} req
+ * @param {string} res
+ */
+const createUserHandler = catchAsync(async (req, res) => {
+  const result = await userService.createUser();
+  res.status(httpStatus.OK).json(result);
+});
+/**
  * get all user
  * @param {string} req
  * @param {string} res
  */
+
 const getAllUsersHandler = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['username', 'rtoken', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
@@ -64,6 +74,7 @@ const deleteUserHandler = catchAsync(async (req, res) => {
 });
 
 module.exports = {
+  createUserHandler,
   getAllUsersHandler,
   getUserHandler,
   updateUserHandler,
