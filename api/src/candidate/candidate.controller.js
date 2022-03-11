@@ -8,7 +8,7 @@ const candidateService = require('./candidate.service');
  * @param {object} req
  * @param {object} res
  */
-const addCandidatePosting = catchAsync(async (req, res) => {
+const addCandidate = catchAsync(async (req, res) => {
   const candidatePosting = await candidateService.createCandidate(req.body);
   res.status(httpStatus.OK).json(candidatePosting);
 });
@@ -54,7 +54,7 @@ const deleteCandidatePosting = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-  addCandidatePosting,
+  addCandidate,
   getAllCandidate,
   getCandidate,
   editCandidatePosting,
