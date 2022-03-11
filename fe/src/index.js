@@ -3,19 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import createSagaMiddleware from 'redux-saga';
 import sagas from './redux/sagas';
-import reducers from './redux/reducers';
+import { store, persistor, sagaMiddleware } from './utils/configureStore';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducers(), {}, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(sagas);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
