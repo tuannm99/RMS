@@ -4,6 +4,8 @@ const { checkAuth } = require('../core/global.middleware');
 const { ROLES } = require('../constants');
 const userController = require('./user.controller');
 
+const { upload } = require('../core/multer');
+
 // router
 const router = express.Router();
 
@@ -17,6 +19,12 @@ router.put(
   '/:id',
   checkAuth(ROLES.admin, ROLES.employee, ROLES.hiringManager),
   userController.updateUserHandler
+);
+router.put(
+  '/:id/avatar',
+  checkAuth(),
+  upload.single('avatar'),
+  userController.updateUserAvatarHandler
 );
 router.delete('/:id', checkAuth(ROLES.admin), userController.deleteUserHandler);
 
@@ -41,7 +49,6 @@ module.exports = router;
  * @apiSuccess {Object}   .name
  * @apiSuccess {String}   .name.firstName
  * @apiSuccess {String}   .name.lastName
- * @apiSuccess {String}   .avatar
  * @apiSuccess {String}   .email
  * @apiSuccess {String}   .role
  * @apisuccess {Date}     .createdAt
@@ -63,7 +70,6 @@ module.exports = router;
  *                       "firstName": "van",
  *                       "lastName": "ngo",
  *                  }
- *                 "avatar": "string",
  *                 "role": "guest",
  *                 "createdAt": "2022-03-02T02:06:53.274Z",
  *                 "updatedAt": "2022-03-02T02:06:53.275Z",
@@ -179,22 +185,17 @@ module.exports = router;
  * @apiHeader {String} Content-Type application/json
  * @apiHeader {String} Authorization Bearer Token.....
  *
- * @apiParam (Param) {String} id
+ * @apiParam (Param) {String} id   An user id
  *
- * @apiParam (Body) {String} username
  * @apiParam (Body) {String} email
  * @apiParam (Body) {String} firstName
  * @apiParam (Body) {String} lastName
- * @apiParam (Body) {String} avatar
- * @apiParam (Body) {String} role
  * @apiParamExample (Body) {json} Body-Example:
  *    {
- *        "username": "vanngo1",
  *        "email": "vannthe1301642@fpt.edu.vn",
  *        "firstName": "van",
  *        "lastName": "ngo",
- *        "avatar": "string",
- *        "role": "admin"
+ *        ...
  *    }
  *
  * @apiSuccess {String}     username
@@ -240,10 +241,47 @@ module.exports = router;
  */
 
 /**
- * @api {delete} /api/v1/user/:id 3. Delete user by id
+ * @api {put} /api/v1/users/:id/avatar 4. Edit user avatar by id
+ * @apiName edit user avatar
+ * @apiGroup User
+ * @apiPermission admin, employee
+ *
+ * @apiHeader {String} Content-Type multipart/form-data
+ * @apiHeader {String} Authorization Bearer Token.....
+ *
+ * @apiParam (Param) {String} id   An user id
+ *
+ * @apiParam (Form) {File} avatar  Send image
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *     }
+ *
+ * @apiError NotFound User not found
+ * @apiError NotFound User not found
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "code": 400,
+ *       "message": "User not found",
+ *       "stack": ".......",
+ *     }
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "code": 400,
+ *       "message": "User not found",
+ *       "stack": ".......",
+ *     }
+ */
+
+/**
+ * @api {delete} /api/v1/user/:id 5. Delete user by id
  * @apiName delete user by id
  * @apiGroup User
- * @apiPermission admin, hiringManager
+ * @apiPermission admin
  *
  * @apiHeader {String} Content-Type application/json
  * @apiHeader {String} Authorization Bearer Token.....

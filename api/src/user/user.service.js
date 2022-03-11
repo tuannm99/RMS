@@ -63,13 +63,23 @@ const getUserById = async (id) => {
  */
 const updateUserById = async (userId, updateBody) => {
   const user = await getUserById(userId);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-  }
   if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
   Object.assign(user, updateBody);
+  await user.save();
+  return user;
+};
+
+/**
+ * Update user avatar by id
+ * @param {ObjectId} userId
+ * @param {Object} avatar
+ * @returns {Promise<User>}
+ */
+const updateUserAvatarById = async (userId, avatar) => {
+  const user = await getUserById(userId);
+  Object.assign(user, { avatar });
   await user.save();
   return user;
 };
@@ -81,9 +91,6 @@ const updateUserById = async (userId, updateBody) => {
  */
 const deleteUserById = async (userId) => {
   const user = await getUserById(userId);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-  }
   await user.remove();
   return user;
 };
@@ -92,6 +99,7 @@ module.exports = {
   createUser,
   deleteUserById,
   updateUserById,
+  updateUserAvatarById,
   getUsers,
   getUserById,
   getUserByUsername,
