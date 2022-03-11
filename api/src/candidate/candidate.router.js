@@ -4,8 +4,8 @@ const candidateController = require('./candidate.controller');
 router.get('/', candidateController.getAllCandidate);
 router.get('/:id', candidateController.getCandidate);
 router.post('/', candidateController.addCandidate);
-router.put('/:id', candidateController.editCandidatePosting);
-router.delete('/:id', candidateController.deleteCandidatePosting);
+router.put('/:id', candidateController.editCandidate);
+router.delete('/:id', candidateController.deleteCandidate);
 
 module.exports = router;
 
