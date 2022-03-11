@@ -25,12 +25,16 @@ const closeDatabase = async () => {
  * Delete db collections
  */
 const clearDatabase = async () => {
-  const { collections } = mongoose.connection;
+  const { db } = mongoose.connection;
+  // Get all collections
+  const collections = await db.listCollections().toArray();
 
-  for (const key in collections) {
-    const collection = collections[key];
-    await collection.deleteMany({});
-  }
+  // Create an array of collection names and drop each collection
+  collections
+    .map((collection) => collection.name)
+    .forEach(async (collectionName) => {
+      db.dropCollection(collectionName);
+    });
 };
 
 module.exports = { connect, closeDatabase, clearDatabase };
