@@ -61,6 +61,10 @@ function EmployeePage(props) {
     setTypeContent(!typeContent);
   };
 
+  const base64String = (previewImg) => {
+    return window.btoa(String.fromCharCode(...new Uint8Array(previewImg)));
+  };
+
   useEffect(() => {
     services.getAllUsersServices().then((res) => {
       if (hasResponseError(res)) {
@@ -138,7 +142,12 @@ function EmployeePage(props) {
                       !item.avatar ? (
                         <Avatar size={64} icon={<UserOutlined />} />
                       ) : (
-                        <Avatar size={64} src={item.avatar} />
+                        <Avatar
+                          size={64}
+                          src={`data:image/png;base64,${base64String(
+                            item?.avatar?.imageBuffer?.data
+                          )}`}
+                        />
                       )
                     }
                     title={

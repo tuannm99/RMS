@@ -25,8 +25,10 @@ const getAllJob = async () => {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such job found');
   }
   const newListJob = listJob.map((job) => {
-    job.candidateCount = job.candidateId.length;
-    return job.candidateCount;
+    return {
+      ...job.toJSON(),
+      candidateCount: job.candidateId.length,
+    };
   });
   return newListJob;
 };
