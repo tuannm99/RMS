@@ -6,7 +6,7 @@ COPY /fe/package-lock.json ./
 
 RUN npm install
 
-COPY /ui/. ./
+COPY /fe/. ./
 
 RUN npm run build
 
