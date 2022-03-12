@@ -1,0 +1,71 @@
+.DetailJob-Content-center {
+  width: 67%;
+  height: 700px;
+  float: left;
+  padding-left: 30px;
+  padding-right: 20px;
+  background-color: white;
+}
+.DetailJob-head h5 {
+  padding-top: 15px;
+  line-height: 40px;
+}
+.DetailJob-head h5,
+.DetailJob-content-right h5,
+.DetailJob-container h5 {
+  font-size: 16px;
+}
+.DetailJob-content-right h5 {
+  line-height: 3px;
+  padding-bottom: 35px;
+}
+.DetailJob-head {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+}
+.DetailJob-container h5 {
+  padding-top: 20px;
+}
+.DetailJob-content-right {
+  width: 30%;
+  height: 700px;
+  display: block;
+  float: right;
+  background-color: white;
+}
+.DetailJob-content-right h1 {
+  padding-top: 25px;
+  padding-bottom: 20px;
+  font-weight: 700;
+}
+.DetailJob-content-right h1,
+.DetailJob-content-right h5,
+.DetailJob-content-right p {
+  padding-left: 30px;
+}
+.DetailJob-content-right p {
+  color: rgb(97, 96, 96);
+}
+.detailJob-create {
+  padding: 30px;
+  text-align: center;
+  background-color: #dfe3e7;
+  margin-top: 116px;
+}
+.detailJob-header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  cursor: pointer;
+}
+.Detail-id {
+  display: none;
+}
+.recruit-modal-salary {
+  display: flex;
+  width: 60%;
+}
+.recruit-modal-iconRight {
+  padding-top: 4px;
+  padding-right: 48px;
+}

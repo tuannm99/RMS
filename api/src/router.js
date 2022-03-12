@@ -1,8 +1,13 @@
-import { Router } from 'express';
-import authRouter from './auth/controllers.js';
+const router = require('express').Router();
 
-const router = Router();
+const authRouter = require('./auth/auth.router');
+const jobRouter = require('./job/job.router');
+const userRouter = require('./user/user.router');
+const candidateRouter = require('./candidate/candidate.router');
 
 router.use('/auth', authRouter);
+router.use('/jobs', jobRouter);
+router.use('/users', userRouter);
+router.use('/candidates', candidateRouter);
 
-export default router;
+module.exports = router;

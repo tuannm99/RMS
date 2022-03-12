@@ -1,24 +1,16 @@
 // load env
-import 'dotenv/config';
+require('dotenv').config();
 
-import express from 'express';
-import helmet from 'helmet';
-import cors from 'cors';
-import morgan from 'morgan';
+const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
 
-// db
-import connectDatabase from './core/db/db.config.js';
-import passport from './auth/passport/index.js';
-import envConf from './core/config/index.js';
-import router from './router.js';
+const morgan = require('./core/morganConfig');
+const router = require('./router');
+const passport = require('./auth/passport');
+const { initializeEvent } = require('./events');
 
-/**
- * routing config
- * @param app - express instance
- */
-const routerMiddleware = (app) => {
-  app.use('/api/v1', router);
-};
+const { errorConverter, errorHandler } = require('./core/global.middleware');
 
 /**
  * middleware config
@@ -26,14 +18,25 @@ const routerMiddleware = (app) => {
  */
 const middleware = (app) => {
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(helmet());
-  app.use(morgan('combined'));
+  app.use('/uploads', express.static('uploads'));
+  app.use(morgan.successHandler);
+  app.use(morgan.errorHandler);
 
   // this middleware should not config like this in production
   app.use(cors({ origin: '*' }));
 
   // passport
   app.use(passport.initialize());
+
+  // router
+  app.use('/api/v1', router);
+
+  // convert error to ApiError, if needed
+  app.use(errorConverter);
+  // handle error
+  app.use(errorHandler);
 };
 
 /**
@@ -45,20 +48,16 @@ const bootstrap = () => {
 
   // use middleware
   middleware(app);
-  routerMiddleware(app);
+
+  // event
+  initializeEvent();
 
   // default route
-  app.get('/', (req, res) => {
-    res.send({ msg: 'hello world!' });
+  app.get('/health-check', (req, res) => {
+    res.send({ msg: 'ok' });
   });
+
   return app;
 };
 
-connectDatabase();
-
-const port = envConf.node_port || 5000;
-
-// running
-bootstrap().listen(port, () => {
-  console.log(`app running on port ${port}`);
-});
+module.exports = bootstrap;

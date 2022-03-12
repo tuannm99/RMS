@@ -1,0 +1,12 @@
+node_modules
+public/images/*
+uploads
+
+Dockerfile
+docker-compose.yml
+
+.docker
+.env
+.dockerignore
+
+npm-debug.log

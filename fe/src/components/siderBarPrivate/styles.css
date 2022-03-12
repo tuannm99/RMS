@@ -1,0 +1,15 @@
+.logo > a > img {
+  width: 32px;
+  height: 32px;
+  margin: 0 16px;
+}
+.logo {
+  padding: 16px 0;
+}
+.logo > a {
+  display: flex;
+  width: 100%;
+}
+.logo > a > p {
+  color: rgb(32, 194, 18);
+}

@@ -1,0 +1,79 @@
+@startuml auth class diagram
+!theme materia-outline
+
+skinparam classAttributeIconSize 0
+class auth.controller{
+  - {field} authService: object
+  - {field} tokenService: object
+  - {field} userService: object
+
+  + {method} registerHandler(req: express.Request, res: express.Response): void
+  + {method} loginHandler(req: express.Request, res: express.Response): void
+  + {method} logoutHandler(req: express.Request, res: express.Response): void
+  + {method} forgotPassHandler(req: express.Request, res: express.Response): void
+  + {method} refreshTokenHandler(req: express.Request, res: express.Response): void
+}
+
+class auth.service{
+  + {method} loginByUsernamePassword(username: string, password:string): void
+  + {method} logout(refreshToken: string): void
+  + {method} refreshAuth(refreshToken: string): void
+}
+
+class auth.router{
+  + {field} router: express.Router
+}
+
+class auth.validation{
+  + {method} loginDto: object
+  + {method} registerDto: object
+  + {method} logoutDto: object
+  + {method} refreshTokenDto: object
+}
+
+' class user.controller{
+'   + getAllUsersHandler(req, res): void
+'   + getUserHandler(req, res): void
+'   + updateUserHandler(req, res): void
+'   + deleteUserHandler(req, res): void
+' }
+
+' class user.router{
+'   + router: express.Router()
+' }
+
+class user.service{
+  + {method} createUser(userBody: object): void
+  + {method} getUserByUsername(username: string): void
+  + {method} getUsers(filter: object, options: object): void
+  + {method} getUserById(id: string): void
+  + {method} updateUserById(userId: string, updateBody: object): void
+  + {method} deleteUserById(userId: string): void
+}
+
+class token.service{
+  + {method} generateToken(userId: string, expires: Moment, type: string, secret: string): void
+  + {method} saveToken(token: string, userId: string, expires: Moment, type: string, blacklisted: boolean): void
+  + {method} verifyToken(token: string, type: string): void
+  + {method} deleteByRefreshToken(refreshToken: string): void
+  + {method} generateAuthTokens(user: object): void
+}
+
+class schema.Token {
+
+}
+
+class schema.User {
+
+}
+
+auth.router ..> auth.validation
+auth.controller ..> auth.service
+auth.router ..>	 auth.controller
+auth.service ..> user.service
+auth.service ..> token.service
+auth.controller ..> user.service
+auth.controller ..> token.service
+user.service ..> schema.User
+token.service ..> schema.Token
+@enduml
