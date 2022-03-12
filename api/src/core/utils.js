@@ -13,3 +13,17 @@ exports.pick = (object, keys) => {
     return obj;
   }, {});
 };
+
+/**
+ * Create an object that removed keys properties
+ * @param {Object} object
+ * @param {string[]} keys
+ * @returns {Object}
+ */
+exports.omit = (object, keys) => {
+  const result = { ...object };
+  keys.forEach((key) => {
+    delete result[key];
+  });
+  return result;
+};
