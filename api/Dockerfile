@@ -8,7 +8,7 @@ ENV NODE_ENV=development \
     MONGO_DB_NAME=RMS \
     MONGO_DB_TEST=RMS_TEST
 
-COPY package*.json ./
+COPY /api/package*.json ./
 
 RUN npm install
 
