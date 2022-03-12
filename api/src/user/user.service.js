@@ -56,8 +56,9 @@ const getUserIdFromHeaderToken = async (authorization) => {
  * @returns {Promise<QueryResult>}
  */
 const getUsers = async (filter, options) => {
-  // // search contains by name
-  filter.fullname = { $regex: filter.username, $options: 'i' };
+  // TODO: Need refactor
+  // // search contains by full name
+  filter.fullName = { $regex: `${filter.fullName ? filter.fullName : ''}`, $options: 'i' };
   const users = await User.paginate(filter, options);
   return users;
 };

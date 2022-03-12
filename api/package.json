@@ -12,7 +12,7 @@
     "prettier": "prettier --check **/*.js",
     "prettier:fix": "prettier --write **/*.js",
     "test": "jest",
-    "test:dh": "jest --detectOpenHandles"
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": "",
