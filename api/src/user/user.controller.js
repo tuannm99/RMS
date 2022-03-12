@@ -22,7 +22,8 @@ const createUserHandler = catchAsync(async (req, res) => {
  */
 
 const getAllUsersHandler = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['username', 'rtoken', 'role']);
+  // TODO: Need refactor
+  const filter = pick(req.query, ['username', 'fullName', 'rtoken', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await userService.getUsers(filter, options);
   res.status(httpStatus.OK).json(result);

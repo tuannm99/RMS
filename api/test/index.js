@@ -1,3 +1,5 @@
+process.env.SECRET = 'super-secrect-token';
+
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
