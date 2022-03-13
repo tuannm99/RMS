@@ -1,6 +1,7 @@
 node_modules
 public/images/*
 uploads
+coverage
 
 Dockerfile
 docker-compose.yml

@@ -3,5 +3,6 @@
 /coverage
 /dist
 /uploads
+/coverage
 
 .env

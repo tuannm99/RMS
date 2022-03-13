@@ -41,7 +41,7 @@ const userSchema = mongoose.Schema({
   fullName: { type: String },
   dateOfBirth: { type: Date },
   languages: { type: String },
-  matefialStatus: { type: String },
+  materialStatus: { type: String },
   avatar: {
     mimetype: String,
     originalname: String,

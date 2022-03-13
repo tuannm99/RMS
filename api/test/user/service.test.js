@@ -53,14 +53,16 @@ describe('user service', () => {
       expect(userMock.username).toEqual(user.username);
       expect(userMock.password).not.toBe(user.password);
 
-      await expect(() => userService.createUser(userMock)).rejects.toThrow();
+      await expect(() => userService.createUser(userMock)).rejects.toThrow(
+        'Username already taken'
+      );
     });
 
     it('should it duplicate email', async () => {
       const newUser = { ...userMock };
       newUser.username = 'another name';
-      await userService.createUser(userMock);
-      await expect(() => userService.createUser(userMock)).rejects.toThrow();
+      await userService.createUser(newUser);
+      await expect(() => userService.createUser(userMock)).rejects.toThrow('Email already taken');
     });
   });
 
@@ -74,7 +76,9 @@ describe('user service', () => {
     });
 
     it('should it not found', async () => {
-      await expect(() => userService.getUserByUsername(userMock.username)).rejects.toThrow();
+      await expect(() => userService.getUserByUsername(userMock.username)).rejects.toThrow(
+        'User not found'
+      );
     });
   });
 
@@ -113,11 +117,13 @@ describe('user service', () => {
   });
 
   describe('getUserById', () => {
-    it('should it get empty array', async () => {
-      await expect(() => userService.getUserById('622c8059d674306365aef32e')).rejects.toThrow();
+    it('should it get user not found', async () => {
+      await expect(() => userService.getUserById('622c8059d674306365aef32e')).rejects.toThrow(
+        'User not found'
+      );
     });
 
-    it('should it get all user', async () => {
+    it('should it get user', async () => {
       const userCreated = await userService.createUser(userMock);
       const user = await userService.getUserById(userCreated._id);
 
