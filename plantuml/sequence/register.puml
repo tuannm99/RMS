@@ -1,5 +1,5 @@
 @startuml regsiterSequence
-!theme mars
+!theme reddress-lightblue
 
 autonumber 1.1
 actor User
@@ -10,7 +10,7 @@ database Mongodb
 
 User -> authController: registerHandler()
 activate authController
-authController -> authController: validateDto
+authController -> authController: validate
 authController ->> userService: createUser()
 activate userService
 userService -> userService: validateEmail/User()

@@ -1,5 +1,5 @@
-@startuml auth class diagram
-!theme materia-outline
+@startuml authClass
+!theme reddress-lightblue
 
 skinparam classAttributeIconSize 0
 class auth.controller{
