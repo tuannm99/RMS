@@ -54,41 +54,73 @@ module.exports = router;
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *         "results": [
- *             {
- *                 "username": "vanngo",
- *                 "email": "ngotrongvan1999@gmail.com",
- *                  "name": {
- *                       "firstName": "van",
- *                       "lastName": "ngo",
- *                  }
- *                 "role": "guest",
- *                 "createdAt": "2022-03-02T02:06:53.274Z",
- *                 "updatedAt": "2022-03-02T02:06:53.275Z",
- *                 "id": "621ed13dfa3a15dc62ebce1c"
- *             },
- *             {
- *                 "username": "minhtuan",
- *                 "email": "minhtuan99d@gmail.com",
- *                 "role": "admin",
- *                 "createdAt": "2022-03-02T07:28:43.644Z",
- *                 "updatedAt": "2022-03-02T07:28:43.644Z",
- *                 "id": "621f1cabfa3a15dc62ebce2b"
- *             },
- *             {
- *                 "username": "minhtuan2",
- *                 "email": "minhtuan99ds@gmail.com",
- *                 "role": "employee",
- *                 "createdAt": "2022-03-02T07:28:54.708Z",
- *                 "updatedAt": "2022-03-02T07:28:54.708Z",
- *                 "id": "621f1cb6fa3a15dc62ebce31"
- *             }
- *         ],
- *         "page": 1,
- *         "limit": 10,
- *         "totalPages": 1,
- *         "totalResults": 3
- *     }
+ *          "results": [
+ *              {
+ *                  "jobStatus": {
+ *                      "employeeId": "EPL3",
+ *                      "dateOfJoining": "2022-03-11T09:26:47.812Z"
+ *                  },
+ *                  "username": "admin123456666",
+ *                  "email": "admin1234567@gmail.com",
+ *                  "firstName": "Pham",
+ *                  "lastName": "Tuan",
+ *                  "middleName": "Son",
+ *                  "phone": 368641111,
+ *                  "fullName": "Pham Tuan Son",
+ *                  "dateOfBirth": null,
+ *                  "languages": "",
+ *                  "matefialStatus": "",
+ *                  "role": "employee",
+ *                  "createdAt": "2022-03-11T09:26:47.813Z",
+ *                  "updatedAt": "2022-03-11T09:26:47.813Z",
+ *                  "id": "622b15d7df70aeb1b2e079ee"
+ *              },
+ *              {
+ *                  "jobStatus": {
+ *                      "employeeId": "EPL4",
+ *                      "dateOfJoining": "2022-03-11T09:38:07.232Z"
+ *                  },
+ *                  "username": "admin123",
+ *                  "email": "admin123@gmail.com",
+ *                  "firstName": "Pham",
+ *                  "lastName": "Tuan",
+ *                  "middleName": "Son",
+ *                  "phone": 368641111,
+ *                  "fullName": "Pham Tuan Son",
+ *                  "dateOfBirth": null,
+ *                  "languages": "",
+ *                  "matefialStatus": "",
+ *                  "role": "admin",
+ *                  "createdAt": "2022-03-11T09:38:07.232Z",
+ *                  "updatedAt": "2022-03-11T09:38:07.232Z",
+ *                  "id": "622b187fdf70aeb1b2e07a1b"
+ *              },
+ *              {
+ *                  "jobStatus": {
+ *                      "employeeId": "EPL5",
+ *                      "dateOfJoining": "2022-03-11T17:00:19.533Z"
+ *                  },
+ *                  "username": "hm12345",
+ *                  "email": "admin12345@gmail.com",
+ *                  "firstName": "Pham",
+ *                  "lastName": "Tuan",
+ *                  "middleName": "Son",
+ *                  "phone": 368641111,
+ *                  "fullName": "Pham Tuan Son",
+ *                  "dateOfBirth": null,
+ *                  "languages": "",
+ *                  "matefialStatus": "",
+ *                  "role": "hiringManager",
+ *                  "createdAt": "2022-03-11T17:00:19.533Z",
+ *                  "updatedAt": "2022-03-11T17:00:19.533Z",
+ *                  "id": "622b802354aef25d31c389f2"
+ *              }
+ *          ],
+ *          "page": 1,
+ *          "limit": 10,
+ *          "totalPages": 1,
+ *          "totalResults": 3
+ *      }
  *
  * @apiError NotFound User not found.
  *
@@ -110,10 +142,6 @@ module.exports = router;
  * @apiHeader {String} Content-Type application/json
  * @apiHeader {String} Authorization Bearer Token.....
  *
- * @apiQuery {String} [username] search name (match all not contain)
- * @apiQuery {Number} [limit=10] limit the number of return data
- * @apiQuery {Number} [page=1]   choosing page
- * @apiQuery {String} [sortBy="createdAt:asc"] sort by any field of the return collection, Ex:<span> createdAt:asc|createdAt:desc </span>
  *
  * @apiParam (Param) {String} id
  *
@@ -136,26 +164,25 @@ module.exports = router;
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *         "results": [
- *             {
- *                 "username": "vanngo",
- *                 "email": "ngotrongvan1999@gmail.com",
- *                 "name": {
- *                      "firstName": "caca",
- *                      "lastName": "guest",
- *                 }
- *                 "avatar": "string",
- *                 "role": "guest",
- *                 "createdAt": "2022-03-02T02:06:53.274Z",
- *                 "updatedAt": "2022-03-02T02:06:53.275Z",
- *                 "id": "621ed13dfa3a15dc62ebce1c"
- *             }
- *         ],
- *         "page": 1,
- *         "limit": 10,
- *         "totalPages": 1,
- *         "totalResults": 3
- *     }
+ *          "jobStatus": {
+ *              "employeeId": "EPL4",
+ *              "dateOfJoining": "2022-03-11T09:38:07.232Z"
+ *          },
+ *          "username": "admin123",
+ *          "email": "admin123@gmail.com",
+ *          "firstName": "Pham",
+ *          "lastName": "Tuan",
+ *          "middleName": "Son",
+ *          "phone": 368641111,
+ *          "fullName": "Pham Tuan Son",
+ *          "dateOfBirth": null,
+ *          "languages": "",
+ *          "matefialStatus": "",
+ *          "role": "admin",
+ *          "createdAt": "2022-03-11T09:38:07.232Z",
+ *          "updatedAt": "2022-03-11T09:38:07.232Z",
+ *          "id": "622b187fdf70aeb1b2e07a1b"
+ *      }
  *
  * @apiError NotFound User not found.
  *
@@ -184,11 +211,28 @@ module.exports = router;
  * @apiParam (Body) {String} lastName
  * @apiParamExample (Body) {json} Body-Example:
  *    {
- *        "email": "vannthe1301642@fpt.edu.vn",
- *        "firstName": "van",
- *        "lastName": "ngo",
- *        ...
- *    }
+ *          "username": "hm12345",
+ *          "password": "123@123ab",
+ *          "email": "admin12345@gmail.com",
+ *          "firstName": "Pham",
+ *          "lastName": "Tuan",
+ *          "middleName": "Son",
+ *          "phone": "0368641111",
+ *          "fullName": "Pham Tuan Son",
+ *          "dateOfBirth": "",
+ *          "languages": "",
+ *          "matefialStatus": "",
+ *          "avatar": "",
+ *          "role": "hiringManager",
+ *          "jobStatus": {
+ *              "employeeStatus": "",
+ *              "employeeType": "",
+ *              "dateOfJoining": "",
+ *              "department": "",
+ *              "primaryTeam": "",
+ *              "level": ""
+ *          }
+ *      }
  *
  * @apiSuccess {String}     username
  * @apiSuccess {String}     email
@@ -202,16 +246,26 @@ module.exports = router;
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *          "username": "vanngo1",
- *          "email": "vannthe1301642@fpt.edu.vn",
- *          "firstName": "van",
- *          "lastName": "ngo",
- *          "avatar": "string",
- *          "role": "admin",
- *          "createdAt": "2022-03-02T07:44:24.761Z",
- *          "updatedAt": "2022-03-02T07:44:24.761Z",
- *          "id": "621f2058fa3a15dc62ebce4d"
- *      }
+    "user": {
+        "username": "hm1234511",
+        "email": "admin1234511@gmail.com",
+        "firstName": "Pham",
+        "lastName": "Tuan",
+        "middleName": "Son",
+        "phone": 368641111,
+        "fullName": "Pham Tuan Son",
+        "dateOfBirth": null,
+        "languages": "",
+        "role": "hiringManager",
+        "jobStatus": {
+            "employeeId": "EPL6",
+            "dateOfJoining": "2022-03-14T09:20:27.829Z"
+        },
+        "createdAt": "2022-03-14T09:20:27.830Z",
+        "updatedAt": "2022-03-14T09:20:27.830Z",
+        "id": "622f08db517eb505c2d5b687"
+    }
+}
  **
  * @apiError NotFound User not found
  * @apiError NotFound User not found

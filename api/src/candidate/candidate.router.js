@@ -19,13 +19,15 @@ module.exports = router;
  * @apiHeader {String} Authorization Bearer Token.....
  *
  * @apiParam (Body) {String} jobJd
+ * @apiParam (Body) {String} status
  * @apiParam (Body) {String} title
+ * @apiParam (Body) {String} stages
  * @apiParam (Body) {String} firstName
  * @apiParam (Body) {String} midName
  * @apiParam (Body) {String} lastName
  * @apiParam (Body) {String} email
  * @apiParam (Body) {Number} phone
- * @apiParam (Body) {String} hyperlink
+ * @apiParam (Body) {Object} resume
  * @apiParam (Body) {Object} employer
  * @apiParam (Body) {String} employer.designation
  * @apiParam (Body) {String} employer.bussinessName
@@ -42,31 +44,34 @@ module.exports = router;
  * @apiParam (Body) {String} statusCandidate
  * @apiParamExample (Body) {json} Body-Example:
  *     {
- *         "jobId": "1doiwcie232",
- *         "title": "Apply IT Job",
- *         "firstName": "Pham",
- *         "midName": "Tuan",
- *         "lastName": "Son",
- *         "email": "sonpt213@fpt.edu.vn" ,
- *         "phone": "0368641166",
- *         "hyperlink": "https://www.facebook.com/",
- *         "employer": {
- *             "designation": "",
- *             "bussinessName": "",
- *             "from": "",
- *             "to": "",
- *             "summary": ""
- *         },
- *         "education": {
- *             "degree": "university",
- *             "universityName": "FPT",
- *             "fieldOfStudy": "SE",
- *             "grade": "ok",
- *             "from": "2019-02-23T09:06:27.411Z",
- *             "end": "2022-02-23T09:06:27.411Z"
- *         },
- *         "statusCandidate": "open"
- *     }
+ *          "jobId": "622f03548133267a4c9073f6",
+ *          "status": "open",
+ *          "stages": "contact",
+ *          "firstName": "Pham",
+ *          "midName": "Tuan",
+ *          "lastName": "Son",
+ *          "email": "sonpt11@fpt.edu.vn" ,
+ *          "phone": "0368641166",
+ *          "resume":{
+ *              "CV": " ",
+ *              "hyperlink": "fb.com",
+ *              "employer": {
+ *                  "designation": "",
+ *                  "bussinessName": "",
+ *                  "from": "",
+ *                  "to": "",
+ *                  "summary": ""
+ *              },
+ *              "education": {
+ *                  "degree": "university",
+ *                  "universityName": "FPT",
+ *                  "fieldOfStudy": "SE",
+ *                  "grade": "ok",
+ *                  "from": "2019-02-23T09:06:27.411Z",
+ *                  "end": "2022-02-23T09:06:27.411Z"
+ *              }
+ *          }
+ *      }
  *
  * @apiSuccess {String}     title
  * @apiSuccess {String}     firstName
@@ -95,32 +100,36 @@ module.exports = router;
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *         "title": "Apply IT Job",
+ *         "jobId": "622f03548133267a4c9073f6",
+ *         "interviewId": [],
+ *         "status": "open",
+ *         "stage": "contact",
  *         "firstName": "Pham",
  *         "midName": "Tuan",
  *         "lastName": "Son",
- *         "email": "sonpt213@fpt.edu.vn",
+ *         "email": "sonpt11@fpt.edu.vn",
  *         "phone": 368641166,
- *         "hyperlink": "https://www.facebook.com/",
- *         "employer": {
- *             "designation": "",
- *             "bussinessName": "",
- *             "from": null,
- *             "to": null,
- *             "summary": ""
+ *         "resume": {
+ *             "hyperlink": "fb.com",
+ *             "employer": {
+ *                 "designation": "",
+ *                 "bussinessName": "",
+ *                 "from": null,
+ *                 "to": null,
+ *                 "summary": ""
+ *             },
+ *             "education": {
+ *                 "degree": "university",
+ *                 "universityName": "FPT",
+ *                 "fieldOfStudy": "SE",
+ *                 "grade": "ok",
+ *                 "from": "2019-02-23T09:06:27.411Z",
+ *                 "end": "2022-02-23T09:06:27.411Z"
+ *             }
  *         },
- *         "education": {
- *             "degree": "university",
- *             "universityName": "FPT",
- *             "fieldOfStudy": "SE",
- *             "grade": "ok",
- *             "from": "2019-02-23T09:06:27.411Z",
- *             "end": "2022-02-23T09:06:27.411Z"
- *         },
- *         "statusCandidate": "open",
- *         "createdAt": "2022-03-03T03:23:16.432Z",
- *         "updatedAt": "2022-03-03T03:23:16.432Z",
- *         "id": "622034a4e49b86d3bee7504f"
+ *         "createdAt": "2022-03-14T08:58:54.838Z",
+ *         "updatedAt": "2022-03-14T08:58:54.838Z",
+ *         "id": "622f03ce8133267a4c90742a"
  *     }
  *
  * @apiError NotFound Candidate not found
@@ -176,30 +185,34 @@ module.exports = router;
  * @apiParam (Body) {String} statusCandidate
  * @apiParamExample (Body) {json} Body-Example:
  *     {
- *         "title": "tao di tim viec",
- *         "firstName": "Pham",
- *         "midName": "Tuan",
- *         "lastName": "Son",
- *         "email": "sonpham@fpt.edu.vn" ,
- *         "phone": "0368641166",
- *         "hyperlink": "https://www.facebook.com/cau.nhoc.smile/",
- *         "employer": {
- *             "designation": "",
- *             "bussinessName": "",
- *             "from": "",
- *             "to": "",
- *             "summary": ""
- *         },
- *         "education": {
- *             "degree": "university",
- *             "universityName": "FPT",
- *             "fieldOfStudy": "SE",
- *             "grade": "ok",
- *             "from": "2019-02-23T09:06:27.411Z",
- *             "end": "2022-02-23T09:06:27.411Z"
- *         },
- *         "statusCandidate": "open"
- *     }
+ *          "jobId": "622f03548133267a4c9073f6",
+ *          "status": "open",
+ *          "stages": "contact",
+ *          "firstName": "Pham",
+ *          "midName": "Tuan",
+ *          "lastName": "Son",
+ *          "email": "sonpt11@fpt.edu.vn" ,
+ *          "phone": "0368641166",
+ *          "resume":{
+ *              "CV": " ",
+ *              "hyperlink": "fb.com",
+ *              "employer": {
+ *                  "designation": "",
+ *                  "bussinessName": "",
+ *                  "from": "",
+ *                  "to": "",
+ *                  "summary": ""
+ *              },
+ *              "education": {
+ *                  "degree": "university",
+ *                  "universityName": "FPT",
+ *                  "fieldOfStudy": "SE",
+ *                  "grade": "ok",
+ *                  "from": "2019-02-23T09:06:27.411Z",
+ *                  "end": "2022-02-23T09:06:27.411Z"
+ *              }
+ *          }
+ *      }
  *
  * @apiSuccess {String}     title
  * @apiSuccess {String}     firstName
@@ -228,32 +241,36 @@ module.exports = router;
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *         "employer": {
- *             "designation": "",
- *             "bussinessName": "",
- *             "from": null,
- *             "to": null,
- *             "summary": ""
- *         },
- *         "education": {
- *             "degree": "university",
- *             "universityName": "FPT",
- *             "fieldOfStudy": "SE",
- *             "grade": "ok",
- *             "from": "2019-02-23T09:06:27.411Z",
- *             "end": "2022-02-23T09:06:27.411Z"
- *         },
- *         "title": "Apply IT Job",
+ *         "jobId": "622f03548133267a4c9073f6",
+ *         "interviewId": [],
+ *         "status": "open",
+ *         "stage": "contact",
  *         "firstName": "Pham",
  *         "midName": "Tuan",
  *         "lastName": "Son",
- *         "email": "sonpham@fpt.edu.vn",
+ *         "email": "sonpt11@fpt.edu.vn",
  *         "phone": 368641166,
- *         "hyperlink": "https://www.facebook.com/cau.nhoc.smile/",
- *         "statusCandidate": "open",
- *         "createdAt": "2022-03-03T03:32:41.763Z",
- *         "updatedAt": "2022-03-03T03:32:41.763Z",
- *         "id": "622036d9e49b86d3bee75056"
+ *         "resume": {
+ *             "hyperlink": "fb.com",
+ *             "employer": {
+ *                 "designation": "",
+ *                 "bussinessName": "",
+ *                 "from": null,
+ *                 "to": null,
+ *                 "summary": ""
+ *             },
+ *             "education": {
+ *                 "degree": "university",
+ *                 "universityName": "FPT",
+ *                 "fieldOfStudy": "SE",
+ *                 "grade": "ok",
+ *                 "from": "2019-02-23T09:06:27.411Z",
+ *                 "end": "2022-02-23T09:06:27.411Z"
+ *             }
+ *         },
+ *         "createdAt": "2022-03-14T08:58:54.838Z",
+ *         "updatedAt": "2022-03-14T08:58:54.838Z",
+ *         "id": "622f03ce8133267a4c90742a"
  *     }
  **
  * @apiError NotFound Candidate not found
@@ -353,144 +370,420 @@ module.exports = router;
  *     HTTP/1.1 200 OK
  *     [
  *         {
- *             "employer": {
- *                 "designation": "",
- *                 "bussinessName": "",
- *                 "from": null,
- *                 "to": null,
- *                 "summary": ""
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
  *             },
- *             "education": {
- *                 "degree": "university",
- *                 "universityName": "FPT",
- *                 "fieldOfStudy": "SE",
- *                 "grade": "ok",
- *                 "from": "2019-02-23T09:06:27.411Z",
- *                 "end": "2022-02-23T09:06:27.411Z"
- *             },
- *             "title": "Apply IT Job",
+ *             "jobId": "622f03428133267a4c9073f0",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
  *             "firstName": "Pham",
  *             "midName": "Tuan",
  *             "lastName": "Son",
- *             "email": "sonpt@fpt.edu.vn",
+ *             "email": "sonpt11@fpt.edu.vn",
  *             "phone": 368641166,
- *             "hyperlink": "https://www.facebook.com/",
- *             "statusCandidate": "open",
- *             "createdAt": "2022-03-01T10:25:04.532Z",
- *             "updatedAt": "2022-03-01T10:25:04.532Z",
- *             "id": "621df480a52de62840ba0322"
+ *             "createdAt": "2022-03-14T08:58:12.741Z",
+ *             "updatedAt": "2022-03-14T08:58:12.741Z",
+ *             "id": "622f03a48133267a4c9073fa"
  *         },
  *         {
- *             "employer": {
- *                 "designation": "",
- *                 "bussinessName": "",
- *                 "from": null,
- *                 "to": null,
- *                 "summary": ""
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
  *             },
- *             "education": {
- *                 "degree": "university",
- *                 "universityName": "FPT",
- *                 "fieldOfStudy": "SE",
- *                 "grade": "ok",
- *                 "from": "2019-02-23T09:06:27.411Z",
- *                 "end": "2022-02-23T09:06:27.411Z"
- *             },
- *             "title": "Apply IT Job",
+ *             "jobId": "622f03428133267a4c9073f0",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
  *             "firstName": "Pham",
  *             "midName": "Tuan",
  *             "lastName": "Son",
- *             "email": "sonpt1@fpt.edu.vn",
+ *             "email": "sonpt11@fpt.edu.vn",
  *             "phone": 368641166,
- *             "hyperlink": "https://www.facebook.com/",
- *             "statusCandidate": "open",
- *             "createdAt": "2022-03-01T10:25:52.937Z",
- *             "updatedAt": "2022-03-01T10:25:52.937Z",
- *             "id": "621df4b0a52de62840ba0327"
+ *             "createdAt": "2022-03-14T08:58:15.749Z",
+ *             "updatedAt": "2022-03-14T08:58:15.749Z",
+ *             "id": "622f03a78133267a4c9073fe"
  *         },
  *         {
- *             "employer": {
- *                 "designation": "",
- *                 "bussinessName": "",
- *                 "from": null,
- *                 "to": null,
- *                 "summary": ""
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
  *             },
- *             "education": {
- *                 "degree": "university",
- *                 "universityName": "FPT",
- *                 "fieldOfStudy": "SE",
- *                 "grade": "ok",
- *                 "from": "2019-02-23T09:06:27.411Z",
- *                 "end": "2022-02-23T09:06:27.411Z"
- *             },
- *             "title": "Apply IT Job",
+ *             "jobId": "622f03428133267a4c9073f0",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
  *             "firstName": "Pham",
  *             "midName": "Tuan",
  *             "lastName": "Son",
- *             "email": "sonpt21@fpt.edu.vn",
+ *             "email": "sonpt11@fpt.edu.vn",
  *             "phone": 368641166,
- *             "hyperlink": "https://www.facebook.com/",
- *             "statusCandidate": "open",
- *             "createdAt": "2022-03-01T10:25:55.855Z",
- *             "updatedAt": "2022-03-01T10:25:55.855Z",
- *             "id": "621df4b3a52de62840ba0329"
+ *             "createdAt": "2022-03-14T08:58:16.551Z",
+ *             "updatedAt": "2022-03-14T08:58:16.551Z",
+ *             "id": "622f03a88133267a4c907402"
  *         },
  *         {
- *             "employer": {
- *                 "designation": "",
- *                 "bussinessName": "",
- *                 "from": null,
- *                 "to": null,
- *                 "summary": ""
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
  *             },
- *             "education": {
- *                 "degree": "university",
- *                 "universityName": "FPT",
- *                 "fieldOfStudy": "SE",
- *                 "grade": "ok",
- *                 "from": "2019-02-23T09:06:27.411Z",
- *                 "end": "2022-02-23T09:06:27.411Z"
- *             },
- *             "title": "Apply IT Job",
+ *             "jobId": "622f034c8133267a4c9073f2",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
  *             "firstName": "Pham",
  *             "midName": "Tuan",
  *             "lastName": "Son",
- *             "email": "sonpt213@fpt.edu.vn",
+ *             "email": "sonpt11@fpt.edu.vn",
  *             "phone": 368641166,
- *             "hyperlink": "https://www.facebook.com/",
- *             "statusCandidate": "open",
- *             "createdAt": "2022-03-03T03:23:16.432Z",
- *             "updatedAt": "2022-03-03T03:23:16.432Z",
- *             "id": "622034a4e49b86d3bee7504f"
+ *             "createdAt": "2022-03-14T08:58:28.571Z",
+ *             "updatedAt": "2022-03-14T08:58:28.571Z",
+ *             "id": "622f03b48133267a4c907406"
  *         },
  *         {
- *             "employer": {
- *                 "designation": "",
- *                 "bussinessName": "",
- *                 "from": null,
- *                 "to": null,
- *                 "summary": ""
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
  *             },
- *             "education": {
- *                 "degree": "university",
- *                 "universityName": "FPT",
- *                 "fieldOfStudy": "SE",
- *                 "grade": "ok",
- *                 "from": "2019-02-23T09:06:27.411Z",
- *                 "end": "2022-02-23T09:06:27.411Z"
- *             },
- *             "title": "toi di tim viec",
+ *             "jobId": "622f034c8133267a4c9073f2",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
  *             "firstName": "Pham",
  *             "midName": "Tuan",
  *             "lastName": "Son",
- *             "email": "sonpham@fpt.edu.vn",
+ *             "email": "sonpt11@fpt.edu.vn",
  *             "phone": 368641166,
- *             "hyperlink": "https://www.facebook.com/",
- *             "statusCandidate": "open",
- *             "createdAt": "2022-03-03T03:32:41.763Z",
- *             "updatedAt": "2022-03-03T03:32:41.763Z",
- *             "id": "622036d9e49b86d3bee75056"
+ *             "createdAt": "2022-03-14T08:58:29.278Z",
+ *             "updatedAt": "2022-03-14T08:58:29.278Z",
+ *             "id": "622f03b58133267a4c90740a"
+ *         },
+ *         {
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
+ *             },
+ *             "jobId": "622f034c8133267a4c9073f2",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
+ *             "firstName": "Pham",
+ *             "midName": "Tuan",
+ *             "lastName": "Son",
+ *             "email": "sonpt11@fpt.edu.vn",
+ *             "phone": 368641166,
+ *             "createdAt": "2022-03-14T08:58:30.030Z",
+ *             "updatedAt": "2022-03-14T08:58:30.030Z",
+ *             "id": "622f03b68133267a4c90740e"
+ *         },
+ *         {
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
+ *             },
+ *             "jobId": "622f034c8133267a4c9073f2",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
+ *             "firstName": "Pham",
+ *             "midName": "Tuan",
+ *             "lastName": "Son",
+ *             "email": "sonpt11@fpt.edu.vn",
+ *             "phone": 368641166,
+ *             "createdAt": "2022-03-14T08:58:30.621Z",
+ *             "updatedAt": "2022-03-14T08:58:30.621Z",
+ *             "id": "622f03b68133267a4c907412"
+ *         },
+ *         {
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
+ *             },
+ *             "jobId": "622f034c8133267a4c9073f2",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
+ *             "firstName": "Pham",
+ *             "midName": "Tuan",
+ *             "lastName": "Son",
+ *             "email": "sonpt11@fpt.edu.vn",
+ *             "phone": 368641166,
+ *             "createdAt": "2022-03-14T08:58:31.291Z",
+ *             "updatedAt": "2022-03-14T08:58:31.291Z",
+ *             "id": "622f03b78133267a4c907416"
+ *         },
+ *         {
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
+ *             },
+ *             "jobId": "622f03518133267a4c9073f4",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
+ *             "firstName": "Pham",
+ *             "midName": "Tuan",
+ *             "lastName": "Son",
+ *             "email": "sonpt11@fpt.edu.vn",
+ *             "phone": 368641166,
+ *             "createdAt": "2022-03-14T08:58:42.780Z",
+ *             "updatedAt": "2022-03-14T08:58:42.780Z",
+ *             "id": "622f03c28133267a4c90741a"
+ *         },
+ *         {
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
+ *             },
+ *             "jobId": "622f03548133267a4c9073f6",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
+ *             "firstName": "Pham",
+ *             "midName": "Tuan",
+ *             "lastName": "Son",
+ *             "email": "sonpt11@fpt.edu.vn",
+ *             "phone": 368641166,
+ *             "createdAt": "2022-03-14T08:58:52.772Z",
+ *             "updatedAt": "2022-03-14T08:58:52.772Z",
+ *             "id": "622f03cc8133267a4c90741e"
+ *         },
+ *         {
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
+ *             },
+ *             "jobId": "622f03548133267a4c9073f6",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
+ *             "firstName": "Pham",
+ *             "midName": "Tuan",
+ *             "lastName": "Son",
+ *             "email": "sonpt11@fpt.edu.vn",
+ *             "phone": 368641166,
+ *             "createdAt": "2022-03-14T08:58:53.368Z",
+ *             "updatedAt": "2022-03-14T08:58:53.368Z",
+ *             "id": "622f03cd8133267a4c907422"
+ *         },
+ *         {
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
+ *             },
+ *             "jobId": "622f03548133267a4c9073f6",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
+ *             "firstName": "Pham",
+ *             "midName": "Tuan",
+ *             "lastName": "Son",
+ *             "email": "sonpt11@fpt.edu.vn",
+ *             "phone": 368641166,
+ *             "createdAt": "2022-03-14T08:58:54.009Z",
+ *             "updatedAt": "2022-03-14T08:58:54.009Z",
+ *             "id": "622f03ce8133267a4c907426"
+ *         },
+ *         {
+ *             "resume": {
+ *                 "employer": {
+ *                     "designation": "",
+ *                     "bussinessName": "",
+ *                     "from": null,
+ *                     "to": null,
+ *                     "summary": ""
+ *                 },
+ *                 "education": {
+ *                     "degree": "university",
+ *                     "universityName": "FPT",
+ *                     "fieldOfStudy": "SE",
+ *                     "grade": "ok",
+ *                     "from": "2019-02-23T09:06:27.411Z",
+ *                     "end": "2022-02-23T09:06:27.411Z"
+ *                 },
+ *                 "hyperlink": "fb.com"
+ *             },
+ *             "jobId": "622f03548133267a4c9073f6",
+ *             "interviewId": [],
+ *             "status": "open",
+ *             "stage": "contact",
+ *             "firstName": "Pham",
+ *             "midName": "Tuan",
+ *             "lastName": "Son",
+ *             "email": "sonpt11@fpt.edu.vn",
+ *             "phone": 368641166,
+ *             "createdAt": "2022-03-14T08:58:54.838Z",
+ *             "updatedAt": "2022-03-14T08:58:54.838Z",
+ *             "id": "622f03ce8133267a4c90742a"
  *         }
  *     ]
  *
@@ -551,32 +844,36 @@ module.exports = router;
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *         "employer": {
- *             "designation": "",
- *             "bussinessName": "",
- *             "from": null,
- *             "to": null,
- *             "summary": ""
+ *         "resume": {
+ *             "employer": {
+ *                 "designation": "",
+ *                 "bussinessName": "",
+ *                 "from": null,
+ *                 "to": null,
+ *                 "summary": ""
+ *             },
+ *             "education": {
+ *                 "degree": "university",
+ *                 "universityName": "FPT",
+ *                 "fieldOfStudy": "SE",
+ *                 "grade": "ok",
+ *                 "from": "2019-02-23T09:06:27.411Z",
+ *                 "end": "2022-02-23T09:06:27.411Z"
+ *             },
+ *             "hyperlink": "fb.com"
  *         },
- *         "education": {
- *             "degree": "university",
- *             "universityName": "FPT",
- *             "fieldOfStudy": "SE",
- *             "grade": "ok",
- *             "from": "2019-02-23T09:06:27.411Z",
- *             "end": "2022-02-23T09:06:27.411Z"
- *         },
- *         "title": "toi di tim viec",
+ *         "jobId": "622f03428133267a4c9073f0",
+ *         "interviewId": [],
+ *         "status": "open",
+ *         "stage": "contact",
  *         "firstName": "Pham",
  *         "midName": "Tuan",
  *         "lastName": "Son",
- *         "email": "sonpham@fpt.edu.vn",
+ *         "email": "sonpt11@fpt.edu.vn",
  *         "phone": 368641166,
- *         "hyperlink": "https://www.facebook.com/",
- *         "statusCandidate": "open",
- *         "createdAt": "2022-03-03T03:32:41.763Z",
- *         "updatedAt": "2022-03-03T03:32:41.763Z",
- *         "id": "622036d9e49b86d3bee75056"
+ *         "createdAt": "2022-03-14T08:58:15.749Z",
+ *         "updatedAt": "2022-03-14T08:58:15.749Z",
+ *         "id": "622f03a78133267a4c9073fe"
  *     }
  *
  * @apiError NotFound Job not found.
