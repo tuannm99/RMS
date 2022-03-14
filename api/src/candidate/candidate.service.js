@@ -45,7 +45,7 @@ const getCandidateById = async (id) => {
  * edit candidate by id
  * @param {object} id
  * @param {object} candidateData
- * @returns {Promise<job>}
+ * @returns {Promise<Candidate>}
  */
 const editCandidateById = async (id, candidateData) => {
   const candidate = await Candidate.findByIdAndUpdate(id, candidateData);
@@ -65,7 +65,6 @@ const deleteCandidateById = async (id) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');
   }
 };
-
 
 module.exports = {
   createCandidate,

@@ -19,6 +19,7 @@ const candidateSchema = new mongoose.Schema({
   firstName: { type: String },
   midName: { type: String },
   lastName: { type: String },
+  fullName: { type: String },
   email: {
     type: String,
     required: true,
