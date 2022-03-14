@@ -18,6 +18,7 @@ module.exports = router;
  * @apiHeader {String} Content-Type application/json
  * @apiHeader {String} Authorization Bearer Token.....
  *
+ * @apiParam (Body) {String} jobJd
  * @apiParam (Body) {String} title
  * @apiParam (Body) {String} firstName
  * @apiParam (Body) {String} midName
@@ -41,6 +42,7 @@ module.exports = router;
  * @apiParam (Body) {String} statusCandidate
  * @apiParamExample (Body) {json} Body-Example:
  *     {
+ *         "jobId": "1doiwcie232",
  *         "title": "Apply IT Job",
  *         "firstName": "Pham",
  *         "midName": "Tuan",

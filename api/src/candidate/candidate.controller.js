@@ -9,7 +9,7 @@ const candidateService = require('./candidate.service');
  * @param {object} res
  */
 const addCandidate = catchAsync(async (req, res) => {
-  const candidatePosting = await candidateService.createCandidate(req.params.id, req.body);
+  const candidatePosting = await candidateService.createCandidate(req.body);
   res.status(httpStatus.OK).json(candidatePosting);
 });
 

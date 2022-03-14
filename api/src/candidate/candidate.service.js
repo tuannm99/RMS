@@ -6,11 +6,10 @@ const { Candidate, Job } = require('../core/db/schema');
  * create new candidate
  * @returns {Promise<Candidate>}
  */
-const createCandidate = async (jobId, candidateData) => {
-  candidateData.jobId = jobId;
+const createCandidate = async (candidateData) => {
   const candidate = new Candidate(candidateData);
-  const job = await Job.findById(jobId);
-  job.candidateId.push(candidate._id);
+  const job = await Job.findById(candidateData.jobId);
+  job.candidateId.push(candidateData.jobId);
   await job.save();
   // eslint-disable-next-line no-return-await
   return await candidate.save();

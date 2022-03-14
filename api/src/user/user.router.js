@@ -9,17 +9,9 @@ const { upload } = require('../core/multer');
 // router
 const router = express.Router();
 
-router.get('/', checkAuth(ROLES.admin), userController.getAllUsersHandler);
-router.get(
-  '/:id',
-  checkAuth(ROLES.admin, ROLES.employee, ROLES.hiringManager),
-  userController.getUserHandler
-);
-router.put(
-  '/:id',
-  checkAuth(ROLES.admin, ROLES.employee, ROLES.hiringManager),
-  userController.updateUserHandler
-);
+router.get('/', checkAuth(), userController.getAllUsersHandler);
+router.get('/:id', checkAuth(), userController.getUserHandler);
+router.put('/:id', checkAuth(), userController.updateUserHandler);
 router.put(
   '/:id/avatar',
   checkAuth(),
