@@ -34,7 +34,7 @@ function* sendLoginRequest({ payload, resolve }) {
       return;
     }
 
-    resolve(response.data.user);
+    resolve(response.data);
     yield put(saveDataLogin(response.data));
     yield put(setLoading(false));
   } catch (error) {
