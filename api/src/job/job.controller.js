@@ -44,6 +44,16 @@ const editJobPosting = catchAsync(async (req, res) => {
 });
 
 /**
+ * change status
+ * @param {object} req
+ * @param {object} res
+ */
+const changeJobStatus = catchAsync(async (req, res) => {
+  const jobEdited = await jobService.editJobById(req.params.id, { status: req.body.status });
+  res.status(httpStatus.OK).json({ msg: 'job status updated', jobEdited });
+});
+
+/**
  * middleware delete job by id
  * @param {object} req
  * @param {object} res
@@ -58,5 +68,6 @@ module.exports = {
   getAllJob,
   getJob,
   editJobPosting,
+  changeJobStatus,
   deleteJobPosting,
 };

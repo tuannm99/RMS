@@ -53,7 +53,7 @@ const getJobById = async (id) => {
  * @returns {Promise<Job>}
  */
 const editJobById = async (id, jobData) => {
-  const job = await Job.findByIdAndUpdate(id, jobData);
+  const job = await Job.findByIdAndUpdate(id, jobData, { new: true });
   if (!job) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such job found');
   }
