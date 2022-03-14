@@ -24,3 +24,7 @@ export function hasResponseError(response, action, ...params) {
 
   return !isValidStatus;
 }
+
+export const base64String = (previewImg) => {
+  return window.btoa(String.fromCharCode(...new Uint8Array(previewImg)));
+};
