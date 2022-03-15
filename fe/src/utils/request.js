@@ -3,7 +3,7 @@ import axios from 'axios';
 const request = axios.create({
   timeout: 60000,
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json' || 'multipart/form-data',
   },
 });
 

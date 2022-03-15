@@ -4,13 +4,14 @@ const BASE_API = 'http://rms-fpt.ddns.net:5000/api/v1';
 export function getAllUsersServices(params) {
   return request(`${BASE_API}/users`, {
     method: 'GET',
-    data: params,
+    params: params,
   });
 }
 
 export const deleteUsersServices = (id) => {
   return request(`${BASE_API}/users/${id}`, {
     method: 'DELETE',
+    params: id,
   });
 };
 
@@ -20,9 +21,18 @@ export const getDetailUsersServices = (id) => {
   });
 };
 
-export const updateUsersServices = (id, params) => {
+export const updateUsersServices = (id, body) => {
   return request(`${BASE_API}/users/${id}`, {
     method: 'PUT',
-    data: params,
+    data: body,
+  });
+};
+
+export const updateImgUsersServices = (params, body) => {
+  return request(`${BASE_API}/users/${params}/avatar`, {
+    method: 'PUT',
+    data: body,
+    params: params,
+    responseType: 'form',
   });
 };
