@@ -17,9 +17,10 @@ const jobSchema = new mongoose.Schema({
   jobDescription: { type: String },
   skill: { type: String },
   experience: { type: String },
-  minSalary: { type: Number },
-  maxSalary: { type: Number },
+  minSalary: { type: Number, default: 0 },
+  maxSalary: { type: Number, default: 0 },
   currency: { type: String },
+
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

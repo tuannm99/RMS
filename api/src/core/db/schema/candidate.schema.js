@@ -32,6 +32,7 @@ const candidateSchema = new mongoose.Schema({
     },
   },
   phone: { type: Number },
+
   resume: {
     cv: { type: String },
     hyperlink: { type: String },
@@ -51,6 +52,7 @@ const candidateSchema = new mongoose.Schema({
       end: { type: Date },
     },
   },
+
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
