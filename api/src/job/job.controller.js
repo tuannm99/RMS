@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../core/catchAsync');
 
 const jobService = require('./job.service');
+const { pick } = require('../core/utils');
 
 /**
  * middleware add job
@@ -19,7 +20,9 @@ const addJobPosting = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const getAllJob = catchAsync(async (req, res) => {
-  const listJob = await jobService.getAllJob();
+  const filter = pick(req.query, ['status']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const listJob = await jobService.getAllJob(filter, options);
   res.status(httpStatus.OK).json(listJob);
 });
 

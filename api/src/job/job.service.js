@@ -15,22 +15,25 @@ const createJob = async (jobData) => {
 };
 
 /**
- * show full job
- * @returns {Promise<Job[]>}
+ * query full job
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
  */
-const getAllJob = async () => {
+const getAllJob = async (filter, options) => {
   // TODO: need count all candidate perjob | and verify The owner who has assign for each job
-  const listJob = await Job.find();
-  if (!listJob) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'No such job found');
-  }
-  const newListJob = listJob.map((job) => {
+  const listJob = await Job.paginate(filter, options);
+  const newListJob = listJob.results.map((job) => {
     return {
       ...job.toJSON(),
       candidateCount: job.candidateId.length,
     };
   });
-  return newListJob;
+  listJob.results = newListJob;
+  return listJob;
 };
 
 /**

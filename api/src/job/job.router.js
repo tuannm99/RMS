@@ -250,98 +250,46 @@ module.exports = router;
  * @apiSuccess {Number}   totalResults
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     [
- *         {
- *             "userId": "622b802354aef25d31c389f2",
- *             "candidateId": [
- *                 "622f03428133267a4c9073f0",
- *                 "622f03428133267a4c9073f0",
- *                 "622f03428133267a4c9073f0"
- *             ],
- *             "title": "can tuyen nguoi ",
- *             "department": "part time",
- *             "jobType": "full Time",
- *             "location": "Ha Noi",
- *             "jobDescription": "very good",
- *             "skill": "nodejs",
- *             "experience": "",
- *             "minSalary": 1000,
- *             "maxSalary": 1500,
- *             "currency": "USD",
- *             "createdAt": "2022-03-14T08:56:34.757Z",
- *             "updatedAt": "2022-03-14T08:56:34.757Z",
- *             "id": "622f03428133267a4c9073f0",
- *             "candidateCount": 3
- *         },
- *         {
- *             "userId": "622b802354aef25d31c389f2",
- *             "candidateId": [
- *                 "622f034c8133267a4c9073f2",
- *                 "622f034c8133267a4c9073f2",
- *                 "622f034c8133267a4c9073f2",
- *                 "622f034c8133267a4c9073f2",
- *                 "622f034c8133267a4c9073f2"
- *             ],
- *             "title": "can tuyen IT ",
- *             "department": "part time",
- *             "jobType": "full Time",
- *             "location": "Ha Noi",
- *             "jobDescription": "very good",
- *             "skill": "nodejs",
- *             "experience": "",
- *             "minSalary": 1000,
- *             "maxSalary": 1500,
- *             "currency": "USD",
- *             "createdAt": "2022-03-14T08:56:44.206Z",
- *             "updatedAt": "2022-03-14T08:56:44.206Z",
- *             "id": "622f034c8133267a4c9073f2",
- *             "candidateCount": 5
- *         },
- *         {
- *             "userId": "622b802354aef25d31c389f2",
- *             "candidateId": [
- *                 "622f03518133267a4c9073f4"
- *             ],
- *             "title": "can tuyen Cave ",
- *             "department": "part time",
- *             "jobType": "full Time",
- *             "location": "Ha Noi",
- *             "jobDescription": "very good",
- *             "skill": "nodejs",
- *             "experience": "",
- *             "minSalary": 1000,
- *             "maxSalary": 1500,
- *             "currency": "USD",
- *             "createdAt": "2022-03-14T08:56:49.081Z",
- *             "updatedAt": "2022-03-14T08:56:49.082Z",
- *             "id": "622f03518133267a4c9073f4",
- *             "candidateCount": 1
- *         },
- *         {
- *             "userId": "622b802354aef25d31c389f2",
- *             "candidateId": [
- *                 "622f03548133267a4c9073f6",
- *                 "622f03548133267a4c9073f6",
- *                 "622f03548133267a4c9073f6",
- *                 "622f03548133267a4c9073f6"
- *             ],
- *             "title": "can tuyen Sale ",
- *             "department": "part time",
- *             "jobType": "full Time",
- *             "location": "Ha Noi",
- *             "jobDescription": "very good",
- *             "skill": "nodejs",
- *             "experience": "",
- *             "minSalary": 1000,
- *             "maxSalary": 1500,
- *             "currency": "USD",
- *             "createdAt": "2022-03-14T08:56:52.880Z",
- *             "updatedAt": "2022-03-14T08:56:52.880Z",
- *             "id": "622f03548133267a4c9073f6",
- *             "candidateCount": 4
- *         }
- *     ]
- *
+ *        {
+ *            "results": [
+ *                {
+ *                    "candidateId": [],
+ *                    "title": "tuan 1231231asdasdsadas2312",
+ *                    "status": "published",
+ *                    "department": "hm",
+ *                    "jobType": "full Time",
+ *                    "location": "Ha Noi",
+ *                    "jobDescription": "job very good",
+ *                    "skill": "nodejs",
+ *                    "minSalary": 1000,
+ *                    "maxSalary": 1500,
+ *                    "createdAt": "2022-03-14T15:16:04.122Z",
+ *                    "updatedAt": "2022-03-14T15:16:04.122Z",
+ *                    "id": "622f5c3462354b7b6a363c37",
+ *                    "candidateCount": 0
+ *                },
+ *                {
+ *                    "candidateId": [],
+ *                    "title": "tuan 1231231asdasdsadas2312",
+ *                    "status": "published",
+ *                    "department": "hm",
+ *                    "jobType": "full Time",
+ *                    "location": "Ha Noi",
+ *                    "jobDescription": "job very good",
+ *                    "skill": "nodejs",
+ *                    "minSalary": 1000,
+ *                    "maxSalary": 1500,
+ *                    "createdAt": "2022-03-14T15:23:47.501Z",
+ *                    "updatedAt": "2022-03-14T15:23:47.501Z",
+ *                    "id": "622f5e0333688e0521b0517a",
+ *                    "candidateCount": 0
+ *                }
+ *            ],
+ *            "page": 1,
+ *            "limit": 5,
+ *            "totalPages": 1,
+ *            "totalResults": 2
+ *        }
  * @apiError NotFound Job not found.
  *
  * @apiErrorExample Error-Response:
