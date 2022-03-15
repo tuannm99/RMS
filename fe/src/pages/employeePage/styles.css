@@ -8,3 +8,11 @@
   justify-content: flex-start;
   margin-top: 12px;
 } */
+.ant-card-meta-title {
+  text-overflow: unset;
+  white-space: normal;
+}
+.sort {
+  position: relative;
+  top: -10px;
+}

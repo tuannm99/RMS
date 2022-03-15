@@ -25,6 +25,31 @@ export function hasResponseError(response, action, ...params) {
   return !isValidStatus;
 }
 
-export const base64String = (previewImg) => {
-  return window.btoa(String.fromCharCode(...new Uint8Array(previewImg)));
+export const base64String = (buffer) => {
+  var binary = '';
+  var bytes = new Uint8Array(buffer);
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
+};
+
+export const convertFileToBase64 = (file) => {
+  return new Promise((resolve) => {
+    let fileInfo;
+    let baseURL = '';
+    // Make new FileReader
+    let reader = new FileReader();
+
+    // Convert the file to base64 text
+    reader.readAsDataURL(file);
+
+    // on reader load somthing...
+    reader.onload = () => {
+      // Make a fileInfo Object
+      baseURL = reader.result;
+      resolve(baseURL);
+    };
+  });
 };

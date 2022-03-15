@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, Button, Menu, Dropdown, Avatar } from 'antd';
 import {
   MenuUnfoldOutlined,
@@ -10,18 +10,21 @@ import {
   ShoppingOutlined,
   ReadOutlined,
 } from '@ant-design/icons';
+import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './styles.css';
 import * as action from '../../redux/stores/auth/actions';
-
+import { base64String } from '../../utils/utils';
 const { Header } = Layout;
 
 function HeaderPrivate(props) {
   const { logoutRequest } = props;
+  const { selectUserInfor } = props;
   const navigate = useNavigate();
+
   const handleLogout = () => {
     const token = localStorage.getItem('refreshToken');
     const params = {
@@ -30,6 +33,7 @@ function HeaderPrivate(props) {
     logoutRequest(params);
     navigate('/login');
   };
+
   const menuJob = (
     <Menu>
       <Menu.Item key="1" icon={<ShoppingOutlined />}>
@@ -46,15 +50,18 @@ function HeaderPrivate(props) {
   const menuUser = (
     <Menu>
       <Menu.Item key="1" icon={<ShoppingOutlined />}>
-        <NavLink to="/profile">Profile</NavLink>
+        <NavLink to={`/profile/${selectUserInfor.id}`}>Profile</NavLink>
       </Menu.Item>
       <Menu.Item key="2" icon={<TeamOutlined />} onClick={handleLogout}>
         Logout
       </Menu.Item>
     </Menu>
   );
+  const styles = {
+    padding: 0,
+  };
   return (
-    <Header className="site-layout-background" style={{ padding: 0 }}>
+    <Header className="site-layout-background" style={styles}>
       {React.createElement(
         props.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
         {
@@ -76,14 +83,25 @@ function HeaderPrivate(props) {
           </Button>
         </Dropdown>
         <Dropdown className="header-right-avatar mr-16" overlay={menuUser}>
-          <Avatar className="mr-16" size={32} icon={<UserOutlined />} />
+          {selectUserInfor?.avatar ? (
+            <Avatar
+              size={32}
+              src={`data:image/png;base64,${base64String(
+                selectUserInfor?.avatar?.imageBuffer?.data
+              )}`}
+            />
+          ) : (
+            <Avatar className="mr-16" size={32} icon={<UserOutlined />} />
+          )}
         </Dropdown>
       </div>
     </Header>
   );
 }
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  selectUserInfor: selectUserInfor,
+});
 const mapDispatchToProps = (dispatch) => ({
   logoutRequest: (payload) => dispatch(action.logoutRequest(payload)),
 });

@@ -8,14 +8,9 @@ import {
   Select,
   Input,
   Pagination,
-  Tooltip,
-  Table,
-  Space,
-  Tag,
-  Divider,
-  Drawer,
   Button,
   Spin,
+  Popconfirm,
 } from 'antd';
 import {
   EditOutlined,
@@ -24,36 +19,44 @@ import {
   MailOutlined,
   PhoneOutlined,
 } from '@ant-design/icons';
-import { hasResponseError } from '../../utils/utils';
+import { hasResponseError, base64String } from '../../utils/utils';
 import { UserEdit_Add } from './components';
 import * as services from '../../services/employeeServices';
 import { toast } from 'react-toastify';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const { Meta } = Card;
 const { Search } = Input;
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 
 function EmployeePage(props) {
   const [typeContent, setTypeContent] = useState(true);
   const [visibleEditUser, setVisibleEditUser] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
   const [users, setUsers] = useState();
+  const [loading, setLoading] = useState(false);
+  const [params, setParams] = useState({
+    fullName: '',
+    limit: 10,
+    page: 1,
+    sortBy: '',
+  });
 
   const { userAccount } = props;
-  console.log(userAccount);
+  const navigation = useNavigate();
+  let {visible} = useParams()
+
   const showUserEdit = (id) => {
     setVisibleEditUser(true);
+    setUser(id);
   };
 
   const onCloseEditUser = () => {
     setVisibleEditUser(false);
   };
-
-  const handleDelete = async (id) => {};
 
   const editUser = (id) => {};
 
@@ -61,54 +64,125 @@ function EmployeePage(props) {
     setTypeContent(!typeContent);
   };
 
-  const base64String = (previewImg) => {
-    return window.btoa(String.fromCharCode(...new Uint8Array(previewImg)));
-  };
+useEffect(()=>{
+  if(visible === "true"){
+    showUserEdit(userAccount?.id)
+  }
+},[])
 
   useEffect(() => {
-    services.getAllUsersServices().then((res) => {
+    getAlldata(params);
+  }, [params]);
+
+  const getAlldata = async (params) => {
+    setLoading(true);
+    const res = await services.getAllUsersServices(params);
+    if (hasResponseError(res)) {
+      return;
+    }
+    setUsers(res.data);
+    setLoading(false);
+  };
+
+  const handleChangeData = (pagination) => {
+    console.log(pagination);
+    setParams({ ...params, page: pagination });
+    getAlldata({ ...params, page: pagination });
+  };
+
+  const onSearch = (value) => {
+    setParams({ ...params, fullName: value });
+    getAlldata({ ...params, fullName: value });
+  };
+
+  const handleSelectRole = (value) => {
+    console.log(value);
+    if (value === 'all') {
+      delete params.role;
+      getAlldata(params);
+    } else {
+      setParams({ ...params, role: value });
+      getAlldata({ ...params, role: value });
+    }
+  };
+
+  const handleSelectSort = (value) => {
+    if (value === 'all') {
+      setParams({ ...params, sortBy: '' });
+      getAlldata(params);
+    } else {
+      setParams({ ...params, sortBy: value });
+      getAlldata({ ...params, role: value });
+    }
+  };
+
+  const handleDetailUser = (id) => {
+    if (userAccount?.role === 'admin') {
+      navigation(`/profile/${id}`);
+    } else {
+      navigation(`/profile/${userAccount?.id}`);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    await services.deleteUsersServices(id).then((res) => {
       if (hasResponseError(res)) {
-        toast.error(`${res.data.message}`);
         return;
       }
-      setUsers(res.data);
-      console.log(res);
+    toast.success('Delete success!');
     });
-  }, []);
+    getAlldata(params);
+  };
 
   return (
     <>
-      <Row className="employee_tool">
-        <Col span={4}>
-          <strong>Role:</strong>
-          <Select defaultValue="lucy" bordered={false}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+      <Row className="employee_tool" wrap={true}>
+        <Col flex={1}>
+          <strong>Role: </strong>
+          <Select
+            defaultValue="all"
+            style={{ width: 125 }}
+            onSelect={handleSelectRole}
+          >
+            <Option value="all">All</Option>
+            <Option value="admin">Admin</Option>
+            <Option value="hiringManager">Hiring Manager</Option>
+            <Option value="employee">Employee</Option>
           </Select>
         </Col>
-        <Col span={4}>
-          <strong>Sort by:</strong>
-          <Select defaultValue="lucy" bordered={false}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+        <Col flex={1}>
+          <strong>Sort by: </strong>
+          <Select
+            defaultValue="all"
+            style={{ width: 125 }}
+            showArrow={false}
+            onSelect={handleSelectSort}
+          >
+            <Option value="all">All</Option>
+            <Option value="fullName:asc">Name</Option>
+            <Option value="createdAt:asc">Create At</Option>
+            <Option value="Yiminghe:asc">Role</Option>
+            <Option value="email:asc">Email</Option>
           </Select>
         </Col>
-        <Col span={8}>
+        <Col flex={2}>
           <Search
             style={{ maxWidth: 400, textAlign: 'center' }}
             placeholder="Employee Search"
+            onSearch={onSearch}
             enterButton
           />
         </Col>
-        <Col span={8} className="fr">
-          <Pagination
-            simple
-            defaultCurrent={2}
-            total={50}
-            className="fr mt-4"
-          />
+        <Col flex={1} className="fr">
+          {users && (
+            <Pagination
+              pageSize={users?.limit}
+              current={users?.page}
+              total={users?.totalResults}
+              onChange={handleChangeData}
+              className="fr"
+            />
+          )}
         </Col>
       </Row>
       <div className="btn_add_employee">
@@ -117,24 +191,40 @@ function EmployeePage(props) {
         </Button>
       </div>
       <div className="employee_content mt-16">
-        <Row gutter={16}>
+        <Row gutter={20}>
+          {loading && (
+            <Col style={{ textAlign: 'center' }} span={24}>
+              <Spin tip="loading..." />
+            </Col>
+          )}
           {users &&
-            users?.results.map((item) => (
+            !loading &&
+            users?.results?.map((item) => (
               <Col
                 md={{ span: 8 }}
                 xl={{ span: 6 }}
-                xxl={{ span: 4 }}
+                xxl={{ span: 3 }}
                 key={item.id}
+                className="mb-24"
               >
                 <Card
-                  style={{ width: '100%' }}
-                  actions={[
-                    <EditOutlined
-                      key="edit"
-                      onClick={() => showUserEdit(item.id)}
-                    />,
-                    <DeleteOutlined key="delete" />,
-                  ]}
+                  style={{ width: '100%', minHeight: '305px' }}
+                  actions={
+                    userAccount?.role === 'admin' &&
+                    userAccount?.id !== item?.id && [
+                      <EditOutlined
+                        key="edit"
+                        onClick={() => showUserEdit(item.id)}
+                      />,
+                      <Popconfirm
+                        onConfirm={() => handleDelete(item.id)}
+                        title="Are you sure？"
+                        icon={<DeleteOutlined style={{ color: 'red' }} />}
+                      >
+                        <DeleteOutlined />
+                      </Popconfirm>,
+                    ]
+                  }
                   hoverable="true"
                 >
                   <Meta
@@ -150,21 +240,22 @@ function EmployeePage(props) {
                         />
                       )
                     }
-                    title={
-                      item.firstName && item.lastName
-                        ? `${item.firstName} ${item.lastName}`
-                        : item.username
-                    }
+                    title={item.fullName}
                     description={item.role}
                   />
-                  <p className="mb-0 mt-24">
-                    <MailOutlined />
-                  </p>
-                  <span>{item.email}</span>
-                  <p className="mb-0">
-                    <PhoneOutlined />
-                  </p>
-                  <span>0795148134</span>
+                  <div
+                    className="content-card"
+                    onClick={() => handleDetailUser(item.id)}
+                  >
+                    <p className="mb-0 mt-24" >
+                      <MailOutlined />
+                    </p>
+                    <div style={{wordBreak:"break-word"}}>{item.email}</div>
+                    <p className="mb-0">
+                      <PhoneOutlined />
+                    </p>
+                    <span>{item.phone}</span>
+                  </div>
                 </Card>
               </Col>
             ))}
@@ -174,6 +265,8 @@ function EmployeePage(props) {
         visible={visibleEditUser}
         onclose={onCloseEditUser}
         user={user}
+        getAlldata={getAlldata}
+        params={params}
       />
     </>
   );
