@@ -12,6 +12,7 @@
   position: relative;
   left: 28px;
   top: 32px;
+  z-index: 10000000;
 }
 .profile-inf-title-detail {
   color: rgb(170, 163, 163);
