@@ -24,7 +24,7 @@ const createJob = async (jobData) => {
  * @returns {Promise<QueryResult>}
  */
 const getAllJob = async (filter, options) => {
-  // TODO: need count all candidate perjob | and verify The owner who has assign for each job
+  // TODO: verify The owner who has assign for each job
   const listJob = await Job.paginate(filter, options);
   const newListJob = listJob.results.map((job) => {
     return {
