@@ -6,12 +6,13 @@ const config = require('./config');
 const logger = require('./logger');
 
 const ApiError = require('./apiError');
+
 /**
  * middleware convert error to ApiError
- * @param {string} err
- * @param {string} req
- * @param {string} res
- * @param {string} next
+ * @param {Error} err
+ * @param {Express.Request} req
+ * @param {Express.Responst} res
+ * @param {Express.NextCallback} next
  */
 const errorConverter = (err, req, res, next) => {
   let error = err;
@@ -27,10 +28,12 @@ const errorConverter = (err, req, res, next) => {
 };
 
 /**
- *middleware to handle error and send error formated request
- *
+ * middleware to handle error and send error formated request
+ * @param {Error} err
+ * @param {Express.Request} req
+ * @param {Express.Responst} res
+ * @param {Express.NextCallback} next
  */
-// eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
   const { statusCode, message } = err;
 
