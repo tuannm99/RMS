@@ -50,7 +50,7 @@
   padding: 30px;
   text-align: center;
   background-color: #dfe3e7;
-  margin-top: 116px;
+  margin-top: 119px;
 }
 .detailJob-header {
   display: flex;
@@ -68,4 +68,9 @@
 .recruit-modal-iconRight {
   padding-top: 4px;
   padding-right: 48px;
+}
+@media (min-width: 1537px) {
+  .detailJob-create {
+    margin-top: 141px;
+  }
 }
