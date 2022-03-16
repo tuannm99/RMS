@@ -1,0 +1,35 @@
+@startuml authClass
+!theme reddress-lightblue
+
+skinparam classAttributeIconSize 0
+class job.controller{
+    - {field} jobService: object
+
+    + {method} addJobPosting(req: express.Request, res: express.Response): void
+    + {method} getAllJob(req: express.Request, res: express.Response): void
+    + {method} getJob(req: express.Request, res: express.Response): void
+    + {method} editJob(req: express.Request, res: express.Response): void
+    + {method} changeJobStatus(req: express.Request, res: express.Response): void
+    + {method} deleteJob(req: express.Request, res: express.Response): void
+}
+
+class job.service{
+    + {method} createJob(jobData: Object): void
+    + {method} getAllJob(filter: Object, options: Object): void
+    + {method} getJobById(id: string): void
+    + {method} editJobById(id: string, jobData: Object): void
+    + {method} deleteJobById(id: string): void
+}
+
+class job.router{
+    + {field} router: express.Router
+}
+
+class schema.Job {
+
+}
+
+job.router ..> job.controller
+job.controller ..> job.service
+job.service ..> schema.Job
+@enduml

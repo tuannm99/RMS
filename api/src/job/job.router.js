@@ -7,9 +7,9 @@ const jobController = require('./job.controller');
 router.get('/', checkAuth(), jobController.getAllJob);
 router.get('/:id', checkAuth(), jobController.getJob);
 router.post('/', checkAuth(ROLES.hiringManager), jobController.addJobPosting);
-router.put('/:id', checkAuth(ROLES.hiringManager), jobController.editJobPosting);
+router.put('/:id', checkAuth(ROLES.hiringManager), jobController.editJob);
 router.put('/:id/status', checkAuth(ROLES.hiringManager), jobController.changeJobStatus);
-router.delete('/:id', checkAuth(ROLES.hiringManager), jobController.deleteJobPosting);
+router.delete('/:id', checkAuth(ROLES.hiringManager), jobController.deleteJob);
 
 module.exports = router;
 

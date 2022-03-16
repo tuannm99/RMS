@@ -41,7 +41,7 @@ const getJob = catchAsync(async (req, res) => {
  * @param {object} req
  * @param {object} res
  */
-const editJobPosting = catchAsync(async (req, res) => {
+const editJob = catchAsync(async (req, res) => {
   const jobEdited = await jobService.editJobById(req.params.id, req.body);
   res.status(httpStatus.OK).json(jobEdited);
 });
@@ -61,7 +61,7 @@ const changeJobStatus = catchAsync(async (req, res) => {
  * @param {object} req
  * @param {object} res
  */
-const deleteJobPosting = catchAsync(async (req, res) => {
+const deleteJob = catchAsync(async (req, res) => {
   const jobDeleted = await jobService.deleteJobById(req.params.id);
   res.status(httpStatus.OK).json(jobDeleted);
 });
@@ -70,7 +70,7 @@ module.exports = {
   addJobPosting,
   getAllJob,
   getJob,
-  editJobPosting,
+  editJob,
   changeJobStatus,
-  deleteJobPosting,
+  deleteJob,
 };

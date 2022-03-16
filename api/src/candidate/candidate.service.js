@@ -4,6 +4,7 @@ const { Candidate, Job } = require('../core/db/schema');
 
 /**
  * create new candidate
+ * @param {Object} candidateData
  * @returns {Promise<Candidate>}
  */
 const createCandidate = async (candidateData) => {
@@ -19,8 +20,8 @@ const createCandidate = async (candidateData) => {
  * show full candidate
  * @returns {Promise<Candidate>}
  */
-const getAllCandidate = async () => {
-  const candidates = await Candidate.find();
+const getAllCandidate = async (filter, options) => {
+  const candidates = await Candidate.paginate(filter, options);
   if (!candidates) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');
   }
