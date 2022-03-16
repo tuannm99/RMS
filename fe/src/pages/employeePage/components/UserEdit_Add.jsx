@@ -11,6 +11,7 @@ import {
   Avatar,
   Button,
   InputNumber,
+  Radio,
 } from 'antd';
 import { DrawerComponent } from '../../../components';
 import * as services from '../../../services/employeeServices';
@@ -29,9 +30,16 @@ const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
 
 function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
+
+  /**
+   * create state
+   */
   const [imageUser, setImageUser] = useState();
   const [fileList, setFileList] = useState(null);
 
+  /**
+   * set value in form and avatar render first
+   */
   useEffect(() => {
     if (user) {
       services.getDetailUsersServices(user).then((res) => {
@@ -51,16 +59,17 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
           firstName: res.data.firstName,
           lastName: res.data.lastName,
           phone: res.data.phone,
+          address: res.data.address,
           fullName: res.data.fullName,
           dateOfBirth: moment(res.data.dateOfBirth),
           languages: res.data.languages,
-          matefialStatus: res.data.matefialStatus,
-          role: res.data.role,
           employeeType: res.data.jobStatus.employeeType,
+          employeeStatus: res.data.jobStatus.employeeStatus,
           dateOfJoining: moment(res.data.jobStatus.dateOfJoining),
           department: res.data.jobStatus.department,
           primaryTeam: res.data.jobStatus.primaryTeam,
           level: res.data.jobStatus.level,
+          role: res.data.role,
           status: res.data.jobStatus.employeeStatus,
         });
       });
@@ -70,6 +79,10 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
     }
   }, [user]);
 
+  /**
+   * convert file to image
+   * @param {*} file 
+   */
   const handlePreview = (file) => {
     let fileImg = file.fileList[0].originFileObj;
     convertFileToBase64(fileImg).then((res) => {
@@ -79,7 +92,12 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
     });
   };
 
+  /**
+   * Submit form edit or add
+   * @param {*} values 
+   */
   const onFinish = async (values) => {
+    console.log(values);
     const formRes = new FormData();
     const body = {
       username: values.username,
@@ -91,7 +109,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
       fullName: values.fullName,
       dateOfBirth: values.dateOfBirth,
       languages: values.languages,
-      matefialStatus: values.matefialStatus,
+      address: values.address,
       role: values.role,
       jobStatus: {
         employeeStatus: values.employeeStatus,
@@ -130,6 +148,9 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
     onclose();
   };
 
+  /**
+   * style for avatar
+   */
   const styleImg = {
     width: '100px',
     height: '100px',
@@ -139,8 +160,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
+        <Option value="84">+84</Option>
       </Select>
     </Form.Item>
   );
@@ -176,7 +196,12 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
           </Col>
         </Row>
       )}
-      <Form layout="vertical" form={form} onFinish={onFinish}>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={onFinish}
+        initialValues={{ prefix: '+84' }}
+      >
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -206,16 +231,17 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="languages" label="Language">
-              <Input placeholder="Enter Language" />
+            <Form.Item
+              name="address"
+              label="Address"
+              rules={[{ required: true, message: 'Please enter Address' }]}
+            >
+              <Input placeholder="Enter Address" />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="matefialStatus" label="Marital status">
-              <Select name="matefialStatus">
-                <Option value="single">Single</Option>
-                <Option value="married">Married</Option>
-              </Select>
+            <Form.Item name="languages" label="Language">
+              <Input placeholder="Enter Language" />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -347,8 +373,8 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="status" label="Status">
-              <Select name="status">
+            <Form.Item name="employeeStatus" label="Status">
+              <Select name="employeeStatus">
                 <Option value="active">Active</Option>
                 <Option value="noActive">No active</Option>
               </Select>
