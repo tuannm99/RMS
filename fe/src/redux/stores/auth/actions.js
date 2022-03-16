@@ -22,22 +22,15 @@ export function saveLoading(payload) {
     payload,
   };
 }
-export function loginRequest(payload) {
+export const loginRequest = (dispatch) => (payload) =>
+  new Promise((resolve) => dispatch({ type: LOGIN_REQUEST, payload, resolve }));
+
+export function saveDataLogin(payload) {
   return {
-    type: LOGIN_REQUEST,
+    type: SAVE_LOGIN_DATA,
     payload,
   };
 }
-
-export const saveDataLogin = (payload) => ({
-  type: SAVE_LOGIN_DATA,
-  payload,
-});
-
-// export const refreshTokenRequest = (dispatch) => (payload) =>
-//   new Promise((resolve) =>
-//     dispatch({ type: REFRESH_TOKEN_REQUEST, payload, resolve })
-//   );
 
 export function refreshTokenRequest(payload) {
   return {

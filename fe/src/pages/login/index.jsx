@@ -8,16 +8,21 @@ import { compose } from 'recompose';
 import { selectLoading } from '../../redux/stores/auth/selectors';
 import * as actions from '../../redux/stores/auth/actions';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 function Login(props) {
   const { loginRequest } = props;
   const { isLoading } = props;
+  const navigation = useNavigate();
   const onFinish = async (values) => {
     const params = {
       username: values.username,
       password: values.password,
     };
-    loginRequest(params);
+    const res = await loginRequest(params);
+    if (res) {
+      navigation('/');
+    }
   };
 
   return (
@@ -50,7 +55,7 @@ function Login(props) {
               <Form.Item
                 name="password"
                 rules={[
-                  { required: true, message: 'Please input your username!' },
+                  { required: true, message: 'Please input your password!' },
                   { min: 5, message: 'Password must be minimum 5 characters.' },
                 ]}
               >
@@ -87,7 +92,7 @@ const mapStateToProps = createStructuredSelector({
   isLoading: selectLoading,
 });
 const mapDispatchToProps = (dispatch) => ({
-  loginRequest: (payload) => dispatch(actions.loginRequest(payload)),
+  loginRequest: (payload) => actions.loginRequest(dispatch)(payload),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

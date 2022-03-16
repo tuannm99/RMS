@@ -12,6 +12,15 @@
 .site-layout-background {
   background: #fff;
 }
+.ant-card-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.ant-upload-list-item-info {
+  display: none;
+}
 .fr {
   float: right;
 }

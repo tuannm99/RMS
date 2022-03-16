@@ -3,12 +3,14 @@ const router = require('express').Router();
 const { checkAuth } = require('../core/global.middleware');
 const { ROLES } = require('../constants');
 const jobController = require('./job.controller');
+const candidateController = require('../candidate/candidate.controller');
 
 router.get('/', checkAuth(ROLES.hiringManager), jobController.getAllJob);
 router.get('/:id', checkAuth(ROLES.hiringManager), jobController.getJob);
 router.post('/', checkAuth(ROLES.hiringManager), jobController.addJobPosting);
 router.put('/:id', checkAuth(ROLES.hiringManager), jobController.editJobPosting);
 router.delete('/:id', checkAuth(ROLES.hiringManager), jobController.deleteJobPosting);
+router.post('/:id/candidates', candidateController.addCandidate);
 
 module.exports = router;
 

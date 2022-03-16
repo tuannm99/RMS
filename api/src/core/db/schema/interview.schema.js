@@ -3,13 +3,20 @@ const { toJSON, paginate } = require('./plugins');
 const { FEEDBACK } = require('../../../constants');
 
 const interviewSchema = new mongoose.Schema({
-  interviewer: { required: true, type: mongoose.Types.ObjectId, ref: 'User' },
-  candidateId: { required: true, type: mongoose.Types.ObjectId, ref: 'Candidate' },
+  interviewer: { type: mongoose.Types.ObjectId, ref: 'User' },
+  candidateId: { type: mongoose.Types.ObjectId, ref: 'Candidate' },
   feedback: {
     overallRecommendation: {
       required: true,
       type: String,
-      enum: [FEEDBACK.hire, FEEDBACK.noHire, FEEDBACK.strongHire, FEEDBACK.strongNoHire],
+      enum: [
+        FEEDBACK.hire,
+        FEEDBACK.noHire,
+        FEEDBACK.strongHire,
+        FEEDBACK.strongNoHire,
+        FEEDBACK.notYet,
+      ],
+      default: [FEEDBACK.notYet],
     },
     rate: { type: Number, enum: [0, 1, 2, 3, 4, 5] }, // 0 -> 5 star
     commemt: { type: String },

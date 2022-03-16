@@ -8,8 +8,8 @@ const candidateService = require('./candidate.service');
  * @param {object} req
  * @param {object} res
  */
-const addCandidatePosting = catchAsync(async (req, res) => {
-  const candidatePosting = await candidateService.createCandidate(req.body);
+const addCandidate = catchAsync(async (req, res) => {
+  const candidatePosting = await candidateService.createCandidate(req.params.id, req.body);
   res.status(httpStatus.OK).json(candidatePosting);
 });
 
@@ -38,7 +38,7 @@ const getCandidate = catchAsync(async (req, res) => {
  * @param {object} req
  * @param {object} res
  */
-const editCandidatePosting = catchAsync(async (req, res) => {
+const editCandidate = catchAsync(async (req, res) => {
   const candidateEdited = await candidateService.editCandidateById(req.params.id, req.body);
   res.status(httpStatus.OK).json(candidateEdited);
 });
@@ -48,15 +48,15 @@ const editCandidatePosting = catchAsync(async (req, res) => {
  * @param {object} req
  * @param {object} res
  */
-const deleteCandidatePosting = catchAsync(async (req, res) => {
+const deleteCandidate = catchAsync(async (req, res) => {
   const candidateDeleted = await candidateService.deleteCandidateById(req.params.id);
   res.status(httpStatus.OK).json(candidateDeleted);
 });
 
 module.exports = {
-  addCandidatePosting,
+  addCandidate,
   getAllCandidate,
   getCandidate,
-  editCandidatePosting,
-  deleteCandidatePosting,
+  editCandidate,
+  deleteCandidate,
 };

@@ -1,5 +1,8 @@
 const httpStatus = require('http-status');
+const jwt = require('jsonwebtoken');
+
 const ApiError = require('../core/apiError');
+const config = require('../core/config');
 const { User } = require('../core/db/schema');
 
 /**
@@ -14,6 +17,9 @@ const createUser = async (userBody) => {
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
+  // generate employeeId
+  const countUser = await User.find({}).count();
+  userBody.jobStatus = { employeeId: `EPL${countUser}` };
   return User.create(userBody);
 };
 
@@ -29,6 +35,18 @@ const getUserByUsername = async (username) => {
 };
 
 /**
+ * Get Id from token
+ * @param {string} authorization
+ * @returns {Promise<string>} userId
+ */
+const getUserIdFromHeaderToken = async (authorization) => {
+  // remove "Bearer "
+  const token = authorization.substring(7, authorization.length);
+  const payload = jwt.verify(token, config.jwt.secret);
+  return payload.sub;
+};
+
+/**
  * Query for users
  * @param {Object} filter - Mongo filter
  * @param {Object} options - Query options
@@ -38,8 +56,9 @@ const getUserByUsername = async (username) => {
  * @returns {Promise<QueryResult>}
  */
 const getUsers = async (filter, options) => {
-  // // search contains by username
-  // filter.username = { $regex: filter.username, $options: 'i' };
+  // TODO: Need refactor
+  // // search contains by full name
+  filter.fullName = { $regex: `${filter.fullName ? filter.fullName : ''}`, $options: 'i' };
   const users = await User.paginate(filter, options);
   return users;
 };
@@ -52,6 +71,7 @@ const getUsers = async (filter, options) => {
 const getUserById = async (id) => {
   const user = await User.findById(id);
   if (!user) throw new ApiError(httpStatus.BAD_REQUEST, 'User not found');
+  user.name = { firstName: user.firstName, lastName: user.lastName };
   return user;
 };
 
@@ -63,13 +83,23 @@ const getUserById = async (id) => {
  */
 const updateUserById = async (userId, updateBody) => {
   const user = await getUserById(userId);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-  }
   if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
   Object.assign(user, updateBody);
+  await user.save();
+  return user;
+};
+
+/**
+ * Update user avatar by id
+ * @param {ObjectId} userId
+ * @param {Object} avatar
+ * @returns {Promise<User>}
+ */
+const updateUserAvatarById = async (userId, avatar) => {
+  const user = await getUserById(userId);
+  Object.assign(user, { avatar });
   await user.save();
   return user;
 };
@@ -81,9 +111,6 @@ const updateUserById = async (userId, updateBody) => {
  */
 const deleteUserById = async (userId) => {
   const user = await getUserById(userId);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-  }
   await user.remove();
   return user;
 };
@@ -92,7 +119,9 @@ module.exports = {
   createUser,
   deleteUserById,
   updateUserById,
+  updateUserAvatarById,
   getUsers,
   getUserById,
   getUserByUsername,
+  getUserIdFromHeaderToken,
 };

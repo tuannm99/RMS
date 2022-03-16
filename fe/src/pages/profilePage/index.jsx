@@ -1,35 +1,78 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Divider, Button, Avatar } from 'antd';
 import { UserOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { GoLocation } from 'react-icons/go';
 import './styles.css';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getDetailUsersServices } from '../../services/employeeServices';
+import { hasResponseError, base64String } from '../../utils/utils';
+import { toast } from 'react-toastify';
+import moment from 'moment';
+
 function ProfilePage(props) {
+  const [user, setUser] = useState();
+
+  const navigation = useNavigate();
+  let { id } = useParams();
+
+  useEffect(() => {
+    getDetailUsersServices(id).then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(`${res.data.message}`);
+        return;
+      }
+      console.log(res.data);
+      setUser(res.data);
+    });
+  }, []);
+
+  const handleEdit = (id) => {
+    navigation(`/employee/true/${id}`);
+  };
   return (
     <Row gutter={16}>
       <Col span={24}>
-        <Button className="fr mb-16">Edit Profile</Button>
+        <Button className="fr mb-16" onClick={() => handleEdit(id)}>
+          Edit Profile
+        </Button>
       </Col>
       <Col span={7}>
         <div className="profile">
           <div className="profile-avatar">
-            <Avatar
-              className="profile-avatar-img"
-              size={80}
-              icon={<UserOutlined />}
-            />
+            {!user?.avatar ? (
+              <Avatar
+                className="profile-avatar-img"
+                size={80}
+                icon={<UserOutlined />}
+              />
+            ) : (
+              <Avatar
+                className="profile-avatar-img"
+                size={80}
+                src={`data:image/png;base64,${base64String(
+                  user?.avatar?.imageBuffer?.data
+                )}`}
+              />
+            )}
           </div>
           <div className="profile-information ml-28">
-            <p className="mt-32 mb-0 ">Văn Ngô</p>
-            <p className="">E001</p>
-            <p>
-              <GoLocation /> <span> San Francisco, United States</span>
-            </p>
-            <p>
-              <MailOutlined /> <span> vannthe130164@fpt.edu.vn</span>
-            </p>
-            <p>
-              <PhoneOutlined /> <span> 01928374623</span>
-            </p>
+            <p className="profile-left-name">{user?.fullName}</p>
+            <p className="profile-left-role">{user?.role}</p>
+            {user?.languages && (
+              <p>
+                <GoLocation /> <span>{user?.languages}</span>
+              </p>
+            )}
+            {user?.email && (
+              <p>
+                <MailOutlined /> <span>{user?.email}</span>
+              </p>
+            )}
+            {user?.phone && (
+              <p>
+                <PhoneOutlined /> <span>{user?.phone}</span>
+              </p>
+            )}
           </div>
         </div>
       </Col>
@@ -44,71 +87,95 @@ function ProfilePage(props) {
         <Divider orientation="left">Personal</Divider>
         <Row className="pl-16">
           <Col span={12}>
-            <p className="profile-inf-title-detail">Gender</p>
-            <p className="profile-inf-content-detail">Male</p>
+            <p className="profile-inf-title-detail">Name</p>
+            <p className="profile-inf-content-detail">
+              {user?.fullName ? user?.fullName : '-'}
+            </p>
           </Col>
           <Col span={12}>
             <p className="profile-inf-title-detail">Date of Birth</p>
-            <p className="profile-inf-content-detail">-</p>
+            <p className="profile-inf-content-detail">
+              {user?.dateOfBirth
+                ? moment.utc(user?.dateOfBirth).format('YYYY-MM-DD').toString()
+                : '-'}
+            </p>
           </Col>
           <Col span={12}>
             <p className="profile-inf-title-detail">Address</p>
             <p className="profile-inf-content-detail">
-              San Francisco, United States
+              {user?.languages ? user?.languages : '-'}
             </p>
           </Col>
           <Col span={12}>
-            <p className="profile-inf-title-detail">Marital Status</p>
-            <p className="profile-inf-content-detail">-</p>
+            <p className="profile-inf-title-detail">Role</p>
+            <p className="profile-inf-content-detail">
+              {user?.role ? user?.role : '-'}
+            </p>
           </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Languages</p>
-            <p className="profile-inf-content-detail">-</p>
-          </Col>
+        </Row>
+        <Divider orientation="left">Contact</Divider>
+        <Row className="pl-16">
           <Col span={12}>
             <p className="profile-inf-title-detail">Mail</p>
             <p className="profile-inf-content-detail">
-              vannthe130164@fpt.edu.vn
+              {user?.email ? user?.email : ''}
             </p>
           </Col>
           <Col span={12}>
             <p className="profile-inf-title-detail">Phone</p>
-            <p className="profile-inf-content-detail">01928374623</p>
+            <p className="profile-inf-content-detail">
+              {user?.phone ? user?.phone : '-'}
+            </p>
           </Col>
         </Row>
-        <Divider orientation="left">Job</Divider>
+        <Divider orientation="left">Company</Divider>
         <Row className="pl-16">
           <Col span={12}>
-            <p className="profile-inf-title-detail">Employee Id</p>
-            <p className="profile-inf-content-detail">E001</p>
-          </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Employee Status</p>
-            <p className="profile-inf-content-detail">Active</p>
-          </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Date Of Joining</p>
-            <p className="profile-inf-content-detail">Feb-11-2022</p>
-          </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Employee Type</p>
-            <p className="profile-inf-content-detail">Full Time</p>
-          </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Department</p>
-            <p className="profile-inf-content-detail">Administration</p>
-          </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Designation or Title</p>
-            <p className="profile-inf-content-detail">-</p>
-          </Col>
-          <Col span={12}>
-            <p className="profile-inf-title-detail">Primary Team</p>
-            <p className="profile-inf-content-detail">Business</p>
+            <p className="profile-inf-title-detail">Position</p>
+            <p className="profile-inf-content-detail">
+              {user?.jobStatus?.employeeType
+                ? user?.jobStatus?.employeeType
+                : '-'}
+            </p>
           </Col>
           <Col span={12}>
             <p className="profile-inf-title-detail">Level</p>
-            <p className="profile-inf-content-detail">-</p>
+            <p className="profile-inf-content-detail">
+              {user?.jobStatus?.level ? user?.jobStatus?.level : '-'}
+            </p>
+          </Col>
+          <Col span={12}>
+            <p className="profile-inf-title-detail">Department</p>
+            <p className="profile-inf-content-detail">
+              {user?.jobStatus?.department ? user?.jobStatus?.department : '-'}
+            </p>
+          </Col>
+          <Col span={12}>
+            <p className="profile-inf-title-detail">Team</p>
+            <p className="profile-inf-content-detail">
+              {user?.jobStatus?.primaryTeam
+                ? user?.jobStatus?.primaryTeam
+                : '-'}
+            </p>
+          </Col>
+          <Col span={12}>
+            <p className="profile-inf-title-detail">Status</p>
+            <p className="profile-inf-content-detail">
+              {user?.jobStatus?.employeeStatus
+                ? user?.jobStatus?.employeeStatus
+                : '-'}
+            </p>
+          </Col>
+          <Col span={12}>
+            <p className="profile-inf-title-detail">Date OF Joining</p>
+            <p className="profile-inf-content-detail">
+              {user?.jobStatus?.dateOfJoining
+                ? moment
+                    .utc(user?.jobStatus?.dateOfJoining)
+                    .format('YYYY-MM-DD')
+                    .toString()
+                : '-'}
+            </p>
           </Col>
         </Row>
       </Col>

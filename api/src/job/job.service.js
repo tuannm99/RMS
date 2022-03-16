@@ -19,11 +19,18 @@ const createJob = async (jobData) => {
  * @returns {Promise<Job[]>}
  */
 const getAllJob = async () => {
+  // TODO: need count all candidate perjob | and verify The owner who has assign for each job
   const listJob = await Job.find();
   if (!listJob) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such job found');
   }
-  return listJob;
+  const newListJob = listJob.map((job) => {
+    return {
+      ...job.toJSON(),
+      candidateCount: job.candidateId.length,
+    };
+  });
+  return newListJob;
 };
 
 /**

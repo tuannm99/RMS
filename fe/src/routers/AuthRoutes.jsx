@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   DashboardPage,
   RecruitPage,
@@ -19,8 +19,8 @@ function AuthRoutes(props) {
       <Route path="/recruit/:id" element={<DetailRecruitPage />} />
       <Route path="/conversation" element={<ConversationRecruitmentPage />} />
       <Route path="/taskRecruitment" element={<TaskRecruitmentPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/employee" element={<EmployeePage />} />
+      <Route path="/profile/:id" element={<ProfilePage />} />
+      <Route path="/employee/:visible/:userID" element={<EmployeePage />} />
     </Routes>
   );
 }

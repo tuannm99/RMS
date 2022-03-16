@@ -1,14 +1,17 @@
 const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
-const { Candidate } = require('../core/db/schema');
+const { Candidate, Job } = require('../core/db/schema');
 
 /**
  * create new candidate
  * @returns {Promise<Candidate>}
  */
-const createCandidate = async (candidateData) => {
+const createCandidate = async (jobId, candidateData) => {
+  candidateData.jobId = jobId;
   const candidate = new Candidate(candidateData);
-
+  const job = await Job.findById(jobId);
+  job.candidateId.push(candidate._id);
+  await job.save();
   // eslint-disable-next-line no-return-await
   return await candidate.save();
 };
@@ -62,6 +65,7 @@ const deleteCandidateById = async (id) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');
   }
 };
+
 
 module.exports = {
   createCandidate,

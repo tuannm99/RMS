@@ -7,9 +7,13 @@ import {
   CheckCircleFilled,
 } from '@ant-design/icons';
 import { NavLink, useLocation } from 'react-router-dom';
+import { selectUserInfor } from '../../redux/stores/auth/selectors';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 
 function MenuPrivate(props) {
   const location = useLocation();
+  const { userAccount } = props;
   return (
     <Menu theme="dark" mode="inline" selectedKeys={location.pathname}>
       <Menu.Item key="/" icon={<DashboardFilled />}>
@@ -24,11 +28,17 @@ function MenuPrivate(props) {
       <Menu.Item key="/taskRecruitment" icon={<CheckCircleFilled />}>
         <NavLink to="/taskRecruitment">Tasks</NavLink>
       </Menu.Item>
-      <Menu.Item key="/employee" icon={<CheckCircleFilled />}>
-        <NavLink to="/employee">Employee</NavLink>
+      <Menu.Item
+        key={`/employee/false/${userAccount?.id}`}
+        icon={<CheckCircleFilled />}
+      >
+        <NavLink to={`/employee/false/${userAccount?.id}`}>Employee</NavLink>
       </Menu.Item>
     </Menu>
   );
 }
 
-export default MenuPrivate;
+const mapStateToProps = createStructuredSelector({
+  userAccount: selectUserInfor,
+});
+export default connect(mapStateToProps)(MenuPrivate);
