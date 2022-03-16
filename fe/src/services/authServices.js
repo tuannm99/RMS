@@ -1,7 +1,7 @@
 import request from '../utils/request';
 const BASE_API = 'http://rms-fpt.ddns.net:5000/api/v1/auth';
 
-//login
+//create request login
 export function loginRequestService(params) {
   return request(`${BASE_API}/login`, {
     method: 'POST',
@@ -9,7 +9,7 @@ export function loginRequestService(params) {
   });
 }
 
-//register
+//create request register
 export function registerRequestService(params) {
   return request(`${BASE_API}/register`, {
     method: 'POST',
@@ -17,7 +17,7 @@ export function registerRequestService(params) {
   });
 }
 
-//logout
+//create request logout
 export function logoutRequestService(params) {
   return request(`${BASE_API}/logout`, {
     method: 'POST',
@@ -25,7 +25,7 @@ export function logoutRequestService(params) {
   });
 }
 
-//refresh token
+//create request refresh token
 export function refreshTokenRequestService(params) {
   return request(`${BASE_API}/refresh-token`, {
     method: 'POST',

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Layout, Button, Menu, Dropdown, Avatar } from 'antd';
 import {
   MenuUnfoldOutlined,
@@ -23,8 +23,12 @@ const { Header } = Layout;
 function HeaderPrivate(props) {
   const { logoutRequest } = props;
   const { selectUserInfor } = props;
+
   const navigate = useNavigate();
 
+  /**
+   * logout web
+   */
   const handleLogout = () => {
     const token = localStorage.getItem('refreshToken');
     const params = {
@@ -34,6 +38,9 @@ function HeaderPrivate(props) {
     navigate('/login');
   };
 
+  /**
+   * create menu add ...
+   */
   const menuJob = (
     <Menu>
       <Menu.Item key="1" icon={<ShoppingOutlined />}>
@@ -47,6 +54,10 @@ function HeaderPrivate(props) {
       </Menu.Item>
     </Menu>
   );
+
+  /**
+   * create menu change page for user
+   */
   const menuUser = (
     <Menu>
       <Menu.Item key="1" icon={<ShoppingOutlined />}>
@@ -57,9 +68,14 @@ function HeaderPrivate(props) {
       </Menu.Item>
     </Menu>
   );
+
+  /**
+   * set padding for header
+   */
   const styles = {
     padding: 0,
   };
+  
   return (
     <Header className="site-layout-background" style={styles}>
       {React.createElement(
