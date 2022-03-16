@@ -37,8 +37,8 @@ const { Option } = Select;
 function EmployeePage(props) {
   const [visibleEditUser, setVisibleEditUser] = useState(false);
   const [user, setUser] = useState();
-  const [radio, setRadio] = useState(":asc");
-  const [sortSlect, setSortSlect] = useState("all");
+  const [radio, setRadio] = useState(':asc');
+  const [sortSlect, setSortSlect] = useState('all');
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
@@ -70,7 +70,7 @@ function EmployeePage(props) {
   }, []);
 
   useEffect(() => {
-    getAlldata(params)
+    getAlldata(params);
   }, [params]);
 
   const getAlldata = async (params) => {
@@ -106,8 +106,8 @@ function EmployeePage(props) {
   };
 
   const handleSelectSort = (value) => {
-      setSortSlect(value)
-      if (value === 'all') {
+    setSortSlect(value);
+    if (value === 'all') {
       setParams({ ...params, sortBy: '' });
       getAlldata(params);
     } else {
@@ -116,9 +116,9 @@ function EmployeePage(props) {
     }
   };
 
-  const onChangeRadio = e => {
+  const onChangeRadio = (e) => {
     setRadio(e.target.value);
-    console.log(`${sortSlect}${e.target.value}`)
+    console.log(`${sortSlect}${e.target.value}`);
     if (e.target.value === ':asc') {
       setParams({ ...params, sortBy: `` });
       getAlldata(params);
@@ -201,12 +201,12 @@ function EmployeePage(props) {
             </Select>
           </div>
         </Col>
-        <Col span={1} className="radio-sort" >
-        <Radio.Group onChange={onChangeRadio} value={radio}>
-              <Radio value=":asc">Asc</Radio>
-              <br />
-              <Radio value=":desc">Desc</Radio>
-            </Radio.Group>
+        <Col span={1} className="radio-sort">
+          <Radio.Group onChange={onChangeRadio} value={radio}>
+            <Radio value=":asc">Asc</Radio>
+            <br />
+            <Radio value=":desc">Desc</Radio>
+          </Radio.Group>
         </Col>
       </Row>
       <div className="employee_content mt-16">
