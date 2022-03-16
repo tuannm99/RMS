@@ -54,7 +54,7 @@ describe('auth service', () => {
       expect(userMock.fullName).toEqual(user.fullName);
       await expect(() =>
         authService.loginByUsernamePassword(userMock.username, userMock2.password)
-      ).rejects.toThrow('Incorrect email or password');
+      ).rejects.toThrow('Incorrect username or password');
     });
 
     it('should login ok', async () => {
