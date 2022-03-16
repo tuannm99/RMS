@@ -37,8 +37,8 @@ const { Option } = Select;
 function EmployeePage(props) {
   const [visibleEditUser, setVisibleEditUser] = useState(false);
   const [user, setUser] = useState();
-  const [radio, setRadio] = useState(":asc");
-  const [sortSlect, setSortSlect] = useState("all");
+  const [radio, setRadio] = useState(':asc');
+  const [sortSlect, setSortSlect] = useState('all');
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
@@ -70,7 +70,7 @@ function EmployeePage(props) {
   }, []);
 
   useEffect(() => {
-    getAlldata(params)
+    getAlldata(params);
   }, [params]);
 
   const getAlldata = async (params) => {
@@ -86,45 +86,37 @@ function EmployeePage(props) {
   const handleChangeData = (pagination) => {
     console.log(pagination);
     setParams({ ...params, page: pagination });
-    getAlldata({ ...params, page: pagination });
   };
 
   const onSearch = (value) => {
     setParams({ ...params, fullName: value });
-    getAlldata({ ...params, fullName: value });
   };
 
   const handleSelectRole = (value) => {
     console.log(value);
     if (value === 'all') {
       delete params.role;
-      getAlldata(params);
     } else {
       setParams({ ...params, role: value });
-      getAlldata({ ...params, role: value });
     }
   };
 
   const handleSelectSort = (value) => {
-      setSortSlect(value)
-      if (value === 'all') {
+    setSortSlect(value);
+    if (value === 'all') {
       setParams({ ...params, sortBy: '' });
-      getAlldata(params);
     } else {
       setParams({ ...params, sortBy: `${value}${radio}` });
-      getAlldata({ ...params, sortBy: `${value}${radio}` });
     }
   };
 
-  const onChangeRadio = e => {
+  const onChangeRadio = (e) => {
     setRadio(e.target.value);
-    console.log(`${sortSlect}${e.target.value}`)
+    console.log(`${sortSlect}${e.target.value}`);
     if (e.target.value === ':asc') {
       setParams({ ...params, sortBy: `` });
-      getAlldata(params);
     } else {
       setParams({ ...params, sortBy: `${sortSlect}${e.target.value}` });
-      getAlldata({ ...params, sortBy: `${sortSlect}${e.target.value}` });
     }
   };
 
@@ -201,12 +193,12 @@ function EmployeePage(props) {
             </Select>
           </div>
         </Col>
-        <Col span={1} className="radio-sort" >
-        <Radio.Group onChange={onChangeRadio} value={radio}>
-              <Radio value=":asc">Asc</Radio>
-              <br />
-              <Radio value=":desc">Desc</Radio>
-            </Radio.Group>
+        <Col span={1} className="radio-sort">
+          <Radio.Group onChange={onChangeRadio} value={radio}>
+            <Radio value=":asc">Asc</Radio>
+            <br />
+            <Radio value=":desc">Desc</Radio>
+          </Radio.Group>
         </Col>
       </Row>
       <div className="employee_content mt-16">
