@@ -21,3 +21,13 @@
 .profile-inf-content-detail {
   font-weight: 600;
 }
+.profile-left-name {
+  margin-top: 40px;
+  margin-bottom: 0;
+  font-size: 20px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 700;
+}
+.profile-left-role {
+  color: rgba(165, 42, 42, 0.637);
+}
