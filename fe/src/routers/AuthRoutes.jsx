@@ -20,7 +20,7 @@ function AuthRoutes(props) {
       <Route path="/conversation" element={<ConversationRecruitmentPage />} />
       <Route path="/taskRecruitment" element={<TaskRecruitmentPage />} />
       <Route path="/profile/:id" element={<ProfilePage />} />
-      <Route path="/employee/:visible" element={<EmployeePage />} />
+      <Route path="/employee/:visible/:userID" element={<EmployeePage />} />
     </Routes>
   );
 }

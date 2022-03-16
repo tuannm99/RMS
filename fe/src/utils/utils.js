@@ -1,11 +1,23 @@
 import _get from 'lodash/get';
 import { logoutRequestService } from '../services/authServices';
 
+/**
+ * get action resquest
+ * @param {*} action 
+ * @param  {...any} params 
+ */
 export function dispatchAction(action, ...params) {
   // eslint-disable-next-line no-underscore-dangle
   window.g_app._store.dispatch(action.call(null, ...params));
 }
 
+/**
+ * Check error when send 1 request
+ * @param {*} response 
+ * @param {*} action 
+ * @param  {...any} params 
+ * @returns 
+ */
 export function hasResponseError(response, action, ...params) {
   const statusCode = _get(response, 'status', null);
   if (statusCode === null || statusCode === undefined || statusCode === '')
@@ -25,6 +37,11 @@ export function hasResponseError(response, action, ...params) {
   return !isValidStatus;
 }
 
+/**
+ * convert from buffer to base64
+ * @param {*} buffer 
+ * @returns 
+ */
 export const base64String = (buffer) => {
   var binary = '';
   var bytes = new Uint8Array(buffer);
@@ -35,6 +52,11 @@ export const base64String = (buffer) => {
   return window.btoa(binary);
 };
 
+/**
+ * convert from file to base64
+ * @param {*} file 
+ * @returns 
+ */
 export const convertFileToBase64 = (file) => {
   return new Promise((resolve) => {
     let fileInfo;

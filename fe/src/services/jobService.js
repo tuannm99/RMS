@@ -3,10 +3,10 @@ import request from '../utils/request';
 const BASE_API = 'http://rms-fpt.ddns.net:5000/api/v1';
 
 //get jobs
-export function getJobsRequestService(params) {
+export function getAllJobs(params) {
   return request(`${BASE_API}/Jobs`, {
     method: 'GET',
-    data: params,
+    params: params,
   });
 }
 
@@ -28,6 +28,7 @@ export function updateJobs(id, body) {
   return request(`${BASE_API}/Jobs/${id}`, {
     method: 'PUT',
     data: body,
+    params: id,
   });
 }
 

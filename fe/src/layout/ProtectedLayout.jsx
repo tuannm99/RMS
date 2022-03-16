@@ -13,18 +13,25 @@ import AuthRoutes from '../routers/AuthRoutes';
 const { Content } = Layout;
 
 function ProtectedLayout(props) {
+  
   const navigate = useNavigate();
-  const { refreshTokenRequest } = props;
+
   const [collapsed, setCollapsed] = useState(false);
   const [timerToken, setTimerToken] = useState();
+
   const expires = localStorage.getItem('expires');
   const tokenLocal = localStorage.getItem('token');
   const refreshToken = localStorage.getItem('refreshToken');
+
+  const { refreshTokenRequest } = props;
 
   let params = {
     refreshToken: refreshToken,
   };
 
+  /**
+   * check time now
+   */
   useEffect(() => {
     const intervalTime = setInterval(() => {
       const now = new Date();
@@ -35,10 +42,16 @@ function ProtectedLayout(props) {
     };
   }, []);
 
+  /**
+   * refresh token allow params
+   */
   useEffect(() => {
     refreshTokenFunction();
   }, [params]);
 
+  /**
+   * change page login aloww token and refresh
+   */
   useEffect(() => {
     if (!tokenLocal || !refreshToken) {
       navigate('/login');
@@ -46,6 +59,9 @@ function ProtectedLayout(props) {
     }
   }, [tokenLocal, refreshToken]);
 
+  /**
+   * check refresh token
+   */
   const refreshTokenFunction = () => {
     if (
       timerToken + 20000 > moment.utc(expires).toDate().getTime() ||
@@ -55,6 +71,9 @@ function ProtectedLayout(props) {
     }
   };
 
+  /**
+   * toggle display sibar
+   */
   const toggle = () => {
     setCollapsed(!collapsed);
   };

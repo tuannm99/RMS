@@ -11,6 +11,8 @@ import {
   Button,
   Spin,
   Popconfirm,
+  Form,
+  Radio,
 } from 'antd';
 import {
   EditOutlined,
@@ -30,12 +32,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const { Meta } = Card;
 const { Search } = Input;
-const { Option, OptGroup } = Select;
+const { Option } = Select;
 
 function EmployeePage(props) {
-  const [typeContent, setTypeContent] = useState(true);
+  /**
+   * create state
+   */
   const [visibleEditUser, setVisibleEditUser] = useState(false);
   const [user, setUser] = useState();
+  const [radio, setRadio] = useState(':asc');
+  const [sortSlect, setSortSlect] = useState('createdAt');
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(false);
   const [params, setParams] = useState({
@@ -45,35 +51,43 @@ function EmployeePage(props) {
     sortBy: '',
   });
 
-  const { userAccount } = props;
+  const [form] = Form.useForm();
   const navigation = useNavigate();
-  let {visible} = useParams()
+  let { visible, userID } = useParams();
 
-  const showUserEdit = (id) => {
-    setVisibleEditUser(true);
-    setUser(id);
-  };
+  const { userAccount } = props;
 
-  const onCloseEditUser = () => {
-    setVisibleEditUser(false);
-  };
-
-  const editUser = (id) => {};
-
-  const handleTypeContent = () => {
-    setTypeContent(!typeContent);
-  };
-
-useEffect(()=>{
-  if(visible === "true"){
-    showUserEdit(userAccount?.id)
-  }
-},[])
+  useEffect(() => {
+    if (visible === 'true') {
+      showUserEdit(userID);
+    }
+  }, []);
 
   useEffect(() => {
     getAlldata(params);
   }, [params]);
 
+  /**
+   * display drawer form edit and add
+   */
+  const showUserEdit = (id) => {
+    setVisibleEditUser(true);
+    setUser(id);
+  };
+
+  /**
+   * Close drawer
+   */
+  const onCloseEditUser = () => {
+    setVisibleEditUser(false);
+    navigation(`/employee/false/${userID}`);
+  };
+
+  /**
+   * get all list user
+   * @param {*} params
+   * @returns
+   */
   const getAlldata = async (params) => {
     setLoading(true);
     const res = await services.getAllUsersServices(params);
@@ -84,38 +98,57 @@ useEffect(()=>{
     setLoading(false);
   };
 
+  /**
+   * change page size
+   * @param {*} pagination
+   */
   const handleChangeData = (pagination) => {
-    console.log(pagination);
     setParams({ ...params, page: pagination });
-    getAlldata({ ...params, page: pagination });
   };
 
+  /**
+   * filter allow fullName
+   * @param {*} value
+   */
   const onSearch = (value) => {
     setParams({ ...params, fullName: value });
-    getAlldata({ ...params, fullName: value });
   };
 
+  /**
+   * change select role
+   * @param {*} value
+   */
   const handleSelectRole = (value) => {
-    console.log(value);
     if (value === 'all') {
-      delete params.role;
+      delete params['role'];
       getAlldata(params);
     } else {
       setParams({ ...params, role: value });
-      getAlldata({ ...params, role: value });
     }
   };
 
+  /**
+   * change select sort
+   * @param {*} value
+   */
   const handleSelectSort = (value) => {
-    if (value === 'all') {
-      setParams({ ...params, sortBy: '' });
-      getAlldata(params);
-    } else {
-      setParams({ ...params, sortBy: value });
-      getAlldata({ ...params, role: value });
-    }
+    setSortSlect(value);
+    setParams({ ...params, sortBy: `${value}${radio}` });
   };
 
+  /**
+   * change radio sort allow asc and desc
+   * @param {*} e
+   */
+  const onChangeRadio = (e) => {
+    setRadio(e.target.value);
+    setParams({ ...params, sortBy: `${sortSlect}${e.target.value}` });
+  };
+
+  /**
+   * change page profile allow id
+   * @param {*} id
+   */
   const handleDetailUser = (id) => {
     if (userAccount?.role === 'admin') {
       navigation(`/profile/${id}`);
@@ -124,20 +157,24 @@ useEffect(()=>{
     }
   };
 
+  /**
+   * remove employee allow id
+   * @param {*} id
+   * @returns
+   */
   const handleDelete = async (id) => {
-    await services.deleteUsersServices(id).then((res) => {
-      if (hasResponseError(res)) {
-        return;
-      }
+    const res = await services.deleteUsersServices(id);
+    if (hasResponseError(res)) {
+      return;
+    }
     toast.success('Delete success!');
-    });
     getAlldata(params);
   };
 
   return (
     <>
       <Row className="employee_tool" wrap={true}>
-        <Col flex={1}>
+        <Col flex={1} className="mt-12">
           <strong>Role: </strong>
           <Select
             defaultValue="all"
@@ -150,22 +187,7 @@ useEffect(()=>{
             <Option value="employee">Employee</Option>
           </Select>
         </Col>
-        <Col flex={1}>
-          <strong>Sort by: </strong>
-          <Select
-            defaultValue="all"
-            style={{ width: 125 }}
-            showArrow={false}
-            onSelect={handleSelectSort}
-          >
-            <Option value="all">All</Option>
-            <Option value="fullName:asc">Name</Option>
-            <Option value="createdAt:asc">Create At</Option>
-            <Option value="Yiminghe:asc">Role</Option>
-            <Option value="email:asc">Email</Option>
-          </Select>
-        </Col>
-        <Col flex={2}>
+        <Col flex={3} style={{ textAlign: 'center' }} className="mt-12">
           <Search
             style={{ maxWidth: 400, textAlign: 'center' }}
             placeholder="Employee Search"
@@ -173,7 +195,7 @@ useEffect(()=>{
             enterButton
           />
         </Col>
-        <Col flex={1} className="fr">
+        <Col flex={1} className="fr mt-12">
           {users && (
             <Pagination
               pageSize={users?.limit}
@@ -185,11 +207,36 @@ useEffect(()=>{
           )}
         </Col>
       </Row>
-      <div className="btn_add_employee">
-        <Button className="mt-12" onClick={() => showUserEdit(null)}>
-          Add Employee
-        </Button>
-      </div>
+
+      <Row>
+        <Col span={12} className="mt-12">
+          <Button onClick={() => showUserEdit(null)}>Add Employee</Button>
+        </Col>
+        <Col span={11} className="mt-12">
+          <div className="fr mr-8">
+            <strong>Sort by: </strong>
+            <Select
+              defaultValue="createdAt"
+              style={{ width: 125 }}
+              showArrow={true}
+              onSelect={handleSelectSort}
+            >
+              <Option value="createdAt">All</Option>
+              <Option value="fullName">Name</Option>
+              <Option value="updatedAt">Update By</Option>
+              <Option value="email">Email</Option>
+            </Select>
+          </div>
+        </Col>
+        <Col span={1} className="radio-sort">
+          <Radio.Group onChange={onChangeRadio} value={radio}>
+            <Radio value=":asc">Asc</Radio>
+            <br />
+            <Radio value=":desc">Desc</Radio>
+          </Radio.Group>
+        </Col>
+      </Row>
+
       <div className="employee_content mt-16">
         <Row gutter={20}>
           {loading && (
@@ -207,66 +254,88 @@ useEffect(()=>{
                 key={item.id}
                 className="mb-24"
               >
-                <Card
-                  style={{ width: '100%', minHeight: '305px' }}
-                  actions={
-                    userAccount?.role === 'admin' &&
-                    userAccount?.id !== item?.id && [
-                      <EditOutlined
-                        key="edit"
-                        onClick={() => showUserEdit(item.id)}
-                      />,
-                      <Popconfirm
-                        onConfirm={() => handleDelete(item.id)}
-                        title="Are you sure？"
-                        icon={<DeleteOutlined style={{ color: 'red' }} />}
-                      >
-                        <DeleteOutlined />
-                      </Popconfirm>,
-                    ]
-                  }
-                  hoverable="true"
-                >
-                  <Meta
-                    avatar={
-                      !item.avatar ? (
-                        <Avatar size={64} icon={<UserOutlined />} />
-                      ) : (
-                        <Avatar
-                          size={64}
-                          src={`data:image/png;base64,${base64String(
-                            item?.avatar?.imageBuffer?.data
-                          )}`}
-                        />
-                      )
-                    }
-                    title={item.fullName}
-                    description={item.role}
-                  />
+                <div className="card">
                   <div
-                    className="content-card"
+                    className="card-before"
                     onClick={() => handleDetailUser(item.id)}
+                  ></div>
+                  <Card
+                    style={{ width: '100%', minHeight: '305px' }}
+                    actions={
+                      userAccount?.role === 'admin' &&
+                      userAccount?.id !== item?.id
+                        ? [
+                            <EditOutlined
+                              key="edit"
+                              onClick={() => showUserEdit(item.id)}
+                            />,
+                            <Popconfirm
+                              onConfirm={() => handleDelete(item.id)}
+                              title="Are you sure？"
+                              icon={<DeleteOutlined style={{ color: 'red' }} />}
+                            >
+                              <DeleteOutlined />
+                            </Popconfirm>,
+                          ]
+                        : [
+                            <EditOutlined
+                              key="edit"
+                              onClick={() => showUserEdit(item.id)}
+                            />,
+                          ]
+                    }
+                    hoverable="true"
                   >
-                    <p className="mb-0 mt-24" >
-                      <MailOutlined />
-                    </p>
-                    <div style={{wordBreak:"break-word"}}>{item.email}</div>
-                    <p className="mb-0">
-                      <PhoneOutlined />
-                    </p>
-                    <span>{item.phone}</span>
-                  </div>
-                </Card>
+                    <Meta
+                      avatar={
+                        !item.avatar ? (
+                          <Avatar size={64} icon={<UserOutlined />} />
+                        ) : (
+                          <Avatar
+                            size={64}
+                            src={`data:image/png;base64,${base64String(
+                              item?.avatar?.imageBuffer?.data
+                            )}`}
+                          />
+                        )
+                      }
+                      title={item.fullName}
+                      description={item.role}
+                    />
+                    <div className="content-card">
+                      {item.email && (
+                        <>
+                          <p className="mb-0 mt-24">
+                            <MailOutlined />
+                          </p>
+                          <div style={{ wordBreak: 'break-word' }}>
+                            {item.email}
+                          </div>
+                        </>
+                      )}
+                      {item.phone && (
+                        <>
+                          <p className="mb-0">
+                            <PhoneOutlined />
+                          </p>
+                          <span>{item.phone}</span>
+                        </>
+                      )}
+                    </div>
+                  </Card>
+                </div>
               </Col>
             ))}
         </Row>
       </div>
+
       <UserEdit_Add
         visible={visibleEditUser}
         onclose={onCloseEditUser}
         user={user}
         getAlldata={getAlldata}
         params={params}
+        form={form}
       />
     </>
   );

@@ -121,6 +121,14 @@
 .recruit-modal-skill {
   width: 550px;
 }
+.cart-content .ant-progress-circle .ant-progress-text {
+  font-size: 18px;
+  color: rgb(110, 110, 110);
+}
+.recruit-selector {
+  margin-top: 15px;
+  background-color: #ddd;
+}
 @media (min-width: 1537px) {
   .card-jd {
     width: 300px;

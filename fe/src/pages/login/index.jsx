@@ -11,9 +11,19 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
 function Login(props) {
+
+  /**
+   * create state to props
+   */
   const { loginRequest } = props;
   const { isLoading } = props;
+
   const navigation = useNavigate();
+
+  /**
+   * submit form login
+   * @param {*} values 
+   */
   const onFinish = async (values) => {
     const params = {
       username: values.username,
@@ -88,6 +98,7 @@ function Login(props) {
     </div>
   );
 }
+
 const mapStateToProps = createStructuredSelector({
   isLoading: selectLoading,
 });
