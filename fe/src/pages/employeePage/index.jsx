@@ -19,7 +19,7 @@ import {
 } from 'antd';
 import {
   EditOutlined,
-  EllipsisOutlined,
+  DeleteOutlined,
   SettingOutlined,
   MenuFoldOutlined,
   UserOutlined,
@@ -27,16 +27,10 @@ import {
   PhoneOutlined,
   AlignRightOutlined,
 } from '@ant-design/icons';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import { getAllUserRequest } from '../../redux/stores/employee/actions';
-import {
-  selectDataUser,
-  selectLoading,
-} from '../../redux/stores/employee/selectors';
-import { UserDetail, generateColumns } from './components';
-import { getDetailUsersServices } from '../../services/employeeServices';
+import { hasResponseError } from '../../utils/utils';
+import { UserDetail, generateColumns, UserEdit_Add } from './components';
+import * as services from '../../services/employeeServices';
+import { toast } from 'react-toastify';
 
 const { Meta } = Card;
 const { Search } = Input;
@@ -45,23 +39,42 @@ const { Option } = Select;
 function EmployeePage(props) {
   const [typeContent, setTypeContent] = useState(true);
   const [visibleUser, setVisibleUser] = useState(false);
+  const [visibleEditUser, setVisibleEditUser] = useState(false);
   const [user, setUser] = useState({});
-  const { isLoading, dataUser } = props;
-  const { getAllUserRequest } = props;
+  const [users, setUsers] = useState();
 
   const showUserDetail = (id) => {
     setVisibleUser(true);
-    getDetailUsersServices(id).then((res) => setUser(res.data));
+    services.getDetailUsersServices(id).then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(`${res.data.message}`, {
+          autoClose: 3000,
+        });
+        return;
+      }
+      setUser(res.data);
+    });
   };
 
   const onCloseUser = () => {
-    console.log(visibleUser);
     setVisibleUser(false);
+  };
+
+  const showUserEdit = (id) => {
+    setVisibleEditUser(true);
+  };
+
+  const onCloseEditUser = () => {
+    setVisibleEditUser(false);
   };
 
   const handleDelete = async (id) => {};
 
   const editUser = (id) => {};
+
+  const handleTypeContent = () => {
+    setTypeContent(!typeContent);
+  };
 
   const userColumns = useMemo(
     () =>
@@ -73,16 +86,13 @@ function EmployeePage(props) {
   );
 
   useEffect(() => {
-    getAllUserRequest();
+    services.getAllUsersServices().then((res) => {
+      if (hasResponseError(res)) {
+        return;
+      }
+      setUsers(res.data.results);
+    });
   }, []);
-
-  const handleTypeContent = () => {
-    setTypeContent(!typeContent);
-  };
-
-  const handleEdit = () => {
-    console.log('hello');
-  };
 
   return (
     <>
@@ -139,64 +149,65 @@ function EmployeePage(props) {
         </Col>
       </Row>
       <div className="btn_add_employee">
-        <Button className="mt-12">Add Employee</Button>
+        <Button className="mt-12" onClick={() => showUserEdit(null)}>
+          Add Employee
+        </Button>
       </div>
       {typeContent ? (
         <div className="employee_content">
-          {dataUser.map((item) => (
-            <Card
-              style={{ width: 270, margin: 10 }}
-              actions={[
-                <SettingOutlined key="setting" />,
-                <EditOutlined key="edit" onClick={handleEdit} />,
-                <EllipsisOutlined key="ellipsis" />,
-              ]}
-              hoverable="true"
-              onClick={() => showUserDetail(item.id)}
-              key={item.username}
-            >
-              <Meta
-                avatar={
-                  !item.avatar ? (
-                    <Avatar size={64} icon={<UserOutlined />} />
-                  ) : (
-                    <Avatar size={64} src={item.avatar} />
-                  )
-                }
-                title={
-                  item.firstName && item.lastName
-                    ? `${item.firstName} ${item.lastName}`
-                    : item.username
-                }
-                description={item.role}
-              />
-              <p className="mb-0 mt-24">
-                <MailOutlined />
-              </p>
-              <span>{item.email}</span>
-              <p className="mb-0">
-                <PhoneOutlined />
-              </p>
-              <span>0795148134</span>
-            </Card>
-          ))}
+          {users &&
+            users.map((item) => (
+              <Card
+                style={{ width: 270, margin: 10 }}
+                actions={[
+                  <EditOutlined
+                    key="edit"
+                    onClick={() => showUserEdit(item.id)}
+                  />,
+                  <DeleteOutlined key="delete" />,
+                ]}
+                hoverable="true"
+                key={item.id}
+              >
+                <div onClick={() => showUserDetail(item.id)}>
+                  <Meta
+                    avatar={
+                      !item.avatar ? (
+                        <Avatar size={64} icon={<UserOutlined />} />
+                      ) : (
+                        <Avatar size={64} src={item.avatar} />
+                      )
+                    }
+                    title={
+                      item.firstName && item.lastName
+                        ? `${item.firstName} ${item.lastName}`
+                        : item.username
+                    }
+                    description={item.role}
+                  />
+                  <p className="mb-0 mt-24">
+                    <MailOutlined />
+                  </p>
+                  <span>{item.email}</span>
+                  <p className="mb-0">
+                    <PhoneOutlined />
+                  </p>
+                  <span>0795148134</span>
+                </div>
+              </Card>
+            ))}
         </div>
       ) : (
-        <Table columns={userColumns} dataSource={dataUser} className="mt-16" />
+        <Table columns={userColumns} dataSource={users} className="mt-16" />
       )}
       <UserDetail visible={visibleUser} onclose={onCloseUser} user={user} />
+      <UserEdit_Add
+        visible={visibleEditUser}
+        onclose={onCloseEditUser}
+        user={user}
+      />
     </>
   );
 }
 
-const mapStateToProps = createStructuredSelector({
-  isLoading: selectLoading,
-  dataUser: selectDataUser,
-});
-const mapDispatchToProps = (dispatch) => ({
-  getAllUserRequest: (payload) => dispatch(getAllUserRequest(payload)),
-});
-
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
-
-export default compose(withConnect)(EmployeePage);
+export default EmployeePage;

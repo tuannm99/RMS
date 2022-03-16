@@ -19,9 +19,10 @@ function Recruit(props) {
           <Progress
             type="circle"
             percent={100}
-            format={() => `${data.totalCandidate}`}
+            style={{ fontSize: 8 }}
+            format={() => `${data.candidateCount} candidates`}
             width={120}
-            strokeWidth={3}
+            strokeWidth={4}
             strokeColor={'#9e80c5'}
             trailColor={'#607787'}
             status="normal"
@@ -33,7 +34,7 @@ function Recruit(props) {
         </div>
         <div className={props.cartFooter}>
           <GlobalOutlined className={'cart-icon cart-global'} />
-          <h3>Published</h3>
+          <h3>{data.status}</h3>
           <Link to={`/recruit/${data.id}`} style={{ textDecoration: 'none' }}>
             <button>Detail </button>
           </Link>
