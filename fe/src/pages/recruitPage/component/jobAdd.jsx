@@ -42,7 +42,7 @@ function JobAdd({ onclose, visible, job, loadData }) {
             <Form.Item
               name="title"
               label="Title Job"
-              rules={[{ required: true, message: 'Please enter user name' }]}
+              rules={[{ required: true, message: 'Please Enter Title Job' }]}
             >
               <Input placeholder="Please enter user name" />
             </Form.Item>
@@ -51,7 +51,7 @@ function JobAdd({ onclose, visible, job, loadData }) {
             <Form.Item
               name="department"
               label="Department"
-              rules={[{ required: true, message: 'Please enter user name' }]}
+              rules={[{ required: true, message: 'Please Enter Department' }]}
             >
               <Select style={{ width: 300 }}>
                 <Option value="Administrtion">Administrtion</Option>
@@ -68,7 +68,7 @@ function JobAdd({ onclose, visible, job, loadData }) {
             <Form.Item
               name="jobType"
               label="Job Type"
-              rules={[{ required: true, message: 'Please enter user name' }]}
+              rules={[{ required: true, message: 'Please Enter Job Type' }]}
             >
               <Select style={{ width: 300 }}>
                 <Option value="Full Time">Full Time</Option>
@@ -78,7 +78,11 @@ function JobAdd({ onclose, visible, job, loadData }) {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="location" label="Location">
+            <Form.Item
+              name="location"
+              label="Location"
+              rules={[{ required: true, message: 'Please Enter Job Location' }]}
+            >
               <Input placeholder="address" />
             </Form.Item>
           </Col>
