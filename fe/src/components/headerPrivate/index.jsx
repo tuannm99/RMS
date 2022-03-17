@@ -47,7 +47,7 @@ function HeaderPrivate(props) {
         Job posting
       </Menu.Item>
       <Menu.Item key="2" icon={<TeamOutlined />}>
-        Employee
+        <NavLink to={`/employee/${true}/${null}`}>Employee</NavLink>
       </Menu.Item>
       <Menu.Item key="3" icon={<ReadOutlined />}>
         Task

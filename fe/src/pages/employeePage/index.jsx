@@ -58,10 +58,14 @@ function EmployeePage(props) {
   const { userAccount } = props;
 
   useEffect(() => {
-    if (visible === 'true') {
+    if (visible === 'true' && userID !== "null") {
       showUserEdit(userID);
+    }else if(visible === 'true' && userID === "null"){
+      showUserEdit(null);
+    }else{
+      return
     }
-  }, []);
+  }, [visible]);
 
   useEffect(() => {
     getAlldata(params);
@@ -70,9 +74,9 @@ function EmployeePage(props) {
   /**
    * display drawer form edit and add
    */
-  const showUserEdit = (id) => {
+  const showUserEdit = async (id) => {
+    await setUser(id);
     setVisibleEditUser(true);
-    setUser(id);
   };
 
   /**
@@ -80,7 +84,11 @@ function EmployeePage(props) {
    */
   const onCloseEditUser = () => {
     setVisibleEditUser(false);
-    navigation(`/employee/false/${userID}`);
+    if(userID !== "null"){
+      navigation(`/employee/false/${userID}`);
+    }else{
+      navigation(`/employee/false/${userAccount?.id}`);
+    }
   };
 
   /**
@@ -248,7 +256,8 @@ function EmployeePage(props) {
             !loading &&
             users?.results?.map((item) => (
               <Col
-                md={{ span: 8 }}
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
                 xl={{ span: 6 }}
                 xxl={{ span: 3 }}
                 key={item.id}
