@@ -50,8 +50,8 @@ function JobAdd({ onclose, visible, job, loadData }) {
           <Col span={8}>
             <Form.Item
               name="department"
-              rules={[{ required: false }]}
               label="Department"
+              rules={[{ required: true, message: 'Please enter user name' }]}
             >
               <Select style={{ width: 300 }}>
                 <Option value="Administrtion">Administrtion</Option>
@@ -68,7 +68,7 @@ function JobAdd({ onclose, visible, job, loadData }) {
             <Form.Item
               name="jobType"
               label="Job Type"
-              rules={[{ required: false }]}
+              rules={[{ required: true, message: 'Please enter user name' }]}
             >
               <Select style={{ width: 300 }}>
                 <Option value="Full Time">Full Time</Option>
@@ -78,11 +78,7 @@ function JobAdd({ onclose, visible, job, loadData }) {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item
-              name="location"
-              label="Location"
-              rules={[{ required: false }]}
-            >
+            <Form.Item name="location" label="Location">
               <Input placeholder="address" />
             </Form.Item>
           </Col>
