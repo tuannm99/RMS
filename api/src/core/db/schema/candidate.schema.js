@@ -16,9 +16,9 @@ const candidateSchema = new mongoose.Schema({
     enum: [STAGES.contact, STAGES.cultureFit, STAGES.technical, STAGES.test],
     default: STAGES.contact,
   },
-  firstName: { type: String },
+  firstName: { required: true, type: String },
   midName: { type: String },
-  lastName: { type: String },
+  lastName: { required: true, type: String },
   fullName: { type: String },
   email: {
     type: String,
@@ -31,7 +31,7 @@ const candidateSchema = new mongoose.Schema({
       }
     },
   },
-  phone: { type: Number },
+  phone: { required: true, type: Number },
 
   resume: {
     cv: { type: String },

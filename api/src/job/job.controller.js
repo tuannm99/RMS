@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../core/catchAsync');
 
 const jobService = require('./job.service');
+const userService = require('../user/user.service');
 const { pick } = require('../core/utils');
 
 /**
@@ -10,7 +11,10 @@ const { pick } = require('../core/utils');
  * @param {object} res
  */
 const addJobPosting = catchAsync(async (req, res) => {
-  const jobPosting = await jobService.createJob(req.body);
+  const userId = await userService.getUserIdFromHeaderToken(req.headers.authorization);
+  const { body } = req;
+  body.userId = userId;
+  const jobPosting = await jobService.createJob(body);
   res.status(httpStatus.OK).json(jobPosting);
 });
 

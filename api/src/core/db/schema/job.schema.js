@@ -5,14 +5,14 @@ const { JOB_STATUS } = require('../../../constants');
 const jobSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   candidateId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Candidate' }],
-  title: { require: true, type: String },
+  title: { required: true, type: String },
   status: {
     type: String,
     enum: [JOB_STATUS.published, JOB_STATUS.onHold, JOB_STATUS.deleted],
     default: JOB_STATUS.onHold,
   },
-  department: { require: true, type: String },
-  jobType: { require: true, type: String },
+  department: { required: true, type: String },
+  jobType: { required: true, type: String },
   location: { type: String },
   jobDescription: { type: String },
   skill: { type: String },
