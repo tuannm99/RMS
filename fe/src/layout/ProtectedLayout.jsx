@@ -13,7 +13,6 @@ import AuthRoutes from '../routers/AuthRoutes';
 const { Content } = Layout;
 
 function ProtectedLayout(props) {
-  
   const navigate = useNavigate();
 
   const [collapsed, setCollapsed] = useState(false);

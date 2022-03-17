@@ -28,7 +28,6 @@ function ProfilePage() {
         toast.error(`${res.data.message}`);
         return;
       }
-      console.log(res.data);
       setUser(res.data);
     });
   }, []);

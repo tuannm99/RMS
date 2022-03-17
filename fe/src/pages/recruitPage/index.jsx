@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { getAllJobs } from '../../services/jobService';
-import Recruit from '../../components/recruit';
 import './style.css';
 import { hasResponseError } from '../../utils/utils';
-
+import { GlobalOutlined, UserOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
-import { createJobs } from '../../services/jobService';
-import { Row, Col, Button, Breadcrumb, Select, Pagination } from 'antd';
+import {
+  Row,
+  Col,
+  Button,
+  Breadcrumb,
+  Select,
+  Pagination,
+  Card,
+  Progress,
+  Divider,
+} from 'antd';
 import JobAdd from './component/jobAdd';
-import Column from 'antd/lib/table/Column';
 
 function RecruitPage(props) {
   const [dataJobs, setDataJobs] = useState();
@@ -48,11 +55,6 @@ function RecruitPage(props) {
     });
   };
 
-  const colStyles = {
-    flexBasis: '20%',
-    width: '20%',
-  };
-
   const handleChangeData = (pagination) => {
     console.log(pagination);
     setParam({ ...param, page: pagination });
@@ -70,18 +72,14 @@ function RecruitPage(props) {
   return (
     <>
       <Row>
-        <Col md={{ span: 16 }} xl={{ span: 16 }} xxl={{ span: 20 }}>
+        <Col span={12}>
           <Breadcrumb>
             <Breadcrumb.Item>Recruitment</Breadcrumb.Item>
             <Breadcrumb.Item>Recruit</Breadcrumb.Item>
           </Breadcrumb>
         </Col>
-        <Col md={{ span: 4 }} xl={{ span: 4 }} xxl={{ span: 2 }}>
-          <Button className="Recruit-button fr" onClick={showDrawp}>
-            Add Job Posting
-          </Button>
-        </Col>
-        <Col md={{ span: 4 }} xl={{ span: 4 }} xxl={{ span: 2 }}>
+
+        <Col span={12}>
           {dataJobs && (
             <Pagination
               pageSize={dataJobs?.limit}
@@ -92,12 +90,15 @@ function RecruitPage(props) {
             />
           )}
         </Col>
-        <Col span={24}>
+      </Row>
+      <Divider className="mb-0 mt-12" />
+      <Row className="mt-12">
+        <Col span={12}>
           <Select
             defaultValue="allJob"
             style={{ width: 120 }}
             onSelect={handleChange}
-            className="recruit-selector"
+            className="mb-12"
           >
             <Option value="allJob">All Job</Option>
             <Option value="published">Published</Option>
@@ -105,28 +106,65 @@ function RecruitPage(props) {
             <Option value="deleted">deleted</Option>
           </Select>
         </Col>
+        <Col span={12}>
+          <Button className="fr" onClick={showDrawp}>
+            Add Job Posting
+          </Button>
+        </Col>
       </Row>
 
-      <Row type="flex" gutter={30}>
+      <Row gutter={20}>
         {dataJobs &&
           dataJobs?.results?.map((item) => {
             return (
               <Col
-                className="recuid-card"
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
+                xl={{ span: 6 }}
+                xxl={{ span: 3 }}
                 key={item.id}
-                style={{ ...colStyles }}
+                className="mb-24"
               >
-                <Recruit
-                  data={item}
-                  jobId={item.id}
-                  cardJD="card-jd"
-                  cartHeader="cart-header"
-                  cartTitle="cart-title"
-                  cartContent="cart-content"
-                  cartLocal="cart-local"
-                  cartIcon="cart-icon"
-                  cartFooter="cart-footer"
-                />
+                <div className="card">
+                  <Card
+                    style={{
+                      width: '100%',
+                      minHeight: '350px',
+                      textAlign: 'center',
+                    }}
+                    hoverable="true"
+                    title={item.department}
+                    actions={[
+                      <div>
+                        <GlobalOutlined key="global" className="mr-8" />
+                        {item.status}
+                      </div>,
+                      <div>Details</div>,
+                    ]}
+                  >
+                    <div className="body-card">
+                      <p className="title-card mb-16">{item.title}</p>
+                      <Progress
+                        type="circle"
+                        percent={100}
+                        format={() => `${item.candidateCount} candidates`}
+                        width={120}
+                        strokeWidth={4}
+                        strokeColor={'#9e80c5'}
+                        trailColor={'#607787'}
+                        status="normal"
+                      />
+                      <div className="location mt-16">
+                        {item.location && (
+                          <span>
+                            <UserOutlined /> {item.location} |{' '}
+                          </span>
+                        )}
+                        {item.jobType && <span>{item.jobType}</span>}
+                      </div>
+                    </div>
+                  </Card>
+                </div>
               </Col>
             );
           })}

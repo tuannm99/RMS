@@ -14,17 +14,18 @@ import { useNavigate } from 'react-router-dom';
 import { Breadcrumb, Button, Input, Form, Select, Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
 import { set } from 'lodash';
+import { selectUserInfor } from '../../redux/stores/auth/selectors';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 
 function DetailRecruitPage(props) {
   let { id } = useParams();
   const [formModal] = Form.useForm();
   const [visible, setVisible] = useState(false);
   const [job, setJob] = useState({});
-
   const [ckeditorData, setCkeditorData] = useState('');
-
   const navigate = useNavigate();
-
+  const { userAccount } = props;
   const { Option } = Select;
 
   const handleCancel = () => {
@@ -33,7 +34,7 @@ function DetailRecruitPage(props) {
 
   useEffect(() => {
     fetchJob();
-  }, []);
+  }, [job]);
 
   const fetchJob = async () => {
     const jobDetail = await getJobsDetail(id);
@@ -70,7 +71,6 @@ function DetailRecruitPage(props) {
       .then((res) => {
         setJob(res.data);
         console.log(res);
-        fetchJob();
       })
       .catch((err) => console.log(err));
     toast.success('Edit Job Detail Successful!', {
@@ -103,10 +103,15 @@ function DetailRecruitPage(props) {
           <Breadcrumb.Item>Detail Job</Breadcrumb.Item>
         </Breadcrumb>
         <div>
-          <Button className="Recruit-button" onClick={() => openModal(id)}>
+          <Button
+            className="Recruit-button"
+            onClick={() => openModal(id)}
+            disabled={userAccount.role !== 'hiringManager' && true}
+          >
             Edit Detail
           </Button>
           <Select
+            disabled={userAccount.role !== 'hiringManager' && true}
             value={job.status}
             style={{ width: 120 }}
             onSelect={updateStatus}
@@ -271,4 +276,7 @@ function DetailRecruitPage(props) {
   );
 }
 
-export default DetailRecruitPage;
+const mapStateToProps = createStructuredSelector({
+  userAccount: selectUserInfor,
+});
+export default connect(mapStateToProps)(DetailRecruitPage);

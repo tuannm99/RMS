@@ -8,10 +8,9 @@ import { compose } from 'recompose';
 import { selectLoading } from '../../redux/stores/auth/selectors';
 import * as actions from '../../redux/stores/auth/actions';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 function Login(props) {
-
   /**
    * create state to props
    */
@@ -22,7 +21,7 @@ function Login(props) {
 
   /**
    * submit form login
-   * @param {*} values 
+   * @param {*} values
    */
   const onFinish = async (values) => {
     const params = {
@@ -77,9 +76,7 @@ function Login(props) {
                 />
               </Form.Item>
               <Form.Item>
-                <a className="login-form-forgot" href="">
-                  Forgot password
-                </a>
+                <NavLink to="/changePassword">Forgot password</NavLink>
               </Form.Item>
 
               <Form.Item>
