@@ -1,12 +1,12 @@
-.title-card{
+.title-card {
   font-size: 20px;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   letter-spacing: 2px;
-  white-space: nowrap; 
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
-.ant-progress-circle .ant-progress-text{
+.ant-progress-circle .ant-progress-text {
   font-size: 16px;
 }

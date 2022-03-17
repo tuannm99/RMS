@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllJobs } from '../../services/jobService';
 import './style.css';
 import { hasResponseError } from '../../utils/utils';
-import {
-  GlobalOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { GlobalOutlined, UserOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import {
   Row,
@@ -58,7 +55,6 @@ function RecruitPage(props) {
     });
   };
 
-
   const handleChangeData = (pagination) => {
     console.log(pagination);
     setParam({ ...param, page: pagination });
@@ -94,9 +90,9 @@ function RecruitPage(props) {
             />
           )}
         </Col>
-        </Row>
-        <Divider className='mb-0 mt-12'/>
-        <Row className='mt-12'>
+      </Row>
+      <Divider className="mb-0 mt-12" />
+      <Row className="mt-12">
         <Col span={12}>
           <Select
             defaultValue="allJob"
@@ -131,7 +127,11 @@ function RecruitPage(props) {
               >
                 <div className="card">
                   <Card
-                    style={{ width: '100%', minHeight: '350px', textAlign: "center" }}
+                    style={{
+                      width: '100%',
+                      minHeight: '350px',
+                      textAlign: 'center',
+                    }}
                     hoverable="true"
                     title={item.department}
                     actions={[
@@ -143,9 +143,7 @@ function RecruitPage(props) {
                     ]}
                   >
                     <div className="body-card">
-                      <p className="title-card mb-16">
-                        {item.title}
-                      </p>
+                      <p className="title-card mb-16">{item.title}</p>
                       <Progress
                         type="circle"
                         percent={100}
@@ -157,7 +155,11 @@ function RecruitPage(props) {
                         status="normal"
                       />
                       <div className="location mt-16">
-                        {item.location && <span><UserOutlined/> {item.location} | </span>}
+                        {item.location && (
+                          <span>
+                            <UserOutlined /> {item.location} |{' '}
+                          </span>
+                        )}
                         {item.jobType && <span>{item.jobType}</span>}
                       </div>
                     </div>

@@ -3,6 +3,7 @@ import './App.css';
 import { ProtectedLayout } from './layout';
 import Home from './pages/publicComponent';
 import HomeDetail from './pages/publicDetail';
+import { ChangePassPage } from './pages';
 import Login from './pages/login';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -17,6 +18,7 @@ function App() {
           <Route end path="/*" element={<ProtectedLayout />} />
           <Route path="/PublicJob" element={<Home />} />
           <Route path="/PublicJob/:id" element={<HomeDetail />} />
+          <Route path="/changePassword" element={<ChangePassPage />} />
         </Routes>
       </Router>
       <ToastContainer
