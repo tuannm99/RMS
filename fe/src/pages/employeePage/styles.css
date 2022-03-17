@@ -33,24 +33,12 @@
   font-weight: 600;
 }
 
-.card {
-  position: relative;
+.radio-sort {
+  margin-top: 6px;
 }
-.card-before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 50px;
-  right: 0;
-  background-color: transparent;
-  cursor: pointer;
-  z-index: 9;
-}
+
 .content-card {
   position: absolute;
   top: 105px;
   left: 30px;
-}
-.radio-sort {
-  margin-top: 6px;
 }

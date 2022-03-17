@@ -30,7 +30,6 @@ const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
 
 function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
-
   /**
    * create state
    */
@@ -80,7 +79,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
 
   /**
    * convert file to image
-   * @param {*} file 
+   * @param {*} file
    */
   const handlePreview = (file) => {
     let fileImg = file.fileList[0].originFileObj;
@@ -93,7 +92,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
 
   /**
    * Submit form edit or add
-   * @param {*} values 
+   * @param {*} values
    */
   const onFinish = async (values) => {
     const formRes = new FormData();

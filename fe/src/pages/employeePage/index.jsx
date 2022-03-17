@@ -58,12 +58,12 @@ function EmployeePage(props) {
   const { userAccount } = props;
 
   useEffect(() => {
-    if (visible === 'true' && userID !== "null") {
+    if (visible === 'true' && userID !== 'null') {
       showUserEdit(userID);
-    }else if(visible === 'true' && userID === "null"){
+    } else if (visible === 'true' && userID === 'null') {
       showUserEdit(null);
-    }else{
-      return
+    } else {
+      return;
     }
   }, [visible]);
 
@@ -84,9 +84,9 @@ function EmployeePage(props) {
    */
   const onCloseEditUser = () => {
     setVisibleEditUser(false);
-    if(userID !== "null"){
+    if (userID !== 'null') {
       navigation(`/employee/false/${userID}`);
-    }else{
+    } else {
       navigation(`/employee/false/${userAccount?.id}`);
     }
   };

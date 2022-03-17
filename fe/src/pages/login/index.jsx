@@ -11,7 +11,6 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
 function Login(props) {
-
   /**
    * create state to props
    */
@@ -22,7 +21,7 @@ function Login(props) {
 
   /**
    * submit form login
-   * @param {*} values 
+   * @param {*} values
    */
   const onFinish = async (values) => {
     const params = {

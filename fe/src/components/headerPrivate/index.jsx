@@ -75,7 +75,7 @@ function HeaderPrivate(props) {
   const styles = {
     padding: 0,
   };
-  
+
   return (
     <Header className="site-layout-background" style={styles}>
       {React.createElement(

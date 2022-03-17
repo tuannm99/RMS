@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 /**
  * set up axios configuation
  */
