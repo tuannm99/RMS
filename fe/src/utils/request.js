@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+
+/**
+ * set up axios configuation
+ */
 const request = axios.create({
   timeout: 60000,
   headers: {

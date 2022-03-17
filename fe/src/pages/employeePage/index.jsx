@@ -35,13 +35,15 @@ const { Search } = Input;
 const { Option } = Select;
 
 function EmployeePage(props) {
+  /**
+   * create state
+   */
   const [visibleEditUser, setVisibleEditUser] = useState(false);
   const [user, setUser] = useState();
   const [radio, setRadio] = useState(':asc');
-  const [sortSlect, setSortSlect] = useState('all');
+  const [sortSlect, setSortSlect] = useState('createdAt');
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm();
   const [params, setParams] = useState({
     fullName: '',
     limit: 10,
@@ -49,19 +51,11 @@ function EmployeePage(props) {
     sortBy: '',
   });
 
-  const { userAccount } = props;
+  const [form] = Form.useForm();
   const navigation = useNavigate();
   let { visible, userID } = useParams();
 
-  const showUserEdit = (id) => {
-    setVisibleEditUser(true);
-    setUser(id);
-  };
-
-  const onCloseEditUser = () => {
-    setVisibleEditUser(false);
-    navigation(`/employee/false/${userID}`);
-  };
+  const { userAccount } = props;
 
   useEffect(() => {
     if (visible === 'true') {
@@ -73,6 +67,27 @@ function EmployeePage(props) {
     getAlldata(params);
   }, [params]);
 
+  /**
+   * display drawer form edit and add
+   */
+  const showUserEdit = (id) => {
+    setVisibleEditUser(true);
+    setUser(id);
+  };
+
+  /**
+   * Close drawer
+   */
+  const onCloseEditUser = () => {
+    setVisibleEditUser(false);
+    navigation(`/employee/false/${userID}`);
+  };
+
+  /**
+   * get all list user
+   * @param {*} params
+   * @returns
+   */
   const getAlldata = async (params) => {
     setLoading(true);
     const res = await services.getAllUsersServices(params);
@@ -83,43 +98,57 @@ function EmployeePage(props) {
     setLoading(false);
   };
 
+  /**
+   * change page size
+   * @param {*} pagination
+   */
   const handleChangeData = (pagination) => {
-    console.log(pagination);
     setParams({ ...params, page: pagination });
   };
 
+  /**
+   * filter allow fullName
+   * @param {*} value
+   */
   const onSearch = (value) => {
     setParams({ ...params, fullName: value });
   };
 
+  /**
+   * change select role
+   * @param {*} value
+   */
   const handleSelectRole = (value) => {
-    console.log(value);
     if (value === 'all') {
-      delete params.role;
+      delete params['role'];
+      getAlldata(params);
     } else {
       setParams({ ...params, role: value });
     }
   };
 
+  /**
+   * change select sort
+   * @param {*} value
+   */
   const handleSelectSort = (value) => {
     setSortSlect(value);
-    if (value === 'all') {
-      setParams({ ...params, sortBy: '' });
-    } else {
-      setParams({ ...params, sortBy: `${value}${radio}` });
-    }
+    setParams({ ...params, sortBy: `${value}${radio}` });
   };
 
+  /**
+   * change radio sort allow asc and desc
+   * @param {*} e
+   */
   const onChangeRadio = (e) => {
     setRadio(e.target.value);
-    console.log(`${sortSlect}${e.target.value}`);
-    if (e.target.value === ':asc') {
-      setParams({ ...params, sortBy: `` });
-    } else {
-      setParams({ ...params, sortBy: `${sortSlect}${e.target.value}` });
-    }
+    setParams({ ...params, sortBy: `${sortSlect}${e.target.value}` });
   };
 
+  /**
+   * change page profile allow id
+   * @param {*} id
+   */
   const handleDetailUser = (id) => {
     if (userAccount?.role === 'admin') {
       navigation(`/profile/${id}`);
@@ -128,6 +157,11 @@ function EmployeePage(props) {
     }
   };
 
+  /**
+   * remove employee allow id
+   * @param {*} id
+   * @returns
+   */
   const handleDelete = async (id) => {
     const res = await services.deleteUsersServices(id);
     if (hasResponseError(res)) {
@@ -173,6 +207,7 @@ function EmployeePage(props) {
           )}
         </Col>
       </Row>
+
       <Row>
         <Col span={12} className="mt-12">
           <Button onClick={() => showUserEdit(null)}>Add Employee</Button>
@@ -181,14 +216,14 @@ function EmployeePage(props) {
           <div className="fr mr-8">
             <strong>Sort by: </strong>
             <Select
-              defaultValue="all"
+              defaultValue="createdAt"
               style={{ width: 125 }}
               showArrow={true}
               onSelect={handleSelectSort}
             >
-              <Option value="all">All</Option>
+              <Option value="createdAt">All</Option>
               <Option value="fullName">Name</Option>
-              <Option value="createdAt">Create At</Option>
+              <Option value="updatedAt">Update By</Option>
               <Option value="email">Email</Option>
             </Select>
           </div>
@@ -201,6 +236,7 @@ function EmployeePage(props) {
           </Radio.Group>
         </Col>
       </Row>
+
       <div className="employee_content mt-16">
         <Row gutter={20}>
           {loading && (
@@ -292,6 +328,7 @@ function EmployeePage(props) {
             ))}
         </Row>
       </div>
+
       <UserEdit_Add
         visible={visibleEditUser}
         onclose={onCloseEditUser}
