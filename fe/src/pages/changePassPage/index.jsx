@@ -28,10 +28,17 @@ function ChangePassPage() {
               },
             ]}
           >
-            <Input className='content-mail_input' placeholder='Enter your email'/>
+            <Input
+              className="content-mail_input"
+              placeholder="Enter your email"
+            />
           </Form.Item>
           <Form.Item>
-            <Button className='content-mail_btn' type="primary" htmlType="submit">
+            <Button
+              className="content-mail_btn"
+              type="primary"
+              htmlType="submit"
+            >
               Send mail
             </Button>
           </Form.Item>

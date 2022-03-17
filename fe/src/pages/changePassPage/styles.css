@@ -2,28 +2,28 @@
   width: 100vw;
   height: 100vh;
   position: relative;
-  background-color: rgba(0, 139, 139, 0.80);
+  background-color: rgba(0, 139, 139, 0.8);
 }
 .header {
   margin: 10px 20px 10px;
 }
-.content-mail{
-    width: 250px;
-    padding: 20px;
-    border: 1px solid rgba(128, 117, 117, 0.767);
-    border-radius: 5px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    background-color: black;
+.content-mail {
+  width: 250px;
+  padding: 20px;
+  border: 1px solid rgba(128, 117, 117, 0.767);
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
 }
 
-.content-mail_input{
-    border-radius: 4px;
+.content-mail_input {
+  border-radius: 4px;
 }
 
-.content-mail_btn{
-    border-radius: 4px;
-    width: 100%;
+.content-mail_btn {
+  border-radius: 4px;
+  width: 100%;
 }

@@ -286,12 +286,24 @@ function EmployeePage(props) {
                               <DeleteOutlined />
                             </Popconfirm>,
                           ]
-                        : [
+                        : (userAccount?.role === 'hiringManager' ||
+                            userAccount?.role === 'employee') &&
+                          userAccount?.id === item?.id
+                        ? [
                             <EditOutlined
                               key="edit"
                               onClick={() => showUserEdit(item.id)}
                             />,
                           ]
+                        : userAccount?.role === 'admin' &&
+                          userAccount?.id === item?.id
+                        ? [
+                            <EditOutlined
+                              key="edit"
+                              onClick={() => showUserEdit(item.id)}
+                            />,
+                          ]
+                        : ''
                     }
                     hoverable="true"
                   >
