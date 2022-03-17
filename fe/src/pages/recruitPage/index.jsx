@@ -94,7 +94,9 @@ function RecruitPage(props) {
             />
           )}
         </Col>
-        <Divider/>
+        </Row>
+        <Divider className='mb-0 mt-12'/>
+        <Row className='mt-12'>
         <Col span={12}>
           <Select
             defaultValue="allJob"
