@@ -3,7 +3,7 @@ const envConf = require('../config');
 const logger = require('../logger');
 
 const connectDatabase = (dbName) => {
-  const mongoDbUrl = `${envConf.mongo.url}/${dbName}`;
+  const mongoDbUrl = `${envConf.mongo.url}/${dbName}?retryWrites=true&w=majority`;
 
   mongoose.Promise = global.Promise;
   // Connecting to the database
