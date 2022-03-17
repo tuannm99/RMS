@@ -43,7 +43,6 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
   useEffect(() => {
     if (user) {
       services.getDetailUsersServices(user).then((res) => {
-        console.log(res);
         if (res.data.avatar) {
           setImageUser(
             `data:image/png;base64,${base64String(
@@ -97,7 +96,6 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
    * @param {*} values 
    */
   const onFinish = async (values) => {
-    console.log(values);
     const formRes = new FormData();
     const body = {
       username: values.username,
