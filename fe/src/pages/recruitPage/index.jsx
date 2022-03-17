@@ -155,9 +155,8 @@ function RecruitPage(props) {
                         status="normal"
                       />
                       <div className="location mt-16">
-                      
-                      <span><UserOutlined/> {item.location} | </span> 
-                      <span>{item.jobType}</span>
+                        {item.location && <span><UserOutlined/> {item.location} | </span>}
+                        {item.jobType && <span>{item.jobType}</span>}
                       </div>
                     </div>
                   </Card>
