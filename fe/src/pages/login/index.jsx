@@ -65,7 +65,7 @@ function Login(props) {
                 name="password"
                 rules={[
                   { required: true, message: 'Please input your password!' },
-                  { min: 5, message: 'Password must be minimum 5 characters.' },
+                  { min: 8, message: 'Password must be minimum 8 characters.' },
                 ]}
               >
                 <Input

@@ -37,6 +37,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
    * set value in form and avatar render first
    */
   useEffect(() => {
+    form.resetFields();
     if (user) {
       services.getDetailUsersServices(user).then((res) => {
         if (res.data.avatar) {
@@ -70,7 +71,6 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
       });
     } else {
       setImageUser(null);
-      form.resetFields();
     }
   }, [user]);
 
@@ -119,12 +119,14 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
       if (fileList) {
         await services.updateImgUsersServices(user, formRes).then((res) => {
           if (hasResponseError(res)) {
+            toast.error(`${res.data.message}`);
             return;
           }
         });
       }
       await services.updateUsersServices(user, body).then((res) => {
         if (hasResponseError(res)) {
+          toast.error(`${res.data.message}`);
           return;
         }
         toast.success('Edit success!');

@@ -100,6 +100,7 @@ function EmployeePage(props) {
     setLoading(true);
     const res = await services.getAllUsersServices(params);
     if (hasResponseError(res)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     setUsers(res.data);
@@ -173,12 +174,14 @@ function EmployeePage(props) {
   const handleDelete = async (id) => {
     const res = await services.deleteUsersServices(id);
     if (hasResponseError(res)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     toast.success('Delete success!');
     getAlldata(params);
     const res1 = await services.getAllUsersServices();
     if (hasResponseError(res1)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     console.log(res1.data);

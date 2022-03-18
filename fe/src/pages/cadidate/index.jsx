@@ -66,6 +66,7 @@ function CadidatePage(props) {
     setLoading(true);
     const res = await services.getAllCadidatesServices(params);
     if (hasResponseError(res)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     setCadidate(res.data);
@@ -75,11 +76,13 @@ function CadidatePage(props) {
   const handleDelete = async (id) => {
     const res = await services.deleteCadidateServices(id);
     if (hasResponseError(res)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     toast.success('Delete success!');
     const res1 = await services.getAllCadidatesServices();
     if (hasResponseError(res1)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     if (res1.data.totalResults % params.limit === 0) {
