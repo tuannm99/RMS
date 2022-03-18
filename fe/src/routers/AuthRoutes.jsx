@@ -2,7 +2,7 @@ import React from 'react';
 import {
   DashboardPage,
   RecruitPage,
-  TaskRecruitmentPage,
+  CadidatePage,
   DetailRecruitPage,
   ConversationRecruitmentPage,
   ProfilePage,
@@ -18,7 +18,7 @@ function AuthRoutes(props) {
       <Route path="/recruit" element={<RecruitPage />} />
       <Route path="/recruit/:id" element={<DetailRecruitPage />} />
       <Route path="/conversation" element={<ConversationRecruitmentPage />} />
-      <Route path="/taskRecruitment" element={<TaskRecruitmentPage />} />
+      <Route path="/cadidate" element={<CadidatePage />} />
       <Route path="/profile/:id" element={<ProfilePage />} />
       <Route path="/employee/:visible/:userID" element={<EmployeePage />} />
     </Routes>
