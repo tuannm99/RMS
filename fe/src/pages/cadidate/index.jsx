@@ -10,6 +10,9 @@ import {
   Spin,
   Rate,
   Tag,
+  Dropdown,
+  Menu,
+  Popconfirm,
 } from 'antd';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
@@ -19,7 +22,12 @@ import * as jobServices from '../../services/jobService';
 import { Table } from '../../components';
 import { hasResponseError } from '../../utils/utils';
 import { toast } from 'react-toastify';
-import { MoreOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import {
+  MoreOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
 import moment from 'moment';
 
 const dateFormat = 'YYYY/MM/DD';
@@ -63,6 +71,38 @@ function CadidatePage(props) {
     setCadidate(res.data);
     setLoading(false);
   };
+
+  const handleDelete = async (id) => {
+    const res = await services.deleteCadidateServices(id);
+    if (hasResponseError(res)) {
+      return;
+    }
+    toast.success('Delete success!');
+    const res1 = await services.getAllCadidatesServices();
+    if (hasResponseError(res1)) {
+      return;
+    }
+    if (res1.data.totalResults % params.limit === 0) {
+      getAlldataCadidate({ ...params, page: params.page - 1 });
+    } else {
+      getAlldataCadidate(params);
+    }
+  };
+
+  const menu = (id) => (
+    <Menu>
+      <Menu.Item>Edit</Menu.Item>
+      <Menu.Item>
+        <Popconfirm
+          onConfirm={() => handleDelete(id)}
+          title="Are you sure？"
+          icon={<DeleteOutlined style={{ color: 'red' }} />}
+        >
+          Delete
+        </Popconfirm>
+      </Menu.Item>
+    </Menu>
+  );
 
   /**
    * get all list job
@@ -149,7 +189,9 @@ function CadidatePage(props) {
       <td>
         {(userAccount.role === 'admin' ||
           userAccount.role === 'hiringManager') && (
-          <MoreOutlined className="fr" />
+          <Dropdown overlay={menu(item.id)} placement="bottomRight" arrow>
+            <MoreOutlined className="fr fs-24 cu" />
+          </Dropdown>
         )}
       </td>
     </tr>

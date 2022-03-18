@@ -177,6 +177,16 @@ function EmployeePage(props) {
     }
     toast.success('Delete success!');
     getAlldata(params);
+    const res1 = await services.getAllUsersServices();
+    if (hasResponseError(res1)) {
+      return;
+    }
+    console.log(res1.data);
+    if (res1.data.totalResults % params.limit === 0) {
+      getAlldata({ ...params, page: params.page - 1 });
+    } else {
+      getAlldata(params);
+    }
   };
 
   return (

@@ -22,6 +22,10 @@
   display: none;
 }
 
+.cu {
+  cursor: pointer;
+}
+
 .fr {
   float: right;
 }
