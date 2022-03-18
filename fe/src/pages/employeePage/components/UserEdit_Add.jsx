@@ -10,8 +10,6 @@ import {
   Upload,
   Avatar,
   Button,
-  InputNumber,
-  Radio,
 } from 'antd';
 import { DrawerComponent } from '../../../components';
 import * as services from '../../../services/employeeServices';
@@ -35,7 +33,6 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
    */
   const [imageUser, setImageUser] = useState();
   const [fileList, setFileList] = useState(null);
-
   /**
    * set value in form and avatar render first
    */

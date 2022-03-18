@@ -177,6 +177,16 @@ function EmployeePage(props) {
     }
     toast.success('Delete success!');
     getAlldata(params);
+    const res1 = await services.getAllUsersServices();
+    if (hasResponseError(res1)) {
+      return;
+    }
+    console.log(res1.data);
+    if (res1.data.totalResults % params.limit === 0) {
+      getAlldata({ ...params, page: params.page - 1 });
+    } else {
+      getAlldata(params);
+    }
   };
 
   return (
@@ -218,7 +228,9 @@ function EmployeePage(props) {
 
       <Row>
         <Col span={12} className="mt-12">
-          <Button onClick={() => showUserEdit(null)}>Add Employee</Button>
+          {userAccount?.role === 'admin' && (
+            <Button onClick={() => showUserEdit(null)}>Add Employee</Button>
+          )}
         </Col>
         <Col span={11} className="mt-12">
           <div className="fr mr-8">
@@ -264,10 +276,6 @@ function EmployeePage(props) {
                 className="mb-24"
               >
                 <div className="card">
-                  <div
-                    className="card-before"
-                    onClick={() => handleDetailUser(item.id)}
-                  ></div>
                   <Card
                     style={{ width: '100%', minHeight: '305px' }}
                     actions={
@@ -322,8 +330,12 @@ function EmployeePage(props) {
                       }
                       title={item.fullName}
                       description={item.role}
+                      onClick={() => handleDetailUser(item.id)}
                     />
-                    <div className="content-card">
+                    <div
+                      className="content-card"
+                      onClick={() => handleDetailUser(item.id)}
+                    >
                       {item.email && (
                         <>
                           <p className="mb-0 mt-24">
