@@ -60,7 +60,6 @@ const userSchema = mongoose.Schema({
     default: ROLES.employee,
   },
   jobStatus: {
-    employeeId: { type: String, unique: true },
     employeeStatus: { type: String },
     employeeType: { type: String },
     dateOfJoining: { type: Date, default: Date.now },

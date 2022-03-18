@@ -17,9 +17,6 @@ const createUser = async (userBody) => {
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  // generate employeeId
-  const countUser = await User.find({}).count();
-  userBody.jobStatus = { employeeId: `EPL${countUser}` };
   return User.create(userBody);
 };
 
