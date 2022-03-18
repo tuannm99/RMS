@@ -34,7 +34,7 @@ const getAllCandidate = async (filter, options) => {
  * @returns {Promise<Candidate>}
  */
 const getCandidateById = async (id) => {
-  const candidate = await Candidate.findById(id);
+  const candidate = await Candidate.findById(id).populate({ path: 'jobId' });
   if (!candidate) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');
   }

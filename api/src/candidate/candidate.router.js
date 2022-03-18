@@ -1,11 +1,17 @@
 const router = require('express').Router();
+
+const { checkAuth } = require('../core/global.middleware');
+const { ROLES } = require('../constants');
 const candidateController = require('./candidate.controller');
 
-router.get('/', candidateController.getAllCandidate);
-router.get('/:id', candidateController.getCandidate);
-router.post('/', candidateController.addCandidate);
-router.put('/:id', candidateController.editCandidate);
-router.delete('/:id', candidateController.deleteCandidate);
+router.get('/', checkAuth(), candidateController.getAllCandidate);
+router.get('/:id', checkAuth(), candidateController.getCandidate);
+router.post('/', checkAuth(), candidateController.addCandidate);
+router.put('/:id', checkAuth(ROLES.hiringManager), candidateController.editCandidate);
+// TODO: update candidate status, update stages
+
+//
+router.delete('/:id', checkAuth(ROLES.hiringManager), candidateController.deleteCandidate);
 
 module.exports = router;
 
