@@ -6,7 +6,7 @@ function Brower_Router() {
     <Router>
       <Routes>
         {AppRoute.map((item) => (
-          <Route path={item.path} element={item.element} />
+          <Route key={item.path} path={item.path} element={item.element} />
         ))}
       </Routes>
     </Router>

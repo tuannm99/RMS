@@ -10,6 +10,7 @@ import {
   Upload,
   Avatar,
   Button,
+  Space,
 } from 'antd';
 import { DrawerComponent } from '../../../components';
 import * as services from '../../../services/employeeServices';
@@ -166,6 +167,14 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
       title={user ? 'EDIT EMPLOYEE.' : 'CREATE EMPLOYEE.'}
       onClose={onclose}
       visible={visible}
+      extra={
+        <Space>
+          <Button onClick={onclose}>Cancel</Button>
+          <Button type="primary" htmlType="submit">
+            {user ? 'Edit Employee' : 'Create Employee'}
+          </Button>
+        </Space>
+      }
     >
       {user && (
         <Row>

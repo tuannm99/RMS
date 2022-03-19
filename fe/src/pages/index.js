@@ -8,7 +8,7 @@ import ProfilePage from './profilePage';
 import CadidatePage from './cadidate';
 import HomeDetail from './publicDetail';
 import Home from './publicComponent';
-import Login from './login'
+import Login from './login';
 
 export {
   ConversationRecruitmentPage,
