@@ -1,5 +1,5 @@
 import React from 'react';
-import './table.module.css'
+import './table.module.css';
 
 function Table(props) {
   const styles = {
@@ -10,11 +10,12 @@ function Table(props) {
       transition: 'all 0.2s ease',
     },
     thead: {
-      backgroundColor: "#3ec5d1",
-      color: "#fff",
+      backgroundColor: '#3ec5d1',
+      color: '#fff',
       fontWeight: 600,
-      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,'Helvetica Neue', Arial, sans-serif",
-      fontSize: "14px",
+      fontFamily:
+        "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,'Helvetica Neue', Arial, sans-serif",
+      fontSize: '14px',
     },
   };
   return (

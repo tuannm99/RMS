@@ -33,7 +33,7 @@ import { Add_Cadidate } from './components';
 
 const { Option } = Select;
 const { Search } = Input;
-const desc = ['contact', 'test', 'technical', 'cultureFit', '...'];
+const desc = ['contact', 'test', 'technical', 'cultureFit'];
 
 const styles = {
   tr: {
@@ -121,6 +121,7 @@ function CadidatePage(props) {
       return;
     }
     if (res1.data.totalResults % params.limit === 0) {
+      setParams({ ...params, page: params.page - 1 });
       getAlldataCadidate({ ...params, page: params.page - 1 });
     } else {
       getAlldataCadidate(params);
@@ -316,7 +317,7 @@ function CadidatePage(props) {
       <Add_Cadidate
         visible={visibleAddCadi}
         onclose={onCloseAddCadi}
-        getAllData={getAlldataCadidate}
+        getAlldata={getAlldataCadidate}
         params={params}
       />
     </>

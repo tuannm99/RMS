@@ -186,6 +186,7 @@ function EmployeePage(props) {
     }
     console.log(res1.data);
     if (res1.data.totalResults % params.limit === 0) {
+      setParams({ ...params, page: params.page - 1 });
       getAlldata({ ...params, page: params.page - 1 });
     } else {
       getAlldata(params);

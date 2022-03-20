@@ -58,7 +58,7 @@ export const updateCadidateServices = (id, body) => {
  */
 export const addCadidateServices = (body) => {
   return request(`${BASE_API}/candidates`, {
-    method: 'PUT',
+    method: 'POST',
     data: body,
   });
 };
