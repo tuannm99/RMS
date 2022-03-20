@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import {
   Divider,
   Col,
@@ -28,16 +28,26 @@ const dateFormat = 'YYYY/MM/DD';
 
 const { Option } = Select;
 
-function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
+function UserEdit_Add({
+  onclose,
+  visible,
+  user,
+  getAlldata,
+  params,
+  checked,
+  setChecked,
+}) {
   /**
    * create state
    */
   const [imageUser, setImageUser] = useState();
   const [fileList, setFileList] = useState(null);
+  const [form] = Form.useForm();
+
   /**
    * set value in form and avatar render first
    */
-  useEffect(() => {
+  useLayoutEffect(() => {
     form.resetFields();
     if (user) {
       services.getDetailUsersServices(user).then((res) => {
@@ -80,12 +90,22 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
    * @param {*} file
    */
   const handlePreview = (file) => {
+    const isImg =
+      file.file.type === 'image/jpeg' ||
+      file.file.type === 'image/jpg' ||
+      file.file.type === 'image/png' ||
+      file.file.type === 'image/gif';
     let fileImg = file.fileList[0].originFileObj;
-    convertFileToBase64(fileImg).then((res) => {
-      fileImg['base64'] = res;
-      setImageUser(res);
-      setFileList(fileImg);
-    });
+    if (isImg) {
+      convertFileToBase64(fileImg).then((res) => {
+        fileImg['base64'] = res;
+        setImageUser(res);
+        setFileList(fileImg);
+      });
+      setChecked(false);
+    } else {
+      setChecked(true);
+    }
   };
 
   /**
@@ -143,6 +163,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
     }
     getAlldata(params);
     onclose();
+    setChecked(false);
   };
 
   /**
@@ -167,14 +188,6 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
       title={user ? 'EDIT EMPLOYEE.' : 'CREATE EMPLOYEE.'}
       onClose={onclose}
       visible={visible}
-      extra={
-        <Space>
-          <Button onClick={onclose}>Cancel</Button>
-          <Button type="primary" htmlType="submit">
-            {user ? 'Edit Employee' : 'Create Employee'}
-          </Button>
-        </Space>
-      }
     >
       {user && (
         <Row>
@@ -189,13 +202,10 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
                 icon={<UserOutlined />}
               />
             )}
+            {checked && <p style={{ color: 'red' }}>Only upload image</p>}
           </Col>
           <Col span={12}>
-            <Upload
-              maxCount={1}
-              onChange={handlePreview}
-              beforeUpload={() => false} // return false so that antd doesn't upload the picture right away
-            >
+            <Upload maxCount={1} onChange={handlePreview}>
               <Button>Change Avatar</Button>
             </Upload>
           </Col>
@@ -391,13 +401,9 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
             </Form.Item>
           </Col>
         </Row>
-        <Row>
-          <Col span={12}>
-            <Button type="primary" htmlType="submit">
-              {user ? 'Edit Employee' : 'Create Employee'}
-            </Button>
-          </Col>
-        </Row>
+        <Button type="primary" htmlType="submit" className="btn-submit">
+          {user ? 'Edit' : 'Add'}
+        </Button>
       </Form>
     </DrawerComponent>
   );

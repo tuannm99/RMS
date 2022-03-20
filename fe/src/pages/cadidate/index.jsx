@@ -29,17 +29,44 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 import moment from 'moment';
-
-const dateFormat = 'YYYY/MM/DD';
+import { Add_Cadidate } from './components';
 
 const { Option } = Select;
 const { Search } = Input;
+const desc = ['contact', 'test', 'technical', 'cultureFit', '...'];
+
+const styles = {
+  tr: {
+    textAlign: 'left',
+  },
+  td: {
+    backgroundCcolor: '#fff',
+    color: '#12344d',
+    fontWeight: 500,
+    textTransform: 'capitalize',
+    padding: '10px 10px',
+  },
+  th: {
+    textTransform: 'capitalize',
+    padding: '15px 10px',
+  },
+};
+
+const customerTableHead = [
+  'Name',
+  'Contact',
+  'Status',
+  'Stages',
+  'Applied Date',
+  'More',
+];
 
 function CadidatePage(props) {
   const [radio, setRadio] = useState(':asc');
   const [sortSlect, setSortSlect] = useState('createdAt');
   const [cadidate, setCadidate] = useState();
   const [jobs, setJobs] = useState();
+  const [visibleAddCadi, setVisibleAddCadi] = useState(false);
   const [loading, setLoading] = useState(false);
   const [params, setParams] = useState({
     limit: 10,
@@ -56,6 +83,14 @@ function CadidatePage(props) {
   useEffect(() => {
     getAlldataCadidate(params);
   }, [params]);
+
+  const showAddCadidate = () => {
+    setVisibleAddCadi(true);
+  };
+
+  const onCloseAddCadi = () => {
+    setVisibleAddCadi(false);
+  };
 
   /**
    * get all list cadidate
@@ -147,49 +182,42 @@ function CadidatePage(props) {
     setParams({ ...params, sortBy: `${sortSlect}${e.target.value}` });
   };
 
-  const customerTableHead = [
-    'Name',
-    'Contact',
-    'Status',
-    'Stages',
-    'Applied Date',
-    'More',
-  ];
-
-  const renderHead = (item, index) => <th key={index}>{item}</th>;
-
-  const desc = ['contact', 'test', 'technical', 'cultureFit', '...'];
+  const renderHead = (item, index) => (
+    <th style={styles.th} key={index}>
+      {item}
+    </th>
+  );
 
   const renderBody = (item, index) => (
-    <tr key={item.id}>
-      <td style={{ color: '#2c5cc5' }}>
+    <tr key={item.id} style={styles.tr}>
+      <td style={{ ...styles.td, color: '#2c5cc5' }}>
         {item.firstName} {item.midName} {item.lastName}
       </td>
-      <td>
-        <p className="mb-0">
+      <td style={styles.td}>
+        <div className="mb-0">
           <PhoneOutlined /> {item.phone}
-        </p>
-        <p className="mb-0">
+        </div>
+        <div className="mb-0">
           <MailOutlined /> {item.email}
-        </p>
+        </div>
       </td>
-      <td>
+      <td style={styles.td}>
         <Tag color="geekblue">{item.status}</Tag>
       </td>
-      <td>
-        <p className="mb-0">
+      <td style={styles.td}>
+        <div className="mb-0">
           <Rate
             count={4}
             tooltips={desc}
             disabled="true"
             value={1 + desc.findIndex((e) => e === item.stage)}
           />
-        </p>
+        </div>
       </td>
-      <td style={{ fontWeight: '400' }}>
+      <td style={{ ...styles.td, fontWeight: '400' }}>
         {moment.utc(item.updatedAt).format('YYYY-MM-DD').toString()}
       </td>
-      <td>
+      <td style={styles.td}>
         {(userAccount.role === 'admin' ||
           userAccount.role === 'hiringManager') && (
           <Dropdown overlay={menu(item.id)} placement="bottomRight" arrow>
@@ -241,7 +269,7 @@ function CadidatePage(props) {
         <Col span={12} className="mt-12">
           {(userAccount?.role === 'admin' ||
             userAccount?.role === 'hiringManager') && (
-            <Button>Add Cadidate</Button>
+            <Button onClick={showAddCadidate}>Add Cadidate</Button>
           )}
         </Col>
         <Col span={11} className="mt-12">
@@ -284,6 +312,13 @@ function CadidatePage(props) {
           />
         )}
       </div>
+
+      <Add_Cadidate
+        visible={visibleAddCadi}
+        onclose={onCloseAddCadi}
+        getAllData={getAlldataCadidate}
+        params={params}
+      />
     </>
   );
 }

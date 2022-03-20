@@ -11,7 +11,6 @@ import {
   Button,
   Spin,
   Popconfirm,
-  Form,
   Radio,
 } from 'antd';
 import {
@@ -42,6 +41,7 @@ function EmployeePage(props) {
   const [user, setUser] = useState();
   const [radio, setRadio] = useState(':asc');
   const [sortSlect, setSortSlect] = useState('createdAt');
+  const [checked, setChecked] = useState(false);
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(false);
   const [params, setParams] = useState({
@@ -51,7 +51,6 @@ function EmployeePage(props) {
     sortBy: '',
   });
 
-  const [form] = Form.useForm();
   const navigation = useNavigate();
   let { visible, userID } = useParams();
 
@@ -83,6 +82,7 @@ function EmployeePage(props) {
    * Close drawer
    */
   const onCloseEditUser = () => {
+    setChecked(false);
     setVisibleEditUser(false);
     if (userID !== 'null') {
       navigation(`/employee/false/${userID}`);
@@ -371,7 +371,8 @@ function EmployeePage(props) {
         user={user}
         getAlldata={getAlldata}
         params={params}
-        form={form}
+        checked={checked}
+        setChecked={setChecked}
       />
     </>
   );
