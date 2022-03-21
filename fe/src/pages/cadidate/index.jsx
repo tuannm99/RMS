@@ -15,10 +15,12 @@ import {
   Popconfirm,
 } from 'antd';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
+import { selectJobId } from '../../redux/stores/job/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import * as action from '../../redux/stores/job/actions';
 import * as services from '../../services/cadidateServices';
-import * as jobServices from '../../services/jobService';
 import { Table } from '../../components';
 import { hasResponseError } from '../../utils/utils';
 import { toast } from 'react-toastify';
@@ -30,6 +32,7 @@ import {
 } from '@ant-design/icons';
 import moment from 'moment';
 import { Add_Cadidate } from './components';
+import { getAllJobs } from '../../services/jobService';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -54,6 +57,7 @@ const styles = {
 
 const customerTableHead = [
   'Name',
+  'Apply for',
   'Contact',
   'Status',
   'Stages',
@@ -65,21 +69,35 @@ function CadidatePage(props) {
   const [radio, setRadio] = useState(':asc');
   const [sortSlect, setSortSlect] = useState('createdAt');
   const [cadidate, setCadidate] = useState();
-  const [jobs, setJobs] = useState();
   const [visibleAddCadi, setVisibleAddCadi] = useState(false);
   const [loading, setLoading] = useState(false);
   const [params, setParams] = useState({
+    // jobId: "",
     limit: 10,
     page: 1,
     sortBy: '',
+    fullName: '',
   });
 
-  const { userAccount } = props;
+  const { userAccount, jobId } = props;
+  const { setJobId } = props;
+
+  const [jobs, setjobs] = useState([]);
 
   useEffect(() => {
-    getAlldataJob();
+    getAllJobs().then((res) => {
+      res.data.results.map((item) => {
+        setjobs((prew) => {
+          return [...prew, ...[{ id: item.id, label: item.title }]];
+        });
+      });
+    });
+    return () => {
+      setjobs([]);
+    };
   }, []);
 
+  console.log(cadidate);
   useEffect(() => {
     getAlldataCadidate(params);
   }, [params]);
@@ -101,7 +119,6 @@ function CadidatePage(props) {
     setLoading(true);
     const res = await services.getAllCadidatesServices(params);
     if (hasResponseError(res)) {
-      toast.error(`${res.data.message}`);
       return;
     }
     setCadidate(res.data);
@@ -144,20 +161,6 @@ function CadidatePage(props) {
   );
 
   /**
-   * get all list job
-   * @param {*} params
-   * @returns
-   */
-  const getAlldataJob = async (params) => {
-    setLoading(true);
-    const res = await jobServices.getAllJobs(params);
-    if (hasResponseError(res)) {
-      return;
-    }
-    setJobs(res.data.results);
-    setLoading(false);
-  };
-  /**
    * change page size
    * @param {*} pagination
    */
@@ -174,6 +177,14 @@ function CadidatePage(props) {
     setParams({ ...params, sortBy: `${value}${radio}` });
   };
 
+  const handleSelctJob = (value) => {
+    setParams({ ...params, jobId: value });
+    if (value === '') {
+      delete params.jobId;
+      getAlldataCadidate(params);
+    }
+  };
+
   /**
    * change radio sort allow asc and desc
    * @param {*} e
@@ -181,6 +192,10 @@ function CadidatePage(props) {
   const onChangeRadio = (e) => {
     setRadio(e.target.value);
     setParams({ ...params, sortBy: `${sortSlect}${e.target.value}` });
+  };
+
+  const onSearch = (value) => {
+    setParams({ ...params, fullName: value });
   };
 
   const renderHead = (item, index) => (
@@ -194,6 +209,7 @@ function CadidatePage(props) {
       <td style={{ ...styles.td, color: '#2c5cc5' }}>
         {item.firstName} {item.midName} {item.lastName}
       </td>
+      <td>{item.jobId.title}</td>
       <td style={styles.td}>
         <div className="mb-0">
           <PhoneOutlined /> {item.phone}
@@ -233,23 +249,25 @@ function CadidatePage(props) {
     <>
       <Row className="employee_tool" wrap={true}>
         <Col flex={1} className="mt-12">
-          {/* <strong>Role: </strong>
+          <strong>Jobs: </strong>
           <Select
-            defaultValue="createdAt"
+            defaultValue=""
             style={{ width: 125 }}
-            // onSelect={handleSelectSort}
+            onSelect={handleSelctJob}
           >
-            <Option value="createdAt">All</Option>
-            <Option value="admin">Admin</Option>
-            <Option value="hiringManager">Hiring Manager</Option>
-            <Option value="employee">Employee</Option>
-          </Select> */}
+            <Option value="">All</Option>
+            {jobs.map((item) => (
+              <Option value={item.id} key={item.id}>
+                {item.label}
+              </Option>
+            ))}
+          </Select>
         </Col>
         <Col flex={3} style={{ textAlign: 'center' }} className="mt-12">
           <Search
             style={{ maxWidth: 400, textAlign: 'center' }}
             placeholder="Cadidate Name Search"
-            // onSearch={onSearch}
+            onSearch={onSearch}
             enterButton
           />
         </Col>
@@ -269,9 +287,10 @@ function CadidatePage(props) {
       <Row>
         <Col span={12} className="mt-12">
           {(userAccount?.role === 'admin' ||
-            userAccount?.role === 'hiringManager') && (
-            <Button onClick={showAddCadidate}>Add Cadidate</Button>
-          )}
+            userAccount?.role === 'hiringManager') &&
+            jobId !== '' && (
+              <Button onClick={showAddCadidate}>Add Cadidate</Button>
+            )}
         </Col>
         <Col span={11} className="mt-12">
           <div className="fr mr-8">
@@ -319,6 +338,7 @@ function CadidatePage(props) {
         onclose={onCloseAddCadi}
         getAlldata={getAlldataCadidate}
         params={params}
+        jobId={jobId}
       />
     </>
   );
@@ -326,5 +346,11 @@ function CadidatePage(props) {
 
 const mapStateToProps = createStructuredSelector({
   userAccount: selectUserInfor,
+  jobId: selectJobId,
 });
-export default connect(mapStateToProps)(CadidatePage);
+const mapDispatchToProps = (dispatch) => ({
+  setJobId: (payload) => dispatch(action.setJobId(payload)),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(CadidatePage);

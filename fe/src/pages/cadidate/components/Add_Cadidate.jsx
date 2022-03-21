@@ -20,33 +20,34 @@ import { toast } from 'react-toastify';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-function Add_Cadidate({ onclose, visible, getAlldata, params }) {
+function Add_Cadidate({ onclose, visible, getAlldata, params, jobId }) {
   const [form] = Form.useForm();
   const [disableEmp, setDisableEmp] = useState(false);
   const [disableEdu, setDisableEdu] = useState(false);
-  const [jobs, setjobs] = useState([]);
+  // const [jobs, setjobs] = useState([]);
 
-  useEffect(() => {
-    getAllJobs().then((res) => {
-      console.log(res);
-      res.data.results.map((item) => {
-        setjobs((prew) => {
-          return [...prew, ...[{ id: item.id, label: item.title }]];
-        });
-      });
-    });
-    return () => {
-      setjobs([]);
-    };
-  }, []);
-  const onFinish = (values) => {
+  // useEffect(() => {
+  //   getAllJobs().then((res) => {
+  //     console.log(res);
+  //     res.data.results.map((item) => {
+  //       setjobs((prew) => {
+  //         return [...prew, ...[{ id: item.id, label: item.title }]];
+  //       });
+  //     });
+  //   });
+  //   return () => {
+  //     setjobs([]);
+  //   };
+  // }, []);
+
+  const onFinish = async (values) => {
     let body = {
-      jobId: values?.JobId,
+      jobId: jobId,
       status: 'open',
-      stage: values?.stage,
       firstName: values?.firstName,
       midName: values?.midName,
       lastName: values?.lastName,
+      fullName: `${values.firstName} ${values.midName} ${values.lastName}`,
       email: values?.email,
       phone: values?.phone,
       resume: {
@@ -79,14 +80,13 @@ function Add_Cadidate({ onclose, visible, getAlldata, params }) {
         },
       };
     }
-    addCadidateServices(body).then((res) => {
+    await addCadidateServices(body).then((res) => {
       if (hasResponseError(res)) {
         toast.error(res.data.message);
         return;
       }
       toast.success('Add caddidate success');
     });
-    console.log(body);
     getAlldata(params);
     onclose();
   };
@@ -278,7 +278,7 @@ function Add_Cadidate({ onclose, visible, getAlldata, params }) {
               <Input placeholder="Enter Hyperlink" />
             </Form.Item>
           </Col>
-          <Col span={8}>
+          <Col span={24}>
             <Form.Item
               name="phone"
               label="Phone Number"
@@ -289,41 +289,19 @@ function Add_Cadidate({ onclose, visible, getAlldata, params }) {
               <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
             </Form.Item>
           </Col>
-          <Col span={8}>
+          {/* <Col span={8}>
             <Form.Item
               name="JobId"
               label="Type Job"
               rules={[{ required: true, message: 'Please select Job!' }]}
             >
-              <Select name="JobId">
-                {jobs &&
-                  jobs.map((item) => (
-                    <Option key={item.label} value={item.id}>
-                      {item.label}
-                    </Option>
-                  ))}
-              </Select>
+    <AutoComplete
+      options={jobs}
+    >
+      <Input.Search placeholder="input here" enterButton />
+    </AutoComplete>
             </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              name="stage"
-              label="Stage"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please enter Stage!',
-                },
-              ]}
-            >
-              <Select name="stage">
-                <Option value="contact">Contact</Option>
-                <Option value="test">Test</Option>
-                <Option value="technical">Technical</Option>
-                <Option value="cultureFit">CultureFit</Option>
-              </Select>
-            </Form.Item>
-          </Col>
+          </Col> */}
         </Row>
         {disableEmp && renderEmployee}
         {!disableEmp && (

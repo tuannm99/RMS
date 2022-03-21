@@ -36,6 +36,7 @@ function UserEdit_Add({
   params,
   checked,
   setChecked,
+  account,
 }) {
   /**
    * create state
@@ -67,7 +68,6 @@ function UserEdit_Add({
           lastName: res.data.lastName,
           phone: res.data.phone,
           address: res.data.address,
-          fullName: res.data.fullName,
           dateOfBirth: moment(res.data.dateOfBirth),
           languages: res.data.languages,
           employeeType: res.data.jobStatus.employeeType,
@@ -84,7 +84,6 @@ function UserEdit_Add({
       setImageUser(null);
     }
   }, [user]);
-
   /**
    * convert file to image
    * @param {*} file
@@ -121,7 +120,7 @@ function UserEdit_Add({
       firstName: values.firstName,
       lastName: values.lastName,
       phone: values.phone,
-      fullName: values.fullName,
+      fullName: `${values.firstName} ${values.lastName}`,
       dateOfBirth: values.dateOfBirth,
       languages: values.languages,
       address: values.address,
@@ -238,15 +237,6 @@ function UserEdit_Add({
           </Col>
           <Col span={12}>
             <Form.Item
-              name="fullName"
-              label="Full Name"
-              rules={[{ required: true, message: 'Please enter Full Name' }]}
-            >
-              <Input placeholder="Enter Full Name" />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
               name="address"
               label="Address"
               rules={[{ required: true, message: 'Please enter Address' }]}
@@ -270,7 +260,7 @@ function UserEdit_Add({
               label="Role"
               rules={[{ required: true, message: 'Please select Role!' }]}
             >
-              <Select name="role">
+              <Select name="role" disabled={account?.role !== 'admin' && true}>
                 <Option value="admin">Admin</Option>
                 <Option value="hiringManager">Hiring Manager</Option>
                 <Option value="employee">Employee</Option>

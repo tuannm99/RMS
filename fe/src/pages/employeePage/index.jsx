@@ -286,6 +286,9 @@ function EmployeePage(props) {
                       userAccount?.role === 'admin' &&
                       userAccount?.id !== item?.id
                         ? [
+                            <UserOutlined
+                              onClick={() => handleDetailUser(item.id)}
+                            />,
                             <EditOutlined
                               key="edit"
                               onClick={() => showUserEdit(item.id)}
@@ -302,6 +305,9 @@ function EmployeePage(props) {
                             userAccount?.role === 'employee') &&
                           userAccount?.id === item?.id
                         ? [
+                            <UserOutlined
+                              onClick={() => handleDetailUser(item.id)}
+                            />,
                             <EditOutlined
                               key="edit"
                               onClick={() => showUserEdit(item.id)}
@@ -310,9 +316,19 @@ function EmployeePage(props) {
                         : userAccount?.role === 'admin' &&
                           userAccount?.id === item?.id
                         ? [
+                            <UserOutlined
+                              onClick={() => handleDetailUser(item.id)}
+                            />,
                             <EditOutlined
                               key="edit"
                               onClick={() => showUserEdit(item.id)}
+                            />,
+                          ]
+                        : userAccount?.role === 'hiringManager' ||
+                          userAccount?.role === 'employee'
+                        ? [
+                            <UserOutlined
+                              onClick={() => handleDetailUser(item.id)}
                             />,
                           ]
                         : ''
@@ -334,12 +350,8 @@ function EmployeePage(props) {
                       }
                       title={item.fullName}
                       description={item.role}
-                      onClick={() => handleDetailUser(item.id)}
                     />
-                    <div
-                      className="content-card"
-                      onClick={() => handleDetailUser(item.id)}
-                    >
+                    <div className="content-card">
                       {item.email && (
                         <>
                           <p className="mb-0 mt-24">
@@ -374,6 +386,7 @@ function EmployeePage(props) {
         params={params}
         checked={checked}
         setChecked={setChecked}
+        account={userAccount}
       />
     </>
   );

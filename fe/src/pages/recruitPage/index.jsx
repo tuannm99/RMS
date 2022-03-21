@@ -4,6 +4,12 @@ import './style.css';
 import { hasResponseError } from '../../utils/utils';
 import { GlobalOutlined, UserOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { selectJobId } from '../../redux/stores/job/selectors';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import * as action from '../../redux/stores/job/actions';
 import {
   Row,
   Col,
@@ -25,6 +31,11 @@ function RecruitPage(props) {
     limit: 10,
     page: 1,
   });
+
+  const { jobId } = props;
+  const { setJobId } = props;
+
+  const navigation = useNavigate();
 
   function handleChange(value) {
     if (value === 'allJob') {
@@ -67,6 +78,11 @@ function RecruitPage(props) {
 
   const showDrawp = () => {
     setVisible(true);
+  };
+
+  const handleLinkCadidate = async (id) => {
+    await setJobId(id);
+    navigation('/cadidate');
   };
 
   return (
@@ -133,7 +149,11 @@ function RecruitPage(props) {
                       textAlign: 'center',
                     }}
                     hoverable="true"
-                    title={item.department}
+                    title={
+                      <div onClick={() => handleLinkCadidate(item.id)}>
+                        {item.department}
+                      </div>
+                    }
                     actions={[
                       <div>
                         <GlobalOutlined key="global" className="mr-8" />
@@ -142,7 +162,10 @@ function RecruitPage(props) {
                       <div>Details</div>,
                     ]}
                   >
-                    <div className="body-card">
+                    <div
+                      className="body-card"
+                      onClick={() => handleLinkCadidate(item.id)}
+                    >
                       <p className="title-card mb-16">{item.title}</p>
                       <Progress
                         type="circle"
@@ -179,4 +202,12 @@ function RecruitPage(props) {
   );
 }
 
-export default RecruitPage;
+const mapStateToProps = createStructuredSelector({
+  jobId: selectJobId,
+});
+const mapDispatchToProps = (dispatch) => ({
+  setJobId: (payload) => dispatch(action.setJobId(payload)),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(RecruitPage);
