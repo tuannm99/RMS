@@ -8,12 +8,14 @@ import {
 } from '@ant-design/icons';
 import { NavLink, useLocation } from 'react-router-dom';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
+import { setJobId } from '../../redux/stores/job/actions';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 function MenuPrivate(props) {
   const location = useLocation();
-  const { userAccount } = props;
+  const { userAccount, setJobId } = props;
   return (
     <Menu theme="dark" mode="inline" selectedKeys={location.pathname}>
       <Menu.Item key="/" icon={<DashboardFilled />}>
@@ -25,8 +27,12 @@ function MenuPrivate(props) {
       <Menu.Item key="/conversation" icon={<ContactsFilled />}>
         <NavLink to="/conversation">Conversations</NavLink>
       </Menu.Item>
-      <Menu.Item key="/cadidate" icon={<CheckCircleFilled />}>
-        <NavLink to="/cadidate">Cadidate</NavLink>
+      <Menu.Item
+        key={`/cadidate`}
+        icon={<CheckCircleFilled />}
+        onClick={() => setJobId('')}
+      >
+        <NavLink to={`/cadidate`}>Cadidate</NavLink>
       </Menu.Item>
       <Menu.Item
         key={`/employee/false/${userAccount?.id}`}
@@ -41,4 +47,10 @@ function MenuPrivate(props) {
 const mapStateToProps = createStructuredSelector({
   userAccount: selectUserInfor,
 });
-export default connect(mapStateToProps)(MenuPrivate);
+const mapDispatchToProps = (dispatch) => ({
+  setJobId: (payload) => dispatch(setJobId(payload)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(MenuPrivate);

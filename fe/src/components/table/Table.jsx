@@ -13,7 +13,7 @@ function Table(props) {
       backgroundColor: '#3ec5d1',
       color: '#fff',
       fontWeight: 600,
-      textAlign:"left",
+      textAlign: 'left',
       fontFamily:
         "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,'Helvetica Neue', Arial, sans-serif",
       fontSize: '14px',
