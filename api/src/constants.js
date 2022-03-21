@@ -67,4 +67,5 @@ module.exports = {
   JOB_STATUS,
   FEEDBACK,
   CANDIDATE_STATUS,
+  DEPARTMENTS,
 };

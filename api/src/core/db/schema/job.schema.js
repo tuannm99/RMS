@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
-const { JOB_STATUS } = require('../../../constants');
+const { JOB_STATUS, DEPARTMENTS } = require('../../../constants');
 
 const jobSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -11,7 +11,18 @@ const jobSchema = new mongoose.Schema({
     enum: [JOB_STATUS.published, JOB_STATUS.onHold, JOB_STATUS.deleted],
     default: JOB_STATUS.onHold,
   },
-  department: { required: true, type: String },
+  department: {
+    // required: true,
+    type: String,
+    enum: [
+      DEPARTMENTS.administration,
+      DEPARTMENTS.sale,
+      DEPARTMENTS.finance,
+      DEPARTMENTS.humanResources,
+      DEPARTMENTS.marketing,
+      DEPARTMENTS.engineering,
+    ],
+  },
   jobType: { required: true, type: String },
   location: { type: String },
   jobDescription: { type: String },
