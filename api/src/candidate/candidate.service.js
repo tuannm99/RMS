@@ -21,6 +21,7 @@ const createCandidate = async (candidateData) => {
  * @returns {Promise<Candidate>}
  */
 const getAllCandidate = async (filter, options) => {
+  filter.fullName = { $regex: `${filter.fullName ? filter.fullName : ''}`, $options: 'i' };
   const candidates = await Candidate.paginate(filter, options);
   if (!candidates) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');

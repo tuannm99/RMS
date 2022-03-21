@@ -5,6 +5,7 @@ const { STAGES, CANDIDATE_STATUS } = require('../../../constants');
 
 const candidateSchema = new mongoose.Schema({
   jobId: { type: mongoose.Types.ObjectId, ref: 'Job' },
+  jobTitle: { type: String, ref: 'Job' },
   interviewId: [{ type: mongoose.Types.ObjectId, ref: 'Interview' }],
   status: {
     type: String,
