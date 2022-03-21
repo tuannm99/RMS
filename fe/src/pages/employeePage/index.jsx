@@ -11,7 +11,6 @@ import {
   Button,
   Spin,
   Popconfirm,
-  Form,
   Radio,
 } from 'antd';
 import {
@@ -42,6 +41,7 @@ function EmployeePage(props) {
   const [user, setUser] = useState();
   const [radio, setRadio] = useState(':asc');
   const [sortSlect, setSortSlect] = useState('createdAt');
+  const [checked, setChecked] = useState(false);
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(false);
   const [params, setParams] = useState({
@@ -51,7 +51,6 @@ function EmployeePage(props) {
     sortBy: '',
   });
 
-  const [form] = Form.useForm();
   const navigation = useNavigate();
   let { visible, userID } = useParams();
 
@@ -83,6 +82,7 @@ function EmployeePage(props) {
    * Close drawer
    */
   const onCloseEditUser = () => {
+    setChecked(false);
     setVisibleEditUser(false);
     if (userID !== 'null') {
       navigation(`/employee/false/${userID}`);
@@ -100,6 +100,7 @@ function EmployeePage(props) {
     setLoading(true);
     const res = await services.getAllUsersServices(params);
     if (hasResponseError(res)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     setUsers(res.data);
@@ -173,16 +174,19 @@ function EmployeePage(props) {
   const handleDelete = async (id) => {
     const res = await services.deleteUsersServices(id);
     if (hasResponseError(res)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     toast.success('Delete success!');
     getAlldata(params);
     const res1 = await services.getAllUsersServices();
     if (hasResponseError(res1)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     console.log(res1.data);
     if (res1.data.totalResults % params.limit === 0) {
+      setParams({ ...params, page: params.page - 1 });
       getAlldata({ ...params, page: params.page - 1 });
     } else {
       getAlldata(params);
@@ -368,7 +372,8 @@ function EmployeePage(props) {
         user={user}
         getAlldata={getAlldata}
         params={params}
-        form={form}
+        checked={checked}
+        setChecked={setChecked}
       />
     </>
   );

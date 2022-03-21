@@ -1,26 +1,13 @@
 import React from 'react';
-import {
-  DashboardPage,
-  RecruitPage,
-  CadidatePage,
-  DetailRecruitPage,
-  ConversationRecruitmentPage,
-  ProfilePage,
-  EmployeePage,
-} from '../pages';
-
+import { AuthRoute } from './route';
 import { Routes, Route } from 'react-router-dom';
 
-function AuthRoutes(props) {
+function AuthRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<DashboardPage />} />
-      <Route path="/recruit" element={<RecruitPage />} />
-      <Route path="/recruit/:id" element={<DetailRecruitPage />} />
-      <Route path="/conversation" element={<ConversationRecruitmentPage />} />
-      <Route path="/cadidate" element={<CadidatePage />} />
-      <Route path="/profile/:id" element={<ProfilePage />} />
-      <Route path="/employee/:visible/:userID" element={<EmployeePage />} />
+      {AuthRoute.map((item) => (
+        <Route key={item.path} path={item.path} element={item.element} />
+      ))}
     </Routes>
   );
 }

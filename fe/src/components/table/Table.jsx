@@ -1,13 +1,29 @@
 import React from 'react';
-import './table.css';
+import './table.module.css';
 
 function Table(props) {
+  const styles = {
+    table: {
+      width: '100%',
+      minWidth: '400px',
+      borderSpacing: 0,
+      transition: 'all 0.2s ease',
+    },
+    thead: {
+      backgroundColor: '#3ec5d1',
+      color: '#fff',
+      fontWeight: 600,
+      fontFamily:
+        "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,'Helvetica Neue', Arial, sans-serif",
+      fontSize: '14px',
+    },
+  };
   return (
     <div className="table-wrapper">
-      <table>
+      <table style={styles.table}>
         {props.headData && props.renderHead ? (
-          <thead>
-            <tr>
+          <thead style={styles.thead}>
+            <tr style={styles.tr}>
               {props.headData.map((item, index) =>
                 props.renderHead(item, index)
               )}
