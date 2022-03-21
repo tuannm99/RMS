@@ -39,7 +39,8 @@ function Add_Cadidate({ onclose, visible, getAlldata, params }) {
       setjobs([]);
     };
   }, []);
-  const onFinish = (values) => {
+
+  const onFinish = async (values) => {
     let body = {
       jobId: values?.JobId,
       status: 'open',
@@ -79,14 +80,13 @@ function Add_Cadidate({ onclose, visible, getAlldata, params }) {
         },
       };
     }
-    addCadidateServices(body).then((res) => {
+    await addCadidateServices(body).then((res) => {
       if (hasResponseError(res)) {
         toast.error(res.data.message);
         return;
       }
       toast.success('Add caddidate success');
     });
-    console.log(body);
     getAlldata(params);
     onclose();
   };
