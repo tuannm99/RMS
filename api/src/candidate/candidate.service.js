@@ -9,8 +9,8 @@ const { Candidate, Job } = require('../core/db/schema');
  */
 const createCandidate = async (candidateData) => {
   const candidate = new Candidate(candidateData);
-  const job = await Job.findById(candidateData.jobId);
-  job.candidateId.push(candidateData.jobId);
+  const job = await Job.findById(candidate.jobId);
+  job.candidateId.push(candidate._id);
   await job.save();
   // eslint-disable-next-line no-return-await
   return await candidate.save();
@@ -21,7 +21,11 @@ const createCandidate = async (candidateData) => {
  * @returns {Promise<Candidate>}
  */
 const getAllCandidate = async (filter, options) => {
-  filter.email = { $regex: `${filter.email ? filter.email : ''}`, $options: 'i' };
+  filter.fullName = { $regex: `${filter.fullName ? filter.fullName : ''}`, $options: 'i' };
+  options.populate = {
+    path: 'jobId',
+    select: 'title',
+  };
   const candidates = await Candidate.paginate(filter, options);
   if (!candidates) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');

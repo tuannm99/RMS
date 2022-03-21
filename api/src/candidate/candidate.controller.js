@@ -20,7 +20,7 @@ const addCandidate = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const getAllCandidate = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['email']);
+  const filter = pick(req.query, ['fullName', 'jobId']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const listCandidate = await candidateService.getAllCandidate(filter, options);
   res.status(httpStatus.OK).json(listCandidate);
