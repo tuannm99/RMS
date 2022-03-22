@@ -6,12 +6,22 @@ import {
   updateJobs,
   deleteJobs,
 } from '../../services/jobService';
+import JobEdit from './component/editJob';
 import { DrawerComponent } from '../../components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { Breadcrumb, Button, Input, Form, Select, Col, Row } from 'antd';
+import {
+  Breadcrumb,
+  Button,
+  Input,
+  Form,
+  Select,
+  Col,
+  Row,
+  Drawer,
+} from 'antd';
 import { Link } from 'react-router-dom';
 import { set } from 'lodash';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
@@ -36,11 +46,16 @@ function DetailRecruitPage(props) {
     fetchJob();
   }, [job]);
 
+  // useEffect(() => {
+  //   fetchJob();
+  //   setCkeditorData(job.jobDescription);
+  //   console.log(job);
+  // }, []);
+
   const fetchJob = async () => {
     const jobDetail = await getJobsDetail(id);
     setJob(jobDetail.data);
-
-    // console.log(jobDetail);
+    setCkeditorData(jobDetail.data.jobDescription);
   };
 
   const openModal = (id) => {
@@ -55,10 +70,13 @@ function DetailRecruitPage(props) {
       minSalary: job.minSalary,
       maxSalary: job.maxSalary,
       department: job.department,
-      status: job.status,
     });
 
     setVisible(true);
+  };
+
+  const onclose = () => {
+    setVisible(false);
   };
 
   const onFinish = async (jobValue) => {
@@ -70,7 +88,6 @@ function DetailRecruitPage(props) {
     updateJobs(jobValue.id, body)
       .then((res) => {
         setJob(res.data);
-        console.log(res);
       })
       .catch((err) => console.log(err));
     toast.success('Edit Job Detail Successful!', {
@@ -124,7 +141,7 @@ function DetailRecruitPage(props) {
         </div>
 
         <DrawerComponent
-          title="Create Job"
+          title="Edit Job"
           onClose={onclose}
           visible={visible}
           width={720}
@@ -194,6 +211,7 @@ function DetailRecruitPage(props) {
                   <CKEditor
                     type="string"
                     editor={ClassicEditor}
+                    data={`${job.jobDescription}`}
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       setCkeditorData(data);
@@ -258,11 +276,6 @@ function DetailRecruitPage(props) {
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="primary" htmlType="submit">
                 Submit
-              </Button>
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button className="Recruit-button" onClick={() => openModal(id)}>
-                preview
               </Button>
             </Form.Item>
           </Form>
