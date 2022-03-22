@@ -4,7 +4,7 @@
  * @param {string[]} keys
  * @returns {Object}
  */
-exports.pick = (object, keys) => {
+const pick = (object, keys) => {
   return keys.reduce((obj, key) => {
     if (object && Object.prototype.hasOwnProperty.call(object, key)) {
       // eslint-disable-next-line no-param-reassign
@@ -20,10 +20,12 @@ exports.pick = (object, keys) => {
  * @param {string[]} keys
  * @returns {Object}
  */
-exports.omit = (object, keys) => {
+const omit = (object, keys) => {
   const result = { ...object };
   keys.forEach((key) => {
     delete result[key];
   });
   return result;
 };
+
+module.exports = { pick, omit };

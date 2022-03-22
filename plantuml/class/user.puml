@@ -1,0 +1,43 @@
+@startuml authClass
+!theme reddress-lightblue
+
+skinparam classAttributeIconSize 0
+class user.controller{
+    - {field} userService: object
+
+    + {method} createUserHandler(req: express.Request, res: express.Response): void
+    + {method} getAllUsersHandler(req: express.Request, res: express.Response): void
+    + {method} getUserHandler(req: express.Request, res: express.Response): void
+    + {method} updateUserHandler(req: express.Request, res: express.Response): void
+    + {method} updateUserAvatarHandler(req: express.Request, res: express.Response): void
+    + {method} deleteUserHandler(req: express.Request, res: express.Response): void
+}
+
+class user.service{
+    + {method} createUser(userBody: Object): void
+    + {method} getUserByUsername(username: string): void
+    + {method} getUserIdFromHeaderToken(authorization: string): void
+    + {method} getUsers(filter: Object, options: Object): void
+    + {method} getUserById(id: string): void
+    + {method} updateUserById(userId: string, updateBody: Object): void
+    + {method} updateUserAvatarById(userId: string, avatar: Object): void
+    + {method} deleteUserById(userId: string): void
+}
+
+class user.router{
+    + {field} router: express.Router
+}
+
+class core.multer{
+    + {method} upload(): void
+}
+
+class schema.User {
+
+}
+
+user.router ..> user.controller
+user.router ..> core.multer
+user.controller ..> user.service
+user.service ..> schema.User
+@enduml

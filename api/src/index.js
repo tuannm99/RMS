@@ -8,7 +8,7 @@ const cors = require('cors');
 const morgan = require('./core/morganConfig');
 const router = require('./router');
 const passport = require('./auth/passport');
-const { initializeEvent } = require('./events');
+const { initEvent } = require('./event');
 
 const { errorConverter, errorHandler } = require('./core/global.middleware');
 
@@ -50,7 +50,7 @@ const bootstrap = () => {
   middleware(app);
 
   // event
-  initializeEvent();
+  initEvent();
 
   // default route
   app.get('/health-check', (req, res) => {

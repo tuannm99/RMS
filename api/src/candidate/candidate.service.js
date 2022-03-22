@@ -4,12 +4,12 @@ const { Candidate, Job } = require('../core/db/schema');
 
 /**
  * create new candidate
+ * @param {Object} candidateData
  * @returns {Promise<Candidate>}
  */
-const createCandidate = async (jobId, candidateData) => {
-  candidateData.jobId = jobId;
+const createCandidate = async (candidateData) => {
   const candidate = new Candidate(candidateData);
-  const job = await Job.findById(jobId);
+  const job = await Job.findById(candidate.jobId);
   job.candidateId.push(candidate._id);
   await job.save();
   // eslint-disable-next-line no-return-await
@@ -20,8 +20,13 @@ const createCandidate = async (jobId, candidateData) => {
  * show full candidate
  * @returns {Promise<Candidate>}
  */
-const getAllCandidate = async () => {
-  const candidates = await Candidate.find();
+const getAllCandidate = async (filter, options) => {
+  filter.fullName = { $regex: `${filter.fullName ? filter.fullName : ''}`, $options: 'i' };
+  options.populate = {
+    path: 'jobId',
+    select: 'title',
+  };
+  const candidates = await Candidate.paginate(filter, options);
   if (!candidates) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');
   }
@@ -34,7 +39,7 @@ const getAllCandidate = async () => {
  * @returns {Promise<Candidate>}
  */
 const getCandidateById = async (id) => {
-  const candidate = await Candidate.findById(id);
+  const candidate = await Candidate.findById(id).populate({ path: 'jobId' });
   if (!candidate) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');
   }
@@ -45,7 +50,7 @@ const getCandidateById = async (id) => {
  * edit candidate by id
  * @param {object} id
  * @param {object} candidateData
- * @returns {Promise<job>}
+ * @returns {Promise<Candidate>}
  */
 const editCandidateById = async (id, candidateData) => {
   const candidate = await Candidate.findByIdAndUpdate(id, candidateData);
@@ -65,7 +70,6 @@ const deleteCandidateById = async (id) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');
   }
 };
-
 
 module.exports = {
   createCandidate,

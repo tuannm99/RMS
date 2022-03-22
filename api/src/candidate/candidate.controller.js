@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../core/catchAsync');
 
 const candidateService = require('./candidate.service');
+const { pick } = require('../core/utils');
 
 /**
  * middleware add candidate
@@ -9,7 +10,7 @@ const candidateService = require('./candidate.service');
  * @param {object} res
  */
 const addCandidate = catchAsync(async (req, res) => {
-  const candidatePosting = await candidateService.createCandidate(req.params.id, req.body);
+  const candidatePosting = await candidateService.createCandidate(req.body);
   res.status(httpStatus.OK).json(candidatePosting);
 });
 
@@ -19,7 +20,9 @@ const addCandidate = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const getAllCandidate = catchAsync(async (req, res) => {
-  const listCandidate = await candidateService.getAllCandidate();
+  const filter = pick(req.query, ['fullName', 'jobId']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const listCandidate = await candidateService.getAllCandidate(filter, options);
   res.status(httpStatus.OK).json(listCandidate);
 });
 

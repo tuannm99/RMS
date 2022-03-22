@@ -13,6 +13,16 @@ const ROLES = {
   employee: 'employee',
 };
 
+// Department
+const DEPARTMENTS = {
+  administration: 'administration',
+  sale: 'sale',
+  finance: 'finance',
+  humanResource: 'humanResources',
+  marketing: 'marketing',
+  engineering: 'engineering',
+};
+
 // Candidate status
 const CANDIDATE_STATUS = {
   reject: 'reject',
@@ -57,4 +67,5 @@ module.exports = {
   JOB_STATUS,
   FEEDBACK,
   CANDIDATE_STATUS,
+  DEPARTMENTS,
 };

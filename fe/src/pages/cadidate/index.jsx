@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Col,
-  Row,
-  Select,
-  Pagination,
-  Radio,
-  Button,
-  Input,
-  Spin,
-} from 'antd';
+import { Col, Row, Select, Pagination, Radio, Button, Input, Spin } from 'antd';
 
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { selectJobId } from '../../redux/stores/job/selectors';
@@ -28,26 +19,37 @@ import { Table } from '../../components';
 import { toast } from 'react-toastify';
 
 import { Add_Cadidate } from './components';
-import { renderBodyTable, customerTableHead, renderHeadTable} from './components/render';
+import {
+  renderBodyTable,
+  customerTableHead,
+  renderHeadTable,
+} from './components/render';
 
 const { Option } = Select;
 const { Search } = Input;
-
 
 function CadidatePage(props) {
   const [radio, setRadio] = useState(':asc');
   const [sortSlect, setSortSlect] = useState('createdAt');
   const [visibleAddCadi, setVisibleAddCadi] = useState(false);
   const [jobs, setjobs] = useState([]);
-  const [params, setParams] = useState({
+
+  const payload = {
     limit: 10,
     page: 1,
     sortBy: '',
     fullName: '',
-  });
+  };
+
+  const [params, setParams] = useState(payload);
 
   const { getAllCadidates } = props;
-  const { loading, cadidates, jobId, userAccount } = props;
+  const { jobId, userAccount } = props;
+  const { loading, cadidates } = props;
+
+  useEffect(() => {
+    getAllCadidates(params);
+  }, [params, getAllCadidates]);
 
   useEffect(() => {
     getAllJobs().then((res) => {
@@ -61,10 +63,6 @@ function CadidatePage(props) {
       setjobs([]);
     };
   }, []);
-
-  useEffect(() => {
-    getAllCadidates(params);
-  }, [params, getAllCadidates]);
 
   const showAddCadidate = () => {
     setVisibleAddCadi(true);
@@ -99,6 +97,7 @@ function CadidatePage(props) {
    * @param {*} pagination
    */
   const handleChangeData = (pagination) => {
+    console.log(pagination);
     setParams({ ...params, page: pagination });
   };
 
@@ -132,7 +131,7 @@ function CadidatePage(props) {
   const onSearch = (value) => {
     setParams({ ...params, fullName: value });
   };
-  
+  console.log(cadidates);
   return (
     <>
       <Row className="employee_tool" wrap={true}>
@@ -160,15 +159,13 @@ function CadidatePage(props) {
           />
         </Col>
         <Col flex={1} className="fr mt-12">
-          {cadidates !== {} && (
-            <Pagination
-              pageSize={cadidates?.limit}
-              current={cadidates?.page}
-              total={cadidates?.totalResults}
-              onChange={handleChangeData}
-              className="fr"
-            />
-          )}
+          <Pagination
+            current={cadidates?.page}
+            total={cadidates?.totalResults}
+            pageSize={params?.limit}
+            onChange={handleChangeData}
+            className="fr"
+          />
         </Col>
       </Row>
 
@@ -216,7 +213,9 @@ function CadidatePage(props) {
             headData={customerTableHead}
             renderHead={(item, index) => renderHeadTable(item, index)}
             bodyData={cadidates?.results}
-            renderBody={(item, index) => renderBodyTable(item, index, handleDelete)}
+            renderBody={(item, index) =>
+              renderBodyTable(item, index, handleDelete)
+            }
           />
         )}
       </div>
@@ -224,9 +223,7 @@ function CadidatePage(props) {
       <Add_Cadidate
         visible={visibleAddCadi}
         onclose={onCloseAddCadi}
-        getAlldata={getAllCadidates}
         params={params}
-        jobId={jobId}
       />
     </>
   );
@@ -235,8 +232,8 @@ function CadidatePage(props) {
 const mapStateToProps = createStructuredSelector({
   userAccount: selectUserInfor,
   jobId: selectJobId,
-  loading,
-  cadidates,
+  loading: loading,
+  cadidates: cadidates,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
