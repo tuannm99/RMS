@@ -130,7 +130,7 @@ function EmployeePage(props) {
   const handleSelectRole = (value) => {
     if (value === 'all') {
       delete params['role'];
-      getAlldata(params);
+      setParams({ ...params });
     } else {
       setParams({ ...params, role: value });
     }
