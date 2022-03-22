@@ -46,9 +46,16 @@ function DetailRecruitPage(props) {
     fetchJob();
   }, [job]);
 
+  // useEffect(() => {
+  //   fetchJob();
+  //   setCkeditorData(job.jobDescription);
+  //   console.log(job);
+  // }, []);
+
   const fetchJob = async () => {
     const jobDetail = await getJobsDetail(id);
     setJob(jobDetail.data);
+    setCkeditorData(jobDetail.data.jobDescription);
   };
 
   const openModal = (id) => {
@@ -134,7 +141,7 @@ function DetailRecruitPage(props) {
         </div>
 
         <DrawerComponent
-          title="Create Job"
+          title="Edit Job"
           onClose={onclose}
           visible={visible}
           width={720}
@@ -204,6 +211,7 @@ function DetailRecruitPage(props) {
                   <CKEditor
                     type="string"
                     editor={ClassicEditor}
+                    data={`${job.jobDescription}`}
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       setCkeditorData(data);
