@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Col, Row, Form, Input, Select, Button } from 'antd';
 import { toast } from 'react-toastify';
 import { hasResponseError } from '../../../utils/utils';
-import { createJobs, getAllJobs } from '../../../services/jobService';
+import { createJobs } from '../../../services/jobService';
 import { DrawerComponent } from '../../../components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
