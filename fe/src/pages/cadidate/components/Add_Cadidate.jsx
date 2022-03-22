@@ -72,7 +72,7 @@ function Add_Cadidate(props) {
   };
 
   return (
-    <DrawerComponent title="ADD CADIDATE" onClose={onclose} visible={visible}>
+    <DrawerComponent title="ADD CADIDATE" onClose={onclose} visible={visible} width={720}>
       <Form
         layout="vertical"
         form={form}

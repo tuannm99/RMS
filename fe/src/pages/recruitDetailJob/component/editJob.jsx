@@ -15,7 +15,7 @@ function JobEdit({ onclose, visible, job, fetchJob }) {
   const [ckeditorData, setCkeditorData] = useState('');
 
   return (
-    <DrawerComponent title="Edit Job" onClose={onclose} visible={visible}>
+    <DrawerComponent title="Edit Job" onClose={onclose} visible={visible} width={720}>
       <Form
         layout="vertical"
         hideRequiredMark
