@@ -1,11 +1,20 @@
-import { Divider, Col, Row, Form, Select, Input, DatePicker, Menu, Popconfirm,Dropdown,Rate, Tag } from 'antd';
+import {
+  Divider,
+  Col,
+  Row,
+  Form,
+  Select,
+  Input,
+  DatePicker,
+  Menu,
+  Popconfirm,
+  Dropdown,
+  Rate,
+  Tag,
+} from 'antd';
 import { MinusCircleFilled, DeleteOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import {
-  MoreOutlined,
-  MailOutlined,
-  PhoneOutlined,
-} from '@ant-design/icons';
+import { MoreOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
@@ -79,7 +88,7 @@ export const renderEmployee = ({ setDisableEmp }) => {
           </Form.Item>
         </Col>
         <Col span={24}>
-          <div className="cu" onClick={()=>setDisableEmp(false)}>
+          <div className="cu" onClick={() => setDisableEmp(false)}>
             <MinusCircleFilled style={{ color: 'red' }} /> Remove Employee
           </div>
         </Col>
@@ -135,7 +144,7 @@ export const renderEducation = ({ setDisableEdu }) => (
         </Form.Item>
       </Col>
       <Col span={24}>
-        <div className="cu" onClick={()=>setDisableEdu(false)}>
+        <div className="cu" onClick={() => setDisableEdu(false)}>
           <MinusCircleFilled style={{ color: 'red' }} /> Remove Education
         </div>
       </Col>
@@ -174,7 +183,7 @@ const menuMoreTable = (id, handleDelete) => (
   </Menu>
 );
 
-export const renderBodyTable = (item, index,handleDelete) => (
+export const renderBodyTable = (item, index, handleDelete) => (
   <tr key={item.id} style={styles.tr}>
     <td style={{ ...styles.td, color: '#2c5cc5' }}>
       {item.firstName} {item.midName} {item.lastName}
@@ -205,9 +214,13 @@ export const renderBodyTable = (item, index,handleDelete) => (
       {moment.utc(item.updatedAt).format('YYYY-MM-DD').toString()}
     </td>
     <td style={styles.td}>
-        <Dropdown overlay={menuMoreTable(item.id, handleDelete)} placement="bottomRight" arrow>
-          <MoreOutlined className="fr fs-24 cu" />
-        </Dropdown>
+      <Dropdown
+        overlay={menuMoreTable(item.id, handleDelete)}
+        placement="bottomRight"
+        arrow
+      >
+        <MoreOutlined className="fr fs-24 cu" />
+      </Dropdown>
     </td>
   </tr>
 );
