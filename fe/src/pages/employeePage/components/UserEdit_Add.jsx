@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
   Divider,
   Col,
@@ -10,7 +10,6 @@ import {
   Upload,
   Avatar,
   Button,
-  Space,
 } from 'antd';
 import { DrawerComponent } from '../../../components';
 import * as services from '../../../services/employeeServices';
@@ -38,12 +37,12 @@ function UserEdit_Add({
   setChecked,
   account,
 }) {
+  const [form] = Form.useForm();
   /**
    * create state
    */
   const [imageUser, setImageUser] = useState();
   const [fileList, setFileList] = useState(null);
-  const [form] = Form.useForm();
 
   /**
    * set value in form and avatar render first
@@ -77,7 +76,6 @@ function UserEdit_Add({
           primaryTeam: res.data.jobStatus.primaryTeam,
           level: res.data.jobStatus.level,
           role: res.data.role,
-          status: res.data.jobStatus.employeeStatus,
         });
       });
     } else {
@@ -113,7 +111,7 @@ function UserEdit_Add({
    */
   const onFinish = async (values) => {
     const formRes = new FormData();
-    const body = {
+    let body = {
       username: values.username,
       password: values.password,
       email: values.email,

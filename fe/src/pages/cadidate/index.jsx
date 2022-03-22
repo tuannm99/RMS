@@ -8,81 +8,46 @@ import {
   Button,
   Input,
   Spin,
-  Rate,
-  Tag,
-  Dropdown,
-  Menu,
-  Popconfirm,
 } from 'antd';
+
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { selectJobId } from '../../redux/stores/job/selectors';
+import { cadidates, loading } from '../../redux/stores/cadidate/selectors';
+import { getAllCadidates } from '../../redux/stores/cadidate/actions';
+import * as services from '../../services/cadidateServices';
+import { getAllJobs } from '../../services/jobService';
+
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import * as action from '../../redux/stores/job/actions';
-import * as services from '../../services/cadidateServices';
-import { Table } from '../../components';
+
 import { hasResponseError } from '../../utils/utils';
+
+import { Table } from '../../components';
+
 import { toast } from 'react-toastify';
-import {
-  MoreOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
-import moment from 'moment';
+
 import { Add_Cadidate } from './components';
-import { getAllJobs } from '../../services/jobService';
+import { renderBodyTable, customerTableHead, renderHeadTable} from './components/render';
 
 const { Option } = Select;
 const { Search } = Input;
-const desc = ['contact', 'test', 'technical', 'cultureFit'];
 
-const styles = {
-  tr: {
-    textAlign: 'left',
-  },
-  td: {
-    backgroundCcolor: '#fff',
-    color: '#12344d',
-    fontWeight: 500,
-    textTransform: 'capitalize',
-    padding: '10px 10px',
-  },
-  th: {
-    textTransform: 'capitalize',
-    padding: '15px 10px',
-  },
-};
-
-const customerTableHead = [
-  'Name',
-  'Apply for',
-  'Contact',
-  'Status',
-  'Stages',
-  'Applied Date',
-  'More',
-];
 
 function CadidatePage(props) {
   const [radio, setRadio] = useState(':asc');
   const [sortSlect, setSortSlect] = useState('createdAt');
-  const [cadidate, setCadidate] = useState();
   const [visibleAddCadi, setVisibleAddCadi] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [jobs, setjobs] = useState([]);
   const [params, setParams] = useState({
-    // jobId: "",
     limit: 10,
     page: 1,
     sortBy: '',
     fullName: '',
   });
 
-  const { userAccount, jobId } = props;
-  const { setJobId } = props;
-
-  const [jobs, setjobs] = useState([]);
+  const { getAllCadidates } = props;
+  const { loading, cadidates, jobId, userAccount } = props;
 
   useEffect(() => {
     getAllJobs().then((res) => {
@@ -97,10 +62,9 @@ function CadidatePage(props) {
     };
   }, []);
 
-  console.log(cadidate);
   useEffect(() => {
-    getAlldataCadidate(params);
-  }, [params]);
+    getAllCadidates(params);
+  }, [params, getAllCadidates]);
 
   const showAddCadidate = () => {
     setVisibleAddCadi(true);
@@ -108,21 +72,6 @@ function CadidatePage(props) {
 
   const onCloseAddCadi = () => {
     setVisibleAddCadi(false);
-  };
-
-  /**
-   * get all list cadidate
-   * @param {*} params
-   * @returns
-   */
-  const getAlldataCadidate = async (params) => {
-    setLoading(true);
-    const res = await services.getAllCadidatesServices(params);
-    if (hasResponseError(res)) {
-      return;
-    }
-    setCadidate(res.data);
-    setLoading(false);
   };
 
   const handleDelete = async (id) => {
@@ -139,26 +88,11 @@ function CadidatePage(props) {
     }
     if (res1.data.totalResults % params.limit === 0) {
       setParams({ ...params, page: params.page - 1 });
-      getAlldataCadidate({ ...params, page: params.page - 1 });
+      getAllCadidates({ ...params, page: params.page - 1 });
     } else {
-      getAlldataCadidate(params);
+      getAllCadidates(params);
     }
   };
-
-  const menu = (id) => (
-    <Menu>
-      <Menu.Item>Edit</Menu.Item>
-      <Menu.Item>
-        <Popconfirm
-          onConfirm={() => handleDelete(id)}
-          title="Are you sure？"
-          icon={<DeleteOutlined style={{ color: 'red' }} />}
-        >
-          Delete
-        </Popconfirm>
-      </Menu.Item>
-    </Menu>
-  );
 
   /**
    * change page size
@@ -178,10 +112,11 @@ function CadidatePage(props) {
   };
 
   const handleSelctJob = (value) => {
-    setParams({ ...params, jobId: value });
     if (value === '') {
       delete params.jobId;
-      getAlldataCadidate(params);
+      setParams({ ...params });
+    } else {
+      setParams({ ...params, jobId: value });
     }
   };
 
@@ -197,54 +132,7 @@ function CadidatePage(props) {
   const onSearch = (value) => {
     setParams({ ...params, fullName: value });
   };
-
-  const renderHead = (item, index) => (
-    <th style={styles.th} key={index}>
-      {item}
-    </th>
-  );
-
-  const renderBody = (item, index) => (
-    <tr key={item.id} style={styles.tr}>
-      <td style={{ ...styles.td, color: '#2c5cc5' }}>
-        {item.firstName} {item.midName} {item.lastName}
-      </td>
-      <td>{item.jobId.title}</td>
-      <td style={styles.td}>
-        <div className="mb-0">
-          <PhoneOutlined /> {item.phone}
-        </div>
-        <div className="mb-0">
-          <MailOutlined /> {item.email}
-        </div>
-      </td>
-      <td style={styles.td}>
-        <Tag color="geekblue">{item.status}</Tag>
-      </td>
-      <td style={styles.td}>
-        <div className="mb-0">
-          <Rate
-            count={4}
-            tooltips={desc}
-            disabled="true"
-            value={1 + desc.findIndex((e) => e === item.stage)}
-          />
-        </div>
-      </td>
-      <td style={{ ...styles.td, fontWeight: '400' }}>
-        {moment.utc(item.updatedAt).format('YYYY-MM-DD').toString()}
-      </td>
-      <td style={styles.td}>
-        {(userAccount.role === 'admin' ||
-          userAccount.role === 'hiringManager') && (
-          <Dropdown overlay={menu(item.id)} placement="bottomRight" arrow>
-            <MoreOutlined className="fr fs-24 cu" />
-          </Dropdown>
-        )}
-      </td>
-    </tr>
-  );
-
+  
   return (
     <>
       <Row className="employee_tool" wrap={true}>
@@ -272,11 +160,11 @@ function CadidatePage(props) {
           />
         </Col>
         <Col flex={1} className="fr mt-12">
-          {cadidate && (
+          {cadidates !== {} && (
             <Pagination
-              pageSize={cadidate?.limit}
-              current={cadidate?.page}
-              total={cadidate?.totalResults}
+              pageSize={cadidates?.limit}
+              current={cadidates?.page}
+              total={cadidates?.totalResults}
               onChange={handleChangeData}
               className="fr"
             />
@@ -326,9 +214,9 @@ function CadidatePage(props) {
         ) : (
           <Table
             headData={customerTableHead}
-            renderHead={(item, index) => renderHead(item, index)}
-            bodyData={cadidate?.results}
-            renderBody={(item, index) => renderBody(item, index)}
+            renderHead={(item, index) => renderHeadTable(item, index)}
+            bodyData={cadidates?.results}
+            renderBody={(item, index) => renderBodyTable(item, index, handleDelete)}
           />
         )}
       </div>
@@ -336,7 +224,7 @@ function CadidatePage(props) {
       <Add_Cadidate
         visible={visibleAddCadi}
         onclose={onCloseAddCadi}
-        getAlldata={getAlldataCadidate}
+        getAlldata={getAllCadidates}
         params={params}
         jobId={jobId}
       />
@@ -347,9 +235,11 @@ function CadidatePage(props) {
 const mapStateToProps = createStructuredSelector({
   userAccount: selectUserInfor,
   jobId: selectJobId,
+  loading,
+  cadidates,
 });
 const mapDispatchToProps = (dispatch) => ({
-  setJobId: (payload) => dispatch(action.setJobId(payload)),
+  getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
