@@ -183,9 +183,17 @@ const menuMoreTable = (id, handleDelete) => (
   </Menu>
 );
 
-export const renderBodyTable = (item, index, handleDelete) => (
+export const renderBodyTable = (
+  item,
+  index,
+  handleDelete,
+  setVisibleInfoCadi
+) => (
   <tr key={item.id} style={styles.tr}>
-    <td style={{ ...styles.td, color: '#2c5cc5' }}>
+    <td
+      style={{ ...styles.td, color: '#2c5cc5', cursor: 'pointer' }}
+      onClick={() => setVisibleInfoCadi(true)}
+    >
       {item.firstName} {item.midName} {item.lastName}
     </td>
     <td>{item.jobId.title}</td>

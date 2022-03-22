@@ -185,6 +185,7 @@ function UserEdit_Add({
       title={user ? 'EDIT EMPLOYEE.' : 'CREATE EMPLOYEE.'}
       onClose={onclose}
       visible={visible}
+      width={720}
     >
       {user && (
         <Row>

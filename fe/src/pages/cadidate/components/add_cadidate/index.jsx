@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Col, Row, Form, Button, Input } from 'antd';
 import { PlusCircleFilled } from '@ant-design/icons';
-import { DrawerComponent } from '../../../components';
-import { addCadidateServices } from '../../../services/cadidateServices';
-import { hasResponseError } from '../../../utils/utils';
+import { DrawerComponent } from '../../../../components';
+import { addCadidateServices } from '../../../../services/cadidateServices';
+import { hasResponseError } from '../../../../utils/utils';
 import { toast } from 'react-toastify';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { getAllCadidates } from '../../../redux/stores/cadidate/actions';
-import { selectJobId } from '../../../redux/stores/job/selectors';
-import { renderEducation, renderEmployee, prefixSelector } from './render';
+import { getAllCadidates } from '../../../../redux/stores/cadidate/actions';
+import { selectJobId } from '../../../../redux/stores/job/selectors';
+import { renderEducation, renderEmployee, prefixSelector } from '../render';
 
 function Add_Cadidate(props) {
   const [form] = Form.useForm();
@@ -72,7 +72,12 @@ function Add_Cadidate(props) {
   };
 
   return (
-    <DrawerComponent title="ADD CADIDATE" onClose={onclose} visible={visible}>
+    <DrawerComponent
+      title="ADD CADIDATE"
+      onClose={onclose}
+      visible={visible}
+      width={720}
+    >
       <Form
         layout="vertical"
         form={form}
