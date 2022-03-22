@@ -2,7 +2,7 @@ import { all } from 'redux-saga/effects';
 
 import * as authSagas from '../stores/auth/sagas';
 
-import * as JobSagas from '../stores/job/sagas';
+import * as cadidateSagas from '../stores/cadidate/sagas';
 
 export default function* () {
   yield all([
@@ -11,7 +11,7 @@ export default function* () {
     authSagas.updateTokenSaga(),
     authSagas.logoutSaga(),
 
-    //Job
-    JobSagas.SagaGetJobs(),
+    //cadidate
+    cadidateSagas.getCadidatesSaga(),
   ]);
 }

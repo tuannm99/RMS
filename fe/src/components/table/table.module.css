@@ -1,0 +1,8 @@
+.table-wrapper {
+  overflow-y: auto;
+  border-radius: 6px;
+}
+
+.table-wrapper:hover {
+  box-shadow: 0 0 5px #99b8bb;
+}

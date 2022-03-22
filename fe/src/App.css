@@ -21,6 +21,11 @@
 .ant-upload-list-item-info {
   display: none;
 }
+
+.cu {
+  cursor: pointer;
+}
+
 .fr {
   float: right;
 }

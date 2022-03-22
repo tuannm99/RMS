@@ -1,239 +1,213 @@
 import React, { useEffect, useState } from 'react';
-
-import Recruit from '../../components/recruit';
+import { getAllJobs } from '../../services/jobService';
 import './style.css';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { hasResponseError } from '../../utils/utils';
+import { GlobalOutlined, UserOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { selectJobId } from '../../redux/stores/job/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { selectJobs, selectLoading } from '../../redux/stores/job/selectors';
-import * as actions from '../../redux/stores/job/actions';
-import { createJobs, getJobsRequestService } from '../../services/jobService';
-import { Row, Col, Button, Breadcrumb, Modal, Input, Form, Select } from 'antd';
+import * as action from '../../redux/stores/job/actions';
+import {
+  Row,
+  Col,
+  Button,
+  Breadcrumb,
+  Select,
+  Pagination,
+  Card,
+  Progress,
+  Divider,
+} from 'antd';
+import JobAdd from './component/jobAdd';
 
 function RecruitPage(props) {
-  const [formModal] = Form.useForm();
+  const [dataJobs, setDataJobs] = useState();
   const [visible, setVisible] = useState(false);
   const { Option } = Select;
-  const [ckeditorData, setCkeditorData] = useState('');
-  const { getJobs, selectJobs } = props;
+  const [param, setParam] = useState({
+    limit: 10,
+    page: 1,
+  });
+
+  const { jobId } = props;
+  const { setJobId } = props;
+
+  const navigation = useNavigate();
+
+  function handleChange(value) {
+    if (value === 'allJob') {
+      const obj = { ...param };
+      delete obj['status'];
+      setParam(obj);
+    } else {
+      setParam({
+        ...param,
+        status: value,
+      });
+    }
+  }
 
   useEffect(() => {
-    getJobs();
-  }, []);
+    loadDataJobs(param);
+  }, [param]);
 
-  const colStyles = {
-    flexBasis: '20%',
-    width: '20%',
-  };
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
-  const createJob = () => {
-    formModal.resetFields();
-    formModal.setFieldsValue({
-      id: selectJobs.length + 1,
+  const loadDataJobs = (param) => {
+    getAllJobs(param).then((res) => {
+      if (hasResponseError(res)) {
+        toast.success(`${res.data.message}`, {
+          autoClose: 3000,
+        });
+      }
+      setDataJobs(res.data);
+      console.log(res);
     });
-    setVisible(true);
   };
 
-  const handleCancel = () => {
+  const handleChangeData = (pagination) => {
+    console.log(pagination);
+    setParam({ ...param, page: pagination });
+    loadDataJobs({ ...param, page: pagination });
+  };
+
+  const onclose = () => {
     setVisible(false);
   };
 
-  const onFinish = async (values) => {
-    const body = { ...values, jobDescription: ckeditorData };
-    await createJobs(values);
-    console.log(values);
-    getJobs();
-    toast.success('Create Job Successful!', {
-      autoClose: 3000,
-    });
-    handleCancel();
+  const showDrawp = () => {
+    setVisible(true);
   };
 
-  const openPreview = () => {
-    formModal.setFieldsValue({
-      id: selectJobs.length + 1,
-    });
-    setVisible(true);
+  const handleLinkCadidate = async (id) => {
+    await setJobId(id);
+    navigation('/cadidate');
   };
 
   return (
     <>
-      <div className="Recruit-head">
-        <Breadcrumb>
-          <Breadcrumb.Item>Recruitment</Breadcrumb.Item>
-          <Breadcrumb.Item>Recruit</Breadcrumb.Item>
-        </Breadcrumb>
-        <Button className="Recruit-button" onClick={createJob}>
-          Add Job Posting
-        </Button>
-        <Modal
-          title="What's the job you're hiring for?"
-          visible={visible}
-          onCancel={handleCancel}
-          width={1200}
-          footer={
-            <>
-              <Button onClick={openPreview} form="formModal">
-                Preview
-              </Button>
+      <Row>
+        <Col span={12}>
+          <Breadcrumb>
+            <Breadcrumb.Item>Recruitment</Breadcrumb.Item>
+            <Breadcrumb.Item>Recruit</Breadcrumb.Item>
+          </Breadcrumb>
+        </Col>
 
-              <Button type="primary" htmlType="submit" form="formModal">
-                Save
-              </Button>
-            </>
-          }
-        >
-          <div className="recruit-modal">
-            <Form
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 16 }}
-              form={formModal}
-              name="formModal"
-              onFinish={onFinish}
-            >
-              <Form.Item name="title" rules={[{ required: false }]}>
-                <div className="recruit-input-title">
-                  <input placeholder="Enter a new job tittle"></input>
-                </div>
-              </Form.Item>
-
-              <div className="recruit-modal_select">
-                <div className="recruit-select-1">
-                  {' '}
-                  <h5>Department </h5>
-                  <Form.Item name="department" rules={[{ required: false }]}>
-                    <Select
-                      defaultValue=" "
-                      style={{ width: 300 }}
-                      onChange={handleChange}
-                    >
-                      <Option value="Administrtion">Administrtion</Option>
-                      <Option value="Finance">Finance</Option>
-                      <Option value="Maketing">Maketing</Option>
-                      <Option value="Sale">Sale</Option>
-                      <Option value="Dev">Dev</Option>
-                    </Select>
-                  </Form.Item>
-                </div>
-                <div className="recruit-select-1">
-                  {' '}
-                  <h5>Job Type </h5>
-                  <Form.Item name="jobType" rules={[{ required: false }]}>
-                    <Select
-                      defaultValue=" "
-                      style={{ width: 300 }}
-                      onChange={handleChange}
-                    >
-                      <Option value="Full Time">Full Time</Option>
-                      <Option value="Pass Time">Pass Time</Option>
-                      <Option value="Internship">Internship</Option>
-                    </Select>
-                  </Form.Item>
-                </div>
-              </div>
-              <h5>Add new location </h5>
-              <Form.Item
-                name="location"
-                className="recruit-modal_location"
-                rules={[{ required: false }]}
-              >
-                <Input placeholder="address" />
-              </Form.Item>
-              <Form.Item name="jobDescription" className="recruit-editor">
-                <CKEditor
-                  type="string"
-                  className="recruit-editor_content"
-                  editor={ClassicEditor}
-                  data={`${selectJobs.jobDescription}`}
-                  onChange={(event, editor) => {
-                    const data = editor.getData();
-                    setCkeditorData(data);
-                  }}
-                />
-              </Form.Item>
-              <div className="recruit-modal-work">
-                <div className="recruit-modal-skill">
-                  <h5>Skills</h5>
-                  <Form.Item name="skill" rules={[{ required: false }]}>
-                    <Input placeholder="skill" />
-                  </Form.Item>
-                </div>
-
-                <div className="recruit-modal-exp">
-                  <h5>Experience </h5>
-                  <Form.Item name="experience" rules={[{ required: false }]}>
-                    <Select
-                      defaultValue=" "
-                      style={{ width: 300 }}
-                      onChange={handleChange}
-                    >
-                      <Option value="Internship">Internship</Option>
-                      <Option value="Entry level">Entry level</Option>
-                      <Option value="Asociate">Asociate</Option>
-                      <Option value="Mid-senior level">Mid-senior level</Option>
-                    </Select>
-                  </Form.Item>
-                </div>
-              </div>
-              <h5>Salary</h5>
-              <div className="recruit-modal-salary">
-                <Form.Item
-                  name="minSalary"
-                  className="recruit-modal_location"
-                  rules={[{ required: false }]}
-                >
-                  <Input placeholder="minSalary" />
-                </Form.Item>
-                <Form.Item
-                  name="maxSalary"
-                  className="recruit-modal_location"
-                  rules={[{ required: false }]}
-                >
-                  <Input placeholder="maxSalary" />
-                </Form.Item>
-              </div>
-            </Form>
-          </div>
-        </Modal>
-      </div>
-
-      <Row type="flex" gutter={30}>
-        {selectJobs.map((item) => {
-          return (
-            <Col className="recuid-card" key={item.id} style={{ ...colStyles }}>
-              <Recruit
-                data={item}
-                jobId={item.id}
-                cardJD="card-jd"
-                cartHeader="cart-header"
-                cartTitle="cart-title"
-                cartContent="cart-content"
-                cartLocal="cart-local"
-                cartIcon="cart-icon"
-                cartFooter="cart-footer"
-              />
-            </Col>
-          );
-        })}
+        <Col span={12}>
+          {dataJobs && (
+            <Pagination
+              pageSize={dataJobs?.limit}
+              current={dataJobs?.page}
+              total={dataJobs?.totalResults}
+              onChange={handleChangeData}
+              className="fr"
+            />
+          )}
+        </Col>
       </Row>
+      <Divider className="mb-0 mt-12" />
+      <Row className="mt-12">
+        <Col span={12}>
+          <Select
+            defaultValue="allJob"
+            style={{ width: 120 }}
+            onSelect={handleChange}
+            className="mb-12"
+          >
+            <Option value="allJob">All Job</Option>
+            <Option value="published">Published</Option>
+            <Option value="onHold">Hode On</Option>
+            <Option value="deleted">deleted</Option>
+          </Select>
+        </Col>
+        <Col span={12}>
+          <Button className="fr" onClick={showDrawp}>
+            Add Job Posting
+          </Button>
+        </Col>
+      </Row>
+
+      <Row gutter={20}>
+        {dataJobs &&
+          dataJobs?.results?.map((item) => {
+            return (
+              <Col
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
+                xl={{ span: 6 }}
+                xxl={{ span: 3 }}
+                key={item.id}
+                className="mb-24"
+              >
+                <div className="card">
+                  <Card
+                    style={{
+                      width: '100%',
+                      minHeight: '350px',
+                      textAlign: 'center',
+                    }}
+                    hoverable="true"
+                    title={
+                      <div onClick={() => handleLinkCadidate(item.id)}>
+                        {item.department}
+                      </div>
+                    }
+                    actions={[
+                      <div>
+                        <GlobalOutlined key="global" className="mr-8" />
+                        {item.status}
+                      </div>,
+                      <div>Details</div>,
+                    ]}
+                  >
+                    <div
+                      className="body-card"
+                      onClick={() => handleLinkCadidate(item.id)}
+                    >
+                      <p className="title-card mb-16">{item.title}</p>
+                      <Progress
+                        type="circle"
+                        percent={100}
+                        format={() => `${item.candidateCount} candidates`}
+                        width={120}
+                        strokeWidth={4}
+                        strokeColor={'#9e80c5'}
+                        trailColor={'#607787'}
+                        status="normal"
+                      />
+                      <div className="location mt-16">
+                        {item.location && (
+                          <span>
+                            <UserOutlined /> {item.location} |{' '}
+                          </span>
+                        )}
+                        {item.jobType && <span>{item.jobType}</span>}
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              </Col>
+            );
+          })}
+      </Row>
+      <JobAdd
+        visible={visible}
+        onclose={onclose}
+        job={dataJobs}
+        loadData={loadDataJobs}
+      />
     </>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
-  isLoading: selectLoading,
-  selectJobs: selectJobs,
+  jobId: selectJobId,
 });
-
 const mapDispatchToProps = (dispatch) => ({
-  getJobs: (payload) => dispatch(actions.getJobs(payload)),
+  setJobId: (payload) => dispatch(action.setJobId(payload)),
 });
-
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(RecruitPage);

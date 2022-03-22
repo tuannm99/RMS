@@ -1,29 +1,8 @@
-import { SAVE_LOADING, SET_LOADING, GET_JOBS, SAVE_JOBS } from './constants';
+import { SET_JOBID } from './constants';
 
-export function setLoading(payload) {
+export function setJobId(payload) {
   return {
-    type: SET_LOADING,
-    payload,
-  };
-}
-
-export function saveLoading(payload) {
-  return {
-    type: SAVE_LOADING,
-    payload,
-  };
-}
-
-export function getJobs(payload) {
-  return {
-    type: GET_JOBS,
-    payload,
-  };
-}
-
-export function saveJobs(payload) {
-  return {
-    type: SAVE_JOBS,
+    type: SET_JOBID,
     payload,
   };
 }

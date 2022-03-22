@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import DetailJobComponent from './component/detailJobComponent';
 import { useParams } from 'react-router-dom';
 import {
@@ -6,21 +6,17 @@ import {
   updateJobs,
   deleteJobs,
 } from '../../services/jobService';
+import { DrawerComponent } from '../../components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { toast } from 'react-toastify';
-import { RightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import {
-  Breadcrumb,
-  Button,
-  Modal,
-  Input,
-  Form,
-  Select,
-  Popconfirm,
-} from 'antd';
+import { Breadcrumb, Button, Input, Form, Select, Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
+import { set } from 'lodash';
+import { selectUserInfor } from '../../redux/stores/auth/selectors';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 
 function DetailRecruitPage(props) {
   let { id } = useParams();
@@ -29,7 +25,7 @@ function DetailRecruitPage(props) {
   const [job, setJob] = useState({});
   const [ckeditorData, setCkeditorData] = useState('');
   const navigate = useNavigate();
-
+  const { userAccount } = props;
   const { Option } = Select;
 
   const handleCancel = () => {
@@ -38,12 +34,13 @@ function DetailRecruitPage(props) {
 
   useEffect(() => {
     fetchJob();
-  }, []);
+  }, [job]);
 
   const fetchJob = async () => {
     const jobDetail = await getJobsDetail(id);
     setJob(jobDetail.data);
-    console.log(jobDetail);
+
+    // console.log(jobDetail);
   };
 
   const openModal = (id) => {
@@ -58,6 +55,7 @@ function DetailRecruitPage(props) {
       minSalary: job.minSalary,
       maxSalary: job.maxSalary,
       department: job.department,
+      status: job.status,
     });
 
     setVisible(true);
@@ -68,30 +66,30 @@ function DetailRecruitPage(props) {
       ...jobValue,
       jobDescription: ckeditorData === '' ? job.jobDescription : ckeditorData,
     };
-    try {
-      updateJobs(jobValue.id, body).then((res) => {
+
+    updateJobs(jobValue.id, body)
+      .then((res) => {
         setJob(res.data);
         console.log(res);
-        fetchJob();
-      });
-      toast.success('Edit Job Detail Successful!', {
-        autoClose: 3000,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    handleCancel();
-    // setJob(body);
-  };
-
-  const handleDelete = async (values) => {
-    const res = await deleteJobs(values);
-    console.log(res);
-    navigate('/recruit');
-    toast.success('Delete Job  Successful!', {
+      })
+      .catch((err) => console.log(err));
+    toast.success('Edit Job Detail Successful!', {
       autoClose: 3000,
     });
+
     handleCancel();
+  };
+
+  const updateStatus = (value) => {
+    const body = { status: value };
+    updateJobs(id, body)
+      .then((res) => {
+        setJob(res.data);
+      })
+      .catch((err) => console.log(err));
+    toast.success('update Status!', {
+      autoClose: 3000,
+    });
   };
 
   return (
@@ -105,138 +103,165 @@ function DetailRecruitPage(props) {
           <Breadcrumb.Item>Detail Job</Breadcrumb.Item>
         </Breadcrumb>
         <div>
-          <Button className="Recruit-button" onClick={() => openModal(id)}>
+          <Button
+            className="Recruit-button"
+            onClick={() => openModal(id)}
+            disabled={userAccount.role !== 'hiringManager' && true}
+          >
             Edit Detail
           </Button>
-          <Popconfirm
-            title="Sure to delete?"
-            onConfirm={() => handleDelete(id)}
+          <Select
+            disabled={userAccount.role !== 'hiringManager' && true}
+            value={job.status}
+            style={{ width: 120 }}
+            onSelect={updateStatus}
+            className="recruit-Detail-selector"
           >
-            <Button>Delete</Button>
-          </Popconfirm>
+            <Option value="published">Published</Option>
+            <Option value="onHold">Hode On</Option>
+            <Option value="deleted">Delete</Option>
+          </Select>
         </div>
-        <Modal
-          title=" Edit Detail"
-          visible={visible}
-          onCancel={handleCancel}
-          width={1200}
-          footer={
-            <Button type="primary" htmlType="submit" form="formModal">
-              Save
-            </Button>
-          }
-        >
-          <div className="recruit-modal">
-            <Form
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 16 }}
-              form={formModal}
-              name="formModal"
-              onFinish={onFinish}
-            >
-              <div className="recruit-input-title">
-                <Form.Item name="title" rules={[{ required: false }]}>
-                  <Input placeholder="title" />
+
+        <DrawerComponent title="Create Job" onClose={onclose} visible={visible}>
+          <Form
+            layout="vertical"
+            hideRequiredMark
+            onFinish={onFinish}
+            form={formModal}
+            name="formModal"
+          >
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item
+                  name="title"
+                  label="Title Job"
+                  rules={[
+                    { required: true, message: 'Please enter user name' },
+                  ]}
+                >
+                  <Input placeholder="Please enter user name" />
                 </Form.Item>
-              </div>
-
-              <div className="recruit-modal_select">
-                <div className="recruit-select-1">
-                  {' '}
-                  <h5>Department </h5>
-                  <Form.Item name="department" rules={[{ required: false }]}>
-                    <Select style={{ width: 300 }}>
-                      <Option value="Administrtion">Administrtion</Option>
-                      <Option value="Finance">Finance</Option>
-                      <Option value="Maketing">Maketing</Option>
-                      <Option value="Sale">Sale</Option>
-                      <Option value="Dev">Dev</Option>
-                    </Select>
-                  </Form.Item>
-                </div>
-                <div className="recruit-select-1">
-                  {' '}
-                  <h5>Job Type </h5>
-                  <Form.Item name="jobType" rules={[{ required: false }]}>
-                    <Select style={{ width: 300 }}>
-                      <Option value="Full Time">Full Time</Option>
-                      <Option value="Pass Time">Part Time</Option>
-                      <Option value="Internship">Internship</Option>
-                    </Select>
-                  </Form.Item>
-                </div>
-              </div>
-              <h5>Add new location </h5>
-              <Form.Item
-                name="location"
-                className="recruit-modal_location"
-                rules={[{ required: false }]}
-              >
-                <Input placeholder="address" />
-              </Form.Item>
-              <h5>Description</h5>
-              <Form.Item name="jobDescription" className="recruit-editor">
-                <CKEditor
-                  type="string"
-                  className="recruit-editor_content"
-                  editor={ClassicEditor}
-                  data={`${job.jobDescription}`}
-                  onChange={(event, editor) => {
-                    const data = editor.getData();
-                    setCkeditorData(data);
-                  }}
-                />
-              </Form.Item>
-              <div className="recruit-modal-work">
-                <div className="recruit-modal-skill">
-                  <h5>Skills</h5>
-                  <Form.Item name="skill" rules={[{ required: false }]}>
-                    <Input placeholder="skill" />
-                  </Form.Item>
-                </div>
-
-                <div className="recruit-modal-exp">
-                  <h5>Experience </h5>
-                  <Form.Item name="experience" rules={[{ required: false }]}>
-                    <Select style={{ width: 300 }}>
-                      <Option value="Internship">Internship</Option>
-                      <Option value="Entry level">Entry level</Option>
-                      <Option value="Asociate">Asociate</Option>
-                      <Option value="Mid-senior level">Mid-senior level</Option>
-                    </Select>
-                  </Form.Item>
-                </div>
-              </div>
-              <h5>Salary</h5>
-              <div className="recruit-modal-salary">
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  name="department"
+                  rules={[{ required: false }]}
+                  label="Department"
+                >
+                  <Select style={{ width: 300 }}>
+                    <Option value="Administrtion">Administrtion</Option>
+                    <Option value="Finance">Finance</Option>
+                    <Option value="Maketing">Maketing</Option>
+                    <Option value="Sale">Sale</Option>
+                    <Option value="Dev">Dev</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="jobType"
+                  label="Job Type"
+                  rules={[{ required: false }]}
+                >
+                  <Select style={{ width: 300 }}>
+                    <Option value="Full Time">Full Time</Option>
+                    <Option value="Pass Time">Pass Time</Option>
+                    <Option value="Remote">Internship</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="location"
+                  label="Location"
+                  rules={[{ required: false }]}
+                >
+                  <Input placeholder="address" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item name="jobDescription" label="Description">
+                  <CKEditor
+                    type="string"
+                    editor={ClassicEditor}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setCkeditorData(data);
+                    }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="skill"
+                  label="Skills"
+                  rules={[{ required: false }]}
+                >
+                  <Input placeholder="skill" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="experience"
+                  label="Experience"
+                  rules={[{ required: false }]}
+                >
+                  <Select style={{ width: 300 }}>
+                    <Option value="Internship">Internship</Option>
+                    <Option value="Entry level">Entry level</Option>
+                    <Option value="Asociate">Asociate</Option>
+                    <Option value="Mid-senior level">Mid-senior level</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={4}>
                 <Form.Item
                   name="minSalary"
-                  className="recruit-modal_location"
+                  label="Salary"
                   rules={[{ required: false }]}
                 >
                   <Input placeholder="minSalary" />
                 </Form.Item>
-                <div className="recruit-modal-iconRight">
-                  <RightOutlined />
-                </div>
+              </Col>
+
+              <Col span={4}>
                 <Form.Item
                   name="maxSalary"
-                  className="recruit-modal_location"
+                  label=" "
                   rules={[{ required: false }]}
                 >
                   <Input placeholder="maxSalary" />
                 </Form.Item>
-              </div>
-              <Form.Item
-                className="Detail-id"
-                name="id"
-                rules={[{ required: false }]}
-              >
-                <Input disabled />
-              </Form.Item>
-            </Form>
-          </div>
-        </Modal>
+              </Col>
+            </Row>
+            <Form.Item
+              className="Detail-id"
+              name="id"
+              rules={[{ required: false }]}
+            >
+              <Input disabled />
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+              <Button className="Recruit-button" onClick={() => openModal(id)}>
+                preview
+              </Button>
+            </Form.Item>
+          </Form>
+        </DrawerComponent>
       </div>
       <DetailJobComponent
         data={job}
@@ -251,4 +276,7 @@ function DetailRecruitPage(props) {
   );
 }
 
-export default DetailRecruitPage;
+const mapStateToProps = createStructuredSelector({
+  userAccount: selectUserInfor,
+});
+export default connect(mapStateToProps)(DetailRecruitPage);

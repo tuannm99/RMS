@@ -9,23 +9,33 @@ import { hasResponseError, base64String } from '../../utils/utils';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
-function ProfilePage(props) {
+function ProfilePage() {
+  /**
+   * create state
+   */
   const [user, setUser] = useState();
 
   const navigation = useNavigate();
+
   let { id } = useParams();
 
+  /**
+   * render detail page
+   */
   useEffect(() => {
     getDetailUsersServices(id).then((res) => {
       if (hasResponseError(res)) {
         toast.error(`${res.data.message}`);
         return;
       }
-      console.log(res.data);
       setUser(res.data);
     });
   }, []);
 
+  /**
+   * change page edit employee
+   * @param {*} id
+   */
   const handleEdit = (id) => {
     navigation(`/employee/true/${id}`);
   };
@@ -36,6 +46,7 @@ function ProfilePage(props) {
           Edit Profile
         </Button>
       </Col>
+
       <Col span={7}>
         <div className="profile">
           <div className="profile-avatar">
@@ -58,9 +69,9 @@ function ProfilePage(props) {
           <div className="profile-information ml-28">
             <p className="profile-left-name">{user?.fullName}</p>
             <p className="profile-left-role">{user?.role}</p>
-            {user?.languages && (
+            {user?.address && (
               <p>
-                <GoLocation /> <span>{user?.languages}</span>
+                <GoLocation /> <span>{user?.address}</span>
               </p>
             )}
             {user?.email && (
@@ -103,6 +114,12 @@ function ProfilePage(props) {
           <Col span={12}>
             <p className="profile-inf-title-detail">Address</p>
             <p className="profile-inf-content-detail">
+              {user?.address ? user?.address : '-'}
+            </p>
+          </Col>
+          <Col span={12}>
+            <p className="profile-inf-title-detail">Languages</p>
+            <p className="profile-inf-content-detail">
               {user?.languages ? user?.languages : '-'}
             </p>
           </Col>
@@ -113,6 +130,7 @@ function ProfilePage(props) {
             </p>
           </Col>
         </Row>
+
         <Divider orientation="left">Contact</Divider>
         <Row className="pl-16">
           <Col span={12}>
@@ -128,6 +146,7 @@ function ProfilePage(props) {
             </p>
           </Col>
         </Row>
+
         <Divider orientation="left">Company</Divider>
         <Row className="pl-16">
           <Col span={12}>

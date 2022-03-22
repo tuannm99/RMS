@@ -11,7 +11,6 @@ import {
   Button,
   Spin,
   Popconfirm,
-  Form,
   Radio,
 } from 'antd';
 import {
@@ -35,13 +34,16 @@ const { Search } = Input;
 const { Option } = Select;
 
 function EmployeePage(props) {
+  /**
+   * create state
+   */
   const [visibleEditUser, setVisibleEditUser] = useState(false);
   const [user, setUser] = useState();
   const [radio, setRadio] = useState(':asc');
-  const [sortSlect, setSortSlect] = useState('all');
+  const [sortSlect, setSortSlect] = useState('createdAt');
+  const [checked, setChecked] = useState(false);
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm();
   const [params, setParams] = useState({
     fullName: '',
     limit: 10,
@@ -49,85 +51,113 @@ function EmployeePage(props) {
     sortBy: '',
   });
 
-  const { userAccount } = props;
   const navigation = useNavigate();
   let { visible, userID } = useParams();
 
-  const showUserEdit = (id) => {
-    setVisibleEditUser(true);
-    setUser(id);
-  };
-
-  const onCloseEditUser = () => {
-    setVisibleEditUser(false);
-    navigation(`/employee/false/${userID}`);
-  };
+  const { userAccount } = props;
 
   useEffect(() => {
-    if (visible === 'true') {
+    if (visible === 'true' && userID !== 'null') {
       showUserEdit(userID);
+    } else if (visible === 'true' && userID === 'null') {
+      showUserEdit(null);
+    } else {
+      return;
     }
-  }, []);
+  }, [visible]);
 
   useEffect(() => {
     getAlldata(params);
   }, [params]);
 
+  /**
+   * display drawer form edit and add
+   */
+  const showUserEdit = async (id) => {
+    await setUser(id);
+    setVisibleEditUser(true);
+  };
+
+  /**
+   * Close drawer
+   */
+  const onCloseEditUser = () => {
+    setChecked(false);
+    setVisibleEditUser(false);
+    if (userID !== 'null') {
+      navigation(`/employee/false/${userID}`);
+    } else {
+      navigation(`/employee/false/${userAccount?.id}`);
+    }
+  };
+
+  /**
+   * get all list user
+   * @param {*} params
+   * @returns
+   */
   const getAlldata = async (params) => {
     setLoading(true);
     const res = await services.getAllUsersServices(params);
     if (hasResponseError(res)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     setUsers(res.data);
     setLoading(false);
   };
 
+  /**
+   * change page size
+   * @param {*} pagination
+   */
   const handleChangeData = (pagination) => {
-    console.log(pagination);
     setParams({ ...params, page: pagination });
-    getAlldata({ ...params, page: pagination });
   };
 
+  /**
+   * filter allow fullName
+   * @param {*} value
+   */
   const onSearch = (value) => {
     setParams({ ...params, fullName: value });
-    getAlldata({ ...params, fullName: value });
   };
 
+  /**
+   * change select role
+   * @param {*} value
+   */
   const handleSelectRole = (value) => {
-    console.log(value);
     if (value === 'all') {
-      delete params.role;
-      getAlldata(params);
+      delete params['role'];
+      setParams({ ...params });
     } else {
       setParams({ ...params, role: value });
-      getAlldata({ ...params, role: value });
     }
   };
 
+  /**
+   * change select sort
+   * @param {*} value
+   */
   const handleSelectSort = (value) => {
     setSortSlect(value);
-    if (value === 'all') {
-      setParams({ ...params, sortBy: '' });
-      getAlldata(params);
-    } else {
-      setParams({ ...params, sortBy: `${value}${radio}` });
-      getAlldata({ ...params, sortBy: `${value}${radio}` });
-    }
+    setParams({ ...params, sortBy: `${value}${radio}` });
   };
 
+  /**
+   * change radio sort allow asc and desc
+   * @param {*} e
+   */
   const onChangeRadio = (e) => {
     setRadio(e.target.value);
-    console.log(`${sortSlect}${e.target.value}`);
-    if (e.target.value === ':asc') {
-      setParams({ ...params, sortBy: `` });
-      getAlldata(params);
-    } else {
-      setParams({ ...params, sortBy: `${sortSlect}${e.target.value}` });
-      getAlldata({ ...params, sortBy: `${sortSlect}${e.target.value}` });
-    }
+    setParams({ ...params, sortBy: `${sortSlect}${e.target.value}` });
   };
 
+  /**
+   * change page profile allow id
+   * @param {*} id
+   */
   const handleDetailUser = (id) => {
     if (userAccount?.role === 'admin') {
       navigation(`/profile/${id}`);
@@ -136,13 +166,31 @@ function EmployeePage(props) {
     }
   };
 
+  /**
+   * remove employee allow id
+   * @param {*} id
+   * @returns
+   */
   const handleDelete = async (id) => {
     const res = await services.deleteUsersServices(id);
     if (hasResponseError(res)) {
+      toast.error(`${res.data.message}`);
       return;
     }
     toast.success('Delete success!');
     getAlldata(params);
+    const res1 = await services.getAllUsersServices();
+    if (hasResponseError(res1)) {
+      toast.error(`${res.data.message}`);
+      return;
+    }
+    console.log(res1.data);
+    if (res1.data.totalResults % params.limit === 0) {
+      setParams({ ...params, page: params.page - 1 });
+      getAlldata({ ...params, page: params.page - 1 });
+    } else {
+      getAlldata(params);
+    }
   };
 
   return (
@@ -181,22 +229,25 @@ function EmployeePage(props) {
           )}
         </Col>
       </Row>
+
       <Row>
         <Col span={12} className="mt-12">
-          <Button onClick={() => showUserEdit(null)}>Add Employee</Button>
+          {userAccount?.role === 'admin' && (
+            <Button onClick={() => showUserEdit(null)}>Add Employee</Button>
+          )}
         </Col>
         <Col span={11} className="mt-12">
           <div className="fr mr-8">
             <strong>Sort by: </strong>
             <Select
-              defaultValue="all"
+              defaultValue="createdAt"
               style={{ width: 125 }}
               showArrow={true}
               onSelect={handleSelectSort}
             >
-              <Option value="all">All</Option>
+              <Option value="createdAt">All</Option>
               <Option value="fullName">Name</Option>
-              <Option value="createdAt">Create At</Option>
+              <Option value="updatedAt">Update By</Option>
               <Option value="email">Email</Option>
             </Select>
           </div>
@@ -209,6 +260,7 @@ function EmployeePage(props) {
           </Radio.Group>
         </Col>
       </Row>
+
       <div className="employee_content mt-16">
         <Row gutter={20}>
           {loading && (
@@ -220,23 +272,23 @@ function EmployeePage(props) {
             !loading &&
             users?.results?.map((item) => (
               <Col
-                md={{ span: 8 }}
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
                 xl={{ span: 6 }}
                 xxl={{ span: 3 }}
                 key={item.id}
                 className="mb-24"
               >
                 <div className="card">
-                  <div
-                    className="card-before"
-                    onClick={() => handleDetailUser(item.id)}
-                  ></div>
                   <Card
                     style={{ width: '100%', minHeight: '305px' }}
                     actions={
                       userAccount?.role === 'admin' &&
                       userAccount?.id !== item?.id
                         ? [
+                            <UserOutlined
+                              onClick={() => handleDetailUser(item.id)}
+                            />,
                             <EditOutlined
                               key="edit"
                               onClick={() => showUserEdit(item.id)}
@@ -249,12 +301,37 @@ function EmployeePage(props) {
                               <DeleteOutlined />
                             </Popconfirm>,
                           ]
-                        : [
+                        : (userAccount?.role === 'hiringManager' ||
+                            userAccount?.role === 'employee') &&
+                          userAccount?.id === item?.id
+                        ? [
+                            <UserOutlined
+                              onClick={() => handleDetailUser(item.id)}
+                            />,
                             <EditOutlined
                               key="edit"
                               onClick={() => showUserEdit(item.id)}
                             />,
                           ]
+                        : userAccount?.role === 'admin' &&
+                          userAccount?.id === item?.id
+                        ? [
+                            <UserOutlined
+                              onClick={() => handleDetailUser(item.id)}
+                            />,
+                            <EditOutlined
+                              key="edit"
+                              onClick={() => showUserEdit(item.id)}
+                            />,
+                          ]
+                        : userAccount?.role === 'hiringManager' ||
+                          userAccount?.role === 'employee'
+                        ? [
+                            <UserOutlined
+                              onClick={() => handleDetailUser(item.id)}
+                            />,
+                          ]
+                        : ''
                     }
                     hoverable="true"
                   >
@@ -300,13 +377,16 @@ function EmployeePage(props) {
             ))}
         </Row>
       </div>
+
       <UserEdit_Add
         visible={visibleEditUser}
         onclose={onCloseEditUser}
         user={user}
         getAlldata={getAlldata}
         params={params}
-        form={form}
+        checked={checked}
+        setChecked={setChecked}
+        account={userAccount}
       />
     </>
   );

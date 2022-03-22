@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
   Divider,
   Col,
@@ -10,7 +10,6 @@ import {
   Upload,
   Avatar,
   Button,
-  InputNumber,
 } from 'antd';
 import { DrawerComponent } from '../../../components';
 import * as services from '../../../services/employeeServices';
@@ -28,14 +27,30 @@ const dateFormat = 'YYYY/MM/DD';
 
 const { Option } = Select;
 
-function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
+function UserEdit_Add({
+  onclose,
+  visible,
+  user,
+  getAlldata,
+  params,
+  checked,
+  setChecked,
+  account,
+}) {
+  const [form] = Form.useForm();
+  /**
+   * create state
+   */
   const [imageUser, setImageUser] = useState();
   const [fileList, setFileList] = useState(null);
 
-  useEffect(() => {
+  /**
+   * set value in form and avatar render first
+   */
+  useLayoutEffect(() => {
+    form.resetFields();
     if (user) {
       services.getDetailUsersServices(user).then((res) => {
-        console.log(res);
         if (res.data.avatar) {
           setImageUser(
             `data:image/png;base64,${base64String(
@@ -51,47 +66,62 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
           firstName: res.data.firstName,
           lastName: res.data.lastName,
           phone: res.data.phone,
-          fullName: res.data.fullName,
+          address: res.data.address,
           dateOfBirth: moment(res.data.dateOfBirth),
           languages: res.data.languages,
-          matefialStatus: res.data.matefialStatus,
-          role: res.data.role,
           employeeType: res.data.jobStatus.employeeType,
+          employeeStatus: res.data.jobStatus.employeeStatus,
           dateOfJoining: moment(res.data.jobStatus.dateOfJoining),
           department: res.data.jobStatus.department,
           primaryTeam: res.data.jobStatus.primaryTeam,
           level: res.data.jobStatus.level,
-          status: res.data.jobStatus.employeeStatus,
+          role: res.data.role,
         });
       });
     } else {
       setImageUser(null);
-      form.resetFields();
     }
   }, [user]);
-
+  /**
+   * convert file to image
+   * @param {*} file
+   */
   const handlePreview = (file) => {
+    const isImg =
+      file.file.type === 'image/jpeg' ||
+      file.file.type === 'image/jpg' ||
+      file.file.type === 'image/png' ||
+      file.file.type === 'image/gif';
     let fileImg = file.fileList[0].originFileObj;
-    convertFileToBase64(fileImg).then((res) => {
-      fileImg['base64'] = res;
-      setImageUser(res);
-      setFileList(fileImg);
-    });
+    if (isImg) {
+      convertFileToBase64(fileImg).then((res) => {
+        fileImg['base64'] = res;
+        setImageUser(res);
+        setFileList(fileImg);
+      });
+      setChecked(false);
+    } else {
+      setChecked(true);
+    }
   };
 
+  /**
+   * Submit form edit or add
+   * @param {*} values
+   */
   const onFinish = async (values) => {
     const formRes = new FormData();
-    const body = {
+    let body = {
       username: values.username,
       password: values.password,
       email: values.email,
       firstName: values.firstName,
       lastName: values.lastName,
       phone: values.phone,
-      fullName: values.fullName,
+      fullName: `${values.firstName} ${values.lastName}`,
       dateOfBirth: values.dateOfBirth,
       languages: values.languages,
-      matefialStatus: values.matefialStatus,
+      address: values.address,
       role: values.role,
       jobStatus: {
         employeeStatus: values.employeeStatus,
@@ -107,12 +137,14 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
       if (fileList) {
         await services.updateImgUsersServices(user, formRes).then((res) => {
           if (hasResponseError(res)) {
+            toast.error(`${res.data.message}`);
             return;
           }
         });
       }
       await services.updateUsersServices(user, body).then((res) => {
         if (hasResponseError(res)) {
+          toast.error(`${res.data.message}`);
           return;
         }
         toast.success('Edit success!');
@@ -128,8 +160,12 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
     }
     getAlldata(params);
     onclose();
+    setChecked(false);
   };
 
+  /**
+   * style for avatar
+   */
   const styleImg = {
     width: '100px',
     height: '100px',
@@ -139,8 +175,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
+        <Option value="84">+84</Option>
       </Select>
     </Form.Item>
   );
@@ -164,19 +199,21 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
                 icon={<UserOutlined />}
               />
             )}
+            {checked && <p style={{ color: 'red' }}>Only upload image</p>}
           </Col>
           <Col span={12}>
-            <Upload
-              maxCount={1}
-              onChange={handlePreview}
-              beforeUpload={() => false} // return false so that antd doesn't upload the picture right away
-            >
+            <Upload maxCount={1} onChange={handlePreview}>
               <Button>Change Avatar</Button>
             </Upload>
           </Col>
         </Row>
       )}
-      <Form layout="vertical" form={form} onFinish={onFinish}>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={onFinish}
+        initialValues={{ prefix: '+84' }}
+      >
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -198,24 +235,16 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
           </Col>
           <Col span={12}>
             <Form.Item
-              name="fullName"
-              label="Full Name"
-              rules={[{ required: true, message: 'Please enter Full Name' }]}
+              name="address"
+              label="Address"
+              rules={[{ required: true, message: 'Please enter Address' }]}
             >
-              <Input placeholder="Enter Full Name" />
+              <Input placeholder="Enter Address" />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item name="languages" label="Language">
               <Input placeholder="Enter Language" />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item name="matefialStatus" label="Marital status">
-              <Select name="matefialStatus">
-                <Option value="single">Single</Option>
-                <Option value="married">Married</Option>
-              </Select>
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -229,7 +258,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
               label="Role"
               rules={[{ required: true, message: 'Please select Role!' }]}
             >
-              <Select name="role">
+              <Select name="role" disabled={account?.role !== 'admin' && true}>
                 <Option value="admin">Admin</Option>
                 <Option value="hiringManager">Hiring Manager</Option>
                 <Option value="employee">Employee</Option>
@@ -347,8 +376,8 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="status" label="Status">
-              <Select name="status">
+            <Form.Item name="employeeStatus" label="Status">
+              <Select name="employeeStatus">
                 <Option value="active">Active</Option>
                 <Option value="noActive">No active</Option>
               </Select>
@@ -360,13 +389,9 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
             </Form.Item>
           </Col>
         </Row>
-        <Row>
-          <Col span={12}>
-            <Button type="primary" htmlType="submit">
-              {user ? 'Edit Employee' : 'Create Employee'}
-            </Button>
-          </Col>
-        </Row>
+        <Button type="primary" htmlType="submit" className="btn-submit">
+          {user ? 'Edit' : 'Add'}
+        </Button>
       </Form>
     </DrawerComponent>
   );

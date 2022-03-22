@@ -1,7 +1,7 @@
 import React from 'react';
 import { Drawer, Space, Button } from 'antd';
 
-function DrawerComponent({ title, onClose, visible, children }) {
+function DrawerComponent({ title, onClose, visible, extra, children }) {
   return (
     <Drawer
       title={title}
@@ -9,11 +9,7 @@ function DrawerComponent({ title, onClose, visible, children }) {
       onClose={onClose}
       visible={visible}
       bodyStyle={{ paddingBottom: 80 }}
-      extra={
-        <Space>
-          <Button onClick={onClose}>Cancel</Button>
-        </Space>
-      }
+      extra={extra}
     >
       {children}
     </Drawer>
