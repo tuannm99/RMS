@@ -123,7 +123,12 @@ function DetailRecruitPage(props) {
           </Select>
         </div>
 
-        <DrawerComponent title="Create Job" onClose={onclose} visible={visible} width={720}>
+        <DrawerComponent
+          title="Create Job"
+          onClose={onclose}
+          visible={visible}
+          width={720}
+        >
           <Form
             layout="vertical"
             hideRequiredMark

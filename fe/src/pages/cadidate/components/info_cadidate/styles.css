@@ -1,0 +1,66 @@
+.main-info {
+  height: 92vh;
+  overflow: auto;
+}
+
+.cl-bg {
+  height: 100%;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 0 5px #99b8bb;
+}
+
+.profile-cadidate {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(0, 112, 208, 0.25);
+  background: linear-gradient(180deg, #fff 0, #e5f6ff 100%);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-profile_left {
+  width: 100%;
+  border-bottom-left-radius: 6px;
+  border-top-left-radius: 6px;
+}
+
+.btn-profile_right {
+  width: 100%;
+  border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.cadidate-name {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.cadidate-name p {
+  margin-bottom: 0;
+}
+.cadidate-name p:first-child {
+  font-size: 24px;
+  font-weight: 600;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.apply p {
+  font-weight: 300;
+  font-size: 12px;
+}
+.apply-btn {
+  width: 100%;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  outline: 0;
+  cursor: default;
+  color: #2c5cc5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.33333;
+}

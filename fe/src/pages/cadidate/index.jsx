@@ -17,8 +17,9 @@ import { hasResponseError } from '../../utils/utils';
 import { Table } from '../../components';
 
 import { toast } from 'react-toastify';
+import Add_Cadidate from './components/add_cadidate';
+import Cadidate_Info from './components/info_cadidate';
 
-import { Add_Cadidate, Cadidate_Info } from './components';
 import {
   renderBodyTable,
   customerTableHead,
