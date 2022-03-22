@@ -1,0 +1,34 @@
+@startuml authClass
+!theme reddress-lightblue
+
+skinparam classAttributeIconSize 0
+class candidate.controller{
+    - {field} candidateService: object
+
+    + {method} addCandidate(req: express.Request, res: express.Response): void
+    + {method} getAllCandidate(req: express.Request, res: express.Response): void
+    + {method} getCandidate(req: express.Request, res: express.Response): void
+    + {method} editCandidate(req: express.Request, res: express.Response): void
+    + {method} deleteCandidate(req: express.Request, res: express.Response): void
+}
+
+class candidate.service{
+    + {method} createCandidate(candidateData: Object): void
+    + {method} getAllCandidate(filter: Object, options: Object): void
+    + {method} getCandidateById(id: string): void
+    + {method} editCandidateById(id: string, jobData: Object): void
+    + {method} deleteCandidateById(id: string): void
+}
+
+class candidate.router{
+    + {field} router: express.Router
+}
+
+class schema.Candidate {
+
+}
+
+candidate.router ..> candidate.controller
+candidate.controller ..> candidate.service
+candidate.service ..> schema.Candidate
+@enduml

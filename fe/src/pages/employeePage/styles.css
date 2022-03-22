@@ -42,3 +42,9 @@
   top: 105px;
   left: 30px;
 }
+
+.btn-submit {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}

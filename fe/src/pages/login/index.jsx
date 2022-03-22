@@ -8,7 +8,7 @@ import { compose } from 'recompose';
 import { selectLoading } from '../../redux/stores/auth/selectors';
 import * as actions from '../../redux/stores/auth/actions';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 function Login(props) {
   /**
@@ -65,7 +65,7 @@ function Login(props) {
                 name="password"
                 rules={[
                   { required: true, message: 'Please input your password!' },
-                  { min: 5, message: 'Password must be minimum 5 characters.' },
+                  { min: 8, message: 'Password must be minimum 8 characters.' },
                 ]}
               >
                 <Input
@@ -76,9 +76,7 @@ function Login(props) {
                 />
               </Form.Item>
               <Form.Item>
-                <a className="login-form-forgot" href="">
-                  Forgot password
-                </a>
+                <NavLink to="/changePassword">Forgot password</NavLink>
               </Form.Item>
 
               <Form.Item>

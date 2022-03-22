@@ -34,14 +34,17 @@ const userSchema = mongoose.Schema({
       }
     },
   },
+
   firstName: { type: String },
   lastName: { type: String },
   middleName: { type: String },
-  phone: { type: Number },
   fullName: { type: String },
+  address: { type: String },
+  phone: { type: Number },
   dateOfBirth: { type: Date },
   languages: { type: String },
-  matefialStatus: { type: String },
+  materialStatus: { type: String },
+
   avatar: {
     mimetype: String,
     originalname: String,
@@ -57,7 +60,6 @@ const userSchema = mongoose.Schema({
     default: ROLES.employee,
   },
   jobStatus: {
-    employeeId: { type: String, unique: true },
     employeeStatus: { type: String },
     employeeType: { type: String },
     dateOfJoining: { type: Date, default: Date.now },
@@ -65,6 +67,7 @@ const userSchema = mongoose.Schema({
     primaryTeam: { type: String },
     level: { type: String },
   },
+
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

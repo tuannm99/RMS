@@ -1,19 +1,25 @@
 import React from 'react';
-import { Drawer, Space, Button } from 'antd';
+import { Drawer } from 'antd';
 
-function DrawerComponent({ title, onClose, visible, children }) {
+function DrawerComponent({
+  title,
+  width,
+  closeable,
+  bodyStyle,
+  onClose,
+  visible,
+  extra,
+  children,
+}) {
   return (
     <Drawer
       title={title}
-      width={720}
+      width={width}
       onClose={onClose}
       visible={visible}
-      bodyStyle={{ paddingBottom: 80 }}
-      extra={
-        <Space>
-          <Button onClick={onClose}>Cancel</Button>
-        </Space>
-      }
+      closable={closeable}
+      bodyStyle={bodyStyle}
+      extra={extra}
     >
       {children}
     </Drawer>

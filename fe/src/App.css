@@ -22,18 +22,8 @@
   display: none;
 }
 
-.card {
-  position: relative;
-}
-.card-before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 50px;
-  right: 0;
-  background-color: transparent;
+.cu {
   cursor: pointer;
-  z-index: 9;
 }
 
 .fr {
@@ -241,10 +231,39 @@
   padding-left: 24px;
 }
 .pl-28 {
-  padding-left: 28px;
+  padding-right: 28px;
 }
 .pl-32 {
-  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.pr-0 {
+  padding-right: 0px;
+}
+.pr-8 {
+  padding-right: 8px;
+}
+
+.pr-16 {
+  padding-right: 16px;
+}
+
+.pr-12 {
+  padding-right: 12px;
+}
+
+.pr-20 {
+  padding-right: 20px;
+}
+
+.pr-24 {
+  padding-right: 24px;
+}
+.pr-28 {
+  padding-right: 28px;
+}
+.pr-32 {
+  padding-right: 32px;
 }
 /* border */
 .border {

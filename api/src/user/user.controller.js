@@ -15,15 +15,15 @@ const createUserHandler = catchAsync(async (req, res) => {
   const result = await userService.createUser();
   res.status(httpStatus.OK).json(result);
 });
+
 /**
  * get all user
  * @param {string} req
  * @param {string} res
  */
-
 const getAllUsersHandler = catchAsync(async (req, res) => {
   // TODO: Need refactor
-  const filter = pick(req.query, ['username', 'fullName', 'rtoken', 'role']);
+  const filter = pick(req.query, ['fullName', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await userService.getUsers(filter, options);
   res.status(httpStatus.OK).json(result);
@@ -69,9 +69,8 @@ const updateUserAvatarHandler = catchAsync(async (req, res) => {
  * @param {string} res
  */
 const deleteUserHandler = catchAsync(async (req, res) => {
-  // TODO: Need impliments
-  // const user = await userService.getUserById(req.params.id);
-  res.status(httpStatus.OK).json();
+  const user = await userService.deleteUserById(req.params.id);
+  res.status(httpStatus.OK).json(user);
 });
 
 module.exports = {

@@ -16,8 +16,7 @@ import {
   REFRESH_TOKEN_REQUEST,
   LOGOUT_REQUEST,
 } from './constants';
-import { CloseOutlined } from '@ant-design/icons';
-import { notification } from 'antd';
+import { toast } from 'react-toastify';
 
 function* sendLoginRequest({ payload, resolve }) {
   try {
@@ -25,12 +24,7 @@ function* sendLoginRequest({ payload, resolve }) {
     const response = yield call(loginRequestService, payload);
     if (hasResponseError(response)) {
       yield put(setLoading(false));
-      notification.open({
-        message: `${response.data.message} `,
-        placement: 'topRight',
-        icon: <CloseOutlined style={{ color: 'green' }} />,
-        style: { zIndex: '10000000' },
-      });
+      toast.error(`${response.data.message}`);
       return;
     }
 

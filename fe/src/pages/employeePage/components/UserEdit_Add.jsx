@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
   Divider,
   Col,
@@ -10,8 +10,6 @@ import {
   Upload,
   Avatar,
   Button,
-  InputNumber,
-  Radio,
 } from 'antd';
 import { DrawerComponent } from '../../../components';
 import * as services from '../../../services/employeeServices';
@@ -29,7 +27,17 @@ const dateFormat = 'YYYY/MM/DD';
 
 const { Option } = Select;
 
-function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
+function UserEdit_Add({
+  onclose,
+  visible,
+  user,
+  getAlldata,
+  params,
+  checked,
+  setChecked,
+  account,
+}) {
+  const [form] = Form.useForm();
   /**
    * create state
    */
@@ -39,7 +47,8 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
   /**
    * set value in form and avatar render first
    */
-  useEffect(() => {
+  useLayoutEffect(() => {
+    form.resetFields();
     if (user) {
       services.getDetailUsersServices(user).then((res) => {
         if (res.data.avatar) {
@@ -58,7 +67,6 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
           lastName: res.data.lastName,
           phone: res.data.phone,
           address: res.data.address,
-          fullName: res.data.fullName,
           dateOfBirth: moment(res.data.dateOfBirth),
           languages: res.data.languages,
           employeeType: res.data.jobStatus.employeeType,
@@ -68,26 +76,33 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
           primaryTeam: res.data.jobStatus.primaryTeam,
           level: res.data.jobStatus.level,
           role: res.data.role,
-          status: res.data.jobStatus.employeeStatus,
         });
       });
     } else {
       setImageUser(null);
-      form.resetFields();
     }
   }, [user]);
-
   /**
    * convert file to image
    * @param {*} file
    */
   const handlePreview = (file) => {
+    const isImg =
+      file.file.type === 'image/jpeg' ||
+      file.file.type === 'image/jpg' ||
+      file.file.type === 'image/png' ||
+      file.file.type === 'image/gif';
     let fileImg = file.fileList[0].originFileObj;
-    convertFileToBase64(fileImg).then((res) => {
-      fileImg['base64'] = res;
-      setImageUser(res);
-      setFileList(fileImg);
-    });
+    if (isImg) {
+      convertFileToBase64(fileImg).then((res) => {
+        fileImg['base64'] = res;
+        setImageUser(res);
+        setFileList(fileImg);
+      });
+      setChecked(false);
+    } else {
+      setChecked(true);
+    }
   };
 
   /**
@@ -96,14 +111,14 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
    */
   const onFinish = async (values) => {
     const formRes = new FormData();
-    const body = {
+    let body = {
       username: values.username,
       password: values.password,
       email: values.email,
       firstName: values.firstName,
       lastName: values.lastName,
       phone: values.phone,
-      fullName: values.fullName,
+      fullName: `${values.firstName} ${values.lastName}`,
       dateOfBirth: values.dateOfBirth,
       languages: values.languages,
       address: values.address,
@@ -122,12 +137,14 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
       if (fileList) {
         await services.updateImgUsersServices(user, formRes).then((res) => {
           if (hasResponseError(res)) {
+            toast.error(`${res.data.message}`);
             return;
           }
         });
       }
       await services.updateUsersServices(user, body).then((res) => {
         if (hasResponseError(res)) {
+          toast.error(`${res.data.message}`);
           return;
         }
         toast.success('Edit success!');
@@ -143,6 +160,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
     }
     getAlldata(params);
     onclose();
+    setChecked(false);
   };
 
   /**
@@ -167,6 +185,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
       title={user ? 'EDIT EMPLOYEE.' : 'CREATE EMPLOYEE.'}
       onClose={onclose}
       visible={visible}
+      width={720}
     >
       {user && (
         <Row>
@@ -181,13 +200,10 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
                 icon={<UserOutlined />}
               />
             )}
+            {checked && <p style={{ color: 'red' }}>Only upload image</p>}
           </Col>
           <Col span={12}>
-            <Upload
-              maxCount={1}
-              onChange={handlePreview}
-              beforeUpload={() => false} // return false so that antd doesn't upload the picture right away
-            >
+            <Upload maxCount={1} onChange={handlePreview}>
               <Button>Change Avatar</Button>
             </Upload>
           </Col>
@@ -220,15 +236,6 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
           </Col>
           <Col span={12}>
             <Form.Item
-              name="fullName"
-              label="Full Name"
-              rules={[{ required: true, message: 'Please enter Full Name' }]}
-            >
-              <Input placeholder="Enter Full Name" />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
               name="address"
               label="Address"
               rules={[{ required: true, message: 'Please enter Address' }]}
@@ -252,7 +259,7 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
               label="Role"
               rules={[{ required: true, message: 'Please select Role!' }]}
             >
-              <Select name="role">
+              <Select name="role" disabled={account?.role !== 'admin' && true}>
                 <Option value="admin">Admin</Option>
                 <Option value="hiringManager">Hiring Manager</Option>
                 <Option value="employee">Employee</Option>
@@ -383,13 +390,9 @@ function UserEdit_Add({ onclose, visible, user, getAlldata, params, form }) {
             </Form.Item>
           </Col>
         </Row>
-        <Row>
-          <Col span={12}>
-            <Button type="primary" htmlType="submit">
-              {user ? 'Edit Employee' : 'Create Employee'}
-            </Button>
-          </Col>
-        </Row>
+        <Button type="primary" htmlType="submit" className="btn-submit">
+          {user ? 'Edit' : 'Add'}
+        </Button>
       </Form>
     </DrawerComponent>
   );

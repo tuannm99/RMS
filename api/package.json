@@ -12,6 +12,7 @@
     "prettier": "prettier --check **/*.js",
     "prettier:fix": "prettier --write **/*.js",
     "test": "jest",
+    "test:co": "jest --coverage",
     "test:watch": "jest --watch"
   },
   "keywords": [],
