@@ -3,23 +3,31 @@
 
 autonumber 1.1
 actor User
-control  jobRouter
+participant UI
 control  jobController
 boundary jobService
 database Mongodb
 
-User -> jobController: createJobHandler(req, res)
+User -> UI: add job
+activate UI
+UI -> jobController: call api
+deactivate UI
 activate jobController
-jobController -> jobController: validate
-jobController -> jobService: createJob(jobData)
+jobController -> jobController: checkAuth()
+jobController -> jobService: createJob()
 activate jobService
-jobService -> Mongodb: getJob(jobData)
+jobService -> Mongodb: getJob()
 activate Mongodb
+Mongodb -> Mongodb: Validate
 Mongodb --> jobService: success
 deactivate Mongodb
 jobService --> jobController: jobData
 deactivate jobService
-jobController --> User: jobData
+jobController --> UI: data
 deactivate jobController
+activate UI
+UI --> User: display data
+deactivate UI
+
 
 @enduml
