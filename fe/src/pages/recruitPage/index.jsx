@@ -4,6 +4,7 @@ import './style.css';
 import { hasResponseError } from '../../utils/utils';
 import { GlobalOutlined, UserOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { selectJobId } from '../../redux/stores/job/selectors';
 import { createStructuredSelector } from 'reselect';
@@ -159,7 +160,9 @@ function RecruitPage(props) {
                         <GlobalOutlined key="global" className="mr-8" />
                         {item.status}
                       </div>,
-                      <div>Details</div>,
+                      <Link to={`/recruit/${item.id}`}>
+                        <div>Details</div>
+                      </Link>,
                     ]}
                   >
                     <div

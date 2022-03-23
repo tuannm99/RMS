@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Col,
-  Row,
-  Select,
-  Pagination,
-  Radio,
-  Button,
-  Input,
-  Spin,
-} from 'antd';
+import { Col, Row, Select, Pagination, Radio, Button, Input, Spin } from 'antd';
 
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { selectJobId } from '../../redux/stores/job/selectors';
@@ -26,52 +17,57 @@ import { hasResponseError } from '../../utils/utils';
 import { Table } from '../../components';
 
 import { toast } from 'react-toastify';
+import Add_Cadidate from './components/add_cadidate';
+import Cadidate_Info from './components/info_cadidate';
 
-import { Add_Cadidate } from './components';
-import { renderBodyTable, customerTableHead, renderHeadTable} from './components/render';
+import {
+  renderBodyTable,
+  customerTableHead,
+  renderHeadTable,
+} from './components/render';
 
 const { Option } = Select;
 const { Search } = Input;
-
 
 function CadidatePage(props) {
   const [radio, setRadio] = useState(':asc');
   const [sortSlect, setSortSlect] = useState('createdAt');
   const [visibleAddCadi, setVisibleAddCadi] = useState(false);
+  const [visibleInfoCadi, setVisibleInfoCadi] = useState(false);
   const [jobs, setjobs] = useState([]);
-  const [params, setParams] = useState({
+
+  const payload = {
     limit: 10,
     page: 1,
     sortBy: '',
     fullName: '',
-  });
+  };
+
+  const [params, setParams] = useState(payload);
 
   const { getAllCadidates } = props;
-  const { loading, cadidates, jobId, userAccount } = props;
+  const { jobId, userAccount } = props;
+  const { loading, cadidates } = props;
+
+  useEffect(() => {
+    getAllCadidates(params);
+  }, [params, getAllCadidates]);
 
   useEffect(() => {
     getAllJobs().then((res) => {
-      res.data.results.map((item) => {
-        setjobs((prew) => {
-          return [...prew, ...[{ id: item.id, label: item.title }]];
-        });
-      });
+      setjobs(res.data.results);
     });
     return () => {
       setjobs([]);
     };
   }, []);
 
-  useEffect(() => {
-    getAllCadidates(params);
-  }, [params, getAllCadidates]);
-
-  const showAddCadidate = () => {
-    setVisibleAddCadi(true);
-  };
-
   const onCloseAddCadi = () => {
     setVisibleAddCadi(false);
+  };
+
+  const onCloseInfoCadi = () => {
+    setVisibleInfoCadi(false);
   };
 
   const handleDelete = async (id) => {
@@ -88,9 +84,8 @@ function CadidatePage(props) {
     }
     if (res1.data.totalResults % params.limit === 0) {
       setParams({ ...params, page: params.page - 1 });
-      getAllCadidates({ ...params, page: params.page - 1 });
     } else {
-      getAllCadidates(params);
+      setParams({ ...params });
     }
   };
 
@@ -132,7 +127,7 @@ function CadidatePage(props) {
   const onSearch = (value) => {
     setParams({ ...params, fullName: value });
   };
-  
+
   return (
     <>
       <Row className="employee_tool" wrap={true}>
@@ -146,7 +141,7 @@ function CadidatePage(props) {
             <Option value="">All</Option>
             {jobs.map((item) => (
               <Option value={item.id} key={item.id}>
-                {item.label}
+                {item.title}
               </Option>
             ))}
           </Select>
@@ -160,15 +155,13 @@ function CadidatePage(props) {
           />
         </Col>
         <Col flex={1} className="fr mt-12">
-          {cadidates !== {} && (
-            <Pagination
-              pageSize={cadidates?.limit}
-              current={cadidates?.page}
-              total={cadidates?.totalResults}
-              onChange={handleChangeData}
-              className="fr"
-            />
-          )}
+          <Pagination
+            current={cadidates?.page}
+            total={cadidates?.totalResults}
+            pageSize={params?.limit}
+            onChange={handleChangeData}
+            className="fr"
+          />
         </Col>
       </Row>
 
@@ -177,7 +170,9 @@ function CadidatePage(props) {
           {(userAccount?.role === 'admin' ||
             userAccount?.role === 'hiringManager') &&
             jobId !== '' && (
-              <Button onClick={showAddCadidate}>Add Cadidate</Button>
+              <Button onClick={() => setVisibleAddCadi(true)}>
+                Add Cadidate
+              </Button>
             )}
         </Col>
         <Col span={11} className="mt-12">
@@ -216,18 +211,18 @@ function CadidatePage(props) {
             headData={customerTableHead}
             renderHead={(item, index) => renderHeadTable(item, index)}
             bodyData={cadidates?.results}
-            renderBody={(item, index) => renderBodyTable(item, index, handleDelete)}
+            renderBody={(item, index) =>
+              renderBodyTable(item, index, handleDelete, setVisibleInfoCadi)
+            }
           />
         )}
       </div>
-
       <Add_Cadidate
         visible={visibleAddCadi}
         onclose={onCloseAddCadi}
-        getAlldata={getAllCadidates}
         params={params}
-        jobId={jobId}
       />
+      <Cadidate_Info visible={visibleInfoCadi} onclose={onCloseInfoCadi} />
     </>
   );
 }
@@ -235,8 +230,8 @@ function CadidatePage(props) {
 const mapStateToProps = createStructuredSelector({
   userAccount: selectUserInfor,
   jobId: selectJobId,
-  loading,
-  cadidates,
+  loading: loading,
+  cadidates: cadidates,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
