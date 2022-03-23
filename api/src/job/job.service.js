@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
 const { Job } = require('../core/db/schema');
+const { omit } = require('../core/utils');
 
 /**
  * create new job
@@ -24,15 +25,32 @@ const createJob = async (jobData) => {
  * @returns {Promise<QueryResult>}
  */
 const getAllJob = async (filter, options) => {
-  // TODO: verify The owner who has assign for each job
   const listJob = await Job.paginate(filter, options);
-  const newListJob = listJob.results.map((job) => {
+  // count all candidate
+  const results = listJob.results.map((job) => {
+    const jobOmit = omit(job.toJSON(), ['candidateId']);
     return {
-      ...job.toJSON(),
+      ...jobOmit,
       candidateCount: job.candidateId.length,
     };
   });
-  listJob.results = newListJob;
+  listJob.results = results;
+  return listJob;
+};
+
+/**
+ * query all published job for career page
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
+ */
+const getAllPublishedJob = async (filter, options) => {
+  if (filter.title) filter.title = { $regex: filter.title, $options: 'i' };
+  filter.status = 'published';
+  const listJob = await Job.paginate(filter, options);
   return listJob;
 };
 
@@ -77,6 +95,7 @@ const deleteJobById = async (id) => {
 module.exports = {
   createJob,
   getAllJob,
+  getAllPublishedJob,
   getJobById,
   editJobById,
   deleteJobById,

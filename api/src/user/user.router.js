@@ -4,7 +4,7 @@ const { checkAuth } = require('../core/global.middleware');
 const { ROLES } = require('../constants');
 const userController = require('./user.controller');
 
-const { upload } = require('../core/multer');
+const { uploadImg } = require('../core/multer');
 
 // router
 const router = express.Router();
@@ -15,7 +15,7 @@ router.put('/:id', checkAuth(), userController.updateUserHandler);
 router.put(
   '/:id/avatar',
   checkAuth(),
-  upload.single('avatar'),
+  uploadImg.single('avatar'),
   userController.updateUserAvatarHandler
 );
 router.delete('/:id', checkAuth(ROLES.admin), userController.deleteUserHandler);
