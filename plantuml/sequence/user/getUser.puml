@@ -1,0 +1,24 @@
+@startuml getUser
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+control  userController
+boundary userService
+database Mongodb
+
+User -> userController: getUserHandler(req, res)
+activate userController
+userController -> userController: validate
+userController -> userService: getUserById(id)
+activate userService
+userService -> Mongodb: findById(id)
+activate Mongodb
+Mongodb --> userService: success
+deactivate Mongodb
+userService --> userController: userData
+deactivate userService
+userController --> User: userData
+deactivate userController
+
+@enduml

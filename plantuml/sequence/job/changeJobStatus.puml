@@ -1,0 +1,24 @@
+@startuml changeJobStatus
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+control  jobController
+boundary jobService
+database Mongodb
+
+User -> jobController: changeJobStatus(req, res)
+activate jobController
+jobController -> jobController: validate
+jobController -> jobService: editJobById(id, jobData)
+activate jobService
+jobService -> Mongodb: findByIdAndUpdate(id, jobData)
+activate Mongodb
+Mongodb --> jobService: success
+deactivate Mongodb
+jobService --> jobController: jobData
+deactivate jobService
+jobController --> User: jobData
+deactivate jobController
+
+@enduml
