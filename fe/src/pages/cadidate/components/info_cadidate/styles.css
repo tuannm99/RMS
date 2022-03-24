@@ -65,9 +65,8 @@
   line-height: 1.33333;
 }
 .status-info {
-  padding: 20px 80px 10px;
-  display: flex;
-  justify-content: space-between;
+  text-align: center;
+  padding: 20px 0;
 }
 
 .owner-btn {

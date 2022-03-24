@@ -3,6 +3,7 @@ import { Col, Row, Select, Pagination, Radio, Button, Input, Spin } from 'antd';
 
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { selectJobId } from '../../redux/stores/job/selectors';
+import { setJobId } from '../../redux/stores/job/actions';
 import { cadidates, loading } from '../../redux/stores/cadidate/selectors';
 import { getAllCadidates, setId } from '../../redux/stores/cadidate/actions';
 import * as services from '../../services/cadidateServices';
@@ -17,8 +18,8 @@ import { hasResponseError } from '../../utils/utils';
 import { Table } from '../../components';
 
 import { toast } from 'react-toastify';
-import Add_Cadidate from './components/add_cadidate';
-import Cadidate_Info from './components/info_cadidate';
+import AddCadidate from './components/add_cadidate';
+import CadidateInfo from './components/info_cadidate';
 
 import {
   renderBodyTable,
@@ -45,13 +46,17 @@ function CadidatePage(props) {
 
   const [params, setParams] = useState(payload);
 
-  const { getAllCadidates, setCadidateId } = props;
+  const { getAllCadidates, setCadidateId, setJobId } = props;
   const { jobId, userAccount } = props;
   const { loading, cadidates } = props;
 
   useEffect(() => {
-    getAllCadidates(params);
-  }, [params, getAllCadidates]);
+    if (jobId === '') {
+      getAllCadidates(params);
+    } else {
+      getAllCadidates({ ...params, jobId: jobId });
+    }
+  }, [jobId, params, getAllCadidates]);
 
   useEffect(() => {
     getAllJobs().then((res) => {
@@ -62,7 +67,6 @@ function CadidatePage(props) {
     };
   }, []);
 
-  console.log(cadidates);
   const onCloseAddCadi = () => {
     setVisibleAddCadi(false);
   };
@@ -108,6 +112,7 @@ function CadidatePage(props) {
   };
 
   const handleSelctJob = (value) => {
+    setJobId(value);
     if (value === '') {
       delete params.jobId;
       setParams({ ...params });
@@ -135,9 +140,10 @@ function CadidatePage(props) {
         <Col flex={1} className="mt-12">
           <strong>Jobs: </strong>
           <Select
-            defaultValue=""
+            value={jobId}
             style={{ width: 125 }}
             onSelect={handleSelctJob}
+            allowClear={true}
           >
             <Option value="">All</Option>
             {jobs.map((item) => (
@@ -224,12 +230,16 @@ function CadidatePage(props) {
           />
         )}
       </div>
-      <Add_Cadidate
+      <AddCadidate
         visible={visibleAddCadi}
         onclose={onCloseAddCadi}
         params={params}
       />
-      <Cadidate_Info visible={visibleInfoCadi} onclose={onCloseInfoCadi} />
+      <CadidateInfo
+        visible={visibleInfoCadi}
+        onclose={onCloseInfoCadi}
+        params={params}
+      />
     </>
   );
 }
@@ -243,6 +253,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
   setCadidateId: (payload) => dispatch(setId(payload)),
+  setJobId: (payload) => dispatch(setJobId(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
