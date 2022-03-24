@@ -4,7 +4,7 @@ import { Col, Row, Select, Pagination, Radio, Button, Input, Spin } from 'antd';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { selectJobId } from '../../redux/stores/job/selectors';
 import { cadidates, loading } from '../../redux/stores/cadidate/selectors';
-import { getAllCadidates } from '../../redux/stores/cadidate/actions';
+import { getAllCadidates, setId } from '../../redux/stores/cadidate/actions';
 import * as services from '../../services/cadidateServices';
 import { getAllJobs } from '../../services/jobService';
 
@@ -45,7 +45,7 @@ function CadidatePage(props) {
 
   const [params, setParams] = useState(payload);
 
-  const { getAllCadidates } = props;
+  const { getAllCadidates, setCadidateId } = props;
   const { jobId, userAccount } = props;
   const { loading, cadidates } = props;
 
@@ -212,7 +212,13 @@ function CadidatePage(props) {
             renderHead={(item, index) => renderHeadTable(item, index)}
             bodyData={cadidates?.results}
             renderBody={(item, index) =>
-              renderBodyTable(item, index, handleDelete, setVisibleInfoCadi)
+              renderBodyTable(
+                item,
+                index,
+                handleDelete,
+                setVisibleInfoCadi,
+                setCadidateId
+              )
             }
           />
         )}
@@ -235,6 +241,7 @@ const mapStateToProps = createStructuredSelector({
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
+  setCadidateId: (payload) => dispatch(setId(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
