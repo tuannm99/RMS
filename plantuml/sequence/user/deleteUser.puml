@@ -1,0 +1,24 @@
+@startuml updateUser
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+control  userController
+boundary userService
+database Mongodb
+
+User -> userController: deleteUserHandler(req, res)
+activate userController
+userController -> userController: validate
+userController -> userService: deleteUserById(userId)
+activate userService
+userService -> Mongodb: findByIdAndDelete(userId)
+activate Mongodb
+Mongodb --> userService: success
+deactivate Mongodb
+userService --> userController: userData
+deactivate userService
+userController --> User: userData
+deactivate userController
+
+@enduml

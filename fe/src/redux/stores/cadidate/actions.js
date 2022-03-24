@@ -5,11 +5,19 @@ import {
   GET_CADIDATE,
   SAVE_ALL_LIST_CADIDATE,
   SAVE_CADIDATE,
+  SET_ID,
 } from './constants';
 
 export function setLoading(payload) {
   return {
     type: SET_LOADING,
+    payload,
+  };
+}
+
+export function setId(payload) {
+  return {
+    type: SET_ID,
     payload,
   };
 }

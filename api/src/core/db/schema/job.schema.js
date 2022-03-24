@@ -18,7 +18,7 @@ const jobSchema = new mongoose.Schema({
       DEPARTMENTS.administration,
       DEPARTMENTS.sale,
       DEPARTMENTS.finance,
-      DEPARTMENTS.humanResources,
+      DEPARTMENTS.humanResource,
       DEPARTMENTS.marketing,
       DEPARTMENTS.engineering,
     ],
