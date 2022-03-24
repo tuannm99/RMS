@@ -1,6 +1,5 @@
 .main-info {
   height: 92vh;
-  overflow: auto;
 }
 
 .cl-bg {
@@ -8,12 +7,13 @@
   background-color: #fff;
   border-radius: 6px;
   box-shadow: 0 0 5px #99b8bb;
+  overflow: auto;
 }
 
 .profile-cadidate {
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
-  padding: 11px 16px;
+  padding: 7px 16px;
   border-bottom: 1px solid rgba(0, 112, 208, 0.25);
   background: linear-gradient(180deg, #fff 0, #e5f6ff 100%);
   white-space: nowrap;
@@ -63,4 +63,53 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
   line-height: 1.33333;
+}
+.status-info {
+  padding: 20px 80px 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.owner-btn {
+  width: 100%;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  outline: 0;
+  cursor: default;
+  color: #9b59b6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.33333;
+  background-color: #f3ebf6;
+}
+
+.profile-contact-title {
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #607787;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.33333;
+}
+
+.cm {
+  font-size: 13px;
+  color: #607787;
+}
+
+.ant-tabs-nav-wrap {
+  background-color: #f5f7f9;
+  border-color: transparent transparent #cfd7df;
+  border-bottom: 1px solid #cfd7df;
+  padding-left: 20px;
+}
+.ant-modal-footer {
+  display: none;
+}
+
+.ant-modal {
+  top: 50px;
 }

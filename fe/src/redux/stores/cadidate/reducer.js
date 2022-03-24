@@ -5,6 +5,7 @@ import {
   SET_LOADING,
   SAVE_ALL_LIST_CADIDATE,
   SAVE_CADIDATE,
+  SET_ID,
 } from './constants';
 
 export default function cadidateReducers(state = INIT_STATE, action) {
@@ -12,6 +13,9 @@ export default function cadidateReducers(state = INIT_STATE, action) {
     switch (action.type) {
       case SET_LOADING:
         draft.isLoading = action.payload;
+        break;
+      case SET_ID:
+        draft.id = action.payload;
         break;
       case SAVE_ALL_LIST_CADIDATE:
         draft.cadidates = action.payload;
