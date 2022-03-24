@@ -10,6 +10,7 @@ import {
   Tooltip,
   Divider,
   Modal,
+  Tag,
 } from 'antd';
 import { EditOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { DrawerComponent } from '../../../../components';
@@ -25,6 +26,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import Summary from './Summary';
 import Edit_cadidate_profile from '../edit_cadidate_profile';
+import Profile from './Profile';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -80,8 +82,8 @@ function Cadidate_Info(props) {
                     <EditOutlined className="fs-12 cu" />
                   </span>
                 </p>
-                <p>{cadidate?.email}</p>
-                <p>{cadidate?.phone}</p>
+                <p><a href={cadidate?.resume?.hyperlink}>{cadidate?.resume?.hyperlink}</a></p>
+                <p><Tag color="green">{cadidate?.status}</Tag></p>
               </Col>
               <Col span={24} className="pl-16 pr-16 apply">
                 <p className="mb-0">APPLIED JOBS</p>
@@ -136,13 +138,13 @@ function Cadidate_Info(props) {
         <Col md={{ span: 16 }} xxl={{ span: 18 }} className="main-info">
           <div className="cl-bg information-cadidate">
             <Tabs defaultActiveKey="1">
-              <TabPane tab="Summary" key="1" className="pl-20">
+              <TabPane tab="Summary" key="1" className="pl-20 pr-20">
                 <Summary />
               </TabPane>
-              <TabPane tab="Tab 2" key="2" className="pl-20">
-                Content of Tab Pane 2
+              <TabPane tab="Profile" key="2" className="pl-20 pr-20">
+                <Profile />
               </TabPane>
-              <TabPane tab="Tab 3" key="3" className="pl-20">
+              <TabPane tab="Tab 3" key="3" className="pl-20 pr-20">
                 Content of Tab Pane 3
               </TabPane>
             </Tabs>
@@ -156,7 +158,7 @@ function Cadidate_Info(props) {
         closable={false}
         onCancel={handleCancel}
       >
-        <Edit_cadidate_profile handleCancel={handleCancel}/>
+        <Edit_cadidate_profile handleCancel={handleCancel} />
       </Modal>
     </DrawerComponent>
   );

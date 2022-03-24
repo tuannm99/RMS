@@ -62,6 +62,7 @@ function CadidatePage(props) {
     };
   }, []);
 
+  console.log(cadidates);
   const onCloseAddCadi = () => {
     setVisibleAddCadi(false);
   };
