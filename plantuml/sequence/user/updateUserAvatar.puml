@@ -1,0 +1,33 @@
+@startuml updateUser
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  userController
+boundary userService
+database Mongodb
+
+User -> UI: update avatar User
+activate UI
+UI -> userController: call api
+deactivate UI
+activate userController
+userController -> userController: checkAuth()
+userController -> userController: uploadImg()
+userController -> userService: updateUserAvatarById()
+activate userService
+userService -> Mongodb: findByIdAndUpdate()
+activate Mongodb
+Mongodb -> Mongodb: Validate
+Mongodb --> userService: success
+deactivate Mongodb
+userService --> userController: userAvatar
+deactivate userService
+userController --> UI: userAvatar
+deactivate userController
+activate UI
+UI --> User: display userAvatar
+deactivate UI
+
+@enduml
