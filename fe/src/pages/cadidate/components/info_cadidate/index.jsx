@@ -150,7 +150,10 @@ function CadidateInfo(props) {
               <TabPane tab="Profile" key="2" className="pl-20 pr-20">
                 <Profile />
               </TabPane>
-              <TabPane tab="Tab 3" key="3" className="pl-20 pr-20">
+              <TabPane tab="Interviews" key="3" className="pl-20 pr-20">
+                Content of Tab Pane 3
+              </TabPane>
+              <TabPane tab="Timeline" key="3" className="pl-20 pr-20">
                 Content of Tab Pane 3
               </TabPane>
             </Tabs>
