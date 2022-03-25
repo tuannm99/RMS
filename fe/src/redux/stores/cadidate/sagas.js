@@ -39,10 +39,10 @@ function* editCadidate({ payload }) {
   try {
     const response = yield call(services.updateCadidateServices, payload);
     if (hasResponseError(response)) {
-      toast.error(response.data.message)
+      toast.error(response.data.message);
       return;
     }
-    toast.success("Edit success!")
+    toast.success('Edit success!');
     yield put(saveCadidate(response.data));
   } catch (error) {
     console.log(error);

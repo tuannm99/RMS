@@ -1,3 +1,3 @@
-import UserEdit_Add from './UserEdit_Add';
+import UserEditAdd from './UserEdit_Add';
 
-export { UserEdit_Add };
+export { UserEditAdd };

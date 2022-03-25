@@ -30,7 +30,7 @@ function ProfilePage() {
       }
       setUser(res.data);
     });
-  }, []);
+  }, [id]);
 
   /**
    * change page edit employee

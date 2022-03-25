@@ -3,7 +3,6 @@ import {
   RecruitPage,
   CadidatePage,
   DetailRecruitPage,
-  ConversationRecruitmentPage,
   ProfilePage,
   EmployeePage,
   Home,
@@ -25,10 +24,6 @@ export const AuthRoute = [
   {
     path: '/recruit/:id',
     element: <DetailRecruitPage />,
-  },
-  {
-    path: '/conversation',
-    element: <ConversationRecruitmentPage />,
   },
   {
     path: '/cadidate',

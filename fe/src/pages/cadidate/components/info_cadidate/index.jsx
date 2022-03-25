@@ -6,10 +6,10 @@ import {
   Tabs,
   Button,
   Popconfirm,
-  Select,
-  Tooltip,
   Divider,
   Modal,
+  Tag,
+  Rate,
 } from 'antd';
 import { EditOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { DrawerComponent } from '../../../../components';
@@ -18,19 +18,18 @@ import {
   cadidate,
 } from '../../../../redux/stores/cadidate/selectors';
 import { getCadidate } from '../../../../redux/stores/cadidate/actions';
-import { hasResponseError } from '../../../../utils/utils';
-import { toast } from 'react-toastify';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import Summary from './Summary';
-import Edit_cadidate_profile from '../edit_cadidate_profile';
+import EditCadidateProfile from '../edit_cadidate_profile';
+import Profile from './Profile';
 
-const { Option } = Select;
 const { TabPane } = Tabs;
 
-function Cadidate_Info(props) {
-  const { onclose, visible, cadidate_Id, getCadidate, cadidate } = props;
+function CadidateInfo(props) {
+  const { onclose, visible, cadidate_Id, getCadidate, cadidate, params } =
+    props;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -38,9 +37,8 @@ function Cadidate_Info(props) {
     if (cadidate_Id !== '') {
       getCadidate(cadidate_Id);
     }
-  }, [cadidate_Id]);
+  }, [cadidate_Id, getCadidate]);
 
-  console.log(cadidate);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -49,6 +47,23 @@ function Cadidate_Info(props) {
     setIsModalVisible(false);
   };
 
+  const desc = ['contact', 'test', 'technical', 'cultureFit'];
+
+  const handleRate = ({ index, value }) => {
+    if (index < value) {
+      return (
+        <Button type="primary" shape="circle" size="small">
+          {index + 1}
+        </Button>
+      );
+    } else {
+      return (
+        <Button shape="circle" size="small">
+          {index + 1}
+        </Button>
+      );
+    }
+  };
   return (
     <DrawerComponent
       onClose={onclose}
@@ -80,8 +95,14 @@ function Cadidate_Info(props) {
                     <EditOutlined className="fs-12 cu" />
                   </span>
                 </p>
-                <p>{cadidate?.email}</p>
-                <p>{cadidate?.phone}</p>
+                <p>
+                  <a href={cadidate?.resume?.hyperlink}>
+                    {cadidate?.resume?.hyperlink}
+                  </a>
+                </p>
+                <p>
+                  <Tag color="green">{cadidate?.status}</Tag>
+                </p>
               </Col>
               <Col span={24} className="pl-16 pr-16 apply">
                 <p className="mb-0">APPLIED JOBS</p>
@@ -90,26 +111,13 @@ function Cadidate_Info(props) {
                 </Button>
               </Col>
               <Col span={24} className="status-info">
-                <Tooltip placement="bottomLeft" title="search">
-                  <Button type="primary" shape="circle" size="small">
-                    1
-                  </Button>
-                </Tooltip>
-                <Tooltip title="search">
-                  <Button type="primary" shape="circle" size="small">
-                    2
-                  </Button>
-                </Tooltip>
-                <Tooltip title="search">
-                  <Button type="primary" shape="circle" size="small">
-                    3
-                  </Button>
-                </Tooltip>
-                <Tooltip title="search">
-                  <Button type="primary" shape="circle" size="small">
-                    4
-                  </Button>
-                </Tooltip>
+                <Rate
+                  count={4}
+                  tooltips={desc}
+                  disabled="true"
+                  value={1 + desc.findIndex((e) => e === cadidate.stage)}
+                  character={({ index, value }) => handleRate({ index, value })}
+                />
               </Col>
               <Col span={24} className="pl-16 pr-16 apply">
                 <p className="mb-0">OWNER</p>
@@ -136,13 +144,16 @@ function Cadidate_Info(props) {
         <Col md={{ span: 16 }} xxl={{ span: 18 }} className="main-info">
           <div className="cl-bg information-cadidate">
             <Tabs defaultActiveKey="1">
-              <TabPane tab="Summary" key="1" className="pl-20">
+              <TabPane tab="Summary" key="1" className="pl-20 pr-20">
                 <Summary />
               </TabPane>
-              <TabPane tab="Tab 2" key="2" className="pl-20">
-                Content of Tab Pane 2
+              <TabPane tab="Profile" key="2" className="pl-20 pr-20">
+                <Profile />
               </TabPane>
-              <TabPane tab="Tab 3" key="3" className="pl-20">
+              <TabPane tab="Interviews" key="3" className="pl-20 pr-20">
+                Content of Tab Pane 3
+              </TabPane>
+              <TabPane tab="Timeline" key="3" className="pl-20 pr-20">
                 Content of Tab Pane 3
               </TabPane>
             </Tabs>
@@ -156,7 +167,7 @@ function Cadidate_Info(props) {
         closable={false}
         onCancel={handleCancel}
       >
-        <Edit_cadidate_profile handleCancel={handleCancel}/>
+        <EditCadidateProfile handleCancel={handleCancel} params={params} />
       </Modal>
     </DrawerComponent>
   );
@@ -170,4 +181,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect)(Cadidate_Info);
+export default compose(withConnect)(CadidateInfo);

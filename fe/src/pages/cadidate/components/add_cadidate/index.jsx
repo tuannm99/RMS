@@ -9,9 +9,9 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { getAllCadidates } from '../../../../redux/stores/cadidate/actions';
 import { selectJobId } from '../../../../redux/stores/job/selectors';
-import Form_Info from '../form_info';
+import FormInfo from '../form_info';
 
-function Add_Cadidate(props) {
+function AddCadidate(props) {
   const [form] = Form.useForm();
   const [disableEmp, setDisableEmp] = useState(false);
   const [disableEdu, setDisableEdu] = useState(false);
@@ -32,6 +32,21 @@ function Add_Cadidate(props) {
       resume: {
         CV: '',
         hyperlink: values?.hyperlink,
+        employer: {
+          designation: '',
+          bussinessName: '',
+          from: '',
+          to: '',
+          summary: '',
+        },
+        education: {
+          degree: '',
+          universityName: '',
+          fieldOfStudy: '',
+          grade: '',
+          from: '',
+          end: '',
+        },
       },
     };
     if (disableEmp) {
@@ -64,6 +79,7 @@ function Add_Cadidate(props) {
         toast.error(res.data.message);
         return;
       }
+      console.log(res);
       toast.success('Add caddidate success');
     });
     getAllCadidates(params);
@@ -77,7 +93,7 @@ function Add_Cadidate(props) {
       visible={visible}
       width={720}
     >
-      <Form_Info
+      <FormInfo
         form={form}
         onFinish={onFinish}
         btnName="Add"
@@ -98,4 +114,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect)(Add_Cadidate);
+export default compose(withConnect)(AddCadidate);

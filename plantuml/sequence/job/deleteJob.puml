@@ -3,22 +3,30 @@
 
 autonumber 1.1
 actor User
+participant UI
 control  jobController
 boundary jobService
 database Mongodb
 
-User -> jobController: deleteJobById(req, res)
+User -> UI: delete Job
+activate UI
+UI -> jobController: call api
+deactivate UI
 activate jobController
-jobController -> jobController: validate
-jobController -> jobService: deleteJobById(id)
+jobController -> jobController: checkAuth()
+jobController -> jobService: deleteJobById()
 activate jobService
-jobService -> Mongodb: findByIdAndDelete(id)
+jobService -> Mongodb: findByIdAndDelete()
 activate Mongodb
+Mongodb -> Mongodb: Validate
 Mongodb --> jobService: success
 deactivate Mongodb
 jobService --> jobController: jobData
 deactivate jobService
-jobController --> User: jobData
+jobController --> UI: jobData
 deactivate jobController
+activate UI
+UI --> User: display data
+deactivate UI
 
 @enduml

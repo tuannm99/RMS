@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Col, Row, Form, Button, Input } from 'antd';
 import { PlusCircleFilled } from '@ant-design/icons';
 import { renderEducation, renderEmployee, prefixSelector } from '../render';
 
-function Form_Info(props) {
+function FormInfo(props) {
   const {
     form,
     onFinish,
@@ -110,4 +110,4 @@ function Form_Info(props) {
   );
 }
 
-export default Form_Info;
+export default FormInfo;
