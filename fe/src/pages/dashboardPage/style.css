@@ -1,0 +1,29 @@
+.dashBoard-top {
+  width: 75%;
+  height: 300px;
+  background-color: white;
+  margin-top: 30px;
+  border-radius: 5px;
+}
+.dashBoard-top-center {
+  margin-left: 25px;
+}
+.dashBoard-center-chartJob {
+  margin-top: 20px;
+  width: 37%;
+  height: 360px;
+  background-color: white;
+  border-radius: 5px;
+}
+.dashBoard-center-chartJob2 {
+  margin-top: 20px;
+  width: 37%;
+  height: 360px;
+  background-color: white;
+  border-radius: 5px;
+  margin-left: 20px;
+}
+.dashBoard-center {
+  display: flex;
+  width: 100%;
+}
