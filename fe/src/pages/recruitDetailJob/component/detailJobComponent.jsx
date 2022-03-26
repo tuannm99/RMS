@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
+import moment from 'moment';
 
 function DetailJobComponent(props) {
   const { data } = props;
+
+  const current = new Date();
+
+  const date = `${current.getFullYear()}-${
+    current.getMonth() + 1
+  }-${current.getDate()}`;
+
+  const create = moment.utc(data.createdAt).format('YYYY-MM-DD').toString();
 
   return (
     <>
@@ -36,9 +45,10 @@ function DetailJobComponent(props) {
           <h5>
             $: {data.minSalary} - {data.maxSalary}
           </h5>
-
           <div className={props.detailJobCreate}>
-            Create on February 11th 2022 , at 3.34 pm (17 days ago)
+            {data.createdAt
+              ? moment.utc(data.createdAt).format('YYYY-MM-DD').toString()
+              : '-'}
           </div>
         </div>
       </div>
