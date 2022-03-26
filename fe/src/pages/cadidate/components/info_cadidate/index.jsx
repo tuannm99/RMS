@@ -24,6 +24,7 @@ import { compose } from 'recompose';
 import Summary from './Summary';
 import EditCadidateProfile from '../edit_cadidate_profile';
 import Profile from './Profile';
+import TimeLine from './TimeLine';
 
 const { TabPane } = Tabs;
 
@@ -153,8 +154,8 @@ function CadidateInfo(props) {
               <TabPane tab="Interviews" key="3" className="pl-20 pr-20">
                 Content of Tab Pane 3
               </TabPane>
-              <TabPane tab="Timeline" key="3" className="pl-20 pr-20">
-                Content of Tab Pane 3
+              <TabPane tab="Timeline" key="4" className="pl-20 pr-20">
+                <TimeLine />
               </TabPane>
             </Tabs>
           </div>

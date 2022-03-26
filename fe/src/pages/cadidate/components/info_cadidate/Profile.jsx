@@ -5,7 +5,7 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { Row, Col, Button, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined,DeleteOutlined } from '@ant-design/icons';
 
 function Profile(props) {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -39,7 +39,7 @@ function Profile(props) {
             Upload
           </Button>
         </Upload>
-        {pdfFile && <>{nameFile}</>}
+        {pdfFile && <>{nameFile}  <DeleteOutlined className='cu ml-28' style={{ fontSize: '16px', color: '#08c' }} onClick={()=> setPdfFile(null)}/></>}
       </Col>
       <Col span={12}>
         <Button className="fr" type="primary">
