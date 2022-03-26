@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Row, Form, Button, Input } from 'antd';
-import { PlusCircleFilled } from '@ant-design/icons';
+import { Form } from 'antd';
 import { DrawerComponent } from '../../../../components';
 import { addCadidateServices } from '../../../../services/cadidateServices';
 import { hasResponseError } from '../../../../utils/utils';
@@ -10,9 +9,9 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { getAllCadidates } from '../../../../redux/stores/cadidate/actions';
 import { selectJobId } from '../../../../redux/stores/job/selectors';
-import { renderEducation, renderEmployee, prefixSelector } from '../render';
+import FormInfo from '../form_info';
 
-function Add_Cadidate(props) {
+function AddCadidate(props) {
   const [form] = Form.useForm();
   const [disableEmp, setDisableEmp] = useState(false);
   const [disableEdu, setDisableEdu] = useState(false);
@@ -33,6 +32,21 @@ function Add_Cadidate(props) {
       resume: {
         CV: '',
         hyperlink: values?.hyperlink,
+        employer: {
+          designation: '',
+          bussinessName: '',
+          from: '',
+          to: '',
+          summary: '',
+        },
+        education: {
+          degree: '',
+          universityName: '',
+          fieldOfStudy: '',
+          grade: '',
+          from: '',
+          end: '',
+        },
       },
     };
     if (disableEmp) {
@@ -65,6 +79,7 @@ function Add_Cadidate(props) {
         toast.error(res.data.message);
         return;
       }
+      console.log(res);
       toast.success('Add caddidate success');
     });
     getAllCadidates(params);
@@ -78,98 +93,15 @@ function Add_Cadidate(props) {
       visible={visible}
       width={720}
     >
-      <Form
-        layout="vertical"
+      <FormInfo
         form={form}
         onFinish={onFinish}
-        initialValues={{ prefix: '+84' }}
-      >
-        <Row gutter={16}>
-          <Col span={8}>
-            <Form.Item
-              name="firstName"
-              label="First Name"
-              rules={[{ required: true, message: 'Please enter First Name!' }]}
-            >
-              <Input placeholder="Enter First Name" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item name="midName" label="Middle Name">
-              <Input placeholder="Enter Full Name" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              name="lastName"
-              label="Last Name"
-              rules={[{ required: true, message: 'Please enter Last Name!' }]}
-            >
-              <Input placeholder="Enter Last Name" />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[
-                { required: true, message: 'Please enter Email!' },
-                { type: 'email', message: 'Please enter the correct email!' },
-              ]}
-            >
-              <Input placeholder="Enter Email" />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              name="hyperlink"
-              label="Hyperlink"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please enter Hyperlink!',
-                },
-              ]}
-            >
-              <Input placeholder="Enter Hyperlink" />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              name="phone"
-              label="Phone Number"
-              rules={[
-                { required: true, message: 'Please input your phone number!' },
-              ]}
-            >
-              <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
-            </Form.Item>
-          </Col>
-        </Row>
-        {disableEmp && renderEmployee({ setDisableEmp })}
-        {!disableEmp && (
-          <Row>
-            <Col>
-              <div onClick={() => setDisableEmp(true)} className="cu">
-                <PlusCircleFilled style={{ color: 'green' }} /> Add Employee
-              </div>
-            </Col>
-          </Row>
-        )}
-        {disableEdu && renderEducation({ setDisableEdu })}
-        {!disableEdu && (
-          <Row className="mt-8">
-            <Col>
-              <div onClick={() => setDisableEdu(true)} className="cu">
-                <PlusCircleFilled style={{ color: 'green' }} /> Add Education
-              </div>
-            </Col>
-          </Row>
-        )}
-        <Button type="primary" htmlType="submit" className="btn-submit">
-          Add
-        </Button>
-      </Form>
+        btnName="Add"
+        disableEdu={disableEdu}
+        disableEmp={disableEmp}
+        setDisableEdu={setDisableEdu}
+        setDisableEmp={setDisableEmp}
+      />
     </DrawerComponent>
   );
 }
@@ -182,4 +114,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect)(Add_Cadidate);
+export default compose(withConnect)(AddCadidate);

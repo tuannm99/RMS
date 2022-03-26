@@ -53,7 +53,7 @@ const getCandidateById = async (id) => {
  * @returns {Promise<Candidate>}
  */
 const editCandidateById = async (id, candidateData) => {
-  const candidate = await Candidate.findByIdAndUpdate(id, candidateData);
+  const candidate = await Candidate.findByIdAndUpdate(id, candidateData, { new: true });
   if (!candidate) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');
   }
@@ -69,6 +69,15 @@ const deleteCandidateById = async (id) => {
   if (!candidate) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');
   }
+  // delete candidate ref in Job
+  await Job.findByIdAndUpdate(
+    { _id: candidate.jobId },
+    {
+      $pull: {
+        candidateId: candidate._id,
+      },
+    }
+  );
 };
 
 module.exports = {

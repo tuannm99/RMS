@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.css';
 import {
   Card,
@@ -21,7 +21,7 @@ import {
   PhoneOutlined,
 } from '@ant-design/icons';
 import { hasResponseError, base64String } from '../../utils/utils';
-import { UserEdit_Add } from './components';
+import { UserEditAdd } from './components';
 import * as services from '../../services/employeeServices';
 import { toast } from 'react-toastify';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
@@ -64,7 +64,7 @@ function EmployeePage(props) {
     } else {
       return;
     }
-  }, [visible]);
+  }, [visible, userID]);
 
   useEffect(() => {
     getAlldata(params);
@@ -378,7 +378,7 @@ function EmployeePage(props) {
         </Row>
       </div>
 
-      <UserEdit_Add
+      <UserEditAdd
         visible={visibleEditUser}
         onclose={onCloseEditUser}
         user={user}
