@@ -1,5 +1,5 @@
 import axios from 'axios';
-import moment from 'moment'
+import moment from 'moment';
 /**
  * set up axios configuation
  */
@@ -15,10 +15,8 @@ request.interceptors.request.use(async (config) => {
   let expires = localStorage.getItem('expires');
   let refreshToken = localStorage.getItem('refreshToken');
   const now = new Date();
-  if (
-    now.getTime() + 590000 > moment.utc(expires).toDate().getTime()
-  ) {
-     await axios
+  if (now.getTime() + 20000 > moment.utc(expires).toDate().getTime()) {
+    await axios
       .post('http://rms-fpt.ddns.net:5000/api/v1/auth/refresh-token', {
         refreshToken: refreshToken,
       })
@@ -29,17 +27,24 @@ request.interceptors.request.use(async (config) => {
           localStorage.setItem('refreshToken', res.data.newToken.refresh.token);
           config.headers.Authorization = `Bearer ${res.data.newToken.access.token}`;
         }
-      }
-      )
-      .catch(() =>{
-        alert('Account expires or error authentication, please login again!');
-        window.location.pathname = '/login';
-        localStorage.clear();
       })
-      return (config);
-  }else{
+      .catch(() => {
+        axios
+          .post('http://rms-fpt.ddns.net:5000/api/v1/auth/logout', {
+            refreshToken: refreshToken,
+          })
+          .then(() => {
+            alert(
+              'Account expires or error authentication, please login again!'
+            );
+            window.location.pathname = '/login';
+            localStorage.clear();
+          });
+      });
+    return config;
+  } else {
     config.headers.Authorization = tokens ? `Bearer ${tokens}` : '';
-    return (config);
+    return config;
   }
 });
 
