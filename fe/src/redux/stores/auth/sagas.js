@@ -1,21 +1,11 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 import {
   loginRequestService,
-  refreshTokenRequestService,
   logoutRequestService,
 } from '../../../services/authServices';
 import { hasResponseError } from '../../../utils/utils';
-import {
-  saveDataLogin,
-  setLoading,
-  saveRefreshTokenRequest,
-  saveLogoutRequest,
-} from './actions';
-import {
-  LOGIN_REQUEST,
-  REFRESH_TOKEN_REQUEST,
-  LOGOUT_REQUEST,
-} from './constants';
+import { saveDataLogin, setLoading, saveLogoutRequest } from './actions';
+import { LOGIN_REQUEST, LOGOUT_REQUEST } from './constants';
 import { toast } from 'react-toastify';
 
 function* sendLoginRequest({ payload, resolve }) {
@@ -36,18 +26,6 @@ function* sendLoginRequest({ payload, resolve }) {
   }
 }
 
-function* updateToken({ payload }) {
-  try {
-    const res = yield call(refreshTokenRequestService, payload);
-    if (hasResponseError(res)) {
-      return;
-    }
-    yield put(saveRefreshTokenRequest(res.data.newToken));
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 function* sendLogoutRequest({ payload }) {
   try {
     const res = yield call(logoutRequestService, payload);
@@ -59,10 +37,6 @@ function* sendLogoutRequest({ payload }) {
 
 export function* sagaLogin() {
   yield takeLatest(LOGIN_REQUEST, sendLoginRequest);
-}
-
-export function* updateTokenSaga() {
-  yield takeLatest(REFRESH_TOKEN_REQUEST, updateToken);
 }
 
 export function* logoutSaga() {

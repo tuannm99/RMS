@@ -7,7 +7,8 @@ function Table(props) {
       width: '100%',
       minWidth: '400px',
       borderSpacing: 0,
-      transition: 'all 0.2s ease',
+      boxShadow: '0 0 5px #99b8bb',
+      borderRadius: '4px',
     },
     thead: {
       backgroundColor: '#3ec5d1',
