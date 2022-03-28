@@ -14,7 +14,7 @@ const paginate = (schema) => {
    * @param {Object} [filter] - Mongo filter
    * @param {Object} [options] - Query options
    * @param {string} [options.sortBy] - Sorting criteria using the format: sortField:(desc|asc). Multiple sorting criteria should be separated by commas (,)
-   * @param {string} [options.populate] - Populate data fields
+   * @param {Array<object>} [options.populate] - Populate data fields: passingg populate as [{}, {}], each object is a populate option
    * @param {number} [options.limit] - Maximum number of results per page (default = 10)
    * @param {number} [options.page] - Current page (default = 1)
    * @returns {Promise<QueryResult>}
@@ -41,7 +41,9 @@ const paginate = (schema) => {
     let docsPromise = this.find(filter).sort(sort).skip(skip).limit(limit);
 
     if (options.populate) {
-      docsPromise = docsPromise.populate(options.populate);
+      options.populate.forEach((populate) => {
+        docsPromise = docsPromise.populate(populate);
+      });
     }
 
     docsPromise = docsPromise.exec();
