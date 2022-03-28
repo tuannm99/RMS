@@ -19,6 +19,7 @@ export function dispatchAction(action, ...params) {
  * @returns
  */
 export function hasResponseError(response, action, ...params) {
+  let refreshToken = localStorage.getItem('refreshToken');
   const statusCode = _get(response, 'status', null);
   if (statusCode === null || statusCode === undefined || statusCode === '')
     return false;
