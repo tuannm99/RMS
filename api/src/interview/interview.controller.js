@@ -13,6 +13,7 @@ const { pick } = require('../core/utils');
 const addInterview = catchAsync(async (req, res) => {
   const userId = await userService.getUserIdFromHeaderToken(req.headers.authorization);
   const { body } = req;
+  body.candidateId = req.params.candidateId;
   body.scheduleBy = userId;
   const interview = await interviewService.createInterview(body);
   res.status(httpStatus.OK).json(interview);
@@ -24,7 +25,7 @@ const addInterview = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const getAllInterview = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['scheduleBy', 'interviewDate', 'interviewer']);
+  const filter = pick(req.query, ['scheduleBy', 'interviewDate', 'interviewer', 'candidateId']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const listInterview = await interviewService.getAllInterview(filter, options);
   res.status(httpStatus.OK).json(listInterview);
