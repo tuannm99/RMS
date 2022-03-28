@@ -57,7 +57,7 @@ function Profile(props) {
       </Col>
       <Col span={24} className="mt-20">
         {pdfFile && (
-          <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.12.313/build/pdf.worker.min.js">
+          <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.13.216/build/pdf.worker.min.js">
             <Viewer
               fileUrl={pdfFile[0]}
               plugins={[defaultLayoutPluginInstance]}

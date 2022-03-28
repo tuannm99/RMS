@@ -1,5 +1,5 @@
 import _get from 'lodash/get';
-import { logoutRequestService } from '../services/authServices';
+import axios from 'axios';
 
 /**
  * get action resquest
@@ -22,6 +22,18 @@ export function hasResponseError(response, action, ...params) {
   const statusCode = _get(response, 'status', null);
   if (statusCode === null || statusCode === undefined || statusCode === '')
     return false;
+  if(statusCode === 401 || statusCode === 404){
+      axios
+      .post('http://rms-fpt.ddns.net:5000/api/v1/auth/logout', {
+        refreshToken: refreshToken,
+      }).then(()=>{
+        alert(
+          'Authentication, please login again!'
+        );
+        window.location.pathname = '/login';
+        localStorage.clear();
+      })
+    }
   const isValidStatus = statusCode >= 200 && statusCode < 300;
   if (!isValidStatus && action) {
     dispatchAction(action, ...params);

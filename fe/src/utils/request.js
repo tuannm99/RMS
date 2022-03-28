@@ -15,7 +15,7 @@ request.interceptors.request.use(async (config) => {
   let expires = localStorage.getItem('expires');
   let refreshToken = localStorage.getItem('refreshToken');
   const now = new Date();
-  if (now.getTime() + 20000 > moment.utc(expires).toDate().getTime()) {
+  if (now.getTime() + 20000 > moment.utc(expires).toDate().getTime() && expires) {
     await axios
       .post('http://rms-fpt.ddns.net:5000/api/v1/auth/refresh-token', {
         refreshToken: refreshToken,
@@ -25,7 +25,7 @@ request.interceptors.request.use(async (config) => {
           localStorage.setItem('token', res.data.newToken.access.token);
           localStorage.setItem('expires', res.data.newToken.access.expires);
           localStorage.setItem('refreshToken', res.data.newToken.refresh.token);
-          config.headers.Authorization = `Bearer ${res.data.newToken.access.token}`;
+          config.headers.Authorization = `Bearer ${tokens}`;
         }
       })
       .catch(() => {
