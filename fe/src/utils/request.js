@@ -11,11 +11,13 @@ const request = axios.create({
 });
 
 request.interceptors.request.use(async (config) => {
-  let tokens = localStorage.getItem('token');
   let expires = localStorage.getItem('expires');
   let refreshToken = localStorage.getItem('refreshToken');
   const now = new Date();
-  if (now.getTime() + 20000 > moment.utc(expires).toDate().getTime() && expires) {
+  if (
+    now.getTime() + 590000 > moment.utc(expires).toDate().getTime() &&
+    expires
+  ) {
     await axios
       .post('http://rms-fpt.ddns.net:5000/api/v1/auth/refresh-token', {
         refreshToken: refreshToken,
@@ -25,8 +27,10 @@ request.interceptors.request.use(async (config) => {
           localStorage.setItem('token', res.data.newToken.access.token);
           localStorage.setItem('expires', res.data.newToken.access.expires);
           localStorage.setItem('refreshToken', res.data.newToken.refresh.token);
-          config.headers.Authorization = `Bearer ${tokens}`;
         }
+        config.headers.Authorization = `Bearer ${localStorage.getItem(
+          'token'
+        )}`;
       })
       .catch(() => {
         axios
@@ -43,7 +47,9 @@ request.interceptors.request.use(async (config) => {
       });
     return config;
   } else {
-    config.headers.Authorization = tokens ? `Bearer ${tokens}` : '';
+    config.headers.Authorization = localStorage.getItem('token')
+      ? `Bearer ${localStorage.getItem('token')}`
+      : '';
     return config;
   }
 });
