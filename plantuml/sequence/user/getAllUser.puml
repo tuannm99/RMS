@@ -3,22 +3,30 @@
 
 autonumber 1.1
 actor User
+participant UI
 control  userController
 boundary userService
 database Mongodb
 
-User -> userController: getAllUsersHandler(req, res)
+User -> UI: get all User
+activate UI
+UI -> userController: call api
+deactivate UI
 activate userController
-userController -> userController: validate
-userController -> userService: getUsers(filter, options)
+userController -> userController: checkAuth()
+userController -> userService: getUsers()
 activate userService
 userService -> Mongodb: find()
 activate Mongodb
+Mongodb -> Mongodb: Validate
 Mongodb --> userService: success
 deactivate Mongodb
 userService --> userController: userData
 deactivate userService
-userController --> User: userData
+userController --> UI: userData
 deactivate userController
+activate UI
+UI --> User: display data
+deactivate UI
 
 @enduml

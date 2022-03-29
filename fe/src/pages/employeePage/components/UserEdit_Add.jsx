@@ -27,7 +27,7 @@ const dateFormat = 'YYYY/MM/DD';
 
 const { Option } = Select;
 
-function UserEdit_Add({
+function UserEditAdd({
   onclose,
   visible,
   user,
@@ -43,7 +43,6 @@ function UserEdit_Add({
    */
   const [imageUser, setImageUser] = useState();
   const [fileList, setFileList] = useState(null);
-
   /**
    * set value in form and avatar render first
    */
@@ -81,7 +80,7 @@ function UserEdit_Add({
     } else {
       setImageUser(null);
     }
-  }, [user]);
+  }, [user, form]);
   /**
    * convert file to image
    * @param {*} file
@@ -132,9 +131,9 @@ function UserEdit_Add({
         level: values.level,
       },
     };
-    formRes.append('avatar', fileList);
     if (user) {
       if (fileList) {
+        formRes.append('avatar', fileList);
         await services.updateImgUsersServices(user, formRes).then((res) => {
           if (hasResponseError(res)) {
             toast.error(`${res.data.message}`);
@@ -398,4 +397,4 @@ function UserEdit_Add({
   );
 }
 
-export default UserEdit_Add;
+export default UserEditAdd;

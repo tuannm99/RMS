@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate, preDate } = require('./plugins');
 const { FEEDBACK, STAGES } = require('../../../constants');
 
 const interviewSchema = new mongoose.Schema({
@@ -36,5 +36,6 @@ const interviewSchema = new mongoose.Schema({
 
 interviewSchema.plugin(toJSON);
 interviewSchema.plugin(paginate);
+interviewSchema.plugin(preDate);
 
 module.exports = mongoose.model('Interview', interviewSchema);

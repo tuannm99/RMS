@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate, preDate } = require('./plugins');
 const { JOB_STATUS, DEPARTMENTS } = require('../../../constants');
 
 const jobSchema = new mongoose.Schema({
@@ -38,5 +38,6 @@ const jobSchema = new mongoose.Schema({
 
 jobSchema.plugin(toJSON);
 jobSchema.plugin(paginate);
+jobSchema.plugin(preDate);
 
 module.exports = mongoose.model('Job', jobSchema);

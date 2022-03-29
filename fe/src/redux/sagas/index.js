@@ -8,10 +8,11 @@ export default function* () {
   yield all([
     //login
     authSagas.sagaLogin(),
-    authSagas.updateTokenSaga(),
     authSagas.logoutSaga(),
 
     //cadidate
     cadidateSagas.getCadidatesSaga(),
+    cadidateSagas.getCadidateSaga(),
+    cadidateSagas.editCadidateSaga(),
   ]);
 }

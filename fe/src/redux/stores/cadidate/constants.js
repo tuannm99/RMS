@@ -2,6 +2,8 @@ const CADIDATE = 'cadidate';
 
 const SET_LOADING = `${CADIDATE}/setLoading`;
 
+const SET_ID = `${CADIDATE}/setId`;
+
 const GET_ALL_LIST_CADIDATE = `${CADIDATE}/getAllListCadidate`;
 
 const SAVE_ALL_LIST_CADIDATE = `${CADIDATE}/saveAllListCadidate`;
@@ -19,4 +21,5 @@ export {
   GET_CADIDATE,
   SAVE_CADIDATE,
   EDIT_CADIDATE,
+  SET_ID,
 };

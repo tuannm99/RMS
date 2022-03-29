@@ -24,7 +24,7 @@ const addInterview = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const getAllInterview = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['scheduleBy', 'interviewDate']);
+  const filter = pick(req.query, ['scheduleBy', 'interviewDate', 'interviewer']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const listInterview = await interviewService.getAllInterview(filter, options);
   res.status(httpStatus.OK).json(listInterview);

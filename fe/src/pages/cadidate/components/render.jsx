@@ -187,16 +187,20 @@ export const renderBodyTable = (
   item,
   index,
   handleDelete,
-  setVisibleInfoCadi
+  setVisibleInfoCadi,
+  setCadidateId
 ) => (
   <tr key={item.id} style={styles.tr}>
     <td
       style={{ ...styles.td, color: '#2c5cc5', cursor: 'pointer' }}
-      onClick={() => setVisibleInfoCadi(true)}
+      onClick={() => {
+        setVisibleInfoCadi(true);
+        setCadidateId(item.id);
+      }}
     >
       {item.firstName} {item.midName} {item.lastName}
     </td>
-    <td>{item.jobId.title}</td>
+    <td>{item?.jobId?.title}</td>
     <td style={styles.td}>
       <div className="mb-0">
         <PhoneOutlined /> {item.phone}
