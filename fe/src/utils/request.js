@@ -15,7 +15,7 @@ request.interceptors.request.use(async (config) => {
   let refreshToken = localStorage.getItem('refreshToken');
   const now = new Date();
   if (
-    now.getTime() + 590000 > moment.utc(expires).toDate().getTime() &&
+    now.getTime() + 30000 > moment.utc(expires).toDate().getTime() &&
     expires
   ) {
     await axios
