@@ -34,7 +34,14 @@ const candidateSchema = new mongoose.Schema({
   phone: { required: true, type: Number },
 
   resume: {
-    cv: { type: String },
+    cv: {
+      mimetype: String,
+      originalname: String,
+      encoding: String,
+      destination: String,
+      filename: String,
+      path: String,
+    },
     hyperlink: { type: String },
     employer: {
       designation: { type: String },
