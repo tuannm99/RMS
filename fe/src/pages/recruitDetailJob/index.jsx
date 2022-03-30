@@ -44,7 +44,7 @@ function DetailRecruitPage(props) {
 
   useEffect(() => {
     fetchJob();
-  }, [job]);
+  }, []);
 
   // useEffect(() => {
   //   fetchJob();
@@ -90,6 +90,7 @@ function DetailRecruitPage(props) {
         setJob(res.data);
       })
       .catch((err) => console.log(err));
+    fetchJob();
     toast.success('Edit Job Detail Successful!', {
       autoClose: 3000,
     });
@@ -104,6 +105,7 @@ function DetailRecruitPage(props) {
         setJob(res.data);
       })
       .catch((err) => console.log(err));
+    fetchJob();
     toast.success('update Status!', {
       autoClose: 3000,
     });

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate, preDate } = require('./plugins');
 const { ROLES } = require('../../../constants');
 
 const userSchema = mongoose.Schema({
@@ -74,6 +74,7 @@ const userSchema = mongoose.Schema({
 
 userSchema.plugin(toJSON);
 userSchema.plugin(paginate);
+userSchema.plugin(preDate);
 
 /**
  * Check if username is taken

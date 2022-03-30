@@ -24,12 +24,13 @@ const createInterview = async (interviewData) => {
  * @returns {Promise<QueryResult>}
  */
 const getAllInterview = async (filter, options) => {
-  options.populate = {
+  options.populate = [];
+  options.populate.push({
+    path: 'interviewer',
+  });
+  options.populate.push({
     path: 'candidateId',
-    // path: 'interviewer',
-    // select: 'fullName',
-  };
-
+  });
   const interviews = await Interview.paginate(filter, options);
   return interviews;
 };

@@ -24,9 +24,6 @@ function MenuPrivate(props) {
       <Menu.Item key="/recruit" icon={<FundViewOutlined />}>
         <NavLink to="/recruit">Recruit</NavLink>
       </Menu.Item>
-      <Menu.Item key="/conversation" icon={<ContactsFilled />}>
-        <NavLink to="/conversation">Conversations</NavLink>
-      </Menu.Item>
       <Menu.Item
         key={`/cadidate`}
         icon={<CheckCircleFilled />}
