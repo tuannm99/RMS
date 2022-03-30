@@ -52,7 +52,7 @@ const userSchema = mongoose.Schema({
     destination: String,
     filename: String,
     path: String,
-    imageBuffer: Buffer,
+    // imageBuffer: Buffer,
   },
   role: {
     type: String,

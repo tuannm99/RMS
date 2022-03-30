@@ -23,18 +23,17 @@ export function hasResponseError(response, action, ...params) {
   const statusCode = _get(response, 'status', null);
   if (statusCode === null || statusCode === undefined || statusCode === '')
     return false;
-  if(statusCode === 401 || statusCode === 404){
-      axios
+  if (statusCode === 401) {
+    axios
       .post('http://rms-fpt.ddns.net:5000/api/v1/auth/logout', {
         refreshToken: refreshToken,
-      }).then(()=>{
-        alert(
-          'Authentication, please login again!'
-        );
+      })
+      .then(() => {
+        alert('Authentication, please login again!');
         window.location.pathname = '/login';
         localStorage.clear();
-      })
-    }
+      });
+  }
   const isValidStatus = statusCode >= 200 && statusCode < 300;
   if (!isValidStatus && action) {
     dispatchAction(action, ...params);
@@ -81,3 +80,5 @@ export const convertFileToBase64 = (file) => {
     };
   });
 };
+
+export const imgURL = 'http://rms-fpt.ddns.net:5000/';

@@ -22,7 +22,6 @@ function Profile(props) {
   };
 
   const handleFile = (info) => {
-    console.log(info);
     if (info && allowedFiles.includes(info.file.type)) {
       getBase64(info.file.originFileObj, (fileUrl) => setPdfFile([fileUrl]));
       setNameFile(info.file.originFileObj.name);
@@ -30,7 +29,6 @@ function Profile(props) {
       alert('Please choose PDF file!');
     }
   };
-  console.log(pdfFile);
   return (
     <Row>
       <Col span={12}>

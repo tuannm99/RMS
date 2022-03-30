@@ -4,11 +4,16 @@ const { Candidate, Job } = require('../core/db/schema');
 
 /**
  * create new candidate
- * @param {Object} candidateData
+ * @param {Object} candidatePayload
  * @returns {Promise<Candidate>}
  */
-const createCandidate = async (candidateData) => {
-  const candidate = new Candidate(candidateData);
+const createCandidate = async (candidatePayload, cv) => {
+  if (!candidatePayload.resume) {
+    candidatePayload.resume = { cv };
+  } else {
+    candidatePayload.resume.cv = cv;
+  }
+  const candidate = new Candidate(candidatePayload);
   const job = await Job.findById(candidate.jobId);
   job.candidateId.push(candidate._id);
   await job.save();
@@ -25,7 +30,7 @@ const getAllCandidate = async (filter, options) => {
   options.populate = [];
   options.populate.push({
     path: 'jobId',
-    select: 'title',
+    // select: 'title',
   });
   const candidates = await Candidate.paginate(filter, options);
   if (!candidates) {

@@ -25,13 +25,16 @@ function* getAllCadidates({ payload }) {
 
 function* getCadidate({ payload }) {
   try {
+    setLoading(true);
     const response = yield call(services.getDetailCadidateServices, payload);
     if (hasResponseError(response)) {
       return;
     }
     yield put(saveCadidate(response.data));
+    setLoading(false);
   } catch (error) {
     console.log(error);
+    setLoading(false);
   }
 }
 
@@ -43,7 +46,6 @@ function* editCadidate({ payload }) {
       return;
     }
     toast.success('Edit success!');
-    yield put(saveCadidate(response.data));
   } catch (error) {
     console.log(error);
   }
