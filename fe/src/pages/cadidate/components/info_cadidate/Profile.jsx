@@ -22,7 +22,6 @@ function Profile(props) {
   };
 
   const handleFile = (info) => {
-    console.log(info);
     if (info && allowedFiles.includes(info.file.type)) {
       getBase64(info.file.originFileObj, (fileUrl) => setPdfFile([fileUrl]));
       setNameFile(info.file.originFileObj.name);
@@ -30,7 +29,6 @@ function Profile(props) {
       alert('Please choose PDF file!');
     }
   };
-  console.log(pdfFile);
   return (
     <Row>
       <Col span={12}>
@@ -57,7 +55,7 @@ function Profile(props) {
       </Col>
       <Col span={24} className="mt-20">
         {pdfFile && (
-          <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.12.313/build/pdf.worker.min.js">
+          <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.13.216/build/pdf.worker.min.js">
             <Viewer
               fileUrl={pdfFile[0]}
               plugins={[defaultLayoutPluginInstance]}
