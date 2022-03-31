@@ -6,7 +6,6 @@ import {
   updateJobs,
   deleteJobs,
 } from '../../services/jobService';
-import JobEdit from './component/editJob';
 import { DrawerComponent } from '../../components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -174,11 +173,11 @@ function DetailRecruitPage(props) {
                   label="Department"
                 >
                   <Select style={{ width: 300 }}>
-                    <Option value="Administrtion">Administrtion</Option>
-                    <Option value="Finance">Finance</Option>
-                    <Option value="Maketing">Maketing</Option>
-                    <Option value="Sale">Sale</Option>
-                    <Option value="Dev">Dev</Option>
+                    <Option value="administrtion">Administrtion</Option>
+                    <Option value="finance">Finance</Option>
+                    <Option value="maketing">Maketing</Option>
+                    <Option value="sale">Sale</Option>
+                    <Option value="engineering">Engineering</Option>
                   </Select>
                 </Form.Item>
               </Col>

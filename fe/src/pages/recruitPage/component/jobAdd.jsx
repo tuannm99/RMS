@@ -59,11 +59,11 @@ function JobAdd({ onclose, visible, job, loadData }) {
               rules={[{ required: true, message: 'Please Enter Department' }]}
             >
               <Select style={{ width: 300 }}>
-                <Option value="Administrtion">Administrtion</Option>
-                <Option value="Finance">Finance</Option>
-                <Option value="Maketing">Maketing</Option>
-                <Option value="Sale">Sale</Option>
-                <Option value="Dev">Dev</Option>
+                <Option value="administrtion">Administrtion</Option>
+                <Option value="finance">Finance</Option>
+                <Option value="maketing">Maketing</Option>
+                <Option value="sale">Sale</Option>
+                <Option value="engineering">Engineering</Option>
               </Select>
             </Form.Item>
           </Col>

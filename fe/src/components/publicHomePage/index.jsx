@@ -2,6 +2,7 @@ import React from 'react';
 import { RightOutlined } from '@ant-design/icons';
 function PublicPage(props) {
   const { data } = props;
+  console.log(data);
   return (
     <>
       <div className={props.classContent}>
@@ -9,16 +10,15 @@ function PublicPage(props) {
           <h3>{data.title}</h3>
         </div>
         <div className={props.classDes}>
-          <span>{data.des}</span>
+          <span
+            dangerouslySetInnerHTML={{ __html: data.jobDescription }}
+          ></span>
         </div>
         <div className={props.classAddress}>
-          <span>{data.address}</span>
+          <span>{data.location}</span>
         </div>
         <div className={props.classTypeTime}>
-          <span>{data.typeTime}</span>
-        </div>
-        <div className="public-icon">
-          <RightOutlined style={{ fontSize: '23px', color: '#7b40a0' }} />
+          <span>{data.jobType}</span>
         </div>
       </div>
     </>
