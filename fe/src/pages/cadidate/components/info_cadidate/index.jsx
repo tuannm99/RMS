@@ -37,6 +37,7 @@ import { compose } from 'recompose';
 import Summary from './Summary';
 import EditCadidateProfile from '../edit_cadidate_profile';
 import Profile from './Profile';
+import Interview from './Interview';
 
 const { TabPane } = Tabs;
 
@@ -232,7 +233,7 @@ function CadidateInfo(props) {
                     <Profile />
                   </TabPane>
                   <TabPane tab="Interviews" key="3" className="pl-20 pr-20">
-                    Content of Tab Pane 3
+                    <Interview />
                   </TabPane>
                 </Tabs>
               </div>

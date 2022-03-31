@@ -37,7 +37,7 @@ function HeaderPrivate(props) {
     logoutRequest(params);
     navigate('/login');
   };
-  console.log(`${imgURL}${selectUserInfor?.avatar?.path}`);
+
   /**
    * create menu add ...
    */
@@ -46,9 +46,13 @@ function HeaderPrivate(props) {
       <Menu.Item key="1" icon={<ShoppingOutlined />}>
         Job posting
       </Menu.Item>
-      <Menu.Item key="2" icon={<TeamOutlined />}>
-        <NavLink to={`/employee/${true}/${null}`}>Employee</NavLink>
-      </Menu.Item>
+      {selectUserInfor?.role === 'admin' ? (
+        <Menu.Item key="2" icon={<TeamOutlined />}>
+          <NavLink to={`/employee/${true}/${null}`}>Employee</NavLink>
+        </Menu.Item>
+      ) : (
+        <></>
+      )}
       <Menu.Item key="3" icon={<ReadOutlined />}>
         Task
       </Menu.Item>
