@@ -4,6 +4,7 @@ import FormInfo from '../form_info';
 import {
   editCadidate,
   getAllCadidates,
+  getCadidate,
 } from '../../../../redux/stores/cadidate/actions';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -18,7 +19,8 @@ const dateFormatList = 'DD/MM/YYYY';
 
 function EditCadidateProfile(props) {
   const [form] = Form.useForm();
-  const { id, cadidate, editCadidate, params, getAllCadidates } = props;
+  const { id, cadidate, editCadidate, params, getAllCadidates, getCadidate } =
+    props;
   const [disableEmp, setDisableEmp] = useState(false);
   const [disableEdu, setDisableEdu] = useState(false);
 
@@ -107,7 +109,8 @@ function EditCadidateProfile(props) {
       };
     }
     await editCadidate({ id, body });
-    await getAllCadidates(params);
+    getCadidate(id);
+    getAllCadidates(params);
     props.handleCancel();
   };
 
@@ -131,6 +134,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
   editCadidate: (payload) => dispatch(editCadidate(payload)),
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
+  getCadidate: (payload) => dispatch(getCadidate(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate, preDate } = require('./plugins');
 const { STAGES, CANDIDATE_STATUS } = require('../../../constants');
 
 const candidateSchema = new mongoose.Schema({
   jobId: { type: mongoose.Types.ObjectId, ref: 'Job' },
-  jobTitle: { type: String, ref: 'Job' },
   interviewId: [{ type: mongoose.Types.ObjectId, ref: 'Interview' }],
   status: {
     type: String,
@@ -35,7 +34,14 @@ const candidateSchema = new mongoose.Schema({
   phone: { required: true, type: Number },
 
   resume: {
-    cv: { type: String },
+    cv: {
+      mimetype: String,
+      originalname: String,
+      encoding: String,
+      destination: String,
+      filename: String,
+      path: String,
+    },
     hyperlink: { type: String },
     employer: {
       designation: { type: String },
@@ -60,5 +66,6 @@ const candidateSchema = new mongoose.Schema({
 
 candidateSchema.plugin(toJSON);
 candidateSchema.plugin(paginate);
+candidateSchema.plugin(preDate);
 
 module.exports = mongoose.model('Candidate', candidateSchema);

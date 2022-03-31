@@ -10,7 +10,7 @@ function DetailPublic(props) {
       <div className={props.detailHeader}>
         <div className={props.HeaderContent}>
           <div className={props.detailHeaderLeft}>
-            <Link to={`/recruit`}>
+            <Link to={`/PublicJob`}>
               <ArrowLeftOutlined style={{ fontSize: '20px' }} />
             </Link>
             <h3>{data.department}</h3>

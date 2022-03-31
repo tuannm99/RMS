@@ -50,17 +50,17 @@ const updateUserHandler = catchAsync(async (req, res) => {
 });
 
 /**
- * update user
+ * update user avatar
  * @param {string} req
  * @param {string} res
  */
 const updateUserAvatarHandler = catchAsync(async (req, res) => {
-  const fileUploaded = fs.readFileSync(req.file.path).toString('base64');
-  const image = Buffer.from(fileUploaded, 'base64');
-  const avatar = req.file;
-  avatar.imageBuffer = image;
-  await userService.updateUserAvatarById(req.params.id, avatar);
-  res.status(httpStatus.OK).json(res.file);
+  // const fileUploaded = fs.readFileSync(req.file.path).toString('base64');
+  // const image = Buffer.from(fileUploaded, 'base64');
+  // const avatar = req.file;
+  // avatar.imageBuffer = image;
+  await userService.updateUserAvatarById(req.params.id, req.file);
+  res.status(httpStatus.OK).json(req.file);
 });
 
 /**

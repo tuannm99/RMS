@@ -6,7 +6,8 @@
 
 .public-content {
   width: 100%;
-  height: 133px;
+  height: 292px;
+
   border: 1.5px solid rgb(219, 209, 209);
   border-radius: 5px;
   position: relative;
@@ -14,9 +15,14 @@
   color: #375a79;
   margin-bottom: 30px;
   cursor: pointer;
+  overflow: hidden;
 }
 .public-content:hover {
   background-color: #f8f9fa;
+}
+.publish-item {
+  width: 400px;
+  height: 500px;
 }
 .public-title {
   position: absolute;
@@ -31,6 +37,11 @@
 }
 .public-des {
   position: absolute;
+  width: 100px;
+  height: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   top: 56%;
   left: 2%;
 }
@@ -44,7 +55,10 @@
   top: 55%;
   right: 10%;
 }
-
+.public-container-job {
+  width: 320px;
+  height: 560px;
+}
 .public-title-job h1 {
   font-size: 25px;
   color: #7b40a0;

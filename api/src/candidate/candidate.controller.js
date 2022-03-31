@@ -10,8 +10,9 @@ const { pick } = require('../core/utils');
  * @param {object} res
  */
 const addCandidate = catchAsync(async (req, res) => {
-  const candidatePosting = await candidateService.createCandidate(req.body);
-  res.status(httpStatus.OK).json(candidatePosting);
+  const candidatePayload = JSON.parse(req.body.candidate);
+  const candidate = await candidateService.createCandidate(candidatePayload, req.file);
+  res.status(httpStatus.OK).json(candidate);
 });
 
 /**

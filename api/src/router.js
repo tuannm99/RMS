@@ -11,7 +11,7 @@ router.use('/auth', authRouter);
 router.use('/jobs', jobRouter);
 router.use('/users', userRouter);
 router.use('/candidates', candidateRouter);
-router.use('/candidates/:id/interview', interviewRouter);
+router.use('/candidates', interviewRouter);
 router.use('/careers', careerRouter);
 
 module.exports = router;
