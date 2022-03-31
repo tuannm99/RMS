@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../core/catchAsync');
 
 const jobService = require('../job/job.service');
+const candidateService = require('../candidate/candidate.service');
 const { pick } = require('../core/utils');
 
 /**
@@ -30,7 +31,9 @@ const getPublishedJobHandler = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const addResumeHandler = catchAsync(async (req, res) => {
-  res.status(httpStatus.OK).json({});
+  const candidatePayload = JSON.parse(req.body.candidate);
+  const candidate = await candidateService.createCandidate(candidatePayload, req.file);
+  res.status(httpStatus.OK).json(candidate);
 });
 
 module.exports = { getAllPublishJobsHandler, getPublishedJobHandler, addResumeHandler };

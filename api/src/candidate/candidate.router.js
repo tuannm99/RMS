@@ -1,12 +1,13 @@
 const router = require('express').Router();
 
+const { uploadFile } = require('../core/multer');
 const { checkAuth } = require('../core/global.middleware');
 const { ROLES } = require('../constants');
 const candidateController = require('./candidate.controller');
 
 router.get('/', checkAuth(), candidateController.getAllCandidate);
 router.get('/:id', checkAuth(), candidateController.getCandidate);
-router.post('/', checkAuth(), candidateController.addCandidate);
+router.post('/', checkAuth(), uploadFile.single('cv'), candidateController.addCandidate);
 router.put('/:id', checkAuth(ROLES.hiringManager), candidateController.editCandidate);
 // TODO: update candidate status, update stages
 
