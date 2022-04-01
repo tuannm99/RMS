@@ -5,10 +5,8 @@
 }
 
 .public-content {
-  width: 100%;
+  width: 85%;
   height: 292px;
-
-  border: 1.5px solid rgb(219, 209, 209);
   border-radius: 5px;
   position: relative;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -16,53 +14,55 @@
   margin-bottom: 30px;
   cursor: pointer;
   overflow: hidden;
+  background-color: #fafafa;
 }
-.public-content:hover {
-  background-color: #f8f9fa;
-}
-.publish-item {
-  width: 400px;
-  height: 500px;
-}
+
 .public-title {
   position: absolute;
-  top: 20%;
-  left: 2%;
+  top: 5%;
+  left: 6%;
   color: black;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
 }
+
 .public-title h3 {
   font-weight: 600;
 }
+.public-title h3:hover {
+  color: rgb(0, 174, 239);
+}
 .public-des {
   position: absolute;
-  width: 100px;
-  height: 100px;
-  white-space: nowrap;
-  overflow: hidden;
+  width: 90%;
   text-overflow: ellipsis;
-  top: 56%;
-  left: 2%;
+  overflow: hidden;
+  top: 24%;
+  left: 5%;
+  color: black;
+  font-weight: 200;
+  font-size: 13px;
+}
+.public-des ul li {
+  list-style-type: none;
 }
 .public-address {
   position: absolute;
-  top: 30%;
-  right: 10%;
+  top: 85%;
+  left: 5%;
+  color: black;
+  font-weight: 200;
 }
 .public-type {
   position: absolute;
-  top: 55%;
+  top: 84%;
   right: 10%;
 }
-.public-container-job {
-  width: 320px;
-  height: 560px;
-}
+
 .public-title-job h1 {
   font-size: 25px;
   color: #7b40a0;
-  font-weight: 600;
+  font-weight: 700;
 }
 .public-role {
   background-color: #f8f9fa;
@@ -84,13 +84,17 @@
 }
 .public-filter {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   padding-bottom: 30px;
+  width: 60%;
+  margin: 0 auto;
 }
 .public-sub {
   background-color: #f8f9fa;
+  margin-bottom: 70px;
 }
 .public-sub h1 {
+  padding-left: 190px;
   padding-top: 30px;
   padding-bottom: 30px;
   font-weight: 700;
@@ -99,4 +103,20 @@
   text-align: end;
   padding-top: 55px;
   padding-right: 40px;
+}
+.btn-public {
+  background: linear-gradient(rgb(0, 174, 239) 0%, rgb(51, 199, 255) 100%);
+  border-radius: 5.69231px;
+  border: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.42px;
+  line-height: 21px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-family: 'ibm plex sans', sans-serif;
+}
+.btn-public:hover {
+  background: linear-gradient(rgb(51, 199, 255) 100%, rgb(0, 174, 239) 0%);
 }

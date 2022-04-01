@@ -46,6 +46,7 @@ function DetailJobComponent(props) {
             $: {data.minSalary} - {data.maxSalary}
           </h5>
           <div className={props.detailJobCreate}>
+            Create At: &nbsp;
             {data.createdAt
               ? moment.utc(data.createdAt).format('YYYY-MM-DD').toString()
               : '-'}
