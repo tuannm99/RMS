@@ -210,7 +210,13 @@ export const renderBodyTable = (
       </div>
     </td>
     <td style={styles.td}>
-      <Tag color="geekblue">{item.status}</Tag>
+      {item?.status === 'open' ? (
+        <Tag color="green">{item?.status}</Tag>
+      ) : item?.status === 'reject' ? (
+        <Tag color="red">{item?.status}</Tag>
+      ) : (
+        <Tag color="geekblue">{item?.status}</Tag>
+      )}
     </td>
     <td style={styles.td}>
       <div className="mb-0">
