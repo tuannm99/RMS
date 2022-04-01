@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllPublishJob } from '../../services/careerServices';
 import PublicPage from '../../components/publicHomePage';
 import { Select } from 'antd';
-import { Input, Space } from 'antd';
+import { Input, Pagination, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 
 import './style.css';
@@ -14,12 +14,14 @@ function Home(props) {
   const { Search } = Input;
   const [dataJob, setdataJob] = useState([]);
 
-  const [param, setParams] = useState({
+  const [param, setParam] = useState({
+    limit: 6,
+    page: 1,
     search: '',
   });
 
   const onSearch = (value) => {
-    setParams({ ...param, search: value });
+    setParam({ ...param, search: value });
   };
 
   useEffect(() => {
@@ -36,14 +38,15 @@ function Home(props) {
       setdataJob(res.data.results);
     });
   };
-  console.log(dataJob);
+
   function handleChange(value) {
     console.log(`selected ${value}`);
   }
 
-  const handleData = (item) => {
-    localStorage.setItem('job', JSON.stringify(item));
-    console.log(localStorage);
+  const handleChangeData = (pagination) => {
+    console.log(pagination);
+    setParam({ ...param, page: pagination });
+    loadDataJobs({ ...param, page: pagination });
   };
 
   return (
@@ -55,79 +58,77 @@ function Home(props) {
         />
       </div>
       <div className="public-sub">
-        <div className="grid wide">
-          <div className="row">
-            <div className="col l-12 m-12 c-12">
-              <h1>Open Positions</h1>
-              <div className="public-filter">
-                <div className="public-option">
-                  <Select
-                    defaultValue="Choose Department"
-                    style={{ width: 240 }}
-                    onChange={handleChange}
-                  >
-                    <Option value="Sales">Salessss</Option>
-                    <Option value="Finance">Finance</Option>
-                    <Option value="Yiminghe">yiminghe</Option>
-                  </Select>
-                </div>
-                <div className="public-option">
-                  <Select
-                    defaultValue="Choose Work Type"
-                    style={{ width: 240 }}
-                    onChange={handleChange}
-                  >
-                    <Option value="Full time">Full time</Option>
-                    <Option value="Pass time">Pass time</Option>
-                    <Option value="Yiminghe">yiminghe</Option>
-                  </Select>
-                </div>
-                <div className="public-Search">
-                  <Search
-                    placeholder="search by job name"
-                    allowClear
-                    onSearch={onSearch}
-                    style={{ width: 300 }}
-                  />
-                </div>
-              </div>
-            </div>
+        <h1>Open Positions</h1>
+        <div className="public-filter">
+          <div className="public-option">
+            <Select
+              defaultValue="Choose Department"
+              style={{ width: 240 }}
+              onChange={handleChange}
+            >
+              <Option value="Sales">Salessss</Option>
+              <Option value="Finance">Finance</Option>
+              <Option value="Yiminghe">yiminghe</Option>
+            </Select>
+          </div>
+          <div className="public-Search">
+            <Search
+              placeholder="search by job name"
+              allowClear
+              onSearch={onSearch}
+              style={{ width: 300 }}
+            />
           </div>
         </div>
       </div>
-      <div className="public-container-job">
-        <div className="">
-          <div className="">
-            <div className="public-title-job">
-              <h1>finance</h1>
-            </div>
-            <div className="publish-item">
-              {dataJob.map((item) => {
-                return (
-                  <div key={item.id}>
-                    <Link
-                      to={`/PublicJob/${item.id}`}
-                      style={{ textDecoration: 'none' }}
-                      onClick={() => handleData(item)}
-                    >
-                      <PublicPage
-                        data={item}
-                        classTitleJob="public-title-job"
-                        classRoles="public-role"
-                        classContent="public-content"
-                        title="public-title"
-                        classDes="public-des"
-                        classAddress="public-address"
-                        classTypeTime="public-type"
-                      />
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+
+      <div className="container">
+        <Row gutter={20}>
+          {dataJob.map((item) => {
+            return (
+              <Col
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
+                xl={{ span: 8 }}
+                xxl={{ span: 8 }}
+                key={item.id}
+                className="mb-24"
+              >
+                <div>
+                  <Link
+                    to={`/PublicJob/${item.id}`}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <PublicPage
+                      data={item}
+                      classTitleJob="public-title-job"
+                      classRoles="public-role"
+                      classContent="public-content"
+                      title="public-title"
+                      classDes="public-des"
+                      classAddress="public-address"
+                      classTypeTime="public-type"
+                    />
+                  </Link>
+                </div>
+              </Col>
+            );
+          })}
+        </Row>
       </div>
+
+      {/* <Col span={12}>
+        {dataJob && (
+          <Pagination
+            pageSize={dataJob?.limit}
+            current={dataJob?.page}
+            total={dataJob?.totalResults}
+            onChange={handleChangeData}
+            className="fr"
+          />
+        )}
+      </Col> */}
+      <footer></footer>
     </>
   );
 }

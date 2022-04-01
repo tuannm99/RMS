@@ -36,6 +36,7 @@ function DetailRecruitPage(props) {
   const navigate = useNavigate();
   const { userAccount } = props;
   const { Option } = Select;
+  const { TextArea } = Input;
 
   const handleCancel = () => {
     setVisible(false);
@@ -44,12 +45,6 @@ function DetailRecruitPage(props) {
   useEffect(() => {
     fetchJob();
   }, []);
-
-  // useEffect(() => {
-  //   fetchJob();
-  //   setCkeditorData(job.jobDescription);
-  //   console.log(job);
-  // }, []);
 
   const fetchJob = async () => {
     const jobDetail = await getJobsDetail(id);
@@ -69,6 +64,7 @@ function DetailRecruitPage(props) {
       minSalary: job.minSalary,
       maxSalary: job.maxSalary,
       department: job.department,
+      shortDes: job.shortDes,
     });
 
     setVisible(true);
@@ -203,6 +199,13 @@ function DetailRecruitPage(props) {
                   rules={[{ required: false }]}
                 >
                   <Input placeholder="address" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={24}>
+              <Col span={24}>
+                <Form.Item name="shortDes" label="Short Description">
+                  <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>

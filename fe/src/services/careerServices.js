@@ -9,3 +9,9 @@ export function getAllPublishJob(params) {
     params: params,
   });
 }
+//get job detail
+export function getPublishJobDetail(id) {
+  return request(`${BASE_API}/Jobs/${id}`, {
+    method: 'GET',
+  });
+}
