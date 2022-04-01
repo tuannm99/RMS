@@ -13,10 +13,10 @@ class candidate.controller{
 }
 
 class candidate.service{
-    + {method} createCandidate(candidateData: Object): void
+    + {method} createCandidate(candidatePayload: Object, cv: file): void
     + {method} getAllCandidate(filter: Object, options: Object): void
     + {method} getCandidateById(id: string): void
-    + {method} editCandidateById(id: string, jobData: Object): void
+    + {method} editCandidateById(id: string, candidateData: Object): void
     + {method} deleteCandidateById(id: string): void
 }
 
@@ -28,7 +28,12 @@ class schema.Candidate {
 
 }
 
+class schema.Job {
+
+}
+
 candidate.router ..> candidate.controller
 candidate.controller ..> candidate.service
 candidate.service ..> schema.Candidate
+candidate.service ..> schema.Job
 @enduml

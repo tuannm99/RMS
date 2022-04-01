@@ -1,0 +1,33 @@
+@startuml addCandidate
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  candidateController
+boundary candidateService
+database Mongodb
+
+
+User -> UI: add candidate
+activate UI
+UI -> candidateController: call api
+deactivate UI
+activate candidateController
+candidateController -> candidateController: checkAuth()
+candidateController -> candidateService: createCandidate()
+activate candidateService
+candidateService -> Mongodb: save()
+activate Mongodb
+Mongodb -> Mongodb: Validate
+Mongodb --> candidateService: success
+deactivate Mongodb
+candidateService --> candidateController: candidateData
+deactivate candidateService
+candidateController --> UI: candidateData
+deactivate candidateController
+activate UI
+UI --> User: display data
+deactivate UI
+
+@enduml

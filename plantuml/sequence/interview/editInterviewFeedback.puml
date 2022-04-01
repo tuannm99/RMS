@@ -1,0 +1,33 @@
+@startuml edit Interview feedback
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  interviewController
+boundary interviewService
+database Mongodb
+
+
+User -> UI: add interview feedback
+activate UI
+UI -> interviewController: call api
+deactivate UI
+activate interviewController
+interviewController -> interviewController: checkAuth()
+interviewController -> interviewService: editInterviewById()
+activate interviewService
+interviewService -> Mongodb: findByIdAndUpdate()
+activate Mongodb
+Mongodb -> Mongodb: Validate
+Mongodb --> interviewService: success
+deactivate Mongodb
+interviewService --> interviewController: interviewData
+deactivate interviewService
+interviewController --> UI: interviewData
+deactivate interviewController
+activate UI
+UI --> User: display data
+deactivate UI
+
+@enduml
