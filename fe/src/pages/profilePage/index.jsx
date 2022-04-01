@@ -5,7 +5,7 @@ import { GoLocation } from 'react-icons/go';
 import './styles.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getDetailUsersServices } from '../../services/employeeServices';
-import { hasResponseError, base64String } from '../../utils/utils';
+import { hasResponseError, imgURL } from '../../utils/utils';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
@@ -60,9 +60,7 @@ function ProfilePage() {
               <Avatar
                 className="profile-avatar-img"
                 size={80}
-                src={`data:image/png;base64,${base64String(
-                  user?.avatar?.imageBuffer?.data
-                )}`}
+                src={`${imgURL}${user?.avatar?.path}`}
               />
             )}
           </div>

@@ -20,7 +20,7 @@ import {
   MailOutlined,
   PhoneOutlined,
 } from '@ant-design/icons';
-import { hasResponseError, base64String } from '../../utils/utils';
+import { hasResponseError, imgURL } from '../../utils/utils';
 import { UserEditAdd } from './components';
 import * as services from '../../services/employeeServices';
 import { toast } from 'react-toastify';
@@ -281,7 +281,11 @@ function EmployeePage(props) {
               >
                 <div className="card">
                   <Card
-                    style={{ width: '100%', minHeight: '305px' }}
+                    style={{
+                      width: '100%',
+                      minHeight: '305px',
+                      boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
+                    }}
                     actions={
                       userAccount?.role === 'admin' &&
                       userAccount?.id !== item?.id
@@ -333,7 +337,6 @@ function EmployeePage(props) {
                           ]
                         : ''
                     }
-                    hoverable="true"
                   >
                     <Meta
                       avatar={
@@ -342,9 +345,7 @@ function EmployeePage(props) {
                         ) : (
                           <Avatar
                             size={64}
-                            src={`data:image/png;base64,${base64String(
-                              item?.avatar?.imageBuffer?.data
-                            )}`}
+                            src={`${imgURL}${item?.avatar?.path}`}
                           />
                         )
                       }
