@@ -28,6 +28,7 @@ function RecruitPage(props) {
   const [dataJobs, setDataJobs] = useState();
   const [visible, setVisible] = useState(false);
   const { Option } = Select;
+
   const [param, setParam] = useState({
     limit: 10,
     page: 1,
@@ -63,6 +64,7 @@ function RecruitPage(props) {
         });
       }
       setDataJobs(res.data);
+      console.log(res.data);
     });
   };
 

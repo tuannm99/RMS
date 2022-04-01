@@ -6,7 +6,6 @@ import {
   updateJobs,
   deleteJobs,
 } from '../../services/jobService';
-import JobEdit from './component/editJob';
 import { DrawerComponent } from '../../components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -37,6 +36,7 @@ function DetailRecruitPage(props) {
   const navigate = useNavigate();
   const { userAccount } = props;
   const { Option } = Select;
+  const { TextArea } = Input;
 
   const handleCancel = () => {
     setVisible(false);
@@ -45,12 +45,6 @@ function DetailRecruitPage(props) {
   useEffect(() => {
     fetchJob();
   }, []);
-
-  // useEffect(() => {
-  //   fetchJob();
-  //   setCkeditorData(job.jobDescription);
-  //   console.log(job);
-  // }, []);
 
   const fetchJob = async () => {
     const jobDetail = await getJobsDetail(id);
@@ -70,6 +64,7 @@ function DetailRecruitPage(props) {
       minSalary: job.minSalary,
       maxSalary: job.maxSalary,
       department: job.department,
+      shortDes: job.shortDes,
     });
 
     setVisible(true);
@@ -174,11 +169,11 @@ function DetailRecruitPage(props) {
                   label="Department"
                 >
                   <Select style={{ width: 300 }}>
-                    <Option value="Administrtion">Administrtion</Option>
-                    <Option value="Finance">Finance</Option>
-                    <Option value="Maketing">Maketing</Option>
-                    <Option value="Sale">Sale</Option>
-                    <Option value="Dev">Dev</Option>
+                    <Option value="administrtion">Administrtion</Option>
+                    <Option value="finance">Finance</Option>
+                    <Option value="maketing">Maketing</Option>
+                    <Option value="sale">Sale</Option>
+                    <Option value="engineering">Engineering</Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -204,6 +199,13 @@ function DetailRecruitPage(props) {
                   rules={[{ required: false }]}
                 >
                   <Input placeholder="address" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={24}>
+              <Col span={24}>
+                <Form.Item name="shortDes" label="Short Description">
+                  <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>

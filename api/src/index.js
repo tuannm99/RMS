@@ -20,17 +20,18 @@ const middleware = (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(helmet());
-  app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    next();
-  });
   app.use('/uploads', express.static('uploads'));
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 
   // this middleware should not config like this in production
   app.use(cors({ origin: '*' }));
+  app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    res.header('Cross-Origin-Resource-Policy', 'cross-origin');
+    next();
+  });
 
   // passport
   app.use(passport.initialize());

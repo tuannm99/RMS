@@ -23,6 +23,7 @@
 
 .btn-profile_left {
   width: 100%;
+  display: block !important;
   border-bottom-left-radius: 6px;
   border-top-left-radius: 6px;
 }

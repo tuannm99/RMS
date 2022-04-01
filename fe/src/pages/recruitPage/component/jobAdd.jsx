@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Row, Form, Input, Select, Button } from 'antd';
+import { Col, Row, Form, Input, Select, Button, TextArea } from 'antd';
 import { toast } from 'react-toastify';
 import { hasResponseError } from '../../../utils/utils';
 import { createJobs } from '../../../services/jobService';
@@ -12,6 +12,7 @@ const { Option } = Select;
 function JobAdd({ onclose, visible, job, loadData }) {
   const [formModal] = Form.useForm();
   const [ckeditorData, setCkeditorData] = useState('');
+  const { TextArea } = Input;
 
   const onFinish = (values) => {
     const body = { ...values, jobDescription: ckeditorData };
@@ -59,11 +60,12 @@ function JobAdd({ onclose, visible, job, loadData }) {
               rules={[{ required: true, message: 'Please Enter Department' }]}
             >
               <Select style={{ width: 300 }}>
-                <Option value="Administrtion">Administrtion</Option>
-                <Option value="Finance">Finance</Option>
-                <Option value="Maketing">Maketing</Option>
-                <Option value="Sale">Sale</Option>
-                <Option value="Dev">Dev</Option>
+                <Option value="administration">Administrtion</Option>
+                <Option value="finance">Finance</Option>
+                <Option value="marketing">Maketing</Option>
+                <Option value="sale">Sale</Option>
+                <Option value="engineering">Engineering</Option>
+                <Option value="humanResources">HumanResources</Option>
               </Select>
             </Form.Item>
           </Col>
@@ -77,7 +79,7 @@ function JobAdd({ onclose, visible, job, loadData }) {
             >
               <Select style={{ width: 300 }}>
                 <Option value="Full Time">Full Time</Option>
-                <Option value="Pass Time">Pass Time</Option>
+                <Option value="Part Time">Part Time</Option>
                 <Option value="Remote">Internship</Option>
               </Select>
             </Form.Item>
@@ -89,6 +91,13 @@ function JobAdd({ onclose, visible, job, loadData }) {
               rules={[{ required: true, message: 'Please Enter Job Location' }]}
             >
               <Input placeholder="address" />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={24}>
+            <Form.Item name="shortDes" label="Short Description">
+              <TextArea rows={4} />
             </Form.Item>
           </Col>
         </Row>

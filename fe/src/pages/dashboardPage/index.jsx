@@ -13,10 +13,13 @@ import {
   renderHeadTable,
   renderBodyTable,
 } from './component/render';
+import moment from 'moment';
 
 function DashboardPage(props) {
   const [dataInterview, setDataInterview] = useState();
   const { TabPane } = Tabs;
+  const [key, setKey] = useState(1);
+  const dateFormatList = 'DD/MM/YYYY';
   const [param, setParam] = useState({
     limit: 3,
     page: 1,
@@ -26,6 +29,13 @@ function DashboardPage(props) {
     loadDataDashboard(param);
   }, [param]);
 
+  // useEffect(() => {
+  //   const newDate = new Date();
+  //   if (key === 1) {
+  //     dataInterview.filter((data) => data.feedback.rate > 0);
+  //   }
+  // }, [key]);
+
   const loadDataDashboard = (param) => {
     getAllInterview(param).then((res) => {
       if (hasResponseError(res)) {
@@ -34,10 +44,13 @@ function DashboardPage(props) {
         });
       }
       setDataInterview(res.data.results);
+      console.log(dataInterview);
     });
   };
 
-  function callback(key) {}
+  function callback(key) {
+    setKey(key);
+  }
   const data = [
     {
       type: '分类一',
@@ -209,9 +222,9 @@ function DashboardPage(props) {
   return (
     <>
       <div className="dashBoard-top">
-        <Select defaultValue="lucy" style={{ width: 120 }}>
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
+        <Select defaultValue="all" style={{ width: 120 }}>
+          <Option value="all">all</Option>
+          <Option value="for me">for me</Option>
         </Select>
         <Tabs
           className="dashBoard-top-center"

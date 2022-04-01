@@ -15,7 +15,7 @@ import { DrawerComponent } from '../../../components';
 import * as services from '../../../services/employeeServices';
 import { registerRequestService } from '../../../services/authServices';
 import {
-  base64String,
+  imgURL,
   convertFileToBase64,
   hasResponseError,
 } from '../../../utils/utils';
@@ -37,12 +37,13 @@ function UserEditAdd({
   setChecked,
   account,
 }) {
-  const [form] = Form.useForm();
   /**
    * create state
    */
   const [imageUser, setImageUser] = useState();
   const [fileList, setFileList] = useState(null);
+  const [form] = Form.useForm();
+
   /**
    * set value in form and avatar render first
    */
@@ -51,11 +52,7 @@ function UserEditAdd({
     if (user) {
       services.getDetailUsersServices(user).then((res) => {
         if (res.data.avatar) {
-          setImageUser(
-            `data:image/png;base64,${base64String(
-              res.data.avatar.imageBuffer.data
-            )}`
-          );
+          setImageUser(`${imgURL}${res.data.avatar.path}`);
         } else {
           setImageUser(null);
         }
@@ -284,6 +281,7 @@ function UserEditAdd({
             <Form.Item
               name="password"
               label="Password"
+              hasFeedback
               rules={[
                 { required: true, message: 'Please input your password!' },
                 { min: 8, message: 'Password must be minimum 8 characters.' },
@@ -308,6 +306,7 @@ function UserEditAdd({
                     if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
+
                     return Promise.reject(
                       new Error(
                         'The two passwords that you entered do not match!'

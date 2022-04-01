@@ -18,6 +18,12 @@ import { MoreOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
+const current = new Date();
+
+const date = `${current.getFullYear()}-${
+  current.getMonth() + 1
+}-${current.getDate()}`;
+
 const styles = {
   tr: {
     textAlign: 'left',
@@ -46,9 +52,9 @@ export const customerTableHead = ['Candidate', 'interviewer', 'Schedule info'];
 export const renderBodyTable = (item, index) => (
   <tr key={item.id} style={styles.tr}>
     <td style={{ ...styles.td, color: '#2c5cc5', cursor: 'pointer' }}>
-      {item.candidateId}
+      {item.createdAt}
     </td>
-    <td>{item.interviewer}</td>
+    <td>{item.interviewDate}</td>
     <td style={styles.td}>
       <div className="mb-0">{item.feedback.comment}</div>
     </td>

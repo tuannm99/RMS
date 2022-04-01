@@ -17,7 +17,7 @@ import { compose } from 'recompose';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './styles.css';
 import * as action from '../../redux/stores/auth/actions';
-import { base64String } from '../../utils/utils';
+import { imgURL } from '../../utils/utils';
 const { Header } = Layout;
 
 function HeaderPrivate(props) {
@@ -46,9 +46,13 @@ function HeaderPrivate(props) {
       <Menu.Item key="1" icon={<ShoppingOutlined />}>
         Job posting
       </Menu.Item>
-      <Menu.Item key="2" icon={<TeamOutlined />}>
-        <NavLink to={`/employee/${true}/${null}`}>Employee</NavLink>
-      </Menu.Item>
+      {selectUserInfor?.role === 'admin' ? (
+        <Menu.Item key="2" icon={<TeamOutlined />}>
+          <NavLink to={`/employee/${true}/${null}`}>Employee</NavLink>
+        </Menu.Item>
+      ) : (
+        <></>
+      )}
       <Menu.Item key="3" icon={<ReadOutlined />}>
         Task
       </Menu.Item>
@@ -99,12 +103,10 @@ function HeaderPrivate(props) {
           </Button>
         </Dropdown>
         <Dropdown className="header-right-avatar mr-16" overlay={menuUser}>
-          {selectUserInfor?.avatar ? (
+          {selectUserInfor?.avatar?.path ? (
             <Avatar
               size={32}
-              src={`data:image/png;base64,${base64String(
-                selectUserInfor?.avatar?.imageBuffer?.data
-              )}`}
+              src={`${imgURL}${selectUserInfor?.avatar?.path}`}
             />
           ) : (
             <Avatar className="mr-16" size={32} icon={<UserOutlined />} />
