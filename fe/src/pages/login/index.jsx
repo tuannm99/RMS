@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, Col, Row, Spin } from 'antd';
+import { Form, Input, Button, Col, Row, Spin, Carousel } from 'antd';
 import './style.css';
 import bg_login from '../../assets/image/bg_login.jpeg';
 import { createStructuredSelector } from 'reselect';
@@ -38,7 +38,11 @@ function Login(props) {
     <div className="login">
       <Row>
         <Col span={18} className="login-left">
-          <img src={bg_login} alt="" />
+          <Carousel autoplay dotPosition="left" speed="800" effect="fade">
+            <img src={bg_login} alt="" />
+            <img src={bg_login} alt="" />
+            <img src={bg_login} alt="" />
+          </Carousel>
         </Col>
         <Col span={6}>
           <div className="login-right">

@@ -33,7 +33,6 @@ function EditAddInterview(props) {
       toast.error(`${res.data.message}`);
       return;
     }
-    console.log(res.data.results);
     setInterviewer(res.data.results);
   };
 

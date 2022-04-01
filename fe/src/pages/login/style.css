@@ -8,8 +8,11 @@
 }
 .login-left img {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   object-fit: cover;
+}
+.login-right {
+  height: 100vh;
 }
 .login-right h3 {
   padding-top: 150px;
