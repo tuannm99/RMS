@@ -26,6 +26,7 @@ import {
   customerTableHead,
   renderHeadTable,
 } from './components/render';
+import EditAddInterview from './components/info_cadidate/EditAddInterview';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -36,6 +37,7 @@ function CadidatePage(props) {
   const [visibleAddCadi, setVisibleAddCadi] = useState(false);
   const [visibleInfoCadi, setVisibleInfoCadi] = useState(false);
   const [jobs, setjobs] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   const payload = {
     limit: 10,
@@ -134,6 +136,10 @@ function CadidatePage(props) {
     setParams({ ...params, fullName: value });
   };
 
+  const onClose = () => {
+    setVisible(false);
+  };
+
   return (
     <>
       <Row className="employee_tool" wrap={true}>
@@ -224,7 +230,8 @@ function CadidatePage(props) {
                 index,
                 handleDelete,
                 setVisibleInfoCadi,
-                setCadidateId
+                setCadidateId,
+                setVisible
               )
             }
           />
@@ -240,6 +247,7 @@ function CadidatePage(props) {
         onclose={onCloseInfoCadi}
         params={params}
       />
+      <EditAddInterview visible={visible} onclose={onClose} />
     </>
   );
 }

@@ -168,16 +168,20 @@ export const customerTableHead = [
   'More',
 ];
 
-const menuMoreTable = (id, handleDelete) => (
+const menuMoreTable = (id, handleDelete, setVisible) => (
   <Menu>
-    <Menu.Item key="edit">Edit</Menu.Item>
+    <Menu.Item key="Interview">
+      <p className="mb-0" onClick={() => setVisible(true)}>
+        Schedule Interview
+      </p>
+    </Menu.Item>
     <Menu.Item key="delete">
       <Popconfirm
         onConfirm={() => handleDelete(id)}
         title="Are you sure？"
         icon={<DeleteOutlined style={{ color: 'red' }} />}
       >
-        Delete
+        <p className="mb-0">Delete</p>
       </Popconfirm>
     </Menu.Item>
   </Menu>
@@ -188,7 +192,8 @@ export const renderBodyTable = (
   index,
   handleDelete,
   setVisibleInfoCadi,
-  setCadidateId
+  setCadidateId,
+  setVisible
 ) => (
   <tr key={item.id} style={styles.tr}>
     <td
@@ -233,7 +238,7 @@ export const renderBodyTable = (
     </td>
     <td style={styles.td}>
       <Dropdown
-        overlay={menuMoreTable(item.id, handleDelete)}
+        overlay={menuMoreTable(item.id, handleDelete, setVisible)}
         placement="bottomRight"
         arrow
       >

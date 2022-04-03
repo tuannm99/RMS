@@ -61,6 +61,7 @@ function CadidateInfo(props) {
       getCadidate(id);
     }
   }, [id, getCadidate]);
+
   const showModal = () => {
     setIsModalVisible(true);
   };
