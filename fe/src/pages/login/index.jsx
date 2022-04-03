@@ -38,10 +38,16 @@ function Login(props) {
     <div className="login">
       <Row>
         <Col span={18} className="login-left">
-          <Carousel autoplay dotPosition="left" speed="800" effect="fade">
-            <img src={bg_login} alt="" />
-            <img src={bg_login} alt="" />
-            <img src={bg_login} alt="" />
+          <Carousel autoplay dotPosition="bottom" speed="800">
+            <div>
+              <img src={bg_login} alt="" />
+            </div>
+            <div>
+              <img src={bg_login} alt="" />
+            </div>
+            <div>
+              <img src={bg_login} alt="" />
+            </div>
           </Carousel>
         </Col>
         <Col span={6}>
