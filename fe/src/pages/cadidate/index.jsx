@@ -84,18 +84,16 @@ function CadidatePage(props) {
       return;
     }
     toast.success('Delete success!');
-    const res1 = await services.getAllCadidatesServices();
-    if (hasResponseError(res1)) {
-      toast.error(`${res.data.message}`);
-      return;
-    }
-    if (res1.data.totalResults % params.limit === 0) {
-      setParams({ ...params, page: params.page - 1 });
+
+    if (
+      cadidates?.totalResults > 9 &&
+      cadidates?.totalResults % params.limit === 1
+    ) {
+      setParams({ ...params, page: cadidates?.page - 1 });
     } else {
       setParams({ ...params });
     }
   };
-
   /**
    * change page size
    * @param {*} pagination
@@ -241,6 +239,7 @@ function CadidatePage(props) {
         visible={visibleAddCadi}
         onclose={onCloseAddCadi}
         params={params}
+        setParams={setParams}
       />
       <CadidateInfo
         visible={visibleInfoCadi}

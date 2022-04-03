@@ -6,12 +6,21 @@ import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { Row, Col, Button, Upload } from 'antd';
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
+import { cadidate } from '../../../../redux/stores/cadidate/selectors';
+
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { imgURL } from '../../../../utils/utils';
 
 function Profile(props) {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
+  const { cadidate } = props;
 
-  const [pdfFile, setPdfFile] = useState(null);
-  const [nameFile, setNameFile] = useState(null);
+  const [pdfFile, setPdfFile] = useState([
+    `${imgURL}${cadidate?.resume?.cv?.path}`,
+  ]);
+  const [nameFile, setNameFile] = useState(cadidate?.resume?.cv?.originalname);
 
   const allowedFiles = ['application/pdf'];
 
@@ -39,12 +48,17 @@ function Profile(props) {
         </Upload>
         {pdfFile && (
           <>
-            {nameFile}{' '}
-            <DeleteOutlined
-              className="cu ml-28"
-              style={{ fontSize: '16px', color: '#08c' }}
-              onClick={() => setPdfFile(null)}
-            />
+            {nameFile}
+            {nameFile !== cadidate?.resume?.cv?.originalname && (
+              <DeleteOutlined
+                className="cu ml-28"
+                style={{ fontSize: '16px', color: '#08c' }}
+                onClick={() => {
+                  setPdfFile([`${imgURL}${cadidate?.resume?.cv?.path}`]);
+                  setNameFile(cadidate?.resume?.cv?.originalname);
+                }}
+              />
+            )}
           </>
         )}
       </Col>
@@ -68,4 +82,8 @@ function Profile(props) {
   );
 }
 
-export default Profile;
+const mapStateToProps = createStructuredSelector({
+  cadidate: cadidate,
+});
+
+export default connect(mapStateToProps)(Profile);
