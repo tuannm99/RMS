@@ -80,6 +80,8 @@ function CadidateInfo(props) {
     getAllCadidates(params);
   };
 
+  console.log(cadidate);
+
   const desc = ['contact', 'test', 'technical', 'cultureFit'];
 
   const handleRate = ({ index, value }) => {
