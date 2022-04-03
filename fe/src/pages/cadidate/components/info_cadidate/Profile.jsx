@@ -10,7 +10,6 @@ import { cadidate } from '../../../../redux/stores/cadidate/selectors';
 
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import { imgURL } from '../../../../utils/utils';
 
 function Profile(props) {
@@ -51,7 +50,7 @@ function Profile(props) {
             {nameFile}
             {nameFile !== cadidate?.resume?.cv?.originalname && (
               <DeleteOutlined
-                className="cu ml-28"
+                className="cu"
                 style={{ fontSize: '16px', color: '#08c' }}
                 onClick={() => {
                   setPdfFile([`${imgURL}${cadidate?.resume?.cv?.path}`]);

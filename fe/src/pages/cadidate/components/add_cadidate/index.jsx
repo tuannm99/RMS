@@ -50,7 +50,9 @@ function AddCadidate(props) {
       firstName: values?.firstName,
       midName: values?.midName,
       lastName: values?.lastName,
-      fullName: `${values.firstName} ${values.midName} ${values.lastName}`,
+      fullName: `${values?.firstName} ${
+        values?.midName === undefined ? '' : values?.midName
+      } ${values?.lastName}`,
       email: values?.email,
       phone: values?.phone,
       resume: {
@@ -76,11 +78,11 @@ function AddCadidate(props) {
       body.resume = {
         ...body.resume,
         employer: {
-          designation: values.designation,
-          bussinessName: values.bussinessName,
+          designation: values?.designation,
+          bussinessName: values?.bussinessName,
           from: values.fromto[0]._d.toISOString(),
           to: values.fromto[1]._d.toISOString(),
-          summary: values.summary,
+          summary: values?.summary,
         },
       };
     }
@@ -112,7 +114,10 @@ function AddCadidate(props) {
     }
     toast.success('Add caddidate success');
 
-    if (cadidates?.totalResults > 9 && cadidates?.totalResults % 10 === 0) {
+    if (
+      cadidates?.totalResults >= cadidates?.limit &&
+      cadidates?.totalResults % 10 === 0
+    ) {
       await setParams({ ...params, page: cadidates?.page + 1 });
     } else {
       await setParams({ ...params });

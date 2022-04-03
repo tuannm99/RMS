@@ -38,6 +38,7 @@ import Summary from './Summary';
 import EditCadidateProfile from '../edit_cadidate_profile';
 import Profile from './Profile';
 import Interview from './Interview';
+import { imgURL } from '../../../../utils/utils';
 
 const { TabPane } = Tabs;
 
@@ -71,16 +72,13 @@ function CadidateInfo(props) {
   };
 
   const handleReject = async () => {
-    console.log(id);
     const body = {
       status: 'reject',
     };
     await editCadidate({ id, body });
-    getCadidate(id);
+    await getCadidate(id);
     getAllCadidates(params);
   };
-
-  console.log(cadidate);
 
   const desc = ['contact', 'test', 'technical', 'cultureFit'];
 
@@ -105,7 +103,7 @@ function CadidateInfo(props) {
       stage: key,
     };
     await editCadidate({ id, body });
-    getCadidate(id);
+    await getCadidate(id);
     getAllCadidates(params);
   };
 
@@ -118,7 +116,6 @@ function CadidateInfo(props) {
       ))}
     </Menu>
   );
-
   return (
     <DrawerComponent
       onClose={onclose}
@@ -205,15 +202,10 @@ function CadidateInfo(props) {
                     />
                   </Col>
                   <Col span={24} className="pl-16 pr-16 apply">
-                    <p className="mb-0">OWNER</p>
-                    <Button
-                      className="owner-btn"
-                      shape="round"
-                      size="large"
-                      style={{ fontSize: 15 }}
-                    >
-                      Tuan Nguyen
-                    </Button>
+                    <p className="mb-0">CURRICULUM VITAE</p>
+                    <a
+                      href={`${imgURL}${cadidate?.resume?.cv?.path}`}
+                    >{`${imgURL}${cadidate?.resume?.cv?.path}`}</a>
                   </Col>
                 </Row>
                 <Divider />
