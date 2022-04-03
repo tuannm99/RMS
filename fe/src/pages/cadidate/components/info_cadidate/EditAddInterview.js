@@ -167,11 +167,15 @@ function EditAddInterview(props) {
                 }
               >
                 {interviewer &&
-                  interviewer.map((item) => (
-                    <Option value={item.id} key={item.id}>
-                      {item.fullName}
-                    </Option>
-                  ))}
+                  interviewer.map((item) => {
+                    return (
+                      item.role !== 'admin' && (
+                        <Option value={item.id} key={item.id}>
+                          {item.fullName}
+                        </Option>
+                      )
+                    );
+                  })}
               </Select>
             </Form.Item>
           </Col>
