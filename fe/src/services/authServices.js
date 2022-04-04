@@ -20,7 +20,7 @@ export function registerRequestService(params) {
 //create request logout
 export function logoutRequestService(params) {
   return request(`${BASE_API}/logout`, {
-    method: 'POST',
+    method: 'post',
     data: params,
   });
 }

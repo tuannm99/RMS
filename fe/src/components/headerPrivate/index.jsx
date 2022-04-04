@@ -13,15 +13,13 @@ import {
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './styles.css';
-import * as action from '../../redux/stores/auth/actions';
 import { imgURL } from '../../utils/utils';
+import { logoutRequestService } from '../../services/authServices';
 const { Header } = Layout;
 
 function HeaderPrivate(props) {
-  const { logoutRequest } = props;
   const { selectUserInfor } = props;
 
   const navigate = useNavigate();
@@ -34,7 +32,8 @@ function HeaderPrivate(props) {
     const params = {
       refreshToken: token,
     };
-    logoutRequest(params);
+    logoutRequestService(params);
+    localStorage.clear();
     navigate('/login');
   };
 
@@ -120,10 +119,5 @@ function HeaderPrivate(props) {
 const mapStateToProps = createStructuredSelector({
   selectUserInfor: selectUserInfor,
 });
-const mapDispatchToProps = (dispatch) => ({
-  logoutRequest: (payload) => dispatch(action.logoutRequest(payload)),
-});
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
-
-export default compose(withConnect)(HeaderPrivate);
+export default connect(mapStateToProps)(HeaderPrivate);

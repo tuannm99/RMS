@@ -164,3 +164,82 @@
   font-size: 50px;
   color: #ddd;
 }
+
+.content-interview {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px;
+  margin: 20px 0;
+  border-radius: 4px;
+  box-shadow: 5px 6px 7px #888888c9;
+  border-top: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+.content-interview:first-child {
+  margin-top: 20px;
+}
+
+.left-interview {
+  width: 200px;
+  border-right: 4px solid #ffb700;
+}
+
+.date-left-interview {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.time-left-interview {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.content-interview:hover {
+  background-color: rgba(221, 221, 221, 0.527);
+}
+
+.right-inteview {
+  font-size: 16px;
+  margin-left: 20px;
+}
+
+.name-right-inteview {
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 0;
+}
+
+.stage-right-inteview {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.sche-right-inteview {
+  margin-bottom: 0;
+  margin-top: 30px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.sche-right-inteview span {
+  font-weight: 600;
+}
+
+.content-interview:hover .interview-icon {
+  display: block;
+}
+
+.interview-icon {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  display: none;
+}
+
+.feedback {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}

@@ -1,30 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Col,
-  Row,
-  Form,
-  Input,
-  DatePicker,
-  Select,
-  Empty,
-  Avatar,
-} from 'antd';
+import { Button, Col, Row, Form, DatePicker, Select, Empty } from 'antd';
 import moment from 'moment';
 import { DrawerComponent } from '../../../../components';
 import { getAllUsersServices } from '../../../../services/employeeServices';
 import { toast } from 'react-toastify';
 import { hasResponseError } from '../../../../utils/utils';
-import { imgURL } from '../../../../utils/utils';
+import {
+  cadidate_Id,
+  cadidate,
+} from '../../../../redux/stores/cadidate/selectors';
+import {
+  getCadidate,
+  getAllCadidates,
+} from '../../../../redux/stores/cadidate/actions';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { addIntervierServices } from '../../../../services/cadidateServices';
 
 const { Option } = Select;
 
 function EditAddInterview(props) {
-  const { onclose, visible } = props;
+  const { onclose, visible, interviewerId, cadidate } = props;
   const [interviewer, setInterviewer] = useState();
+  const [form] = Form.useForm();
 
   useEffect(() => {
     getAllInterviewer();
+  }, []);
+
+  useEffect(() => {
+    if (interviewerId) {
+      return;
+    } else {
+      form.resetFields();
+    }
   }, []);
 
   const getAllInterviewer = async (params) => {
@@ -33,7 +43,6 @@ function EditAddInterview(props) {
       toast.error(`${res.data.message}`);
       return;
     }
-    console.log(res.data.results);
     setInterviewer(res.data.results);
   };
 
@@ -79,7 +88,27 @@ function EditAddInterview(props) {
     marginRight: '0',
   };
 
-  const onFinish = (values) => {};
+  const onFinish = async (values) => {
+    console.log(values);
+    let body = {
+      interviewer: values?.Interviewer,
+      interviewDate: values?.InterviewDate?._d.toISOString(),
+      stage: values?.Stages,
+      duration: values?.Duration,
+    };
+    console.log(values?.InterviewDate?._d.toISOString());
+    if (interviewerId) {
+      return;
+    } else {
+      const resAdd = await addIntervierServices(cadidate?.id, body);
+      if (hasResponseError(resAdd)) {
+        toast.error(resAdd.data.message);
+        return;
+      }
+      toast.success('Add schedule interview success!');
+    }
+    onclose();
+  };
 
   return (
     <DrawerComponent
@@ -96,7 +125,7 @@ function EditAddInterview(props) {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              name="InterviewDate "
+              name="InterviewDate"
               label="Interview Date "
               rules={[
                 { required: true, message: 'Please enter Interview Date !' },
@@ -168,11 +197,15 @@ function EditAddInterview(props) {
                 }
               >
                 {interviewer &&
-                  interviewer.map((item) => (
-                    <Option value={item.id} key={item.id}>
-                      {item.fullName}
-                    </Option>
-                  ))}
+                  interviewer.map((item) => {
+                    return (
+                      item.role !== 'admin' && (
+                        <Option value={item.id} key={item.id}>
+                          {item.fullName}
+                        </Option>
+                      )
+                    );
+                  })}
               </Select>
             </Form.Item>
           </Col>
@@ -190,4 +223,13 @@ function EditAddInterview(props) {
   );
 }
 
-export default EditAddInterview;
+const mapStateToProps = createStructuredSelector({
+  cadidate: cadidate,
+});
+const mapDispatchToProps = (dispatch) => ({
+  getCadidate: (payload) => dispatch(getCadidate(payload)),
+  getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(EditAddInterview);

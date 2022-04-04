@@ -75,12 +75,14 @@ function EditCadidateProfile(props) {
       firstName: values?.firstName,
       midName: values?.midName,
       lastName: values?.lastName,
-      fullName: `${values?.firstName} ${values?.midName} ${values?.lastName}`,
+      fullName: `${values?.firstName} ${
+        values?.midName === undefined ? '' : values?.midName
+      } ${values?.lastName}`,
       email: values?.email,
       phone: values?.phone,
       resume: {
-        CV: '',
         hyperlink: values?.hyperlink,
+        cv: cadidate?.resume?.cv,
       },
     };
     if (disableEmp) {
@@ -109,7 +111,7 @@ function EditCadidateProfile(props) {
       };
     }
     await editCadidate({ id, body });
-    getCadidate(id);
+    await getCadidate(id);
     getAllCadidates(params);
     props.handleCancel();
   };
