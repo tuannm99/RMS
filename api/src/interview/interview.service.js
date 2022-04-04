@@ -31,6 +31,9 @@ const getAllInterview = async (filter, options) => {
   options.populate.push({
     path: 'candidateId',
   });
+  options.populate.push({
+    path: 'scheduleBy',
+  });
   const interviews = await Interview.paginate(filter, options);
   return interviews;
 };
