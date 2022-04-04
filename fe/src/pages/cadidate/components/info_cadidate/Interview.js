@@ -5,6 +5,7 @@ import EditAddInterview from './EditAddInterview';
 
 function Interview(props) {
   const [visible, setVisible] = useState(false);
+  const [interviewerId, setInterviewerId] = useState(null);
 
   const onClose = () => {
     setVisible(false);
@@ -20,7 +21,10 @@ function Interview(props) {
           <Button
             type="primary"
             className="fr"
-            onClick={() => setVisible(true)}
+            onClick={() => {
+              setVisible(true);
+              setInterviewerId(null);
+            }}
           >
             Schedule Interview
           </Button>
@@ -119,7 +123,11 @@ function Interview(props) {
           </div>
         </Col>
       </Row>
-      <EditAddInterview visible={visible} onclose={onClose} />
+      <EditAddInterview
+        visible={visible}
+        onclose={onClose}
+        interviewerId={interviewerId}
+      />
     </>
   );
 }
