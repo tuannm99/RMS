@@ -26,6 +26,7 @@ const jobSchema = new mongoose.Schema({
   jobType: { required: true, type: String },
   location: { type: String },
   jobDescription: { type: String },
+  shortDes: { type: String },
   skill: { type: String },
   experience: { type: String },
   minSalary: { type: Number, default: 0 },

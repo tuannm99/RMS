@@ -20,18 +20,20 @@ afterAll(async () => {
 const userMock = {
   username: 'employee1ss23',
   password: '123@123ab',
-  email: 'employesea@gmail.com',
+  email: 'employee2@gmail.com',
   role: 'employee',
   firstName: 'tuan',
+  lastName: 'Nguyen',
   fullName: 'Nguyen Minh Tuan',
 };
 
 const userMock2 = {
   username: 'tuan23',
   password: '123@1ssa23ab',
-  email: 'employes@gmail.com',
+  email: 'employee1@gmail.com',
   role: 'employee',
-  firstName: 'tuan',
+  firstName: 'tuan2',
+  lastName: 'Nguyen2',
   fullName: 'Nguyen Tat Thanh',
 };
 

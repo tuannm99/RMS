@@ -29,7 +29,7 @@ export function hasResponseError(response, action, ...params) {
         refreshToken: refreshToken,
       })
       .then(() => {
-        alert('Authentication, please login again!');
+        // alert('Authentication, please login again!');
         window.location.pathname = '/login';
         localStorage.clear();
       });

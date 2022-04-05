@@ -1,0 +1,52 @@
+@startuml interviewClass
+!theme reddress-lightblue
+
+skinparam classAttributeIconSize 0
+class interview.controller{
+  - {field} userService: object
+  - {field} interviewService: object
+
+  + {method} addInterview(req: express.Request, res: express.Response): void
+  + {method} getAllInterview(req: express.Request, res: express.Response): void
+  + {method} getInterview(req: express.Request, res: express.Response): void
+  + {method} editInterview(req: express.Request, res: express.Response): void
+  + {method} editInterviewFeedback(req: express.Request, res: express.Response): void
+  + {method} deleteInterview(req: express.Request, res: express.Response): void
+}
+
+class interview.service{
+  + {method} createInterview(interviewData: object): void
+  + {method} getAllInterview(filter: object, options: object): void
+  + {method} getInterviewById(id: string): void
+  + {method} editInterviewById(id: string, interviewData: object): void
+  + {method} deleteInterviewById(id: string): void
+}
+
+class interview.router{
+  + {field} router: express.Router
+}
+
+class user.service{
+  + {method} createUser(userBody: object): void
+  + {method} getUserByUsername(username: string): void
+  + {method} getUsers(filter: object, options: object): void
+  + {method} getUserById(id: string): void
+  + {method} updateUserById(userId: string, updateBody: object): void
+  + {method} deleteUserById(userId: string): void
+}
+
+
+class schema.Interview {
+
+}
+
+class schema.User {
+
+}
+
+interview.router ..> interview.controller
+interview.controller ..> interview.service
+interview.controller ..> user.service
+interview.service ..> schema.Interview
+user.service ..> schema.User
+@enduml

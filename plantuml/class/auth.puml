@@ -64,8 +64,6 @@ auth.controller ..> auth.service
 auth.router ..>	 auth.controller
 auth.service ..> user.service
 auth.service ..> token.service
-auth.controller ..> user.service
-auth.controller ..> token.service
 user.service ..> schema.User
 token.service ..> schema.Token
 @enduml

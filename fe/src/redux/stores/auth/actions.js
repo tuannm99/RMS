@@ -3,8 +3,6 @@ import {
   SAVE_LOADING,
   SAVE_LOGIN_DATA,
   SET_LOADING,
-  LOGOUT_REQUEST,
-  SAVE_LOGOUT_REQUEST,
 } from './constants';
 
 export function setLoading(payload) {
@@ -26,20 +24,6 @@ export const loginRequest = (dispatch) => (payload) =>
 export function saveDataLogin(payload) {
   return {
     type: SAVE_LOGIN_DATA,
-    payload,
-  };
-}
-
-export function logoutRequest(payload) {
-  return {
-    type: LOGOUT_REQUEST,
-    payload,
-  };
-}
-
-export function saveLogoutRequest(payload) {
-  return {
-    type: SAVE_LOGOUT_REQUEST,
     payload,
   };
 }
