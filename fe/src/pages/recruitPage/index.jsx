@@ -11,6 +11,8 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import * as action from '../../redux/stores/job/actions';
+import { imgURL } from '../../utils/utils';
+import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import {
   Row,
   Col,
@@ -28,7 +30,7 @@ function RecruitPage(props) {
   const [dataJobs, setDataJobs] = useState();
   const [visible, setVisible] = useState(false);
   const { Option } = Select;
-
+  const { userAccount } = props;
   const [param, setParam] = useState({
     limit: 10,
     page: 1,
@@ -64,7 +66,6 @@ function RecruitPage(props) {
         });
       }
       setDataJobs(res.data);
-      console.log(res.data);
     });
   };
 
@@ -111,7 +112,7 @@ function RecruitPage(props) {
       </Row>
       <Divider className="mb-0 mt-12" />
       <Row className="mt-12">
-        <Col span={12}>
+        <Col span={20}>
           <Select
             defaultValue="allJob"
             style={{ width: 120 }}
@@ -124,8 +125,17 @@ function RecruitPage(props) {
             <Option value="deleted">deleted</Option>
           </Select>
         </Col>
-        <Col span={12}>
-          <Button className="fr" onClick={showDrawp}>
+        <Col span={3}>
+          <Link to={`/PublicJob`} target="_blank">
+            <Button type="primary">Career</Button>
+          </Link>
+        </Col>
+        <Col span={1}>
+          <Button
+            className="fr"
+            onClick={showDrawp}
+            disabled={userAccount.role !== 'hiringManager' && true}
+          >
             Add Job Posting
           </Button>
         </Col>
@@ -157,10 +167,13 @@ function RecruitPage(props) {
                       </div>
                     }
                     actions={[
-                      <div>
-                        <GlobalOutlined key="global" className="mr-8" />
-                        {item.status}
-                      </div>,
+                      <Link to={`/PublicJob/${item.id}`} target="_blank">
+                        <div>
+                          <GlobalOutlined key="global" className="mr-8" />
+                          {item.status}
+                        </div>
+                      </Link>,
+
                       <Link to={`/recruit/${item.id}`}>
                         <div>Details</div>
                       </Link>,
@@ -208,6 +221,7 @@ function RecruitPage(props) {
 
 const mapStateToProps = createStructuredSelector({
   jobId: selectJobId,
+  userAccount: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({
   setJobId: (payload) => dispatch(action.setJobId(payload)),

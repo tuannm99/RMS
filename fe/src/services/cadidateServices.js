@@ -86,3 +86,15 @@ export const updateIntervierServices = (id, body) => {
     data: body,
   });
 };
+
+/**
+ * create request get all list Cadidate
+ * @param {*} params
+ * @returns
+ */
+export function getAllInterviewsServices(id, params) {
+  return request(`${BASE_API}/candidates/${id}/interview`, {
+    method: 'GET',
+    params: params,
+  });
+}
