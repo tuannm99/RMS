@@ -31,8 +31,9 @@ function UserEditAdd({
   onclose,
   visible,
   user,
-  getAlldata,
+  users,
   params,
+  setParams,
   checked,
   setChecked,
   account,
@@ -145,6 +146,7 @@ function UserEditAdd({
         }
         toast.success('Edit success!');
       });
+      setParams({ ...params });
     } else {
       await registerRequestService(body).then((res) => {
         if (hasResponseError(res)) {
@@ -153,8 +155,15 @@ function UserEditAdd({
         }
         toast.success('Add success');
       });
+      if (
+        users.totalResults >= users.limit &&
+        users.totalResults % users.limit === 0
+      ) {
+        await setParams({ ...params, page: users.page + 1 });
+      } else {
+        await setParams({ ...params });
+      }
     }
-    getAlldata(params);
     onclose();
     setChecked(false);
   };

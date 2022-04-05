@@ -178,18 +178,10 @@ function EmployeePage(props) {
       return;
     }
     toast.success('Delete success!');
-    getAlldata(params);
-    const res1 = await services.getAllUsersServices();
-    if (hasResponseError(res1)) {
-      toast.error(`${res.data.message}`);
-      return;
-    }
-    console.log(res1.data);
-    if (res1.data.totalResults % params.limit === 0) {
-      setParams({ ...params, page: params.page - 1 });
-      getAlldata({ ...params, page: params.page - 1 });
+    if (users.totalResults > 9 && users.totalResults % users.limit === 1) {
+      setParams({ ...params, page: users.page - 1 });
     } else {
-      getAlldata(params);
+      setParams({ ...params });
     }
   };
 
@@ -383,7 +375,8 @@ function EmployeePage(props) {
         visible={visibleEditUser}
         onclose={onCloseEditUser}
         user={user}
-        getAlldata={getAlldata}
+        users={users}
+        setParams={setParams}
         params={params}
         checked={checked}
         setChecked={setChecked}

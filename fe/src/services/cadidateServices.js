@@ -62,3 +62,27 @@ export const addCadidateServices = (body) => {
     data: body,
   });
 };
+
+/**
+ * create request add interview
+ * @param {*} body
+ * @returns
+ */
+export const addIntervierServices = (id, body) => {
+  return request(`${BASE_API}/candidates/${id}/interview`, {
+    method: 'POST',
+    data: body,
+  });
+};
+
+/**
+ * create request update interview
+ * @param {*} body
+ * @returns
+ */
+export const updateIntervierServices = (id, body) => {
+  return request(`${BASE_API}/candidates/${id}/interview`, {
+    method: 'PUT',
+    data: body,
+  });
+};

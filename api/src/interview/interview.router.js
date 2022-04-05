@@ -4,7 +4,12 @@ const { checkAuth } = require('../core/global.middleware');
 // const { ROLES } = require('../constants');
 const interviewController = require('./interview.controller');
 
-router.get('/:candidateId/interview', checkAuth(), interviewController.getAllInterview);
+router.get('/interview/all', checkAuth(), interviewController.getAllInterview);
+router.get(
+  '/:candidateId/interview',
+  checkAuth(),
+  interviewController.getAllInterviewByCandidateId
+);
 router.get('/:candidateId/interview/:id', checkAuth(), interviewController.getInterview);
 router.post('/:candidateId/interview', checkAuth(), interviewController.addInterview);
 router.put('/:candidateId/interview/:id', checkAuth(), interviewController.editInterview);

@@ -32,6 +32,19 @@ const getAllInterview = catchAsync(async (req, res) => {
 });
 
 /**
+ * middleware show all interview by candidateId
+ * @param {object} req
+ * @param {object} res
+ */
+const getAllInterviewByCandidateId = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['scheduleBy', 'interviewDate', 'interviewer']);
+  filter.candidateId = req.params.candidateId;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const listInterview = await interviewService.getAllInterview(filter, options);
+  res.status(httpStatus.OK).json(listInterview);
+});
+
+/**
  * middleware get interview by id
  * @param {object} req
  * @param {object} res
@@ -74,6 +87,7 @@ const deleteInterview = catchAsync(async (req, res) => {
 module.exports = {
   addInterview,
   getAllInterview,
+  getAllInterviewByCandidateId,
   getInterview,
   editInterview,
   editInterviewFeedback,

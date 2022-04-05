@@ -26,6 +26,7 @@ import {
   customerTableHead,
   renderHeadTable,
 } from './components/render';
+import EditAddInterview from './components/info_cadidate/EditAddInterview';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -36,6 +37,7 @@ function CadidatePage(props) {
   const [visibleAddCadi, setVisibleAddCadi] = useState(false);
   const [visibleInfoCadi, setVisibleInfoCadi] = useState(false);
   const [jobs, setjobs] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   const payload = {
     limit: 10,
@@ -82,18 +84,16 @@ function CadidatePage(props) {
       return;
     }
     toast.success('Delete success!');
-    const res1 = await services.getAllCadidatesServices();
-    if (hasResponseError(res1)) {
-      toast.error(`${res.data.message}`);
-      return;
-    }
-    if (res1.data.totalResults % params.limit === 0) {
-      setParams({ ...params, page: params.page - 1 });
+
+    if (
+      cadidates?.totalResults > 9 &&
+      cadidates?.totalResults % params.limit === 1
+    ) {
+      setParams({ ...params, page: cadidates?.page - 1 });
     } else {
       setParams({ ...params });
     }
   };
-
   /**
    * change page size
    * @param {*} pagination
@@ -132,6 +132,10 @@ function CadidatePage(props) {
 
   const onSearch = (value) => {
     setParams({ ...params, fullName: value });
+  };
+
+  const onClose = () => {
+    setVisible(false);
   };
 
   return (
@@ -224,7 +228,8 @@ function CadidatePage(props) {
                 index,
                 handleDelete,
                 setVisibleInfoCadi,
-                setCadidateId
+                setCadidateId,
+                setVisible
               )
             }
           />
@@ -234,12 +239,14 @@ function CadidatePage(props) {
         visible={visibleAddCadi}
         onclose={onCloseAddCadi}
         params={params}
+        setParams={setParams}
       />
       <CadidateInfo
         visible={visibleInfoCadi}
         onclose={onCloseInfoCadi}
         params={params}
       />
+      <EditAddInterview visible={visible} onclose={onClose} />
     </>
   );
 }
