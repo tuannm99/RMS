@@ -21,7 +21,7 @@ import { addIntervierServices } from '../../../../services/cadidateServices';
 const { Option } = Select;
 
 function EditAddInterview(props) {
-  const { onclose, visible, interviewerId, cadidate } = props;
+  const { onclose, visible, interviewerId, cadidate, totalResults } = props;
   const [interviewer, setInterviewer] = useState();
   const [form] = Form.useForm();
 
@@ -96,18 +96,23 @@ function EditAddInterview(props) {
       stage: values?.Stages,
       duration: values?.Duration,
     };
-    console.log(values?.InterviewDate?._d.toISOString());
     if (interviewerId) {
       return;
     } else {
-      const resAdd = await addIntervierServices(cadidate?.id, body);
-      if (hasResponseError(resAdd)) {
-        toast.error(resAdd.data.message);
+      if (totalResults > 4) {
+        onclose();
+        toast.error('Each interviewer can only add 5 schedule.');
         return;
+      } else {
+        const resAdd = await addIntervierServices(cadidate?.id, body);
+        if (hasResponseError(resAdd)) {
+          toast.error(resAdd.data.message);
+          return;
+        }
+        toast.success('Add schedule interview success!');
+        onclose();
       }
-      toast.success('Add schedule interview success!');
     }
-    onclose();
   };
 
   return (
