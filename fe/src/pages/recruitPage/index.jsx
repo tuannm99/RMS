@@ -112,7 +112,7 @@ function RecruitPage(props) {
       </Row>
       <Divider className="mb-0 mt-12" />
       <Row className="mt-12">
-        <Col span={21}>
+        <Col span={20}>
           <Select
             defaultValue="allJob"
             style={{ width: 120 }}
@@ -125,7 +125,7 @@ function RecruitPage(props) {
             <Option value="deleted">deleted</Option>
           </Select>
         </Col>
-        <Col span={2}>
+        <Col span={3}>
           <Link to={`/PublicJob`} target="_blank">
             <Button type="primary">Career</Button>
           </Link>
