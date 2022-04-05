@@ -240,10 +240,20 @@ function DashboardPage(props) {
             />
           </TabPane>
           <TabPane tab="Upcoming" key="2">
-            Content of Tab Upcoming
+            <Table
+              headData={customerTableHead}
+              renderHead={(item, index) => renderHeadTable(item, index)}
+              bodyData={dataInterview}
+              renderBody={(item, index) => renderBodyTable(item, index)}
+            />
           </TabPane>
-          <TabPane tab="Completed" key="3">
-            Content of Tab Completed
+          <TabPane tab="Recently" key="3">
+            <Table
+              headData={customerTableHead}
+              renderHead={(item, index) => renderHeadTable(item, index)}
+              bodyData={dataInterview}
+              renderBody={(item, index) => renderBodyTable(item, index)}
+            />
           </TabPane>
         </Tabs>
       </div>

@@ -11,7 +11,7 @@ export function getAllPublishJob(params) {
 }
 //get job detail
 export function getPublishJobDetail(id) {
-  return request(`${BASE_API}/Jobs/${id}`, {
+  return request(`${BASE_API}/careers/jobs/${id}`, {
     method: 'GET',
   });
 }
