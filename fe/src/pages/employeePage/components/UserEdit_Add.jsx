@@ -165,6 +165,7 @@ function UserEditAdd({
       } else {
         await setParams({ ...params });
       }
+      form.resetFields();
     }
     onclose();
     setChecked(false);

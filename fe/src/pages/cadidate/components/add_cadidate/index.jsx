@@ -122,12 +122,13 @@ function AddCadidate(props) {
     } else {
       await setParams({ ...params });
     }
+    form.resetFields();
     onclose();
   };
 
   return (
     <DrawerComponent
-      title="ADD CADIDATE"
+      title="ADD CANDIDATE"
       onClose={onclose}
       visible={visible}
       width={720}
