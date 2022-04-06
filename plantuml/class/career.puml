@@ -1,0 +1,49 @@
+@startuml careerClass
+!theme reddress-lightblue
+
+skinparam classAttributeIconSize 0
+class career.controller{
+    - {field} jobService: object
+
+    + {method} getAllPublishJobsHandler(req: express.Request, res: express.Response): void
+    + {method} getPublishedJobHandler(req: express.Request, res: express.Response): void
+    + {method} addResumeHandler(req: express.Request, res: express.Response): void
+}
+
+class job.service{
+    + {method} createJob(jobData: Object): void
+    + {method} getAllJob(filter: Object, options: Object): void
+    + {method} getAllPublishedJob(filter: Object, options: Object): void
+    + {method} getJobById(id: string): void
+    + {method} editJobById(id: string, jobData: Object): void
+    + {method} deleteJobById(id: string): void
+}
+
+class candidate.service{
+    + {method} createCandidate(candidatePayload: Object, cv: file): void
+    + {method} getAllCandidate(filter: Object, options: Object): void
+    + {method} getCandidateById(id: string): void
+    + {method} editCandidateById(id: string, candidateData: Object): void
+    + {method} deleteCandidateById(id: string): void
+}
+
+class career.router{
+    + {field} router: express.Router
+}
+
+
+class schema.Job {
+
+}
+
+class schema.Candidate {
+
+}
+
+
+career.router ..> career.controller
+career.controller ..> job.service
+career.controller ..> candidate.service
+job.service ..> schema.Job
+candidate.service ..> schema.Candidate
+@enduml

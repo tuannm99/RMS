@@ -24,6 +24,9 @@
   color: black;
   font-size: 18px;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 30px;
 }
 
 .public-title h3 {

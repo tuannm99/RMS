@@ -145,20 +145,13 @@ function DetailRecruitPage(props) {
         >
           <Form
             layout="vertical"
-            hideRequiredMark
             onFinish={onFinish}
             form={formModal}
             name="formModal"
           >
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item
-                  name="title"
-                  label="Title Job"
-                  rules={[
-                    { required: true, message: 'Please enter user name' },
-                  ]}
-                >
+                <Form.Item name="title" label="Title Job">
                   <Input placeholder="Please enter user name" />
                 </Form.Item>
               </Col>

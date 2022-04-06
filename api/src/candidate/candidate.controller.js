@@ -11,7 +11,7 @@ const { pick } = require('../core/utils');
  */
 const addCandidate = catchAsync(async (req, res) => {
   const candidatePayload = JSON.parse(req.body.candidate);
-  const candidate = await candidateService.createCandidate(candidatePayload, req.file);
+  const candidate = await candidateService.createCandidate({ ...candidatePayload, cv: req.file });
   res.status(httpStatus.OK).json(candidate);
 });
 
@@ -43,7 +43,14 @@ const getCandidate = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const editCandidate = catchAsync(async (req, res) => {
-  const candidateEdited = await candidateService.editCandidateById(req.params.id, req.body);
+  const candidateBody = {};
+  if (req.body.candidate) {
+    Object.assign(candidateBody, JSON.parse(req.body.candidate));
+  }
+  if (req.file) {
+    Object.assign(candidateBody, { cv: req.file });
+  }
+  const candidateEdited = await candidateService.editCandidateById(req.params.id, candidateBody);
   res.status(httpStatus.OK).json(candidateEdited);
 });
 

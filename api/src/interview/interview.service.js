@@ -27,12 +27,15 @@ const getAllInterview = async (filter, options) => {
   options.populate = [];
   options.populate.push({
     path: 'interviewer',
+    select: 'fullName',
   });
   options.populate.push({
     path: 'candidateId',
+    select: 'fullName',
   });
   options.populate.push({
     path: 'scheduleBy',
+    select: 'fullName',
   });
   const interviews = await Interview.paginate(filter, options);
   return interviews;
@@ -64,13 +67,6 @@ const editInterviewById = async (id, interviewData) => {
   }
   return interview;
 };
-
-/**
- * edit interview feedback
- * @param {objectId} id
- * @param {object} interviewData
- * @returns {Promise<Interview>}
- */
 
 /**
  * delete interview by id

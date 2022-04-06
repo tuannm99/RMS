@@ -16,12 +16,25 @@ import {
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { addIntervierServices } from '../../../../services/cadidateServices';
+import {
+  addIntervierServices,
+  getAllInterviewsServices,
+  getDetailInterviewsServices,
+} from '../../../../services/cadidateServices';
 
 const { Option } = Select;
 
 function EditAddInterview(props) {
-  const { onclose, visible, interviewerId, cadidate, totalResults } = props;
+  const {
+    onclose,
+    visible,
+    interviewerId,
+    cadidate,
+    totalResults,
+    setTotalResults,
+    setInterviews,
+    setLoading,
+  } = props;
   const [interviewer, setInterviewer] = useState();
   const [form] = Form.useForm();
 
@@ -31,12 +44,19 @@ function EditAddInterview(props) {
 
   useEffect(() => {
     if (interviewerId) {
-      return;
+      getDetailInterviewsServices(cadidate?.id, interviewerId).then((res) => {
+        console.log(moment(res?.data?.interviewDate));
+        form.setFieldsValue({
+          Interviewer: res?.data?.interviewer,
+          interviewDate: moment(res?.data?.interviewDate),
+          Stages: res?.data?.stage,
+          Duration: res?.data?.duration,
+        });
+      });
     } else {
       form.resetFields();
     }
-  }, []);
-
+  }, [interviewerId, cadidate?.id, form]);
   const getAllInterviewer = async (params) => {
     const res = await getAllUsersServices(params);
     if (hasResponseError(res)) {
@@ -92,7 +112,7 @@ function EditAddInterview(props) {
     console.log(values);
     let body = {
       interviewer: values?.Interviewer,
-      interviewDate: values?.InterviewDate?._d.toISOString(),
+      interviewDate: values?.interviewDate?._d.toISOString(),
       stage: values?.Stages,
       duration: values?.Duration,
     };
@@ -109,8 +129,15 @@ function EditAddInterview(props) {
           toast.error(resAdd.data.message);
           return;
         }
+        setLoading(true);
+        getAllInterviewsServices(cadidate?.id).then((res) => {
+          setInterviews(res.data.results);
+          setTotalResults(res.data.totalResults);
+        });
         toast.success('Add schedule interview success!');
         onclose();
+        setLoading(false);
+        form.resetFields();
       }
     }
   };
@@ -125,12 +152,13 @@ function EditAddInterview(props) {
       <Form
         layout="vertical"
         onFinish={onFinish}
+        form={form}
         initialValues={{ prefix: '+84' }}
       >
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              name="InterviewDate"
+              name="interviewDate"
               label="Interview Date "
               rules={[
                 { required: true, message: 'Please enter Interview Date !' },
@@ -219,11 +247,6 @@ function EditAddInterview(props) {
           Add Schedule
         </Button>
       </Form>
-      <Row>
-        <Col span={24}>
-          <Empty description={false} style={stylesEmpty} />
-        </Col>
-      </Row>
     </DrawerComponent>
   );
 }
