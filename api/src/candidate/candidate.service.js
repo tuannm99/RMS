@@ -7,12 +7,7 @@ const { Candidate, Job } = require('../core/db/schema');
  * @param {Object} candidatePayload
  * @returns {Promise<Candidate>}
  */
-const createCandidate = async (candidatePayload, cv) => {
-  if (!candidatePayload.resume) {
-    candidatePayload.resume = { cv };
-  } else {
-    candidatePayload.resume.cv = cv;
-  }
+const createCandidate = async (candidatePayload) => {
   const candidate = new Candidate(candidatePayload);
   const job = await Job.findById(candidate.jobId);
   job.candidateId.push(candidate._id);
