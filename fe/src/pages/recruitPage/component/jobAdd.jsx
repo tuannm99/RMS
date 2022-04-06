@@ -38,7 +38,6 @@ function JobAdd({ onclose, visible, job, loadData }) {
     >
       <Form
         layout="vertical"
-        hideRequiredMark
         onFinish={onFinish}
         form={formModal}
         name="formModal"
@@ -75,7 +74,7 @@ function JobAdd({ onclose, visible, job, loadData }) {
             <Form.Item
               name="jobType"
               label="Job Type"
-              rules={[{ required: true, message: 'Please Enter Job Type' }]}
+              rules={[{ required: true, message: 'Please enter First Name!' }]}
             >
               <Select style={{ width: 300 }}>
                 <Option value="Full Time">Full Time</Option>
@@ -84,6 +83,7 @@ function JobAdd({ onclose, visible, job, loadData }) {
               </Select>
             </Form.Item>
           </Col>
+
           <Col span={12}>
             <Form.Item
               name="location"

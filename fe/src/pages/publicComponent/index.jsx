@@ -17,19 +17,21 @@ function Home(props) {
   const [param, setParam] = useState({
     limit: 6,
     page: 1,
-    search: '',
+    // title: '',
   });
 
+  useEffect(() => {
+    loadDataJobs(param);
+  }, [param]);
+
   const onSearch = (value) => {
-    setParam({ ...param, search: value });
+    if (value.trim() !== '') {
+      setParam({ ...param, title: value });
+    } else setParam({ ...param, title: null });
   };
 
-  useEffect(() => {
-    loadDataJobs();
-  }, []);
-
-  const loadDataJobs = () => {
-    getAllPublishJob().then((res) => {
+  const loadDataJobs = (param) => {
+    getAllPublishJob(param).then((res) => {
       if (hasResponseError(res)) {
         toast.success(`${res.data.message}`, {
           autoClose: 3000,
@@ -40,7 +42,16 @@ function Home(props) {
   };
 
   function handleChange(value) {
-    console.log(`selected ${value}`);
+    if (value === 'All') {
+      const obj = { ...param };
+      delete obj['department'];
+      setParam(obj);
+    } else {
+      setParam({
+        ...param,
+        department: value,
+      });
+    }
   }
 
   const handleChangeData = (pagination) => {
@@ -66,9 +77,13 @@ function Home(props) {
               style={{ width: 240 }}
               onChange={handleChange}
             >
-              <Option value="Sales">Salessss</Option>
-              <Option value="Finance">Finance</Option>
-              <Option value="Yiminghe">yiminghe</Option>
+              <Option value="All">All</Option>
+              <Option value="administration">Administrtion</Option>
+              <Option value="finance">Finance</Option>
+              <Option value="marketing">Maketing</Option>
+              <Option value="sale">Sale</Option>
+              <Option value="engineering">Engineering</Option>
+              <Option value="humanResources">HumanResources</Option>
             </Select>
           </div>
           <div className="public-Search">
@@ -77,6 +92,7 @@ function Home(props) {
               allowClear
               onSearch={onSearch}
               style={{ width: 300 }}
+              enterButton
             />
           </div>
         </div>

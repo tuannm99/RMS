@@ -8,7 +8,12 @@ const candidateController = require('./candidate.controller');
 router.get('/', checkAuth(), candidateController.getAllCandidate);
 router.get('/:id', checkAuth(), candidateController.getCandidate);
 router.post('/', checkAuth(), uploadFile.single('cv'), candidateController.addCandidate);
-router.put('/:id', checkAuth(ROLES.hiringManager), candidateController.editCandidate);
+router.put(
+  '/:id',
+  checkAuth(ROLES.hiringManager),
+  uploadFile.single('cv'),
+  candidateController.editCandidate
+);
 // TODO: update candidate status, update stages
 
 //

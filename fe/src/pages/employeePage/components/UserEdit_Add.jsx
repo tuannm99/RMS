@@ -130,6 +130,8 @@ function UserEditAdd({
       },
     };
     if (user) {
+      delete body.password;
+      delete body.username;
       if (fileList) {
         formRes.append('avatar', fileList);
         await services.updateImgUsersServices(user, formRes).then((res) => {
@@ -281,54 +283,56 @@ function UserEditAdd({
                 { min: 6, message: 'Username must be minimum 6 characters.' },
               ]}
             >
-              <Input placeholder="Enter user name" />
+              <Input placeholder="Enter user name" disabled={user && true} />
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name="password"
-              label="Password"
-              hasFeedback
-              rules={[
-                { required: true, message: 'Please input your password!' },
-                { min: 8, message: 'Password must be minimum 8 characters.' },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="confirm"
-              label="Confirm Password"
-              dependencies={['password']}
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: 'Please confirm your password!',
-                },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue('password') === value) {
-                      return Promise.resolve();
-                    }
-
-                    return Promise.reject(
-                      new Error(
-                        'The two passwords that you entered do not match!'
-                      )
-                    );
+        {!user && (
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="password"
+                label="Password"
+                hasFeedback
+                rules={[
+                  { required: true, message: 'Please input your password!' },
+                  { min: 8, message: 'Password must be minimum 8 characters.' },
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="confirm"
+                label="Confirm Password"
+                dependencies={['password']}
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please confirm your password!',
                   },
-                }),
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-          </Col>
-        </Row>
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+
+                      return Promise.reject(
+                        new Error(
+                          'The two passwords that you entered do not match!'
+                        )
+                      );
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         <Divider orientation="left" plain>
           Contact
         </Divider>

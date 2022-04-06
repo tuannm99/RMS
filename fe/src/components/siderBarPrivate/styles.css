@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Press+Start+2P&family=Ultra&display=swap');
+
 .logo > a > img {
-  width: 32px;
-  height: 32px;
-  margin: 0 16px;
+  width: 44px;
+  height: 41px;
+  margin: 0 18px;
 }
 .logo {
   padding: 16px 0;
@@ -11,5 +13,9 @@
   width: 100%;
 }
 .logo > a > p {
-  color: rgb(32, 194, 18);
+  color: #cbb26b;
+  font-family: 'Ultra', serif;
+}
+.siderbar-logo {
+  padding-top: 5px;
 }
