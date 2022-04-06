@@ -95,7 +95,7 @@ function Login(props) {
                   htmlType="submit"
                   className="login-form-button"
                 >
-                  {isLoading && <Spin />} Log in
+                  {isLoading && <Spin />} Login
                 </Button>
               </Form.Item>
             </Form>
