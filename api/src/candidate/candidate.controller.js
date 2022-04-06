@@ -43,7 +43,16 @@ const getCandidate = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const editCandidate = catchAsync(async (req, res) => {
-  const candidateEdited = await candidateService.editCandidateById(req.params.id, req.body);
+  const candidatePayload = JSON.parse(req.body.candidate);
+  const cv = req.file;
+  if (cv) {
+    if (!candidatePayload.resume) {
+      candidatePayload.resume = { cv };
+    } else {
+      candidatePayload.resume.cv = cv;
+    }
+  }
+  const candidateEdited = await candidateService.editCandidateById(req.params.id, candidatePayload);
   res.status(httpStatus.OK).json(candidateEdited);
 });
 
