@@ -44,7 +44,6 @@ function DashboardPage(props) {
         });
       }
       setDataInterview(res.data.results);
-      console.log(dataInterview);
     });
   };
 
@@ -152,7 +151,7 @@ function DashboardPage(props) {
           overflow: 'hidden',
           textOverflow: 'ellipsis',
         },
-        content: 'Ngu Lon',
+        content: 'Chart',
       },
     },
   };

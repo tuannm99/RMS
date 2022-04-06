@@ -15,7 +15,6 @@ function HomeDetail(props) {
   const fetchJob = async () => {
     const jobDetail = await getPublishJobDetail(id);
     setJob(jobDetail.data);
-    console.log(job);
   };
 
   return (
