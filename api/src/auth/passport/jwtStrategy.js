@@ -13,7 +13,6 @@ const jwtOptions = {
 };
 
 exports.jwtStrategy = new JwtStrategy(jwtOptions, async (jwtPayload, done) => {
-  logger.info('payload received', jwtPayload);
   try {
     if (jwtPayload.type !== TOKEN_TYPES.access) {
       throw new Error('Invalid Token Type');

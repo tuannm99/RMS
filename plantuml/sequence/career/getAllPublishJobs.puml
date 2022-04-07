@@ -1,0 +1,33 @@
+@startuml getAllPublishJob
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  careerController
+boundary jobService
+database Mongodb
+
+
+User -> UI: get all publish job
+activate UI
+UI -> careerController: call api
+deactivate UI
+activate careerController
+careerController -> careerController: checkAuth()
+careerController -> jobService: getAllPublishedJob()
+activate jobService
+jobService -> Mongodb: find()
+activate Mongodb
+Mongodb -> Mongodb: Validate
+Mongodb --> jobService: success
+deactivate Mongodb
+jobService --> careerController: jobData
+deactivate jobService
+careerController --> UI: jobData
+deactivate careerController
+activate UI
+UI --> User: display data
+deactivate UI
+
+@enduml

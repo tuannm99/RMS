@@ -98,3 +98,12 @@ export function getAllInterviewsServices(id, params) {
     params: params,
   });
 }
+
+export function getDetailInterviewsServices(cadidateId, interviewId) {
+  return request(
+    `${BASE_API}/candidates/${cadidateId}/interview/${interviewId}`,
+    {
+      method: 'GET',
+    }
+  );
+}

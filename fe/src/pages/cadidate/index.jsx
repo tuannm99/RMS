@@ -182,7 +182,7 @@ function CadidatePage(props) {
             userAccount?.role === 'hiringManager') &&
             jobId !== '' && (
               <Button onClick={() => setVisibleAddCadi(true)}>
-                Add Cadidate
+                Add Candidate
               </Button>
             )}
         </Col>
@@ -229,7 +229,8 @@ function CadidatePage(props) {
                 handleDelete,
                 setVisibleInfoCadi,
                 setCadidateId,
-                setVisible
+                setVisible,
+                userAccount
               )
             }
           />
