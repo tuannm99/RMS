@@ -167,11 +167,11 @@ function CadidateInfo(props) {
                     </p>
                     <p>
                       <a
-                        href={cadidate?.resume?.hyperlink}
+                        href={cadidate?.hyperlink}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {cadidate?.resume?.hyperlink}
+                        {cadidate?.hyperlink}
                       </a>
                     </p>
                     <p>
@@ -204,8 +204,8 @@ function CadidateInfo(props) {
                   <Col span={24} className="pl-16 pr-16 apply">
                     <p className="mb-0">CURRICULUM VITAE</p>
                     <a
-                      href={`${imgURL}${cadidate?.resume?.cv?.path}`}
-                    >{`${imgURL}${cadidate?.resume?.cv?.path}`}</a>
+                      href={`${imgURL}${cadidate?.cv?.path}`}
+                    >{`${imgURL}${cadidate?.cv?.path}`}</a>
                   </Col>
                 </Row>
                 <Divider />

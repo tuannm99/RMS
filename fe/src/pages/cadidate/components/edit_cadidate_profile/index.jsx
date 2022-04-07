@@ -80,10 +80,9 @@ function EditCadidateProfile(props) {
       } ${values?.lastName}`,
       email: values?.email,
       phone: values?.phone,
-      resume: {
-        hyperlink: values?.hyperlink,
-        cv: cadidate?.resume?.cv,
-      },
+      hyperlink: values?.hyperlink,
+      cv: cadidate?.cv,
+      resume: {},
     };
     if (disableEmp) {
       body.resume = {

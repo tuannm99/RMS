@@ -32,6 +32,17 @@ const getUserByUsername = async (username) => {
 };
 
 /**
+ * Get user by email
+ * @param {string} email
+ * @returns {Promise<User>}
+ */
+const getUserByEmail = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) throw new ApiError(httpStatus.BAD_REQUEST, 'Email not found');
+  return user;
+};
+
+/**
  * Get Id from token
  * @param {string} authorization
  * @returns {Promise<string>} userId
@@ -118,5 +129,6 @@ module.exports = {
   getUsers,
   getUserById,
   getUserByUsername,
+  getUserByEmail,
   getUserIdFromHeaderToken,
 };
