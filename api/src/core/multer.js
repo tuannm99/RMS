@@ -14,6 +14,7 @@ const uploadImg = multer({
       cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
     },
   }),
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.mimetype)) {
       return cb(new Error('file is not allowed'));
@@ -31,6 +32,7 @@ const uploadFile = multer({
       cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
     },
   }),
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (
       ![
