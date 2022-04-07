@@ -9,7 +9,7 @@ router.post('/login', authController.loginHandler);
 router.post('/register', authController.registerHandler);
 router.post('/logout', authController.logoutHandler);
 router.post('/refresh-token', authController.refreshTokenHandler);
-router.post('/forgot-pass', authController.forgotPassHandler);
+router.get('/forgot-pass', authController.forgotPassHandler);
 
 module.exports = router;
 
