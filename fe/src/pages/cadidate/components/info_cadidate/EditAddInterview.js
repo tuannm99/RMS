@@ -20,6 +20,7 @@ import {
   addIntervierServices,
   getAllInterviewsServices,
   getDetailInterviewsServices,
+  updateIntervierServices,
 } from '../../../../services/cadidateServices';
 
 const { Option } = Select;
@@ -34,6 +35,7 @@ function EditAddInterview(props) {
     setTotalResults,
     setInterviews,
     setLoading,
+    getDataInterview,
   } = props;
   const [interviewer, setInterviewer] = useState();
   const [form] = Form.useForm();
@@ -117,7 +119,16 @@ function EditAddInterview(props) {
       duration: values?.Duration,
     };
     if (interviewerId) {
-      return;
+      const resEdit = await updateIntervierServices(
+        cadidate?.id,
+        interviewerId,
+        body
+      );
+      if (hasResponseError(resEdit)) {
+        toast.error(resEdit.data.message);
+        return;
+      }
+      toast.success('Edit schedule interview success!');
     } else {
       if (totalResults > 4) {
         onclose();
@@ -129,17 +140,12 @@ function EditAddInterview(props) {
           toast.error(resAdd.data.message);
           return;
         }
-        setLoading(true);
-        getAllInterviewsServices(cadidate?.id).then((res) => {
-          setInterviews(res.data.results);
-          setTotalResults(res.data.totalResults);
-        });
         toast.success('Add schedule interview success!');
-        onclose();
-        setLoading(false);
         form.resetFields();
       }
     }
+    await getDataInterview();
+    onclose();
   };
 
   return (
@@ -244,7 +250,7 @@ function EditAddInterview(props) {
           </Col>
         </Row>
         <Button type="primary" htmlType="submit" className="btn-submit">
-          Add Schedule
+          {interviewerId ? `Edit Schedule` : 'Add Schedule'}
         </Button>
       </Form>
     </DrawerComponent>

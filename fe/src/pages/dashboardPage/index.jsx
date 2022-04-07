@@ -16,7 +16,6 @@ import {
   renderHeadTable,
   renderBodyTable,
 } from './component/render';
-import { PieChart } from 'recharts';
 import moment from 'moment';
 
 function DashboardPage(props) {

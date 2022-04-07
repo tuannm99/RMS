@@ -16,10 +16,8 @@ function Profile(props) {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const { cadidate } = props;
 
-  const [pdfFile, setPdfFile] = useState([
-    `${imgURL}${cadidate?.resume?.cv?.path}`,
-  ]);
-  const [nameFile, setNameFile] = useState(cadidate?.resume?.cv?.originalname);
+  const [pdfFile, setPdfFile] = useState([`${imgURL}${cadidate?.cv?.path}`]);
+  const [nameFile, setNameFile] = useState(cadidate?.cv?.originalname);
 
   const allowedFiles = ['application/pdf'];
 
@@ -48,13 +46,13 @@ function Profile(props) {
         {pdfFile && (
           <>
             {nameFile}
-            {nameFile !== cadidate?.resume?.cv?.originalname && (
+            {nameFile !== cadidate?.cv?.originalname && (
               <DeleteOutlined
                 className="cu"
                 style={{ fontSize: '16px', color: '#08c' }}
                 onClick={() => {
-                  setPdfFile([`${imgURL}${cadidate?.resume?.cv?.path}`]);
-                  setNameFile(cadidate?.resume?.cv?.originalname);
+                  setPdfFile([`${imgURL}${cadidate?.cv?.path}`]);
+                  setNameFile(cadidate?.cv?.originalname);
                 }}
               />
             )}

@@ -1,7 +1,10 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Empty, Col, Row, Tooltip, Spin } from 'antd';
+import { Button, Empty, Col, Row, Tooltip, Spin, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { getAllInterviewsServices } from '../../../../services/cadidateServices';
+import {
+  deleteInterviewsServices,
+  getAllInterviewsServices,
+} from '../../../../services/cadidateServices';
 import EditAddInterview from './EditAddInterview';
 import {
   cadidate_Id,
@@ -15,6 +18,8 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import moment from 'moment';
+import { hasResponseError } from '../../../../utils/utils';
+import { toast } from 'react-toastify';
 
 function Interview(props) {
   const [visible, setVisible] = useState(false);
@@ -29,13 +34,27 @@ function Interview(props) {
   };
 
   useEffect(() => {
+    getDataInterview();
+  }, [cadidate]);
+
+  const getDataInterview = () => {
     setLoading(true);
     getAllInterviewsServices(cadidate?.id).then((res) => {
       setInterviews(res.data.results);
       setTotalResults(res.data.totalResults);
       setLoading(false);
     });
-  }, [cadidate]);
+  };
+
+  const handleDeleteInterview = async (id) => {
+    const res = await deleteInterviewsServices(cadidate?.id, id);
+    if (hasResponseError(res)) {
+      toast.error(res.data.message);
+      return;
+    }
+    toast.success('Delete interview success!');
+    getDataInterview();
+  };
 
   const day = [
     'Sunday',
@@ -64,9 +83,11 @@ function Interview(props) {
             Schedule Interview
           </Button>
         </Col>
-        {/* <Col span={24} style={styles}>
-          <Empty description={false} />,
-        </Col> */}
+        {(interviews === undefined || interviews?.length === 0) && (
+          <Col span={24} style={styles}>
+            <Empty description={false} />,
+          </Col>
+        )}
         <Col span={24}>
           {interviews &&
             !loading &&
@@ -113,7 +134,12 @@ function Interview(props) {
                     />
                   </Tooltip>
                   <Tooltip placement="bottomRight" title="Delete interview">
-                    <DeleteOutlined className="cu" />
+                    <Popconfirm
+                      onConfirm={() => handleDeleteInterview(item.id)}
+                      title="Are you sure delete？"
+                    >
+                      <DeleteOutlined className="cu" />
+                    </Popconfirm>
                   </Tooltip>
                 </div>
                 <Button className="feedback">Add feedback</Button>
@@ -134,6 +160,7 @@ function Interview(props) {
         setInterviews={setInterviews}
         setTotalResults={setTotalResults}
         setLoading={setLoading}
+        getDataInterview={getDataInterview}
       />
     </>
   );

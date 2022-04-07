@@ -55,8 +55,8 @@ function AddCadidate(props) {
       } ${values?.lastName}`,
       email: values?.email,
       phone: values?.phone,
+      hyperlink: values?.hyperlink,
       resume: {
-        hyperlink: values?.hyperlink,
         employer: {
           designation: '',
           bussinessName: '',

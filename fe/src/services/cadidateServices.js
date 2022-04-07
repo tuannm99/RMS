@@ -80,11 +80,14 @@ export const addIntervierServices = (id, body) => {
  * @param {*} body
  * @returns
  */
-export const updateIntervierServices = (id, body) => {
-  return request(`${BASE_API}/candidates/${id}/interview`, {
-    method: 'PUT',
-    data: body,
-  });
+export const updateIntervierServices = (cadidateId, interviewId, body) => {
+  return request(
+    `${BASE_API}/candidates/${cadidateId}/interview/${interviewId}`,
+    {
+      method: 'PUT',
+      data: body,
+    }
+  );
 };
 
 /**
@@ -104,6 +107,15 @@ export function getDetailInterviewsServices(cadidateId, interviewId) {
     `${BASE_API}/candidates/${cadidateId}/interview/${interviewId}`,
     {
       method: 'GET',
+    }
+  );
+}
+
+export function deleteInterviewsServices(cadidateId, interviewId) {
+  return request(
+    `${BASE_API}/candidates/${cadidateId}/interview/${interviewId}`,
+    {
+      method: 'DELETE',
     }
   );
 }
