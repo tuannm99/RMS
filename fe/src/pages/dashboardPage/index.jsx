@@ -16,12 +16,11 @@ import {
   renderHeadTable,
   renderBodyTable,
 } from './component/render';
-import { PieChart } from 'recharts';
 import moment from 'moment';
 
 function DashboardPage(props) {
   const [dataInterview, setDataInterview] = useState();
-  const [dataChart, setDataChart] = useState();
+  const [dataChart, setDataChart] = useState([]);
   const { TabPane } = Tabs;
   const [key, setKey] = useState(1);
   const dateFormatList = 'DD/MM/YYYY';
@@ -47,7 +46,6 @@ function DashboardPage(props) {
         });
       }
       setDataChart(res.data);
-      console.log(dataChart);
     });
   };
 
@@ -121,26 +119,9 @@ function DashboardPage(props) {
         </Tabs>
       </div>
       <div className="dashBoard-center">
-        <div className="dashBoard-center-chartJob">
-          <Pie
-            appendPadding={10}
-            data={dataChart}
-            angleField="value"
-            colorField="type"
-            radius={0.8}
-            label={{
-              type: 'outer',
-            }}
-            interactions={[
-              {
-                type: 'element-active',
-              },
-            ]}
-          />
+        <div className="dashBoard-center-chartJob2">
+          <Pie {...config} />
         </div>
-        {/* <div className="dashBoard-center-chartJob2">
-          <Column {...config3} />
-        </div> */}
       </div>
       <div className="dashBoard-center">
         {/* <div className="dashBoard-center-chartJob">
