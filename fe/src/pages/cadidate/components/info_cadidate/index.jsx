@@ -28,7 +28,6 @@ import {
 } from '../../../../redux/stores/cadidate/selectors';
 import {
   getCadidate,
-  editCadidate,
   getAllCadidates,
 } from '../../../../redux/stores/cadidate/actions';
 import { createStructuredSelector } from 'reselect';
@@ -38,7 +37,9 @@ import Summary from './Summary';
 import EditCadidateProfile from '../edit_cadidate_profile';
 import Profile from './Profile';
 import Interview from './Interview';
-import { imgURL } from '../../../../utils/utils';
+import { hasResponseError, imgURL } from '../../../../utils/utils';
+import { updateCadidateServices } from '../../../../services/cadidateServices';
+import { toast } from 'react-toastify';
 
 const { TabPane } = Tabs;
 
@@ -50,7 +51,6 @@ function CadidateInfo(props) {
     getCadidate,
     cadidate,
     params,
-    editCadidate,
     isloading,
     getAllCadidates,
   } = props;
@@ -71,16 +71,9 @@ function CadidateInfo(props) {
     setIsModalVisible(false);
   };
 
-  const handleReject = async () => {
-    const body = {
-      status: 'reject',
-    };
-    await editCadidate({ id, body });
-    await getCadidate(id);
-    getAllCadidates(params);
-  };
-
   const desc = ['contact', 'test', 'technical', 'cultureFit'];
+
+  const descStatus = ['open', 'approve', 'reject'];
 
   const handleRate = ({ index, value }) => {
     if (index < value) {
@@ -99,11 +92,33 @@ function CadidateInfo(props) {
   };
 
   const handleMenuClick = async ({ key }) => {
+    const formRes = new FormData();
+
     const body = {
       stage: key,
     };
-    await editCadidate({ id, body });
-    await getCadidate(id);
+    formRes.append('candidate', JSON.stringify(body));
+    const resEdit = await updateCadidateServices(id, formRes);
+    if (hasResponseError(resEdit)) {
+      toast.error(resEdit.data.message);
+      return;
+    }
+    getCadidate(id);
+    getAllCadidates(params);
+  };
+
+  const handleMenuStatusClick = async ({ key }) => {
+    const formRes = new FormData();
+    const body = {
+      status: key,
+    };
+    formRes.append('candidate', JSON.stringify(body));
+    const resEdit = await updateCadidateServices(id, formRes);
+    if (hasResponseError(resEdit)) {
+      toast.error(resEdit.data.message);
+      return;
+    }
+    getCadidate(id);
     getAllCadidates(params);
   };
 
@@ -111,6 +126,16 @@ function CadidateInfo(props) {
     <Menu onClick={handleMenuClick}>
       {desc.map((item) => (
         <Menu.Item key={item} disabled={cadidate.stage === item && true}>
+          {item}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+
+  const menuStatus = (
+    <Menu onClick={handleMenuStatusClick}>
+      {descStatus.map((item) => (
+        <Menu.Item key={item} disabled={cadidate.status === item && true}>
           {item}
         </Menu.Item>
       ))}
@@ -135,19 +160,11 @@ function CadidateInfo(props) {
               <div className="cl-bg">
                 <Row className="profile-cadidate">
                   <Col span={12}>
-                    <Popconfirm
-                      title="Are you profile cadidate？"
-                      onConfirm={() => handleReject()}
-                      placement="rightBottom"
-                      disabled={cadidate?.status === 'reject' && true}
-                    >
-                      <Button
-                        className="btn-profile_left"
-                        disabled={cadidate?.status === 'reject' && true}
-                      >
-                        Reject Cadidate
+                    <Dropdown overlay={menuStatus} trigger={['click']}>
+                      <Button className="btn-profile_right">
+                        Status <DownOutlined />
                       </Button>
-                    </Popconfirm>
+                    </Dropdown>
                   </Col>
                   <Col span={12}>
                     <Dropdown overlay={menu} trigger={['click']}>
@@ -254,7 +271,6 @@ const mapStateToProps = createStructuredSelector({
   id: cadidate_Id,
 });
 const mapDispatchToProps = (dispatch) => ({
-  editCadidate: (payload) => dispatch(editCadidate(payload)),
   getCadidate: (payload) => dispatch(getCadidate(payload)),
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
 });
