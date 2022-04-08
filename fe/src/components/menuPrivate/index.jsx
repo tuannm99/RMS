@@ -29,7 +29,7 @@ function MenuPrivate(props) {
         icon={<CheckCircleFilled />}
         onClick={() => setJobId('')}
       >
-        <NavLink to={`/cadidate`}>Cadidate</NavLink>
+        <NavLink to={`/cadidate`}>Candidate</NavLink>
       </Menu.Item>
       <Menu.Item
         key={`/employee/false/${userAccount?.id}`}

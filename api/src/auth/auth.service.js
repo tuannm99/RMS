@@ -3,6 +3,7 @@ const { TokenExpiredError } = require('jsonwebtoken');
 
 const userService = require('../user/user.service');
 const tokenService = require('../token/token.service');
+const eventProducer = require('../event/producer');
 const ApiError = require('../core/apiError');
 
 const { TOKEN_TYPES } = require('../constants');
@@ -31,6 +32,20 @@ const logout = async (refreshToken) => {
 };
 
 /**
+ * forgot pass
+ * @param {string} email
+ */
+const forgotPass = async (email) => {
+  const user = await userService.getUserByEmail(email);
+  await userService.updateUserById(user._id, { password: '123456ab' });
+  eventProducer.sendMailProducer({
+    to: email,
+    subject: 'Reset password',
+    text: 'Your new password: 123456ab',
+  });
+};
+
+/**
  * refreshing access token
  * @param {string} refreshToken
  * @returns {Promise} new token
@@ -48,4 +63,4 @@ const refreshAuth = async (refreshToken) => {
   }
 };
 
-module.exports = { loginByUsernamePassword, logout, refreshAuth };
+module.exports = { forgotPass, loginByUsernamePassword, logout, refreshAuth };

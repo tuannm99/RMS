@@ -40,7 +40,8 @@ const logoutHandler = catchAsync(async (req, res) => {
 
 // eslint-disable-next-line no-unused-vars
 const forgotPassHandler = catchAsync(async (req, res) => {
-  // TODO: need implimentation
+  await authService.forgotPass(req.query.email);
+  res.status(httpStatus.OK).json({ msg: 'success, check email!' });
 });
 
 /**

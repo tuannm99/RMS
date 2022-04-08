@@ -193,7 +193,8 @@ export const renderBodyTable = (
   handleDelete,
   setVisibleInfoCadi,
   setCadidateId,
-  setVisible
+  setVisible,
+  userAccount
 ) => (
   <tr key={item.id} style={styles.tr}>
     <td
@@ -236,14 +237,16 @@ export const renderBodyTable = (
     <td style={{ ...styles.td, fontWeight: '400' }}>
       {moment.utc(item.updatedAt).format('YYYY-MM-DD').toString()}
     </td>
-    <td style={styles.td}>
-      <Dropdown
-        overlay={menuMoreTable(item.id, handleDelete, setVisible)}
-        placement="bottomRight"
-        arrow
-      >
-        <MoreOutlined className="fr fs-24 cu" />
-      </Dropdown>
-    </td>
+    {userAccount?.role === 'hiringManager' && (
+      <td style={styles.td}>
+        <Dropdown
+          overlay={menuMoreTable(item.id, handleDelete, setVisible)}
+          placement="bottomRight"
+          arrow
+        >
+          <MoreOutlined className="fr fs-24 cu" />
+        </Dropdown>
+      </td>
+    )}
   </tr>
 );

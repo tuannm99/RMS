@@ -5,7 +5,10 @@ import { Pie } from '@ant-design/plots';
 import { Column } from '@ant-design/plots';
 import { Button } from 'antd/lib/radio';
 import { Table } from '../../components';
-import { getAllInterview } from '../../services/dashboardServices';
+import {
+  getAllInterview,
+  getDataChart,
+} from '../../services/dashboardServices';
 import { hasResponseError } from '../../utils/utils';
 import { toast } from 'react-toastify';
 import {
@@ -17,9 +20,11 @@ import moment from 'moment';
 
 function DashboardPage(props) {
   const [dataInterview, setDataInterview] = useState();
+  const [dataChart, setDataChart] = useState([]);
   const { TabPane } = Tabs;
   const [key, setKey] = useState(1);
   const dateFormatList = 'DD/MM/YYYY';
+  const { Option } = Select;
   const [param, setParam] = useState({
     limit: 3,
     page: 1,
@@ -29,12 +34,20 @@ function DashboardPage(props) {
     loadDataDashboard(param);
   }, [param]);
 
-  // useEffect(() => {
-  //   const newDate = new Date();
-  //   if (key === 1) {
-  //     dataInterview.filter((data) => data.feedback.rate > 0);
-  //   }
-  // }, [key]);
+  useEffect(() => {
+    loadDataChart();
+  }, []);
+
+  const loadDataChart = () => {
+    getDataChart().then((res) => {
+      if (hasResponseError(res)) {
+        toast.success(`${res.data.message}`, {
+          autoClose: 3000,
+        });
+      }
+      setDataChart(res.data);
+    });
+  };
 
   const loadDataDashboard = (param) => {
     getAllInterview(param).then((res) => {
@@ -50,38 +63,13 @@ function DashboardPage(props) {
   function callback(key) {
     setKey(key);
   }
-  const data = [
-    {
-      type: '分类一',
-      value: 27,
-    },
-    {
-      type: '分类二',
-      value: 25,
-    },
-    {
-      type: '分类三',
-      value: 18,
-    },
-    {
-      type: '分类四',
-      value: 15,
-    },
-    {
-      type: '分类五',
-      value: 10,
-    },
-    {
-      type: '其他',
-      value: 5,
-    },
-  ];
+
   const config = {
     appendPadding: 10,
-    data,
+    data: dataChart,
     angleField: 'value',
     colorField: 'type',
-    radius: 0.7,
+    radius: 0.8,
     label: {
       type: 'outer',
     },
@@ -91,133 +79,7 @@ function DashboardPage(props) {
       },
     ],
   };
-  const { Option } = Select;
 
-  const dataa = [
-    {
-      type: '分类一',
-      value: 27,
-    },
-    {
-      type: '分类二',
-      value: 25,
-    },
-    {
-      type: '分类三',
-      value: 18,
-    },
-    {
-      type: '分类四',
-      value: 15,
-    },
-    {
-      type: '分类五',
-      value: 10,
-    },
-    {
-      type: '其他',
-      value: 5,
-    },
-  ];
-  const configg = {
-    appendPadding: 10,
-    data: dataa,
-    angleField: 'value',
-    colorField: 'type',
-    radius: 0.7,
-    innerRadius: 0.6,
-    label: {
-      type: 'inner',
-      offset: '-50%',
-      content: '{value}',
-      style: {
-        textAlign: 'center',
-        fontSize: 14,
-      },
-    },
-    interactions: [
-      {
-        type: 'element-selected',
-      },
-      {
-        type: 'element-active',
-      },
-    ],
-    statistic: {
-      title: false,
-      content: {
-        style: {
-          whiteSpace: 'pre-wrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-        },
-        content: 'Chart',
-      },
-    },
-  };
-
-  const data3 = [
-    {
-      type: '家具家电',
-      sales: 38,
-    },
-    {
-      type: '粮油副食',
-      sales: 52,
-    },
-    {
-      type: '生鲜水果',
-      sales: 61,
-    },
-    {
-      type: '美容洗护',
-      sales: 145,
-    },
-    {
-      type: '母婴用品',
-      sales: 48,
-    },
-    {
-      type: '进口食品',
-      sales: 38,
-    },
-    {
-      type: '食品饮料',
-      sales: 38,
-    },
-    {
-      type: '家庭清洁',
-      sales: 38,
-    },
-  ];
-  const config3 = {
-    data: data3,
-    width: 200,
-    height: 300,
-    xField: 'type',
-    yField: 'sales',
-    label: {
-      position: 'middle',
-      style: {
-        fill: '#FFFFFF',
-        opacity: 0.6,
-      },
-    },
-    xAxis: {
-      label: {
-        autoHide: true,
-        autoRotate: false,
-      },
-    },
-    meta: {
-      type: {
-        alias: '类别',
-      },
-      sales: {
-        alias: '销售额',
-      },
-    },
-  };
   return (
     <>
       <div className="dashBoard-top">
@@ -257,20 +119,17 @@ function DashboardPage(props) {
         </Tabs>
       </div>
       <div className="dashBoard-center">
-        <div className="dashBoard-center-chartJob">
-          <Pie {...configg} />
-        </div>
         <div className="dashBoard-center-chartJob2">
-          <Column {...config3} />
+          <Pie {...config} />
         </div>
       </div>
       <div className="dashBoard-center">
-        <div className="dashBoard-center-chartJob">
+        {/* <div className="dashBoard-center-chartJob">
           <Pie {...config} />
-        </div>
-        <div className="dashBoard-center-chartJob2">
+        </div> */}
+        {/* <div className="dashBoard-center-chartJob2">
           <Pie {...configg} />
-        </div>
+        </div> */}
       </div>
     </>
   );
