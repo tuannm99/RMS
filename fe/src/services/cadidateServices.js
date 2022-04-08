@@ -95,10 +95,9 @@ export const updateIntervierServices = (cadidateId, interviewId, body) => {
  * @param {*} params
  * @returns
  */
-export function getAllInterviewsServices(id, params) {
+export function getAllInterviewsServices(id) {
   return request(`${BASE_API}/candidates/${id}/interview`, {
     method: 'GET',
-    params: params,
   });
 }
 
