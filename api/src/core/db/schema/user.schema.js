@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate, preDate } = require('./plugins');
-const { ROLES } = require('../../../constants');
+const { ROLES, SEX } = require('../../../constants');
 
 const userSchema = mongoose.Schema({
   username: {
@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema({
       }
     },
   },
-
+  sex: { type: String, enum: [SEX.male, SEX.female] },
   firstName: { type: String },
   lastName: { type: String },
   middleName: { type: String },
