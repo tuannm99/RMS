@@ -52,14 +52,14 @@
 .public-address {
   position: absolute;
   top: 85%;
-  left: 5%;
+  left: 11%;
   color: black;
   font-weight: 200;
 }
 .public-type {
   position: absolute;
   top: 84%;
-  right: 10%;
+  right: 7%;
 }
 
 .public-title-job h1 {
@@ -122,4 +122,11 @@
 }
 .btn-public:hover {
   background: linear-gradient(rgb(51, 199, 255) 100%, rgb(0, 174, 239) 0%);
+}
+.public-detail-icon {
+  position: absolute;
+  bottom: 8%;
+  font-size: 20px;
+  left: 3%;
+  color: rgb(0, 174, 239);
 }

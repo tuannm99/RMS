@@ -8,6 +8,7 @@ import { Table } from '../../components';
 import {
   getAllInterview,
   getDataChart,
+  getDataChartSex,
 } from '../../services/dashboardServices';
 import { hasResponseError } from '../../utils/utils';
 import { toast } from 'react-toastify';
@@ -21,6 +22,7 @@ import moment from 'moment';
 function DashboardPage(props) {
   const [dataInterview, setDataInterview] = useState();
   const [dataChart, setDataChart] = useState([]);
+  const [dataChartSex, setDataChartSex] = useState([]);
   const { TabPane } = Tabs;
   const [key, setKey] = useState(1);
   const dateFormatList = 'DD/MM/YYYY';
@@ -36,6 +38,7 @@ function DashboardPage(props) {
 
   useEffect(() => {
     loadDataChart();
+    loadDataChartSex();
   }, []);
 
   const loadDataChart = () => {
@@ -44,6 +47,18 @@ function DashboardPage(props) {
         return;
       }
       setDataChart(res.data);
+    });
+  };
+
+  const loadDataChartSex = () => {
+    getDataChartSex().then((res) => {
+      if (hasResponseError(res)) {
+        toast.success(`${res.data.message}`, {
+          autoClose: 3000,
+        });
+      }
+      setDataChartSex(res.data);
+      console.log(dataChartSex);
     });
   };
 
@@ -74,6 +89,43 @@ function DashboardPage(props) {
         type: 'element-active',
       },
     ],
+  };
+
+  const configChartSex = {
+    appendPadding: 10,
+    data: dataChartSex,
+    angleField: 'value',
+    colorField: 'type',
+    radius: 0.7,
+    innerRadius: 0.6,
+    label: {
+      type: 'inner',
+      offset: '-50%',
+      content: '{value}',
+      style: {
+        textAlign: 'center',
+        fontSize: 14,
+      },
+    },
+    interactions: [
+      {
+        type: 'element-selected',
+      },
+      {
+        type: 'element-active',
+      },
+    ],
+    statistic: {
+      title: false,
+      content: {
+        style: {
+          whiteSpace: 'pre-wrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        },
+        content: 'AntV\nG2Plot',
+      },
+    },
   };
 
   return (
@@ -115,8 +167,11 @@ function DashboardPage(props) {
         </Tabs>
       </div>
       <div className="dashBoard-center">
-        <div className="dashBoard-center-chartJob2">
+        <div className="dashBoard-center-chartJob">
           <Pie {...config} />
+        </div>
+        <div className="dashBoard-center-chartJob chartSex">
+          <Pie {...configChartSex} />
         </div>
       </div>
       <div className="dashBoard-center">
