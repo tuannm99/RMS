@@ -15,11 +15,13 @@ import { compose } from 'recompose';
 import moment from 'moment';
 import { hasResponseError } from '../../../../utils/utils';
 import { toast } from 'react-toastify';
+import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 
 function Interview(props) {
   const [visible, setVisible] = useState(false);
   const [interviewerId, setInterviewerId] = useState();
-  const { cadidate, getAllInterviews, interviews, loadingInterviews } = props;
+  const { cadidate, getAllInterviews, interviews, loadingInterviews, account } =
+    props;
 
   const onClose = () => {
     setVisible(false);
@@ -55,18 +57,20 @@ function Interview(props) {
   return (
     <>
       <Row>
-        <Col span={24}>
-          <Button
-            type="primary"
-            className="fr"
-            onClick={() => {
-              setVisible(true);
-              setInterviewerId(null);
-            }}
-          >
-            Schedule Interview
-          </Button>
-        </Col>
+        {account?.role === 'hiringManager' && (
+          <Col span={24}>
+            <Button
+              type="primary"
+              className="fr"
+              onClick={() => {
+                setVisible(true);
+                setInterviewerId(null);
+              }}
+            >
+              Schedule Interview
+            </Button>
+          </Col>
+        )}
         {(interviews === undefined || interviews?.length === 0) && (
           <Col span={24} style={styles}>
             <Empty description={false} />,
@@ -108,26 +112,30 @@ function Interview(props) {
                     Interviewer: <span>{item?.interviewer?.fullName}</span>
                   </p>
                 </div>
-                <div className="interview-icon">
-                  <Tooltip placement="bottomRight" title="Edit interview">
-                    <EditOutlined
-                      className="mr-8 cu"
-                      onClick={() => {
-                        setVisible(true);
-                        setInterviewerId(item?.id);
-                      }}
-                    />
-                  </Tooltip>
-                  <Tooltip placement="bottomRight" title="Delete interview">
-                    <Popconfirm
-                      onConfirm={() => handleDeleteInterview(item?.id)}
-                      title="Are you sure delete？"
-                    >
-                      <DeleteOutlined className="cu" />
-                    </Popconfirm>
-                  </Tooltip>
-                </div>
-                <Button className="feedback">Add feedback</Button>
+                {account?.role === 'hiringManager' && (
+                  <>
+                    <div className="interview-icon">
+                      <Tooltip placement="bottomRight" title="Edit interview">
+                        <EditOutlined
+                          className="mr-8 cu"
+                          onClick={() => {
+                            setVisible(true);
+                            setInterviewerId(item?.id);
+                          }}
+                        />
+                      </Tooltip>
+                      <Tooltip placement="bottomRight" title="Delete interview">
+                        <Popconfirm
+                          onConfirm={() => handleDeleteInterview(item?.id)}
+                          title="Are you sure delete？"
+                        >
+                          <DeleteOutlined className="cu" />
+                        </Popconfirm>
+                      </Tooltip>
+                    </div>
+                    <Button className="feedback">Add feedback</Button>
+                  </>
+                )}
               </div>
             ))}
         </Col>
@@ -149,6 +157,7 @@ const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
   interviews: interviews,
   loadingInterviews: loadingInterviews,
+  account: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllInterviews: (payload) => dispatch(getAllInterviews(payload)),

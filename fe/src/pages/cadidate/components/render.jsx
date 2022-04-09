@@ -54,7 +54,13 @@ export const renderEmployee = ({ setDisableEmp }) => {
           <Form.Item
             name="designation"
             label="Designation"
-            rules={[{ required: true, message: 'Please enter Designation!' }]}
+            rules={[
+              { required: true, message: 'Please enter Designation!' },
+              {
+                pattern: new RegExp(/[a-zA-X]/),
+                message: 'Please enter Designation!',
+              },
+            ]}
           >
             <Input placeholder="Enter designation" />
           </Form.Item>
@@ -66,6 +72,10 @@ export const renderEmployee = ({ setDisableEmp }) => {
             rules={[
               {
                 required: true,
+                message: 'Please enter Company/ Business Name!',
+              },
+              {
+                pattern: new RegExp(/[a-zA-X]/),
                 message: 'Please enter Company/ Business Name!',
               },
             ]}
@@ -105,7 +115,13 @@ export const renderEducation = ({ setDisableEdu }) => (
         <Form.Item
           name="degree"
           label="Degree"
-          rules={[{ required: true, message: 'Please enter Degree!' }]}
+          rules={[
+            { required: true, message: 'Please enter Degree!' },
+            {
+              pattern: new RegExp(/[a-zA-X]/),
+              message: 'Please enter Degree!',
+            },
+          ]}
         >
           <Input placeholder="Enter designation" />
         </Form.Item>
@@ -118,6 +134,10 @@ export const renderEducation = ({ setDisableEdu }) => (
             {
               required: true,
               message: 'Please enterInstitution/ School Name!',
+            },
+            {
+              pattern: new RegExp(/[a-zA-X]/),
+              message: 'Please enter enterInstitution/ School Name!',
             },
           ]}
         >

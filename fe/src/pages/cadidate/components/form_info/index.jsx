@@ -26,7 +26,13 @@ function FormInfo(props) {
           <Form.Item
             name="firstName"
             label="First Name"
-            rules={[{ required: true, message: 'Please enter First Name!' }]}
+            rules={[
+              { required: true, message: 'Please enter First Name!' },
+              {
+                pattern: new RegExp(/[a-zA-X]/),
+                message: 'Please enter First Name!',
+              },
+            ]}
           >
             <Input placeholder="Enter First Name" />
           </Form.Item>
@@ -40,7 +46,13 @@ function FormInfo(props) {
           <Form.Item
             name="lastName"
             label="Last Name"
-            rules={[{ required: true, message: 'Please enter Last Name!' }]}
+            rules={[
+              { required: true, message: 'Please enter Last Name!' },
+              {
+                pattern: new RegExp(/[a-zA-X]/),
+                message: 'Please enter Last Name!',
+              },
+            ]}
           >
             <Input placeholder="Enter Last Name" />
           </Form.Item>
@@ -64,6 +76,10 @@ function FormInfo(props) {
             rules={[
               {
                 required: true,
+                message: 'Please enter Hyperlink!',
+              },
+              {
+                pattern: new RegExp(/[a-zA-X]/),
                 message: 'Please enter Hyperlink!',
               },
             ]}
