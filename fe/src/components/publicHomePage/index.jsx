@@ -1,4 +1,6 @@
 import React from 'react';
+
+import { MdLocationOn } from 'react-icons/md';
 function PublicPage(props) {
   const { data } = props;
   console.log(data);
@@ -9,6 +11,7 @@ function PublicPage(props) {
           <h3>{data.title}</h3>
         </div>
         <div className={props.classDes}>{data.shortDes}</div>
+        <MdLocationOn className="public-detail-icon" />
         <div className={props.classAddress}>
           <span>Available in: &nbsp;{data.location}</span>
         </div>
