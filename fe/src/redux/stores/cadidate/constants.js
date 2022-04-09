@@ -4,6 +4,8 @@ const SET_LOADING = `${CADIDATE}/setLoading`;
 
 const SET_LOADING_INTERVIEWS = `${CADIDATE}/setLoadinginterviews`;
 
+const SET_CHECK_TOKEN = `${CADIDATE}/setCheckToken`;
+
 const SET_ID = `${CADIDATE}/setId`;
 
 const SET_VISIBLE_ADD_CANDIDATE = `${CADIDATE}/setVisi`;
@@ -34,4 +36,5 @@ export {
   SAVE_ALL_LIST_INTERVIEW,
   SET_LOADING_INTERVIEWS,
   SET_VISIBLE_ADD_CANDIDATE,
+  SET_CHECK_TOKEN,
 };
