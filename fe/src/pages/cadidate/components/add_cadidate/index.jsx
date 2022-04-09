@@ -120,7 +120,8 @@ function AddCadidate(props) {
 
     if (
       cadidates?.totalResults >= cadidates?.limit &&
-      cadidates?.totalResults % 10 === 0
+      cadidates?.totalResults % 10 === 0 &&
+      params
     ) {
       await setParams({ ...params, page: cadidates?.page + 1 });
     } else {
@@ -135,7 +136,7 @@ function AddCadidate(props) {
 
   return (
     <DrawerComponent
-      title="ADD CANDIDATE"
+      title="ADD CREATE YOUR APPLICATION PROFILE"
       onClose={onclose}
       visible={visibleAddCadi}
       width={720}

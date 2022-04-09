@@ -20,7 +20,7 @@ function DetailPublic(props) {
             </div>
           </div>
           <div className={props.detailHeaderRight}>
-            <button>Apply Now</button>
+            <button onClick={props.handleAddCandidate}>Apply Now</button>
           </div>
         </div>
       </div>

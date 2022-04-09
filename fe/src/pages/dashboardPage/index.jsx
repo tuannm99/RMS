@@ -41,9 +41,7 @@ function DashboardPage(props) {
   const loadDataChart = () => {
     getDataChart().then((res) => {
       if (hasResponseError(res)) {
-        toast.success(`${res.data.message}`, {
-          autoClose: 3000,
-        });
+        return;
       }
       setDataChart(res.data);
     });
@@ -52,9 +50,7 @@ function DashboardPage(props) {
   const loadDataDashboard = (param) => {
     getAllInterview(param).then((res) => {
       if (hasResponseError(res)) {
-        toast.success(`${res.data.message}`, {
-          autoClose: 3000,
-        });
+        return;
       }
       setDataInterview(res.data.results);
     });

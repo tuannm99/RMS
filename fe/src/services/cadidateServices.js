@@ -1,4 +1,5 @@
 import request from '../utils/request';
+import requestPublic from '../utils/requestPublic';
 
 const BASE_API = 'http://rms-fpt.ddns.net:5000/api/v1';
 
@@ -56,7 +57,7 @@ export const updateCadidateServices = (id, body) => {
  * @returns
  */
 export const addCadidateServices = (body) => {
-  return request(`${BASE_API}/candidates`, {
+  return requestPublic(`${BASE_API}/candidates`, {
     method: 'POST',
     data: body,
   });

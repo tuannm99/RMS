@@ -22,7 +22,6 @@ function ModalAddNewCandidate(props) {
   useEffect(() => {
     getAllJobs().then((res) => {
       if (hasResponseError(res)) {
-        toast.error(res.data.message);
         return;
       }
       setRecruit(res.data.results);
