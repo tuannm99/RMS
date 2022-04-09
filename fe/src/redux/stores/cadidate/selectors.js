@@ -12,6 +12,10 @@ const cadidates = createSelector(selectState, (state) => state.cadidates);
 const cadidate = createSelector(selectState, (state) => state.cadidate);
 const cadidate_Id = createSelector(selectState, (state) => state.id);
 const interviews = createSelector(selectState, (state) => state.interviews);
+const visibleAddCadi = createSelector(
+  selectState,
+  (state) => state.visibleAddCadi
+);
 
 export {
   loading,
@@ -20,4 +24,5 @@ export {
   cadidate,
   interviews,
   loadingInterviews,
+  visibleAddCadi,
 };

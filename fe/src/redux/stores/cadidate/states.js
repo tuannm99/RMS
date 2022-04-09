@@ -3,6 +3,7 @@ export const INIT_STATE = {
   cadidates: {},
   cadidate: {},
   id: '',
-  interviews: {},
+  interviews: [],
   loadingInterviews: false,
+  visibleAddCadi: false,
 };

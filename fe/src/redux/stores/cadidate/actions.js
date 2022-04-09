@@ -9,11 +9,19 @@ import {
   GET_ALL_LIST_INTERVIEW,
   SAVE_ALL_LIST_INTERVIEW,
   SET_LOADING_INTERVIEWS,
+  SET_VISIBLE_ADD_CANDIDATE,
 } from './constants';
 
 export function setLoading(payload) {
   return {
     type: SET_LOADING,
+    payload,
+  };
+}
+
+export function setVisibleAddCandi(payload) {
+  return {
+    type: SET_VISIBLE_ADD_CANDIDATE,
     payload,
   };
 }

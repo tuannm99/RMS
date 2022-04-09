@@ -73,9 +73,8 @@ function Interview(props) {
           </Col>
         )}
         <Col span={24}>
-          {interviews &&
-            !loadingInterviews &&
-            interviews.map((item) => (
+          {!loadingInterviews &&
+            interviews?.map((item) => (
               <div className="content-interview" key={item?.id}>
                 <div className="left-interview">
                   <p className="date-left-interview mb-0">

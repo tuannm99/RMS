@@ -254,7 +254,7 @@ function CadidateInfo(props) {
         )}
       </Row>
       <Modal
-        title="Basic Modal"
+        title="EDIT INFORMATION CANDIDATE"
         visible={isModalVisible}
         closeIcon={true}
         closable={false}
