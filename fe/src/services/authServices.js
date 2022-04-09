@@ -1,11 +1,20 @@
 import request from '../utils/request';
+import requestPublic from '../utils/requestPublic';
 const BASE_API = 'http://rms-fpt.ddns.net:5000/api/v1/auth';
 
 //create request login
 export function loginRequestService(params) {
-  return request(`${BASE_API}/login`, {
+  return requestPublic(`${BASE_API}/login`, {
     method: 'POST',
     data: params,
+  });
+}
+
+//create request login
+export function changPassRequestService(params) {
+  return requestPublic(`${BASE_API}/forgot-pass`, {
+    method: 'GET',
+    params: params,
   });
 }
 

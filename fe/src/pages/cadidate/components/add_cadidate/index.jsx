@@ -143,7 +143,7 @@ function AddCadidate(props) {
         toast.error(res.data.message);
         return;
       }
-      toast.success('Add caddidate success');
+      toast.success('Apply success!');
     }
     form.resetFields();
     setFileList(null);

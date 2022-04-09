@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ContainerOutlined,
   ExceptionOutlined,
   FileDoneOutlined,
 } from '@ant-design/icons';
-import { Row, Col, Descriptions, Tag } from 'antd';
+import { Row, Col, Descriptions, Tag, Rate } from 'antd';
+import { getAllInterviews } from '../../../../redux/stores/cadidate/actions';
+import {
+  cadidate,
+  interviews,
+} from '../../../../redux/stores/cadidate/selectors';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { hasResponseError } from '../../../../utils/utils';
+import { toast } from 'react-toastify';
 
 function Summary(props) {
+  const { getAllInterviews, cadidate, interviews } = props;
+
+  useEffect(() => {
+    getAllInterviews(cadidate?.id);
+  }, [getAllInterviews, cadidate]);
+  console.log(interviews);
   return (
     <Row>
       <Col span={24} className="offer-info">
@@ -27,36 +43,56 @@ function Summary(props) {
           </Descriptions.Item>
         </Descriptions>
       </Col>
-      <Col span={24} className="content-feedBack">
+      <Col span={24} className="content-feedBack pb-32">
         <div className="lead-section-title">Feedback Snapshot</div>
         <ContainerOutlined className="icon-des" />
-        <div className="content-feedBack-row">
-          <div className="text-normal">Job Fitment Rating</div>
-          <div> 5 | Exceptional</div>
-          <div>View</div>
-        </div>
-        <div className="content-feedBack-row">
-          <div className="text-normal">Job Fitment Rating</div>
-          <div> 5 | Exceptional</div>
-          <div>View</div>
-        </div>
-        <div className="content-feedBack-row">
-          <div className="text-normal">Job Fitment Rating</div>
-          <div> 5 | Exceptional</div>
-          <div>View</div>
-        </div>
+        {interviews &&
+          interviews.map((item) => (
+            <Row className="content-feedBack-row" key={item.id}>
+              <Col span={8} className="text-normal">
+                {item.stage}
+              </Col>
+              <Col span={8} className="text-center">
+                <Rate disabled={true} value={item.feedback.rate} />
+              </Col>
+              <Col span={8}>
+                <span className="text-normal fr">
+                  {item.feedback.overallRecommendation}
+                </span>
+              </Col>
+            </Row>
+          ))}
       </Col>
       <Col span={24} className="content-feedBack">
         <FileDoneOutlined className="icon-des" />
-        <div className="lead-section-title">Experience</div>
-        <div className="content-feedBack-row">
-          <div>Total Experience</div>
-          <div>-</div>
-          <div>-</div>
-        </div>
+        <div className="lead-section-title">Comments</div>
+        {interviews &&
+          interviews.map((item) => {
+            if (item?.feedback?.comment) {
+              return (
+                <Row className="content-feedBack-row" key={item.id}>
+                  <Col span={24} className="text-normal">
+                    {item.stage}
+                  </Col>
+                  <Col span={24}>
+                    <span className="ml-8">- {item?.feedback?.comment}</span>
+                  </Col>
+                </Row>
+              );
+            }
+          })}
       </Col>
     </Row>
   );
 }
 
-export default Summary;
+const mapStateToProps = createStructuredSelector({
+  cadidate: cadidate,
+  interviews: interviews,
+});
+const mapDispatchToProps = (dispatch) => ({
+  getAllInterviews: (payload) => dispatch(getAllInterviews(payload)),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(Summary);

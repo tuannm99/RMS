@@ -37,7 +37,6 @@ function* getAllInterviews({ payload }) {
     if (hasResponseError(response)) {
       return;
     }
-    console.log(response);
     yield put(saveAllInterviews(response.data.results));
     yield put(setLoadingInterviews(false));
   } catch (error) {

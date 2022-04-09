@@ -7,14 +7,14 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { Row, Col, Button, Upload } from 'antd';
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import { cadidate } from '../../../../redux/stores/cadidate/selectors';
-
+import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { imgURL } from '../../../../utils/utils';
 
 function Profile(props) {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
-  const { cadidate } = props;
+  const { cadidate, account } = props;
 
   const [pdfFile, setPdfFile] = useState([`${imgURL}${cadidate?.cv?.path}`]);
   const [nameFile, setNameFile] = useState(cadidate?.cv?.originalname);
@@ -37,33 +37,37 @@ function Profile(props) {
   };
   return (
     <Row>
-      <Col span={12}>
-        <Upload onChange={handleFile} maxCount={1} fileList={pdfFile}>
-          <Button type="primary" icon={<UploadOutlined />}>
-            CV
-          </Button>
-        </Upload>
-        {pdfFile && (
-          <>
-            {nameFile}
-            {nameFile !== cadidate?.cv?.originalname && (
-              <DeleteOutlined
-                className="cu"
-                style={{ fontSize: '16px', color: '#08c' }}
-                onClick={() => {
-                  setPdfFile([`${imgURL}${cadidate?.cv?.path}`]);
-                  setNameFile(cadidate?.cv?.originalname);
-                }}
-              />
+      {account?.role === 'hiringManager' && (
+        <>
+          <Col span={12}>
+            <Upload onChange={handleFile} maxCount={1} fileList={pdfFile}>
+              <Button type="primary" icon={<UploadOutlined />}>
+                CV
+              </Button>
+            </Upload>
+            {pdfFile && (
+              <>
+                {nameFile}
+                {nameFile !== cadidate?.cv?.originalname && (
+                  <DeleteOutlined
+                    className="cu"
+                    style={{ fontSize: '16px', color: '#08c' }}
+                    onClick={() => {
+                      setPdfFile([`${imgURL}${cadidate?.cv?.path}`]);
+                      setNameFile(cadidate?.cv?.originalname);
+                    }}
+                  />
+                )}
+              </>
             )}
-          </>
-        )}
-      </Col>
-      <Col span={12}>
-        <Button className="fr" type="primary">
-          UPDATE
-        </Button>
-      </Col>
+          </Col>
+          <Col span={12}>
+            <Button className="fr" type="primary">
+              UPDATE
+            </Button>
+          </Col>
+        </>
+      )}
       <Col span={24} className="mt-20">
         {pdfFile && (
           <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.13.216/build/pdf.worker.min.js">
@@ -81,6 +85,7 @@ function Profile(props) {
 
 const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
+  account: selectUserInfor,
 });
 
 export default connect(mapStateToProps)(Profile);
