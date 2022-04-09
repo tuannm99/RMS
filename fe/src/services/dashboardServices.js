@@ -10,9 +10,16 @@ export function getAllInterview(params) {
   });
 }
 
-//get data chart
+//get data chart department
 export function getDataChart() {
   return request(`${BASE_API}/chart/101`, {
+    method: 'GET',
+  });
+}
+
+//get data chart sex
+export function getDataChartSex() {
+  return request(`${BASE_API}/chart/102`, {
     method: 'GET',
   });
 }

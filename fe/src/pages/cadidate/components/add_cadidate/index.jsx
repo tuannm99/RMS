@@ -6,7 +6,10 @@ import { hasResponseError } from '../../../../utils/utils';
 import { toast } from 'react-toastify';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { cadidates } from '../../../../redux/stores/cadidate/selectors';
+import {
+  cadidates,
+  visibleAddCadi,
+} from '../../../../redux/stores/cadidate/selectors';
 import { selectJobId } from '../../../../redux/stores/job/selectors';
 import FormInfo from '../form_info';
 import { DeleteOutlined, UploadOutlined } from '@ant-design/icons';
@@ -21,7 +24,8 @@ function AddCadidate(props) {
 
   const allowedFiles = ['application/pdf'];
 
-  const { jobId, onclose, visible, params, cadidates, setParams } = props;
+  const { jobId, onclose, params, cadidates, setParams, visibleAddCadi } =
+    props;
 
   const getBase64 = (file, callback) => {
     const reader = new FileReader();
@@ -116,21 +120,25 @@ function AddCadidate(props) {
 
     if (
       cadidates?.totalResults >= cadidates?.limit &&
-      cadidates?.totalResults % 10 === 0
+      cadidates?.totalResults % 10 === 0 &&
+      params
     ) {
       await setParams({ ...params, page: cadidates?.page + 1 });
     } else {
       await setParams({ ...params });
     }
     form.resetFields();
+    setFileList(null);
+    setNameFile(null);
+    setPdfFile(null);
     onclose();
   };
 
   return (
     <DrawerComponent
-      title="ADD CANDIDATE"
+      title="ADD CREATE YOUR APPLICATION PROFILE"
       onClose={onclose}
-      visible={visible}
+      visible={visibleAddCadi}
       width={720}
     >
       <Row>
@@ -172,6 +180,7 @@ function AddCadidate(props) {
 const mapStateToProps = createStructuredSelector({
   jobId: selectJobId,
   cadidates: cadidates,
+  visibleAddCadi: visibleAddCadi,
 });
 
 export default connect(mapStateToProps)(AddCadidate);

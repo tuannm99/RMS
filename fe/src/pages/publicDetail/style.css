@@ -1,6 +1,6 @@
 .detail-public-header {
   width: 100%;
-  height: 25vh;
+  height: 225px;
   background-color: #6a5376;
   color: white;
 }
@@ -16,7 +16,6 @@
   justify-content: space-between;
 }
 .detail-public-header-left h3 {
-  padding-top: 35px;
   font-size: 18px;
   line-height: 25.7143px;
   margin: 0px 0px 20px;
@@ -65,4 +64,25 @@
 .detail-public-content ul {
   list-style: circle;
   text-align: left;
+}
+.public-header-sub {
+  display: flex;
+  padding-top: 20px;
+}
+.public-header-icon {
+  padding-top: 5px;
+  font-size: 25px;
+  color: white;
+  padding-right: 10px;
+}
+.detail-public-sub {
+  display: flex;
+  padding-top: 30px;
+  padding-bottom: 10px;
+}
+.detail-public-icon {
+  margin-top: 1px;
+  font-size: 25px;
+  color: white;
+  margin-right: 3px;
 }

@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
 const { Candidate, Job } = require('../core/db/schema');
+const jobService = require('../job/job.service');
 
 /**
  * create new candidate
@@ -9,7 +10,7 @@ const { Candidate, Job } = require('../core/db/schema');
  */
 const createCandidate = async (candidatePayload) => {
   const candidate = new Candidate(candidatePayload);
-  const job = await Job.findById(candidate.jobId);
+  const job = await jobService.getJobById(candidatePayload.jobId);
   job.candidateId.push(candidate._id);
   await job.save();
   // eslint-disable-next-line no-return-await

@@ -1,10 +1,17 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { saveAllCadidates, setLoading, saveCadidate } from './actions';
+import {
+  saveAllCadidates,
+  setLoading,
+  saveCadidate,
+  saveAllInterviews,
+  setLoadingInterviews,
+} from './actions';
 import * as services from '../../../services/cadidateServices';
 import {
   GET_ALL_LIST_CADIDATE,
   GET_CADIDATE,
   EDIT_CADIDATE,
+  GET_ALL_LIST_INTERVIEW,
 } from './constants';
 import { hasResponseError } from '../../../utils/utils';
 import { toast } from 'react-toastify';
@@ -18,6 +25,21 @@ function* getAllCadidates({ payload }) {
     }
     yield put(saveAllCadidates(response.data));
     yield put(setLoading(false));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* getAllInterviews({ payload }) {
+  try {
+    yield put(setLoadingInterviews(true));
+    const response = yield call(services.getAllInterviewsServices, payload);
+    if (hasResponseError(response)) {
+      return;
+    }
+    console.log(response);
+    yield put(saveAllInterviews(response.data.results));
+    yield put(setLoadingInterviews(false));
   } catch (error) {
     console.log(error);
   }
@@ -53,6 +75,10 @@ function* editCadidate({ payload }) {
 
 export function* getCadidatesSaga() {
   yield takeLatest(GET_ALL_LIST_CADIDATE, getAllCadidates);
+}
+
+export function* getInterviewsSaga() {
+  yield takeLatest(GET_ALL_LIST_INTERVIEW, getAllInterviews);
 }
 
 export function* getCadidateSaga() {

@@ -159,11 +159,7 @@ function EmployeePage(props) {
    * @param {*} id
    */
   const handleDetailUser = (id) => {
-    if (userAccount?.role === 'admin') {
-      navigation(`/profile/${id}`);
-    } else {
-      navigation(`/profile/${userAccount?.id}`);
-    }
+    navigation(`/profile/${id}`);
   };
 
   /**

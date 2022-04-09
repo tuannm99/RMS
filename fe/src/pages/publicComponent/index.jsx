@@ -132,19 +132,6 @@ function Home(props) {
           })}
         </Row>
       </div>
-
-      {/* <Col span={12}>
-        {dataJob && (
-          <Pagination
-            pageSize={dataJob?.limit}
-            current={dataJob?.page}
-            total={dataJob?.totalResults}
-            onChange={handleChangeData}
-            className="fr"
-          />
-        )}
-      </Col> */}
-      <footer></footer>
     </>
   );
 }

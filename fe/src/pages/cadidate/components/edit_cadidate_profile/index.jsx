@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Form } from 'antd';
 import FormInfo from '../form_info';
 import {
-  editCadidate,
   getAllCadidates,
   getCadidate,
 } from '../../../../redux/stores/cadidate/actions';
@@ -14,13 +13,15 @@ import {
   cadidate,
 } from '../../../../redux/stores/cadidate/selectors';
 import moment from 'moment';
+import { updateCadidateServices } from '../../../../services/cadidateServices';
+import { hasResponseError } from '../../../../utils/utils';
+import { toast } from 'react-toastify';
 
 const dateFormatList = 'DD/MM/YYYY';
 
 function EditCadidateProfile(props) {
   const [form] = Form.useForm();
-  const { id, cadidate, editCadidate, params, getAllCadidates, getCadidate } =
-    props;
+  const { id, cadidate, params, getAllCadidates, getCadidate } = props;
   const [disableEmp, setDisableEmp] = useState(false);
   const [disableEdu, setDisableEdu] = useState(false);
 
@@ -32,7 +33,7 @@ function EditCadidateProfile(props) {
         lastName: cadidate?.lastName,
         email: cadidate?.email,
         phone: cadidate?.phone,
-        hyperlink: cadidate?.resume?.hyperlink,
+        hyperlink: cadidate?.hyperlink,
       });
       if (disableEmp) {
         form.setFieldsValue({
@@ -70,6 +71,8 @@ function EditCadidateProfile(props) {
   }, [id, cadidate, disableEmp, disableEdu, form]);
 
   const onFinish = async (values) => {
+    const formRes = new FormData();
+
     let body = {
       status: 'open',
       firstName: values?.firstName,
@@ -109,7 +112,12 @@ function EditCadidateProfile(props) {
         },
       };
     }
-    await editCadidate({ id, body });
+    formRes.append('candidate', JSON.stringify(body));
+    const resEdit = await updateCadidateServices(id, formRes);
+    if (hasResponseError(resEdit)) {
+      toast.error(resEdit.data.message);
+      return;
+    }
     await getCadidate(id);
     getAllCadidates(params);
     props.handleCancel();
@@ -133,7 +141,6 @@ const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
 });
 const mapDispatchToProps = (dispatch) => ({
-  editCadidate: (payload) => dispatch(editCadidate(payload)),
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
   getCadidate: (payload) => dispatch(getCadidate(payload)),
 });
