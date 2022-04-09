@@ -7,17 +7,23 @@ import AddCadidate from '../cadidate/components/add_cadidate';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { setVisibleAddCandi } from '../../redux/stores/cadidate/actions';
+import {
+  setVisibleAddCandi,
+  setCheckToken,
+} from '../../redux/stores/cadidate/actions';
 import { setJobId } from '../../redux/stores/job/actions';
 
 function HomeDetail(props) {
   const [job, setJob] = useState({});
   let { id } = useParams();
 
-  const { setVisibleAddCandi, setJobId } = props;
+  const { setVisibleAddCandi, setJobId, setCheckToken } = props;
 
   useEffect(() => {
     fetchJob();
+    return () => {
+      setJob({});
+    };
   }, []);
 
   const fetchJob = async () => {
@@ -27,9 +33,11 @@ function HomeDetail(props) {
 
   const handleAddCandidate = async () => {
     await setJobId(id);
+    setCheckToken(false);
     setVisibleAddCandi(true);
   };
-  const onCloseAddCadi = () => {
+  const onCloseAddCadi = async () => {
+    setCheckToken(true);
     setVisibleAddCandi(false);
   };
   return (
@@ -68,6 +76,7 @@ const mapStateToProps = createStructuredSelector({});
 const mapDispatchToProps = (dispatch) => ({
   setVisibleAddCandi: (payload) => dispatch(setVisibleAddCandi(payload)),
   setJobId: (payload) => dispatch(setJobId(payload)),
+  setCheckToken: (payload) => dispatch(setCheckToken(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

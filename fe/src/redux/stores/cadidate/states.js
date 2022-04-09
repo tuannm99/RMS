@@ -6,4 +6,5 @@ export const INIT_STATE = {
   interviews: [],
   loadingInterviews: false,
   visibleAddCadi: false,
+  checkToken: true,
 };

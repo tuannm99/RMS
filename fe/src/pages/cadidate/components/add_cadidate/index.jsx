@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Col, Form, Row, Upload } from 'antd';
 import { DrawerComponent } from '../../../../components';
-import { addCadidateServices } from '../../../../services/cadidateServices';
+import {
+  addCadidatePublicServices,
+  addCadidateServices,
+} from '../../../../services/cadidateServices';
 import { hasResponseError } from '../../../../utils/utils';
 import { toast } from 'react-toastify';
 import { createStructuredSelector } from 'reselect';
@@ -9,6 +12,7 @@ import { connect } from 'react-redux';
 import {
   cadidates,
   visibleAddCadi,
+  checkToken,
 } from '../../../../redux/stores/cadidate/selectors';
 import { selectJobId } from '../../../../redux/stores/job/selectors';
 import FormInfo from '../form_info';
@@ -24,8 +28,15 @@ function AddCadidate(props) {
 
   const allowedFiles = ['application/pdf'];
 
-  const { jobId, onclose, params, cadidates, setParams, visibleAddCadi } =
-    props;
+  const {
+    jobId,
+    onclose,
+    params,
+    cadidates,
+    setParams,
+    visibleAddCadi,
+    checkToken,
+  } = props;
 
   const getBase64 = (file, callback) => {
     const reader = new FileReader();
@@ -110,22 +121,29 @@ function AddCadidate(props) {
 
     formRes.append('cv', fileList);
     formRes.append('candidate', JSON.stringify(body));
+    if (checkToken) {
+      const res = await addCadidateServices(formRes);
+      if (hasResponseError(res)) {
+        toast.error(res.data.message);
+        return;
+      }
+      toast.success('Add caddidate success');
 
-    const res = await addCadidateServices(formRes);
-    if (hasResponseError(res)) {
-      toast.error(res.data.message);
-      return;
-    }
-    toast.success('Add caddidate success');
-
-    if (
-      cadidates?.totalResults >= cadidates?.limit &&
-      cadidates?.totalResults % 10 === 0 &&
-      params
-    ) {
-      await setParams({ ...params, page: cadidates?.page + 1 });
+      if (
+        cadidates?.totalResults >= cadidates?.limit &&
+        cadidates?.totalResults % 10 === 0
+      ) {
+        await setParams({ ...params, page: cadidates?.page + 1 });
+      } else {
+        await setParams({ ...params });
+      }
     } else {
-      await setParams({ ...params });
+      const res = await addCadidatePublicServices(jobId, formRes);
+      if (res.data.status < 200 || res.data.status > 300) {
+        toast.error(res.data.message);
+        return;
+      }
+      toast.success('Add caddidate success');
     }
     form.resetFields();
     setFileList(null);
@@ -178,6 +196,7 @@ function AddCadidate(props) {
 }
 
 const mapStateToProps = createStructuredSelector({
+  checkToken: checkToken,
   jobId: selectJobId,
   cadidates: cadidates,
   visibleAddCadi: visibleAddCadi,

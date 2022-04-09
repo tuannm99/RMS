@@ -24,7 +24,6 @@ import { Table } from '../../components';
 import { toast } from 'react-toastify';
 import AddCadidate from './components/add_cadidate';
 import CadidateInfo from './components/info_cadidate';
-
 import {
   renderBodyTable,
   customerTableHead,
@@ -41,7 +40,6 @@ function CadidatePage(props) {
   const [visibleInfoCadi, setVisibleInfoCadi] = useState(false);
   const [jobs, setjobs] = useState([]);
   const [visible, setVisible] = useState(false);
-
   const payload = {
     limit: 10,
     page: 1,

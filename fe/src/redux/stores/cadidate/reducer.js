@@ -9,6 +9,7 @@ import {
   SAVE_ALL_LIST_INTERVIEW,
   SET_LOADING_INTERVIEWS,
   SET_VISIBLE_ADD_CANDIDATE,
+  SET_CHECK_TOKEN,
 } from './constants';
 
 export default function cadidateReducers(state = INIT_STATE, action) {
@@ -19,6 +20,9 @@ export default function cadidateReducers(state = INIT_STATE, action) {
         break;
       case SET_LOADING_INTERVIEWS:
         draft.loadingInterviews = action.payload;
+        break;
+      case SET_CHECK_TOKEN:
+        draft.checkToken = action.payload;
         break;
       case SET_VISIBLE_ADD_CANDIDATE:
         draft.visibleAddCadi = action.payload;

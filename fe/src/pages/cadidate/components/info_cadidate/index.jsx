@@ -40,7 +40,6 @@ import Interview from './Interview';
 import { hasResponseError, imgURL } from '../../../../utils/utils';
 import { updateCadidateServices } from '../../../../services/cadidateServices';
 import { toast } from 'react-toastify';
-
 const { TabPane } = Tabs;
 
 function CadidateInfo(props) {
