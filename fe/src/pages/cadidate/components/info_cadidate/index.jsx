@@ -232,6 +232,8 @@ function CadidateInfo(props) {
                     <p className="mb-0">CURRICULUM VITAE</p>
                     <a
                       href={`${imgURL}${cadidate?.cv?.path}`}
+                      target="_blank"
+                      rel="noreferrer"
                     >{`${imgURL}${cadidate?.cv?.path}`}</a>
                   </Col>
                 </Row>

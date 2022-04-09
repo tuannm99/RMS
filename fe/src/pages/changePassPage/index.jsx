@@ -2,9 +2,22 @@ import React from 'react';
 import './styles.css';
 import { Button, Divider, Form, Input } from 'antd';
 import { NavLink } from 'react-router-dom';
+import { changPassRequestService } from '../../services/authServices';
+import { toast } from 'react-toastify';
 
 function ChangePassPage() {
-  const onFinish = (values) => {};
+  const onFinish = (values) => {
+    const params = {
+      email: values.email,
+    };
+    changPassRequestService(params).then((res) => {
+      if (res.status < 200 || res.status > 300) {
+        toast.error(res.data.message);
+        return;
+      }
+      toast.success('Please check mail!');
+    });
+  };
   return (
     <div className="main">
       <div className="header fr">

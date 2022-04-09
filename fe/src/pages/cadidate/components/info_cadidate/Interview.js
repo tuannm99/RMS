@@ -13,23 +13,38 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import moment from 'moment';
+import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 import { hasResponseError } from '../../../../utils/utils';
 import { toast } from 'react-toastify';
-import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
+import UpdateFeedBack from './UpdateFeedBack';
 
 function Interview(props) {
   const [visible, setVisible] = useState(false);
   const [interviewerId, setInterviewerId] = useState();
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { cadidate, getAllInterviews, interviews, loadingInterviews, account } =
     props;
-
-  const onClose = () => {
-    setVisible(false);
-  };
 
   useEffect(() => {
     getAllInterviews(cadidate?.id);
   }, [cadidate, getAllInterviews]);
+
+  const showModal = (id) => {
+    setIsModalVisible(true);
+    setInterviewerId(id);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
 
   const handleDeleteInterview = async (id) => {
     const res = await deleteInterviewsServices(cadidate?.id, id);
@@ -41,7 +56,6 @@ function Interview(props) {
     getAllInterviews(cadidate?.id);
   };
 
-  console.log(interviews);
   const day = [
     'Sunday',
     'Monday',
@@ -105,11 +119,11 @@ function Interview(props) {
                 </div>
                 <div className="right-inteview">
                   <p className="name-right-inteview">
-                    {item?.candidateId?.fullName}
-                  </p>
-                  <p className="stage-right-inteview">{item?.stage}</p>
-                  <p className="sche-right-inteview">
                     Interviewer: <span>{item?.interviewer?.fullName}</span>
+                  </p>
+                  <p className="stage-right-inteview">{item?.stage} round</p>
+                  <p className="sche-right-inteview">
+                    Schedule By: <span>{item?.scheduleBy?.fullName}</span>
                   </p>
                 </div>
                 {account?.role === 'hiringManager' && (
@@ -133,9 +147,14 @@ function Interview(props) {
                         </Popconfirm>
                       </Tooltip>
                     </div>
-                    <Button className="feedback">Add feedback</Button>
                   </>
                 )}
+                <Button
+                  className="feedback"
+                  onClick={() => showModal(item?.id)}
+                >
+                  feedback
+                </Button>
               </div>
             ))}
         </Col>
@@ -148,6 +167,12 @@ function Interview(props) {
       <EditAddInterview
         visible={visible}
         onclose={onClose}
+        interviewerId={interviewerId}
+      />
+      <UpdateFeedBack
+        isModalVisible={isModalVisible}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
         interviewerId={interviewerId}
       />
     </>

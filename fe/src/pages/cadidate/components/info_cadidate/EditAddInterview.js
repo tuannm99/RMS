@@ -9,11 +9,7 @@ import {
   cadidate,
   interviews,
 } from '../../../../redux/stores/cadidate/selectors';
-import {
-  getCadidate,
-  getAllCadidates,
-  getAllInterviews,
-} from '../../../../redux/stores/cadidate/actions';
+import { getAllInterviews } from '../../../../redux/stores/cadidate/actions';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -249,8 +245,6 @@ const mapStateToProps = createStructuredSelector({
   interviews: interviews,
 });
 const mapDispatchToProps = (dispatch) => ({
-  getCadidate: (payload) => dispatch(getCadidate(payload)),
-  getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
   getAllInterviews: (payload) => dispatch(getAllInterviews(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
