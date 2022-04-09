@@ -1,4 +1,5 @@
 import request from '../utils/request';
+import requestPublic from '../utils/requestPublic';
 
 const BASE_API = 'http://rms-fpt.ddns.net:5000/api/v1';
 
@@ -43,10 +44,9 @@ export const getDetailCadidateServices = (id) => {
  * @param {*} body
  * @returns
  */
-export const updateCadidateServices = ({ id, body }) => {
+export const updateCadidateServices = (id, body) => {
   return request(`${BASE_API}/candidates/${id}`, {
     method: 'PUT',
-    params: id,
     data: body,
   });
 };
@@ -57,7 +57,7 @@ export const updateCadidateServices = ({ id, body }) => {
  * @returns
  */
 export const addCadidateServices = (body) => {
-  return request(`${BASE_API}/candidates`, {
+  return requestPublic(`${BASE_API}/candidates`, {
     method: 'POST',
     data: body,
   });
@@ -95,10 +95,9 @@ export const updateIntervierServices = (cadidateId, interviewId, body) => {
  * @param {*} params
  * @returns
  */
-export function getAllInterviewsServices(id, params) {
+export function getAllInterviewsServices(id) {
   return request(`${BASE_API}/candidates/${id}/interview`, {
     method: 'GET',
-    params: params,
   });
 }
 

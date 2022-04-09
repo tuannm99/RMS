@@ -1,19 +1,14 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Empty, Col, Row, Tooltip, Spin, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
-import {
-  deleteInterviewsServices,
-  getAllInterviewsServices,
-} from '../../../../services/cadidateServices';
+import { deleteInterviewsServices } from '../../../../services/cadidateServices';
 import EditAddInterview from './EditAddInterview';
 import {
-  cadidate_Id,
   cadidate,
+  interviews,
+  loadingInterviews,
 } from '../../../../redux/stores/cadidate/selectors';
-import {
-  getCadidate,
-  getAllCadidates,
-} from '../../../../redux/stores/cadidate/actions';
+import { getAllInterviews } from '../../../../redux/stores/cadidate/actions';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -24,27 +19,15 @@ import { toast } from 'react-toastify';
 function Interview(props) {
   const [visible, setVisible] = useState(false);
   const [interviewerId, setInterviewerId] = useState();
-  const [interviews, setInterviews] = useState();
-  const [totalResults, setTotalResults] = useState();
-  const [loading, setLoading] = useState(false);
-  const { cadidate } = props;
+  const { cadidate, getAllInterviews, interviews, loadingInterviews } = props;
 
   const onClose = () => {
     setVisible(false);
   };
 
   useEffect(() => {
-    getDataInterview();
-  }, [cadidate]);
-
-  const getDataInterview = () => {
-    setLoading(true);
-    getAllInterviewsServices(cadidate?.id).then((res) => {
-      setInterviews(res.data.results);
-      setTotalResults(res.data.totalResults);
-      setLoading(false);
-    });
-  };
+    getAllInterviews(cadidate?.id);
+  }, [cadidate, getAllInterviews]);
 
   const handleDeleteInterview = async (id) => {
     const res = await deleteInterviewsServices(cadidate?.id, id);
@@ -53,9 +36,10 @@ function Interview(props) {
       return;
     }
     toast.success('Delete interview success!');
-    getDataInterview();
+    getAllInterviews(cadidate?.id);
   };
 
+  console.log(interviews);
   const day = [
     'Sunday',
     'Monday',
@@ -89,38 +73,39 @@ function Interview(props) {
           </Col>
         )}
         <Col span={24}>
-          {interviews &&
-            !loading &&
-            interviews.map((item) => (
-              <div className="content-interview" key={item.id}>
+          {!loadingInterviews &&
+            interviews?.map((item) => (
+              <div className="content-interview" key={item?.id}>
                 <div className="left-interview">
                   <p className="date-left-interview mb-0">
-                    {moment(item.interviewDate).format('DD-MM-YYYY').toString()}
+                    {moment(item?.interviewDate)
+                      .format('DD-MM-YYYY')
+                      .toString()}
                   </p>
                   <p className="date-left-interview">
                     {`(${day.find(
                       (element, index) =>
-                        moment(item.interviewDate).day() === index
+                        moment(item?.interviewDate).day() === index
                     )})`}
                   </p>
                   <p className="time-left-interview">
-                    {moment(item.interviewDate).format('HH:mm').toString()} -{' '}
-                    {item.duration < 60
-                      ? `(${item.duration}Mins)`
-                      : item.duration % 60 !== 0
-                      ? `(${Math.floor(item.duration / 60)}Hr${
-                          item.duration % 60
+                    {moment(item?.interviewDate).format('HH:mm').toString()} -{' '}
+                    {item?.duration < 60
+                      ? `(${item?.duration}Mins)`
+                      : item?.duration % 60 !== 0
+                      ? `(${Math.floor(item?.duration / 60)}Hr${
+                          item?.duration % 60
                         }Mins)`
-                      : `(${item.duration / 60}Hr)`}
+                      : `(${item?.duration / 60}Hr)`}
                   </p>
                 </div>
                 <div className="right-inteview">
                   <p className="name-right-inteview">
                     {item?.candidateId?.fullName}
                   </p>
-                  <p className="stage-right-inteview">{item.stage}</p>
+                  <p className="stage-right-inteview">{item?.stage}</p>
                   <p className="sche-right-inteview">
-                    Interviewer: <span>{item.interviewer.fullName}</span>
+                    Interviewer: <span>{item?.interviewer?.fullName}</span>
                   </p>
                 </div>
                 <div className="interview-icon">
@@ -129,13 +114,13 @@ function Interview(props) {
                       className="mr-8 cu"
                       onClick={() => {
                         setVisible(true);
-                        setInterviewerId(item.id);
+                        setInterviewerId(item?.id);
                       }}
                     />
                   </Tooltip>
                   <Tooltip placement="bottomRight" title="Delete interview">
                     <Popconfirm
-                      onConfirm={() => handleDeleteInterview(item.id)}
+                      onConfirm={() => handleDeleteInterview(item?.id)}
                       title="Are you sure delete？"
                     >
                       <DeleteOutlined className="cu" />
@@ -146,7 +131,7 @@ function Interview(props) {
               </div>
             ))}
         </Col>
-        {loading && (
+        {loadingInterviews && (
           <Col span={24} style={{ textAlign: 'center' }}>
             <Spin />
           </Col>
@@ -156,17 +141,18 @@ function Interview(props) {
         visible={visible}
         onclose={onClose}
         interviewerId={interviewerId}
-        totalResults={totalResults}
-        setInterviews={setInterviews}
-        setTotalResults={setTotalResults}
-        setLoading={setLoading}
-        getDataInterview={getDataInterview}
       />
     </>
   );
 }
 const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
+  interviews: interviews,
+  loadingInterviews: loadingInterviews,
 });
+const mapDispatchToProps = (dispatch) => ({
+  getAllInterviews: (payload) => dispatch(getAllInterviews(payload)),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default connect(mapStateToProps)(Interview);
+export default compose(withConnect)(Interview);

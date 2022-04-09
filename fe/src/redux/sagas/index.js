@@ -13,5 +13,6 @@ export default function* () {
     cadidateSagas.getCadidatesSaga(),
     cadidateSagas.getCadidateSaga(),
     cadidateSagas.editCadidateSaga(),
+    cadidateSagas.getInterviewsSaga(),
   ]);
 }
