@@ -40,7 +40,7 @@ function Profile(props) {
       <Col span={12}>
         <Upload onChange={handleFile} maxCount={1} fileList={pdfFile}>
           <Button type="primary" icon={<UploadOutlined />}>
-            Upload
+            CV
           </Button>
         </Upload>
         {pdfFile && (

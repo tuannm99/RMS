@@ -6,12 +6,10 @@ import { GlobalOutlined, UserOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { selectJobId } from '../../redux/stores/job/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import * as action from '../../redux/stores/job/actions';
-import { imgURL } from '../../utils/utils';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import {
   Row,
@@ -36,7 +34,6 @@ function RecruitPage(props) {
     page: 1,
   });
 
-  const { jobId } = props;
   const { setJobId } = props;
 
   const navigation = useNavigate();
@@ -220,7 +217,6 @@ function RecruitPage(props) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  jobId: selectJobId,
   userAccount: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({

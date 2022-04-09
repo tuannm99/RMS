@@ -32,6 +32,7 @@ const getPublishedJobHandler = catchAsync(async (req, res) => {
  */
 const addResumeHandler = catchAsync(async (req, res) => {
   const candidatePayload = JSON.parse(req.body.candidate);
+  candidatePayload.jobId = req.params.id;
   const candidate = await candidateService.createCandidate({ ...candidatePayload, cv: req.file });
   res.status(httpStatus.OK).json(candidate);
 });

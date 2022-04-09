@@ -6,6 +6,9 @@ import {
   SAVE_ALL_LIST_CADIDATE,
   SAVE_CADIDATE,
   SET_ID,
+  SAVE_ALL_LIST_INTERVIEW,
+  SET_LOADING_INTERVIEWS,
+  SET_VISIBLE_ADD_CANDIDATE,
 } from './constants';
 
 export default function cadidateReducers(state = INIT_STATE, action) {
@@ -13,6 +16,12 @@ export default function cadidateReducers(state = INIT_STATE, action) {
     switch (action.type) {
       case SET_LOADING:
         draft.isLoading = action.payload;
+        break;
+      case SET_LOADING_INTERVIEWS:
+        draft.loadingInterviews = action.payload;
+        break;
+      case SET_VISIBLE_ADD_CANDIDATE:
+        draft.visibleAddCadi = action.payload;
         break;
       case SET_ID:
         draft.id = action.payload;
@@ -22,6 +31,9 @@ export default function cadidateReducers(state = INIT_STATE, action) {
         break;
       case SAVE_CADIDATE:
         draft.cadidate = action.payload;
+        break;
+      case SAVE_ALL_LIST_INTERVIEW:
+        draft.interviews = action.payload;
         break;
       default:
         return state;

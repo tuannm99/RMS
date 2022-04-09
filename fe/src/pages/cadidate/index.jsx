@@ -5,7 +5,11 @@ import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { selectJobId } from '../../redux/stores/job/selectors';
 import { setJobId } from '../../redux/stores/job/actions';
 import { cadidates, loading } from '../../redux/stores/cadidate/selectors';
-import { getAllCadidates, setId } from '../../redux/stores/cadidate/actions';
+import {
+  getAllCadidates,
+  setId,
+  setVisibleAddCandi,
+} from '../../redux/stores/cadidate/actions';
 import * as services from '../../services/cadidateServices';
 import { getAllJobs } from '../../services/jobService';
 
@@ -34,7 +38,6 @@ const { Search } = Input;
 function CadidatePage(props) {
   const [radio, setRadio] = useState(':asc');
   const [sortSlect, setSortSlect] = useState('createdAt');
-  const [visibleAddCadi, setVisibleAddCadi] = useState(false);
   const [visibleInfoCadi, setVisibleInfoCadi] = useState(false);
   const [jobs, setjobs] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -48,7 +51,8 @@ function CadidatePage(props) {
 
   const [params, setParams] = useState(payload);
 
-  const { getAllCadidates, setCadidateId, setJobId } = props;
+  const { getAllCadidates, setCadidateId, setJobId, setVisibleAddCandi } =
+    props;
   const { jobId, userAccount } = props;
   const { loading, cadidates } = props;
 
@@ -70,7 +74,7 @@ function CadidatePage(props) {
   }, []);
 
   const onCloseAddCadi = () => {
-    setVisibleAddCadi(false);
+    setVisibleAddCandi(false);
   };
 
   const onCloseInfoCadi = () => {
@@ -181,7 +185,7 @@ function CadidatePage(props) {
           {(userAccount?.role === 'admin' ||
             userAccount?.role === 'hiringManager') &&
             jobId !== '' && (
-              <Button onClick={() => setVisibleAddCadi(true)}>
+              <Button onClick={() => setVisibleAddCandi(true)}>
                 Add Candidate
               </Button>
             )}
@@ -237,7 +241,6 @@ function CadidatePage(props) {
         )}
       </div>
       <AddCadidate
-        visible={visibleAddCadi}
         onclose={onCloseAddCadi}
         params={params}
         setParams={setParams}
@@ -262,6 +265,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
   setCadidateId: (payload) => dispatch(setId(payload)),
   setJobId: (payload) => dispatch(setJobId(payload)),
+  setVisibleAddCandi: (payload) => dispatch(setVisibleAddCandi(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

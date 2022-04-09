@@ -6,19 +6,19 @@ import { getAllUsersServices } from '../../../../services/employeeServices';
 import { toast } from 'react-toastify';
 import { hasResponseError } from '../../../../utils/utils';
 import {
-  cadidate_Id,
   cadidate,
+  interviews,
 } from '../../../../redux/stores/cadidate/selectors';
 import {
   getCadidate,
   getAllCadidates,
+  getAllInterviews,
 } from '../../../../redux/stores/cadidate/actions';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import {
   addIntervierServices,
-  getAllInterviewsServices,
   getDetailInterviewsServices,
   updateIntervierServices,
 } from '../../../../services/cadidateServices';
@@ -31,11 +31,8 @@ function EditAddInterview(props) {
     visible,
     interviewerId,
     cadidate,
-    totalResults,
-    setTotalResults,
-    setInterviews,
-    setLoading,
-    getDataInterview,
+    interviews,
+    getAllInterviews,
   } = props;
   const [interviewer, setInterviewer] = useState();
   const [form] = Form.useForm();
@@ -47,7 +44,6 @@ function EditAddInterview(props) {
   useEffect(() => {
     if (interviewerId) {
       getDetailInterviewsServices(cadidate?.id, interviewerId).then((res) => {
-        console.log(moment(res?.data?.interviewDate));
         form.setFieldsValue({
           Interviewer: res?.data?.interviewer,
           interviewDate: moment(res?.data?.interviewDate),
@@ -59,6 +55,7 @@ function EditAddInterview(props) {
       form.resetFields();
     }
   }, [interviewerId, cadidate?.id, form]);
+
   const getAllInterviewer = async (params) => {
     const res = await getAllUsersServices(params);
     if (hasResponseError(res)) {
@@ -100,16 +97,6 @@ function EditAddInterview(props) {
     { value: 180, label: '3 Hrs' },
   ];
 
-  const stylesEmpty = {
-    width: '100%',
-    background: 'linear-gradient(0deg,#fff 0,#f5f7f9 100%)',
-    padding: '50px 0',
-    borderRadius: '5px',
-    marginTop: '50px',
-    marginLeft: '0',
-    marginRight: '0',
-  };
-
   const onFinish = async (values) => {
     console.log(values);
     let body = {
@@ -130,7 +117,7 @@ function EditAddInterview(props) {
       }
       toast.success('Edit schedule interview success!');
     } else {
-      if (totalResults > 4) {
+      if (interviews?.length > 4) {
         onclose();
         toast.error('Each interviewer can only add 5 schedule.');
         return;
@@ -144,7 +131,7 @@ function EditAddInterview(props) {
         form.resetFields();
       }
     }
-    await getDataInterview();
+    await getAllInterviews(cadidate?.id);
     onclose();
   };
 
@@ -259,10 +246,12 @@ function EditAddInterview(props) {
 
 const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
+  interviews: interviews,
 });
 const mapDispatchToProps = (dispatch) => ({
   getCadidate: (payload) => dispatch(getCadidate(payload)),
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
+  getAllInterviews: (payload) => dispatch(getAllInterviews(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

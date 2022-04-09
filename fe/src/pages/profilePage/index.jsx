@@ -8,12 +8,16 @@ import { getDetailUsersServices } from '../../services/employeeServices';
 import { hasResponseError, imgURL } from '../../utils/utils';
 import { toast } from 'react-toastify';
 import moment from 'moment';
+import { selectUserInfor } from '../../redux/stores/auth/selectors';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 
-function ProfilePage() {
+function ProfilePage(props) {
   /**
    * create state
    */
   const [user, setUser] = useState();
+  const { userAccount } = props;
 
   const navigation = useNavigate();
 
@@ -41,27 +45,33 @@ function ProfilePage() {
   };
   return (
     <Row gutter={16}>
-      <Col span={24}>
-        <Button className="fr mb-16" onClick={() => handleEdit(id)}>
-          Edit Profile
-        </Button>
-      </Col>
+      {(userAccount?.role === 'admin' || userAccount?.id === id) && (
+        <Col span={24}>
+          <Button className="fr mb-16" onClick={() => handleEdit(id)}>
+            Edit Profile
+          </Button>
+        </Col>
+      )}
 
       <Col span={7}>
         <div className="profile">
           <div className="profile-avatar">
             {!user?.avatar ? (
-              <Avatar
-                className="profile-avatar-img"
-                size={80}
-                icon={<UserOutlined />}
-              />
+              <div className="profile-avatar-img">
+                <Avatar
+                  className="avatar-info"
+                  size={80}
+                  icon={<UserOutlined />}
+                />
+              </div>
             ) : (
-              <Avatar
-                className="profile-avatar-img"
-                size={80}
-                src={`${imgURL}${user?.avatar?.path}`}
-              />
+              <div className="profile-avatar-img">
+                <Avatar
+                  className="avatar-info"
+                  size={80}
+                  src={`${imgURL}${user?.avatar?.path}`}
+                />
+              </div>
             )}
           </div>
           <div className="profile-information ml-28">
@@ -200,4 +210,7 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+const mapStateToProps = createStructuredSelector({
+  userAccount: selectUserInfor,
+});
+export default connect(mapStateToProps)(ProfilePage);

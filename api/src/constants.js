@@ -13,6 +13,12 @@ const ROLES = {
   employee: 'employee',
 };
 
+// Sex
+const SEX = {
+  male: 'male',
+  female: 'female',
+};
+
 // Department
 const DEPARTMENTS = {
   administration: 'administration',
@@ -62,6 +68,7 @@ const EVENTS = {
 module.exports = {
   TOKEN_TYPES,
   ROLES,
+  SEX,
   EVENTS,
   STAGES,
   JOB_STATUS,
