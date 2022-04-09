@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './style.css';
 import { getPublishJobDetail } from '../../services/careerServices';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { TiArrowLeftThick } from 'react-icons/ti';
 import AddCadidate from '../cadidate/components/add_cadidate';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -37,10 +37,12 @@ function HomeDetail(props) {
       <div className="detail-public-header">
         <div className="detail-public-header-content">
           <div className="detail-public-header-left">
-            <Link to={`/PublicJob`}>
-              <ArrowLeftOutlined style={{ fontSize: '20px' }} />
-            </Link>
-            <h3>{job.department}</h3>
+            <div className="detail-public-sub">
+              <Link to={`/PublicJob`}>
+                <TiArrowLeftThick className="detail-public-icon" />
+              </Link>
+              <h3>{job.department}</h3>
+            </div>
             <h1>{job.title}</h1>
             <div className="detail-public-header-sub">
               <span>{job.location}</span> | <span>{job.jobType}</span>

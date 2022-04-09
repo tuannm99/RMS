@@ -75,3 +75,14 @@
   color: white;
   padding-right: 10px;
 }
+.detail-public-sub {
+  display: flex;
+  padding-top: 30px;
+  padding-bottom: 10px;
+}
+.detail-public-icon {
+  margin-top: 1px;
+  font-size: 25px;
+  color: white;
+  margin-right: 3px;
+}
