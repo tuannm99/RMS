@@ -5,7 +5,6 @@ import {
   Row,
   Tabs,
   Button,
-  Popconfirm,
   Divider,
   Modal,
   Tag,
@@ -26,6 +25,7 @@ import {
   cadidate,
   loading,
 } from '../../../../redux/stores/cadidate/selectors';
+import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 import {
   getCadidate,
   getAllCadidates,
@@ -40,7 +40,6 @@ import Interview from './Interview';
 import { hasResponseError, imgURL } from '../../../../utils/utils';
 import { updateCadidateServices } from '../../../../services/cadidateServices';
 import { toast } from 'react-toastify';
-
 const { TabPane } = Tabs;
 
 function CadidateInfo(props) {
@@ -53,6 +52,7 @@ function CadidateInfo(props) {
     params,
     isloading,
     getAllCadidates,
+    account,
   } = props;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -160,14 +160,22 @@ function CadidateInfo(props) {
               <div className="cl-bg">
                 <Row className="profile-cadidate">
                   <Col span={12}>
-                    <Dropdown overlay={menuStatus} trigger={['click']}>
+                    <Dropdown
+                      overlay={menuStatus}
+                      trigger={['click']}
+                      disabled={account?.role !== 'hiringManager' && true}
+                    >
                       <Button className="btn-profile_right">
                         Status <DownOutlined />
                       </Button>
                     </Dropdown>
                   </Col>
                   <Col span={12}>
-                    <Dropdown overlay={menu} trigger={['click']}>
+                    <Dropdown
+                      overlay={menu}
+                      trigger={['click']}
+                      disabled={account?.role !== 'hiringManager' && true}
+                    >
                       <Button className="btn-profile_right">
                         Advance <DownOutlined />
                       </Button>
@@ -178,9 +186,11 @@ function CadidateInfo(props) {
                   <Col span={24} className="cadidate-name">
                     <p>
                       {cadidate?.fullName}
-                      <span onClick={showModal}>
-                        <EditOutlined className="fs-12 cu" />
-                      </span>
+                      {account?.role === 'hiringManager' && (
+                        <span onClick={showModal}>
+                          <EditOutlined className="fs-12 cu" />
+                        </span>
+                      )}
                     </p>
                     <p>
                       <a
@@ -222,6 +232,8 @@ function CadidateInfo(props) {
                     <p className="mb-0">CURRICULUM VITAE</p>
                     <a
                       href={`${imgURL}${cadidate?.cv?.path}`}
+                      target="_blank"
+                      rel="noreferrer"
                     >{`${imgURL}${cadidate?.cv?.path}`}</a>
                   </Col>
                 </Row>
@@ -269,6 +281,7 @@ const mapStateToProps = createStructuredSelector({
   isloading: loading,
   cadidate: cadidate,
   id: cadidate_Id,
+  account: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({
   getCadidate: (payload) => dispatch(getCadidate(payload)),

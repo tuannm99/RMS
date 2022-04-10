@@ -228,7 +228,13 @@ function UserEditAdd({
             <Form.Item
               name="firstName"
               label="First Name"
-              rules={[{ required: true, message: 'Please enter First Name!' }]}
+              rules={[
+                { required: true, message: 'Please enter First Name!' },
+                {
+                  pattern: new RegExp(/[a-zA-X]/),
+                  message: 'Please enter First Name!',
+                },
+              ]}
             >
               <Input placeholder="Enter First Name" />
             </Form.Item>
@@ -237,7 +243,13 @@ function UserEditAdd({
             <Form.Item
               name="lastName"
               label="Last Name"
-              rules={[{ required: true, message: 'Please enter Last Name!' }]}
+              rules={[
+                { required: true, message: 'Please enter Last Name!' },
+                {
+                  pattern: new RegExp(/[a-zA-X]/),
+                  message: 'Please enter Last Name!',
+                },
+              ]}
             >
               <Input placeholder="Enter Last Name" />
             </Form.Item>
@@ -246,7 +258,13 @@ function UserEditAdd({
             <Form.Item
               name="address"
               label="Address"
-              rules={[{ required: true, message: 'Please enter Address' }]}
+              rules={[
+                { required: true, message: 'Please enter Address' },
+                {
+                  pattern: new RegExp(/[a-zA-X]/),
+                  message: 'Please enter Address!',
+                },
+              ]}
             >
               <Input placeholder="Enter Address" />
             </Form.Item>
@@ -282,6 +300,10 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please input your username!' },
                 { min: 6, message: 'Username must be minimum 6 characters.' },
+                {
+                  pattern: new RegExp(/[a-zA-X]/),
+                  message: 'Please input your username!',
+                },
               ]}
             >
               <Input placeholder="Enter user name" disabled={user && true} />

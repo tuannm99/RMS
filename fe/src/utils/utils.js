@@ -33,6 +33,7 @@ export function hasResponseError(response, action, ...params) {
         window.location.pathname = '/login';
         localStorage.clear();
       });
+    return;
   }
   const isValidStatus = statusCode >= 200 && statusCode < 300;
   if (!isValidStatus && action) {

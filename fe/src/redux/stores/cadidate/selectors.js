@@ -12,6 +12,7 @@ const cadidates = createSelector(selectState, (state) => state.cadidates);
 const cadidate = createSelector(selectState, (state) => state.cadidate);
 const cadidate_Id = createSelector(selectState, (state) => state.id);
 const interviews = createSelector(selectState, (state) => state.interviews);
+const checkToken = createSelector(selectState, (state) => state.checkToken);
 const visibleAddCadi = createSelector(
   selectState,
   (state) => state.visibleAddCadi
@@ -25,4 +26,5 @@ export {
   interviews,
   loadingInterviews,
   visibleAddCadi,
+  checkToken,
 };
