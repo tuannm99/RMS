@@ -1,6 +1,6 @@
 const dbHandler = require('../index');
+const USERS = require('../fixtures/users');
 
-// const { User } = require('../../src/core/db/schema');
 const userService = require('../../src/user/user.service');
 const tokenService = require('../../src/token/token.service');
 const authService = require('../../src/auth/auth.service');
@@ -18,23 +18,8 @@ afterAll(async () => {
   await dbHandler.closeDatabase();
 });
 
-const userMock = {
-  username: 'employee1ss23',
-  password: '123@123ab',
-  email: 'employesea@gmail.com',
-  role: 'employee',
-  firstName: 'tuan',
-  fullName: 'Nguyen Minh Tuan',
-};
-
-const userMock2 = {
-  username: 'tuan23',
-  password: '123@1ssa23ab',
-  email: 'employes@gmail.com',
-  role: 'employee',
-  firstName: 'tuan',
-  fullName: 'Nguyen Tat Thanh',
-};
+const userMock = USERS[0];
+const userMock2 = USERS[1];
 
 describe('user service', () => {
   describe('createUser', () => {
