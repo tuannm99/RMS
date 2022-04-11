@@ -27,7 +27,7 @@ const USERS = [
     dateOfBirth: '1999-07-20T16:08:20.447Z',
     fullName: 'Tuan Nguyen Minh',
     languages: 'HN',
-    phone: '1235313423',
+    phone: '+84351218531',
   },
 
   {
@@ -39,9 +39,9 @@ const USERS = [
     lastName: 'Nguyen',
     fullName: 'Phạm Nguyen',
     address: 'Hà Nội',
-    phone: '4314351123',
+    phone: '+84551218531',
     dateOfBirth: '2022-03-08T16:27:35.185Z',
-    languages: 'nodeJs',
+    languages: 'VN',
     role: 'hiringManager',
     jobStatus: {
       employeeStatus: 'active',
@@ -76,7 +76,7 @@ const USERS = [
     dateOfBirth: '2022-03-27T16:34:00.201Z',
     fullName: 'hm tuan',
     languages: 'VN',
-    phone: '00061203132',
+    phone: '+84051218531',
     avatar: {
       mimetype: 'image/jpeg',
       originalname: 'dieu-ky-dieu-o-phong-giam-so-7-7-640x360.jpg',
