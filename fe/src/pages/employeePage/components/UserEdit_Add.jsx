@@ -180,14 +180,6 @@ function UserEditAdd({
     objectFit: 'cover',
   };
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="84">+84</Option>
-      </Select>
-    </Form.Item>
-  );
-
   return (
     <DrawerComponent
       title={user ? 'EDIT EMPLOYEE.' : 'CREATE EMPLOYEE.'}
@@ -217,12 +209,7 @@ function UserEditAdd({
           </Col>
         </Row>
       )}
-      <Form
-        layout="vertical"
-        form={form}
-        onFinish={onFinish}
-        initialValues={{ prefix: '+84' }}
-      >
+      <Form layout="vertical" form={form} onFinish={onFinish}>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -298,11 +285,19 @@ function UserEditAdd({
               name="username"
               label="Account"
               rules={[
-                { required: true, message: 'Please input your username!' },
-                { min: 6, message: 'Username must be minimum 6 characters.' },
+                { required: true, message: 'Please input your Account!' },
                 {
-                  pattern: new RegExp(/[a-zA-X]/),
-                  message: 'Please input your username!',
+                  pattern: new RegExp('[^s]'),
+                  message: 'Account do not space',
+                },
+                {
+                  pattern: new RegExp(/^\S+$/),
+                  message: "Account don't enter space!",
+                },
+                {
+                  min: 6,
+                  message:
+                    'Account must be minimum 6 characters and must character',
                 },
               ]}
             >
@@ -319,7 +314,19 @@ function UserEditAdd({
                 hasFeedback
                 rules={[
                   { required: true, message: 'Please input your password!' },
-                  { min: 8, message: 'Password must be minimum 8 characters.' },
+                  {
+                    pattern: new RegExp('[^s]'),
+                    message: 'Password do not space',
+                  },
+                  {
+                    pattern: new RegExp(/^\S+$/),
+                    message: "password don't enter space!",
+                  },
+                  {
+                    min: 8,
+                    message:
+                      'Password must be minimum 8 characters and must character',
+                  },
                 ]}
               >
                 <Input.Password />
@@ -378,9 +385,13 @@ function UserEditAdd({
               label="Phone Number"
               rules={[
                 { required: true, message: 'Please input your phone number!' },
+                {
+                  pattern: new RegExp('^[ ]*[0-9]{9,10}[ ]*$'),
+                  message: 'Your phone is from 9 to 10 digits!',
+                },
               ]}
             >
-              <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+              <Input style={{ width: '100%' }} />
             </Form.Item>
           </Col>
         </Row>
@@ -424,7 +435,12 @@ function UserEditAdd({
             </Form.Item>
           </Col>
         </Row>
-        <Button type="primary" htmlType="submit" className="btn-submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="btn-submit"
+          style={{ position: 'absolute', top: '15px', right: '15px' }}
+        >
           {user ? 'Edit' : 'Add'}
         </Button>
       </Form>

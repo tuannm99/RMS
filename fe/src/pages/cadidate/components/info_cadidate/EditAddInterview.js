@@ -232,7 +232,12 @@ function EditAddInterview(props) {
             </Form.Item>
           </Col>
         </Row>
-        <Button type="primary" htmlType="submit" className="btn-submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="btn-submit"
+          style={{ position: 'absolute', top: '10px', right: '15px' }}
+        >
           {interviewerId ? `Edit Schedule` : 'Add Schedule'}
         </Button>
       </Form>

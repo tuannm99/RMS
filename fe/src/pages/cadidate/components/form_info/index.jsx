@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Row, Form, Button, Input } from 'antd';
 import { PlusCircleFilled } from '@ant-design/icons';
-import { renderEducation, renderEmployee, prefixSelector } from '../render';
+import { renderEducation, renderEmployee } from '../render';
 
 function FormInfo(props) {
   const {
@@ -15,12 +15,7 @@ function FormInfo(props) {
   } = props;
 
   return (
-    <Form
-      layout="vertical"
-      form={form}
-      onFinish={onFinish}
-      initialValues={{ prefix: '+84' }}
-    >
+    <Form layout="vertical" form={form} onFinish={onFinish}>
       <Row gutter={16}>
         <Col span={8}>
           <Form.Item
@@ -93,9 +88,13 @@ function FormInfo(props) {
             label="Phone Number"
             rules={[
               { required: true, message: 'Please input your phone number!' },
+              {
+                pattern: new RegExp('^[ ]*[0-9]{9,10}[ ]*$'),
+                message: 'Your phone is from 9 to 10 digits!',
+              },
             ]}
           >
-            <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+            <Input style={{ width: '100%' }} />
           </Form.Item>
         </Col>
       </Row>
@@ -119,7 +118,12 @@ function FormInfo(props) {
           </Col>
         </Row>
       )}
-      <Button type="primary" htmlType="submit" className="btn-submit">
+      <Button
+        type="primary"
+        htmlType="submit"
+        className="btn-submit"
+        style={props.stylesBtn}
+      >
         {btnName}
       </Button>
     </Form>
