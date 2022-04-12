@@ -26,8 +26,13 @@ const countSex = async () => {
 
   const male = jobByDepartment.filter((item) => item.sex === 'male');
   const female = jobByDepartment.filter((item) => item.sex === 'female');
+  const other = jobByDepartment.filter((item) => item.sex === 'other');
   const chartData = [];
-  chartData.push({ type: 'male', value: male.length }, { type: 'female', value: female.length });
+  chartData.push(
+    { type: 'male', value: male.length },
+    { type: 'female', value: female.length },
+    { type: 'other', value: other.length }
+  );
 
   return chartData;
 };
