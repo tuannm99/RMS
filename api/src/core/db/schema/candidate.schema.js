@@ -42,7 +42,7 @@ const candidateSchema = new mongoose.Schema({
     },
   },
   sex: { type: String, enum: [SEX.male, SEX.female, SEX.other] },
-  created: { type: String },
+  referral: { type: String },
 
   cv: {
     mimetype: String,
