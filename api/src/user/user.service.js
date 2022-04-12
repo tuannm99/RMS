@@ -36,9 +36,11 @@ const getUserByUsername = async (username) => {
  * @param {string} email
  * @returns {Promise<User>}
  */
-const getUserByEmail = async (email) => {
-  const user = await User.findOne({ email });
-  if (!user) throw new ApiError(httpStatus.BAD_REQUEST, 'Email not found');
+const getUserByUsernameAndEmail = async (username, email) => {
+  const user = await User.findOne({ username });
+  if (!user) throw new ApiError(httpStatus.BAD_REQUEST, 'User not found');
+  if (user.email !== email)
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Username and Email not match');
   return user;
 };
 
@@ -129,6 +131,6 @@ module.exports = {
   getUsers,
   getUserById,
   getUserByUsername,
-  getUserByEmail,
+  getUserByUsernameAndEmail,
   getUserIdFromHeaderToken,
 };

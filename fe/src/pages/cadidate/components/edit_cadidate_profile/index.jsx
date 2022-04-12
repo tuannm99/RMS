@@ -132,6 +132,7 @@ function EditCadidateProfile(props) {
       disableEmp={disableEmp}
       setDisableEdu={setDisableEdu}
       setDisableEmp={setDisableEmp}
+      stylesBtn={{ position: 'absolute', top: '10px', right: '15px' }}
     />
   );
 }

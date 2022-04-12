@@ -33,10 +33,10 @@ const logout = async (refreshToken) => {
 
 /**
  * forgot pass
- * @param {string} email
+ * @param {string} username, email
  */
-const forgotPass = async (email) => {
-  const user = await userService.getUserByEmail(email);
+const forgotPass = async (username, email) => {
+  const user = await userService.getUserByUsernameAndEmail(username, email);
   await userService.updateUserById(user._id, { password: '123456ab' });
   eventProducer.sendMailProducer({
     to: email,

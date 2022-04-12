@@ -24,6 +24,11 @@ const createInterview = async (interviewData) => {
  * @returns {Promise<QueryResult>}
  */
 const getAllInterview = async (filter, options) => {
+  if (filter.interviewDate === 'upcoming') {
+    filter.interviewDate = { $gt: Date.now() };
+  } else if (filter.interviewDate === 'recently') {
+    filter.interviewDate = { $lt: Date.now() };
+  }
   options.populate = [];
   options.populate.push({
     path: 'interviewer',
