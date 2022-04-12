@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const { toJSON, paginate, preDate } = require('./plugins');
 const { STAGES, CANDIDATE_STATUS } = require('../../../constants');
+const { SEX } = require('../../../constants');
 
 const candidateSchema = new mongoose.Schema({
   jobId: { type: mongoose.Types.ObjectId, ref: 'Job' },
@@ -31,7 +32,17 @@ const candidateSchema = new mongoose.Schema({
       }
     },
   },
-  phone: { required: true, type: Number },
+  phone: {
+    required: true,
+    type: String,
+    validate(value) {
+      if (!validator.isMobilePhone(value.toString(), ['vi-VN'])) {
+        throw new Error('Invalid phone number');
+      }
+    },
+  },
+  sex: { type: String, enum: [SEX.male, SEX.female, SEX.other] },
+  referral: { type: String },
 
   cv: {
     mimetype: String,

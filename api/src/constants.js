@@ -17,6 +17,7 @@ const ROLES = {
 const SEX = {
   male: 'male',
   female: 'female',
+  other: 'other',
 };
 
 // Department
