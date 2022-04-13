@@ -137,6 +137,12 @@ function ProfilePage(props) {
               {user?.role ? user?.role : '-'}
             </p>
           </Col>
+          <Col span={12}>
+            <p className="profile-inf-title-detail">Sex</p>
+            <p className="profile-inf-content-detail">
+              {user?.sex ? user?.sex : '-'}
+            </p>
+          </Col>
         </Row>
 
         <Divider orientation="left">Contact</Divider>

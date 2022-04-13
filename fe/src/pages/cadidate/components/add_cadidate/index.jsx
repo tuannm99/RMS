@@ -13,6 +13,7 @@ import {
 import { selectJobId } from '../../../../redux/stores/job/selectors';
 import FormInfo from '../form_info';
 import { DeleteOutlined, UploadOutlined } from '@ant-design/icons';
+import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 
 function AddCadidate(props) {
   const [form] = Form.useForm();
@@ -24,8 +25,15 @@ function AddCadidate(props) {
 
   const allowedFiles = ['application/pdf'];
 
-  const { jobId, onclose, params, cadidates, setParams, visibleAddCadi } =
-    props;
+  const {
+    jobId,
+    onclose,
+    params,
+    cadidates,
+    setParams,
+    visibleAddCadi,
+    account,
+  } = props;
 
   const getBase64 = (file, callback) => {
     const reader = new FileReader();
@@ -44,7 +52,6 @@ function AddCadidate(props) {
       alert('Please choose PDF file!');
     }
   };
-
   const onFinish = async (values) => {
     const formRes = new FormData();
 
@@ -54,11 +61,13 @@ function AddCadidate(props) {
       firstName: values?.firstName,
       midName: values?.midName,
       lastName: values?.lastName,
+      referral: account?.fullName,
       fullName: `${values?.firstName} ${
         values?.midName === undefined ? '' : values?.midName
       } ${values?.lastName}`,
       email: values?.email,
       phone: values?.phone,
+      sex: values?.sex,
       hyperlink: values?.hyperlink,
       resume: {
         employer: {
@@ -181,6 +190,7 @@ const mapStateToProps = createStructuredSelector({
   jobId: selectJobId,
   cadidates: cadidates,
   visibleAddCadi: visibleAddCadi,
+  account: selectUserInfor,
 });
 
 export default connect(mapStateToProps)(AddCadidate);
