@@ -27,7 +27,7 @@ function Profile(props) {
   useEffect(() => {
     setPdfFile([`${imgURL}${cadidate?.cv?.path}`]);
     setNameFile(cadidate?.cv?.originalname);
-  }, [cadidate?.id]);
+  }, [cadidate?.id, cadidate?.cv?.path, cadidate?.cv?.originalname]);
 
   const getBase64 = (file, callback) => {
     const reader = new FileReader();
@@ -36,6 +36,10 @@ function Profile(props) {
   };
 
   const handleFile = (info) => {
+    if (info.file.originFileObj.size > 1024 * 1024 * 5) {
+      alert('Please choose PDF file less than 5mb!');
+      return;
+    }
     if (info && allowedFiles.includes(info.file.type)) {
       getBase64(info.file.originFileObj, (fileUrl) => setPdfFile([fileUrl]));
       setNameFile(info.file.originFileObj.name);
@@ -49,8 +53,6 @@ function Profile(props) {
     const formRes = new FormData();
     formRes.append('cv', file);
     await editCadidate({ id: cadidate?.id, body: formRes });
-    setPdfFile([`${imgURL}${cadidate?.cv?.path}`]);
-    setNameFile(cadidate?.cv?.originalname);
   };
 
   return (

@@ -43,6 +43,7 @@ function UserEditAdd({
    */
   const [imageUser, setImageUser] = useState();
   const [fileList, setFileList] = useState(null);
+  const [fileL, setFileL] = useState(null);
   const [form] = Form.useForm();
 
   /**
@@ -91,15 +92,23 @@ function UserEditAdd({
       file.file.type === 'image/png' ||
       file.file.type === 'image/gif';
     let fileImg = file.fileList[0].originFileObj;
-    if (isImg) {
+    if (fileImg.size > 1024 * 1024 * 5) {
+      alert('Please choose image less than 5mb!');
+      return;
+    }
+    if (isImg || fileImg.size > 1024 * 1024 * 5) {
       convertFileToBase64(fileImg).then((res) => {
         fileImg['base64'] = res;
         setImageUser(res);
         setFileList(fileImg);
+        setFileL(file.fileList);
       });
       setChecked(false);
     } else {
       setChecked(true);
+      alert(
+        'Please choose image have type image/jpeg, image/jpg, image/png, image/gif!'
+      );
     }
   };
 
@@ -213,7 +222,7 @@ function UserEditAdd({
             {checked && <p style={{ color: 'red' }}>Only upload image</p>}
           </Col>
           <Col span={12}>
-            <Upload maxCount={1} onChange={handlePreview}>
+            <Upload maxCount={1} onChange={handlePreview} fileList={fileL}>
               <Button>Change Avatar</Button>
             </Upload>
           </Col>
