@@ -43,6 +43,7 @@ function UserEditAdd({
    */
   const [imageUser, setImageUser] = useState();
   const [fileList, setFileList] = useState(null);
+  const [fileL, setFileL] = useState(null);
   const [form] = Form.useForm();
 
   /**
@@ -62,7 +63,7 @@ function UserEditAdd({
           email: res.data.email,
           firstName: res.data.firstName,
           lastName: res.data.lastName,
-          phone: res.data.phone,
+          phone: res.data.phone.slice(3),
           sex: res.data.sex,
           address: res.data.address,
           dateOfBirth: moment(res.data.dateOfBirth),
@@ -91,15 +92,23 @@ function UserEditAdd({
       file.file.type === 'image/png' ||
       file.file.type === 'image/gif';
     let fileImg = file.fileList[0].originFileObj;
-    if (isImg) {
+    if (fileImg.size > 1024 * 1024 * 5) {
+      alert('Please choose image less than 5mb!');
+      return;
+    }
+    if (isImg || fileImg.size > 1024 * 1024 * 5) {
       convertFileToBase64(fileImg).then((res) => {
         fileImg['base64'] = res;
         setImageUser(res);
         setFileList(fileImg);
+        setFileL(file.fileList);
       });
       setChecked(false);
     } else {
       setChecked(true);
+      alert(
+        'Please choose image have type image/jpeg, image/jpg, image/png, image/gif!'
+      );
     }
   };
 
@@ -115,7 +124,7 @@ function UserEditAdd({
       email: values.email,
       firstName: values.firstName,
       lastName: values.lastName,
-      phone: values.phone,
+      phone: `${values.prefix}${values.phone}`,
       sex: values.sex,
       fullName: `${values.firstName} ${values.lastName}`,
       dateOfBirth: values.dateOfBirth,
@@ -182,6 +191,14 @@ function UserEditAdd({
     objectFit: 'cover',
   };
 
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select style={{ width: 70 }}>
+        <Option value="+84">+84</Option>
+      </Select>
+    </Form.Item>
+  );
+
   return (
     <DrawerComponent
       title={user ? 'EDIT EMPLOYEE.' : 'CREATE EMPLOYEE.'}
@@ -205,13 +222,18 @@ function UserEditAdd({
             {checked && <p style={{ color: 'red' }}>Only upload image</p>}
           </Col>
           <Col span={12}>
-            <Upload maxCount={1} onChange={handlePreview}>
+            <Upload maxCount={1} onChange={handlePreview} fileList={fileL}>
               <Button>Change Avatar</Button>
             </Upload>
           </Col>
         </Row>
       )}
-      <Form layout="vertical" form={form} onFinish={onFinish}>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={onFinish}
+        initialValues={{ prefix: '+84' }}
+      >
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -265,7 +287,7 @@ function UserEditAdd({
           </Col>
           <Col span={12}>
             <Form.Item name="dateOfBirth" label="Date Of Birth">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} />
+              <DatePicker format={dateFormat} />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -401,12 +423,12 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please input your phone number!' },
                 {
-                  pattern: new RegExp('^[ ]*[0-9]{9,10}[ ]*$'),
-                  message: 'Your phone is from 9 to 10 digits!',
+                  pattern: new RegExp('^[ ]*[0-9]{9}[ ]*$'),
+                  message: 'Your phone is from 9 digits!',
                 },
               ]}
             >
-              <Input style={{ width: '100%' }} />
+              <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
             </Form.Item>
           </Col>
         </Row>

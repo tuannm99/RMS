@@ -4,6 +4,7 @@ import FormInfo from '../form_info';
 import {
   getAllCadidates,
   getCadidate,
+  editCadidate,
 } from '../../../../redux/stores/cadidate/actions';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -13,15 +14,13 @@ import {
   cadidate,
 } from '../../../../redux/stores/cadidate/selectors';
 import moment from 'moment';
-import { updateCadidateServices } from '../../../../services/cadidateServices';
-import { hasResponseError } from '../../../../utils/utils';
-import { toast } from 'react-toastify';
 
 const dateFormatList = 'DD/MM/YYYY';
 
 function EditCadidateProfile(props) {
   const [form] = Form.useForm();
-  const { id, cadidate, params, getAllCadidates, getCadidate } = props;
+  const { id, cadidate, params, getAllCadidates, getCadidate, editCadidate } =
+    props;
   const [disableEmp, setDisableEmp] = useState(false);
   const [disableEdu, setDisableEdu] = useState(false);
 
@@ -32,7 +31,7 @@ function EditCadidateProfile(props) {
         midName: cadidate?.midName,
         lastName: cadidate?.lastName,
         email: cadidate?.email,
-        phone: cadidate?.phone,
+        phone: cadidate?.phone.slice(3),
         sex: cadidate?.sex,
         hyperlink: cadidate?.hyperlink,
       });
@@ -83,7 +82,7 @@ function EditCadidateProfile(props) {
         values?.midName === undefined ? '' : values?.midName
       } ${values?.lastName}`,
       email: values?.email,
-      phone: values?.phone,
+      phone: `${values?.prefix}${values?.phone}`,
       sex: values?.sex,
       hyperlink: values?.hyperlink,
       cv: cadidate?.cv,
@@ -115,12 +114,8 @@ function EditCadidateProfile(props) {
       };
     }
     formRes.append('candidate', JSON.stringify(body));
-    const resEdit = await updateCadidateServices(id, formRes);
-    if (hasResponseError(resEdit)) {
-      toast.error(resEdit.data.message);
-      return;
-    }
-    await getCadidate(id);
+    await editCadidate({ id: cadidate?.id, body: formRes });
+    getCadidate(id);
     getAllCadidates(params);
     props.handleCancel();
   };
@@ -146,6 +141,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
   getCadidate: (payload) => dispatch(getCadidate(payload)),
+  editCadidate: (payload) => dispatch(editCadidate(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

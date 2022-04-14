@@ -13,7 +13,6 @@ import {
 import { selectJobId } from '../../../../redux/stores/job/selectors';
 import FormInfo from '../form_info';
 import { DeleteOutlined, UploadOutlined } from '@ant-design/icons';
-import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 
 function AddCadidate(props) {
   const [form] = Form.useForm();
@@ -25,15 +24,8 @@ function AddCadidate(props) {
 
   const allowedFiles = ['application/pdf'];
 
-  const {
-    jobId,
-    onclose,
-    params,
-    cadidates,
-    setParams,
-    visibleAddCadi,
-    account,
-  } = props;
+  const { jobId, onclose, params, cadidates, setParams, visibleAddCadi } =
+    props;
 
   const getBase64 = (file, callback) => {
     const reader = new FileReader();
@@ -42,6 +34,10 @@ function AddCadidate(props) {
   };
 
   const handleFile = (info) => {
+    if (info.file.originFileObj.size > 1024 * 1024 * 5) {
+      alert('Please choose PDF file less than 5mb!');
+      return;
+    }
     if (info && allowedFiles.includes(info.fileList[0].type)) {
       getBase64(info.fileList[0].originFileObj, (fileUrl) =>
         setPdfFile([fileUrl])
@@ -52,6 +48,7 @@ function AddCadidate(props) {
       alert('Please choose PDF file!');
     }
   };
+
   const onFinish = async (values) => {
     const formRes = new FormData();
 
@@ -61,13 +58,11 @@ function AddCadidate(props) {
       firstName: values?.firstName,
       midName: values?.midName,
       lastName: values?.lastName,
-      referral: account?.fullName,
       fullName: `${values?.firstName} ${
         values?.midName === undefined ? '' : values?.midName
       } ${values?.lastName}`,
       email: values?.email,
-      phone: values?.phone,
-      sex: values?.sex,
+      phone: `${values?.prefix}${values?.phone}`,
       hyperlink: values?.hyperlink,
       resume: {
         employer: {
@@ -190,7 +185,6 @@ const mapStateToProps = createStructuredSelector({
   jobId: selectJobId,
   cadidates: cadidates,
   visibleAddCadi: visibleAddCadi,
-  account: selectUserInfor,
 });
 
 export default connect(mapStateToProps)(AddCadidate);

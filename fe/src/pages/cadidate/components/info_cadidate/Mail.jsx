@@ -37,7 +37,7 @@ function Mail() {
             className="btn-submit"
             style={{
               width: '100%',
-              height: 50,
+              height: 30,
             }}
           >
             Send Mail
