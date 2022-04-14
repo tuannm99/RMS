@@ -325,3 +325,16 @@
 .fw-bold {
   font-weight: bold;
 }
+
+.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred {
+  height: 250px;
+}
+
+.ck-file-dialog-button {
+  display: none;
+}
+[dir='ltr']
+  .ck.ck-dropdown
+  .ck-button.ck-dropdown__button:not(.ck-button_with-text) {
+  display: none;
+}
