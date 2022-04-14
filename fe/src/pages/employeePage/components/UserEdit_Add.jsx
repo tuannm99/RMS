@@ -62,7 +62,7 @@ function UserEditAdd({
           email: res.data.email,
           firstName: res.data.firstName,
           lastName: res.data.lastName,
-          phone: res.data.phone,
+          phone: res.data.phone.slice(3),
           address: res.data.address,
           dateOfBirth: moment(res.data.dateOfBirth),
           languages: res.data.languages,
@@ -114,7 +114,7 @@ function UserEditAdd({
       email: values.email,
       firstName: values.firstName,
       lastName: values.lastName,
-      phone: values.phone,
+      phone: `${values.prefix}${values.phone}`,
       fullName: `${values.firstName} ${values.lastName}`,
       dateOfBirth: values.dateOfBirth,
       languages: values.languages,
@@ -180,6 +180,14 @@ function UserEditAdd({
     objectFit: 'cover',
   };
 
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select style={{ width: 70 }}>
+        <Option value="+84">+84</Option>
+      </Select>
+    </Form.Item>
+  );
+
   return (
     <DrawerComponent
       title={user ? 'EDIT EMPLOYEE.' : 'CREATE EMPLOYEE.'}
@@ -209,7 +217,12 @@ function UserEditAdd({
           </Col>
         </Row>
       )}
-      <Form layout="vertical" form={form} onFinish={onFinish}>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={onFinish}
+        initialValues={{ prefix: '+84' }}
+      >
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -386,12 +399,12 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please input your phone number!' },
                 {
-                  pattern: new RegExp('^[ ]*[0-9]{9,10}[ ]*$'),
-                  message: 'Your phone is from 9 to 10 digits!',
+                  pattern: new RegExp('^[ ]*[0-9]{9}[ ]*$'),
+                  message: 'Your phone is from 9 digits!',
                 },
               ]}
             >
-              <Input style={{ width: '100%' }} />
+              <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
             </Form.Item>
           </Col>
         </Row>

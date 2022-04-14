@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Worker } from '@react-pdf-viewer/core';
 import { Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
@@ -7,19 +7,27 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { Row, Col, Button, Upload } from 'antd';
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import { cadidate } from '../../../../redux/stores/cadidate/selectors';
+import { editCadidate } from '../../../../redux/stores/cadidate/actions';
 import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { imgURL } from '../../../../utils/utils';
+import { compose } from 'recompose';
 
 function Profile(props) {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
-  const { cadidate, account } = props;
+  const { cadidate, account, editCadidate } = props;
 
-  const [pdfFile, setPdfFile] = useState([`${imgURL}${cadidate?.cv?.path}`]);
-  const [nameFile, setNameFile] = useState(cadidate?.cv?.originalname);
+  const [pdfFile, setPdfFile] = useState(null);
+  const [nameFile, setNameFile] = useState(null);
+  const [file, setFile] = useState(null);
 
   const allowedFiles = ['application/pdf'];
+
+  useEffect(() => {
+    setPdfFile([`${imgURL}${cadidate?.cv?.path}`]);
+    setNameFile(cadidate?.cv?.originalname);
+  }, [cadidate?.id]);
 
   const getBase64 = (file, callback) => {
     const reader = new FileReader();
@@ -31,10 +39,20 @@ function Profile(props) {
     if (info && allowedFiles.includes(info.file.type)) {
       getBase64(info.file.originFileObj, (fileUrl) => setPdfFile([fileUrl]));
       setNameFile(info.file.originFileObj.name);
+      setFile(info.file.originFileObj);
     } else {
       alert('Please choose PDF file!');
     }
   };
+
+  const handleChangeCv = async () => {
+    const formRes = new FormData();
+    formRes.append('cv', file);
+    await editCadidate({ id: cadidate?.id, body: formRes });
+    setPdfFile([`${imgURL}${cadidate?.cv?.path}`]);
+    setNameFile(cadidate?.cv?.originalname);
+  };
+
   return (
     <Row>
       {account?.role === 'hiringManager' && (
@@ -62,7 +80,7 @@ function Profile(props) {
             )}
           </Col>
           <Col span={12}>
-            <Button className="fr" type="primary">
+            <Button className="fr" type="primary" onClick={handleChangeCv}>
               UPDATE
             </Button>
           </Col>
@@ -87,5 +105,8 @@ const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
   account: selectUserInfor,
 });
-
-export default connect(mapStateToProps)(Profile);
+const mapDispatchToProps = (dispatch) => ({
+  editCadidate: (payload) => dispatch(editCadidate(payload)),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+export default compose(withConnect)(Profile);

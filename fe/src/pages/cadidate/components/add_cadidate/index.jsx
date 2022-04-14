@@ -47,7 +47,7 @@ function AddCadidate(props) {
 
   const onFinish = async (values) => {
     const formRes = new FormData();
-
+    console.log(`${values?.prefix}${values?.phone}`);
     let body = {
       jobId: jobId,
       status: 'open',
@@ -58,7 +58,7 @@ function AddCadidate(props) {
         values?.midName === undefined ? '' : values?.midName
       } ${values?.lastName}`,
       email: values?.email,
-      phone: values?.phone,
+      phone: `${values?.prefix}${values?.phone}`,
       hyperlink: values?.hyperlink,
       resume: {
         employer: {
