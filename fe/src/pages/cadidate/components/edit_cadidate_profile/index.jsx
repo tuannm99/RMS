@@ -33,6 +33,7 @@ function EditCadidateProfile(props) {
         lastName: cadidate?.lastName,
         email: cadidate?.email,
         phone: cadidate?.phone,
+        sex: cadidate?.sex,
         hyperlink: cadidate?.hyperlink,
       });
       if (disableEmp) {
@@ -83,6 +84,7 @@ function EditCadidateProfile(props) {
       } ${values?.lastName}`,
       email: values?.email,
       phone: values?.phone,
+      sex: values?.sex,
       hyperlink: values?.hyperlink,
       cv: cadidate?.cv,
       resume: {},

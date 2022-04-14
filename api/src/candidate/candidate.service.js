@@ -10,11 +10,12 @@ const jobService = require('../job/job.service');
  */
 const createCandidate = async (candidatePayload) => {
   const candidate = new Candidate(candidatePayload);
+  const saved = await candidate.save();
+
   const job = await jobService.getJobById(candidatePayload.jobId);
   job.candidateId.push(candidate._id);
   await job.save();
-  // eslint-disable-next-line no-return-await
-  return await candidate.save();
+  return saved;
 };
 
 /**
