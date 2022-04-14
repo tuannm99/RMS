@@ -1,4 +1,4 @@
-const { Job, User } = require('../core/db/schema');
+const { Job, User, Candidate } = require('../core/db/schema');
 
 const countJobByDepartment = async () => {
   const jobByDepartment = await Job.find({});
@@ -22,11 +22,11 @@ const countJobByDepartment = async () => {
   return chartData;
 };
 const countSex = async () => {
-  const jobByDepartment = await User.find({});
+  const sex = await User.find({});
 
-  const male = jobByDepartment.filter((item) => item.sex === 'male');
-  const female = jobByDepartment.filter((item) => item.sex === 'female');
-  const other = jobByDepartment.filter((item) => item.sex === 'other');
+  const male = sex.filter((item) => item.sex === 'male');
+  const female = sex.filter((item) => item.sex === 'female');
+  const other = sex.filter((item) => item.sex === 'other');
   const chartData = [];
   chartData.push(
     { type: 'male', value: male.length },
@@ -37,7 +37,26 @@ const countSex = async () => {
   return chartData;
 };
 
+const countCandidate = async () => {
+  const candidate = await Candidate.find({});
+  const count = candidate.length;
+  return count;
+};
+const countCandidateApproved = async () => {
+  const candidate = await Candidate.find({ status: 'approve' });
+  const count = candidate.length;
+  return count;
+};
+const countCandidateRejected = async () => {
+  const candidate = await Candidate.find({ status: 'reject' });
+  const count = candidate.length;
+  return count;
+};
+
 module.exports = {
   countJobByDepartment,
   countSex,
+  countCandidate,
+  countCandidateApproved,
+  countCandidateRejected,
 };

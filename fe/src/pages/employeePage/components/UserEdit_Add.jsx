@@ -63,6 +63,7 @@ function UserEditAdd({
           firstName: res.data.firstName,
           lastName: res.data.lastName,
           phone: res.data.phone.slice(3),
+          sex: res.data.sex,
           address: res.data.address,
           dateOfBirth: moment(res.data.dateOfBirth),
           languages: res.data.languages,
@@ -115,6 +116,7 @@ function UserEditAdd({
       firstName: values.firstName,
       lastName: values.lastName,
       phone: `${values.prefix}${values.phone}`,
+      sex: values.sex,
       fullName: `${values.firstName} ${values.lastName}`,
       dateOfBirth: values.dateOfBirth,
       languages: values.languages,
@@ -277,6 +279,19 @@ function UserEditAdd({
           <Col span={12}>
             <Form.Item name="dateOfBirth" label="Date Of Birth">
               <DatePicker format={dateFormat} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="sex"
+              label="Sex"
+              rules={[{ required: true, message: 'Please select Sex!' }]}
+            >
+              <Select name="sex">
+                <Option value="male">male</Option>
+                <Option value="female">Female</Option>
+                <Option value="other">Other</Option>
+              </Select>
             </Form.Item>
           </Col>
           <Col span={12}>

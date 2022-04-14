@@ -47,7 +47,7 @@ function AddCadidate(props) {
 
   const onFinish = async (values) => {
     const formRes = new FormData();
-    console.log(`${values?.prefix}${values?.phone}`);
+
     let body = {
       jobId: jobId,
       status: 'open',

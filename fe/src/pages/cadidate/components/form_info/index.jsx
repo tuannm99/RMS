@@ -67,7 +67,20 @@ function FormInfo(props) {
             <Input placeholder="Enter Last Name" />
           </Form.Item>
         </Col>
-        <Col span={24}>
+        <Col span={12}>
+          <Form.Item
+            name="sex"
+            label="Sex"
+            rules={[{ required: true, message: 'Please select Sex!' }]}
+          >
+            <Select name="sex">
+              <Option value="male">male</Option>
+              <Option value="female">Female</Option>
+              <Option value="other">Other</Option>
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={12}>
           <Form.Item
             name="email"
             label="Email"

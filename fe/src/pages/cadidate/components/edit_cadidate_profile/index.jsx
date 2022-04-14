@@ -14,9 +14,6 @@ import {
   cadidate,
 } from '../../../../redux/stores/cadidate/selectors';
 import moment from 'moment';
-import { updateCadidateServices } from '../../../../services/cadidateServices';
-import { hasResponseError } from '../../../../utils/utils';
-import { toast } from 'react-toastify';
 
 const dateFormatList = 'DD/MM/YYYY';
 
@@ -35,6 +32,7 @@ function EditCadidateProfile(props) {
         lastName: cadidate?.lastName,
         email: cadidate?.email,
         phone: cadidate?.phone.slice(3),
+        sex: cadidate?.sex,
         hyperlink: cadidate?.hyperlink,
       });
       if (disableEmp) {
@@ -85,6 +83,7 @@ function EditCadidateProfile(props) {
       } ${values?.lastName}`,
       email: values?.email,
       phone: `${values?.prefix}${values?.phone}`,
+      sex: values?.sex,
       hyperlink: values?.hyperlink,
       cv: cadidate?.cv,
       resume: {},
