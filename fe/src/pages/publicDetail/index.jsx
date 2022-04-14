@@ -67,6 +67,9 @@ function HomeDetail(props) {
       firstName: values?.firstName,
       midName: values?.midName,
       lastName: values?.lastName,
+      referral: `${values?.firstName} ${
+        values?.midName === undefined ? '' : values?.midName
+      } ${values?.lastName}`,
       fullName: `${values?.firstName} ${
         values?.midName === undefined ? '' : values?.midName
       } ${values?.lastName}`,

@@ -44,7 +44,7 @@ export const getDetailCadidateServices = (id) => {
  * @param {*} body
  * @returns
  */
-export const updateCadidateServices = (id, body) => {
+export const updateCadidateServices = ({ id, body }) => {
   return request(`${BASE_API}/candidates/${id}`, {
     method: 'PUT',
     data: body,

@@ -34,6 +34,10 @@ function AddCadidate(props) {
   };
 
   const handleFile = (info) => {
+    if (info.file.originFileObj.size > 1024 * 1024 * 5) {
+      alert('Please choose PDF file less than 5mb!');
+      return;
+    }
     if (info && allowedFiles.includes(info.fileList[0].type)) {
       getBase64(info.fileList[0].originFileObj, (fileUrl) =>
         setPdfFile([fileUrl])
@@ -58,7 +62,7 @@ function AddCadidate(props) {
         values?.midName === undefined ? '' : values?.midName
       } ${values?.lastName}`,
       email: values?.email,
-      phone: values?.phone,
+      phone: `${values?.prefix}${values?.phone}`,
       hyperlink: values?.hyperlink,
       resume: {
         employer: {

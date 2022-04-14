@@ -325,3 +325,12 @@
 .fw-bold {
   font-weight: bold;
 }
+
+.ck-file-dialog-button {
+  display: none;
+}
+[dir='ltr']
+  .ck.ck-dropdown
+  .ck-button.ck-dropdown__button:not(.ck-button_with-text) {
+  display: none;
+}

@@ -40,6 +40,7 @@ import Interview from './Interview';
 import { hasResponseError, imgURL } from '../../../../utils/utils';
 import { updateCadidateServices } from '../../../../services/cadidateServices';
 import { toast } from 'react-toastify';
+import Mail from './Mail';
 const { TabPane } = Tabs;
 
 function CadidateInfo(props) {
@@ -258,6 +259,9 @@ function CadidateInfo(props) {
                   </TabPane>
                   <TabPane tab="Interviews" key="3" className="pl-20 pr-20">
                     <Interview />
+                  </TabPane>
+                  <TabPane tab="Mail" key="4" className="pl-20 pr-20">
+                    <Mail />
                   </TabPane>
                 </Tabs>
               </div>

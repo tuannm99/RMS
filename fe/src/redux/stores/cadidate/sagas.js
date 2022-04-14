@@ -66,7 +66,9 @@ function* editCadidate({ payload }) {
       toast.error(response.data.message);
       return;
     }
+    console.log(response.data);
     toast.success('Edit success!');
+    yield put(saveCadidate(response.data));
   } catch (error) {
     console.log(error);
   }

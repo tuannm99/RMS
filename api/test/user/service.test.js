@@ -18,59 +18,90 @@ afterAll(async () => {
   await dbHandler.closeDatabase();
 });
 
-const userMock = USERS[0];
-const userMock2 = USERS[1];
+const USER_MOCK_1 = USERS[0];
+const USER_MOCK_2 = USERS[1];
 
 describe('user service', () => {
   describe('createUser', () => {
     it('should user created correctly', async () => {
-      const user = await userService.createUser(userMock);
+      const user = await userService.createUser(USER_MOCK_1);
 
-      expect(userMock.username).toEqual(user.username);
-      expect(userMock.password).not.toBe(user.password);
-      expect(userMock.email).toEqual(user.email);
-      expect(userMock.role).toEqual(user.role);
-      expect(userMock.firstName).toEqual(user.firstName);
+      expect(USER_MOCK_1.username).toEqual(user.username);
+      expect(USER_MOCK_1.password).not.toBe(user.password);
+      expect(USER_MOCK_1.email).toEqual(user.email);
+      expect(USER_MOCK_1.role).toEqual(user.role);
+      expect(USER_MOCK_1.firstName).toEqual(user.firstName);
     });
 
     it('should it duplicate user', async () => {
-      const user = await userService.createUser(userMock);
-      expect(userMock.username).toEqual(user.username);
-      expect(userMock.password).not.toBe(user.password);
+      const user = await userService.createUser(USER_MOCK_1);
+      expect(USER_MOCK_1.username).toEqual(user.username);
+      expect(USER_MOCK_1.password).not.toBe(user.password);
 
-      await expect(() => userService.createUser(userMock)).rejects.toThrow(
+      await expect(() => userService.createUser(USER_MOCK_1)).rejects.toThrow(
         'Username already taken'
       );
     });
 
     it('should it duplicate email', async () => {
-      const newUser = { ...userMock };
+      const newUser = { ...USER_MOCK_1 };
       newUser.username = 'another name';
       await userService.createUser(newUser);
-      await expect(() => userService.createUser(userMock)).rejects.toThrow('Email already taken');
+      await expect(() => userService.createUser(USER_MOCK_1)).rejects.toThrow(
+        'Email already taken'
+      );
     });
   });
 
   describe('getUserByUsername', () => {
     it('should get user work correctly', async () => {
-      await userService.createUser(userMock);
-      const user = await userService.getUserByUsername(userMock.username);
+      await userService.createUser(USER_MOCK_1);
+      const user = await userService.getUserByUsername(USER_MOCK_1.username);
 
-      expect(userMock.username).toEqual(user.username);
-      expect(userMock.email).toEqual(user.email);
+      expect(USER_MOCK_1.username).toEqual(user.username);
+      expect(USER_MOCK_1.email).toEqual(user.email);
     });
 
     it('should it not found', async () => {
-      await expect(() => userService.getUserByUsername(userMock.username)).rejects.toThrow(
+      await expect(() => userService.getUserByUsername(USER_MOCK_1.username)).rejects.toThrow(
         'User not found'
       );
     });
   });
 
+  describe('getUserByUsernameAndEmail', () => {
+    it('should get user work correctly', async () => {
+      await userService.createUser(USER_MOCK_1);
+      const user = await userService.getUserByUsernameAndEmail(
+        USER_MOCK_1.username,
+        USER_MOCK_1.email
+      );
+
+      expect(USER_MOCK_1.username).toEqual(user.username);
+      expect(USER_MOCK_1.email).toEqual(user.email);
+    });
+
+    it('should it not found', async () => {
+      await expect(() =>
+        userService.getUserByUsernameAndEmail(USER_MOCK_1.username, USER_MOCK_1.email)
+      ).rejects.toThrow('User not found');
+    });
+
+    it('should email and username not match', async () => {
+      await userService.createUser(USER_MOCK_1);
+      await expect(() =>
+        userService.getUserByUsernameAndEmail(USER_MOCK_1.username, USER_MOCK_2.email)
+      ).rejects.toThrow('Username and Email not match');
+    });
+  });
+
   describe('getUserIdFfromHeaderToken', () => {
     it('should get id success', async () => {
-      const userCreated = await userService.createUser(userMock);
-      const user = await authService.loginByUsernamePassword(userMock.username, userMock.password);
+      const userCreated = await userService.createUser(USER_MOCK_1);
+      const user = await authService.loginByUsernamePassword(
+        USER_MOCK_1.username,
+        USER_MOCK_1.password
+      );
       const tokens = await tokenService.generateAuthTokens(user);
       const userIdFromToken = await userService.getUserIdFromHeaderToken(
         `Bearer ${tokens.refresh.token}`
@@ -87,17 +118,17 @@ describe('user service', () => {
     });
 
     it('should it get all user', async () => {
-      await userService.createUser(userMock);
-      await userService.createUser(userMock2);
+      await userService.createUser(USER_MOCK_1);
+      await userService.createUser(USER_MOCK_2);
 
       const users = await userService.getUsers({}, {});
       expect(users.results.length).toBe(2);
 
-      const users2 = await userService.getUsers({ fullName: userMock.fullName }, {});
-      expect(users2.results[0].username).toEqual(userMock.username);
-      expect(users2.results[0].fullName).toEqual(userMock.fullName);
-      expect(users2.results[0].email).toEqual(userMock.email);
-      expect(users2.results[0].role).toEqual(userMock.role);
+      const users2 = await userService.getUsers({ fullName: USER_MOCK_1.fullName }, {});
+      expect(users2.results[0].username).toEqual(USER_MOCK_1.username);
+      expect(users2.results[0].fullName).toEqual(USER_MOCK_1.fullName);
+      expect(users2.results[0].email).toEqual(USER_MOCK_1.email);
+      expect(users2.results[0].role).toEqual(USER_MOCK_1.role);
     });
   });
 
@@ -109,27 +140,27 @@ describe('user service', () => {
     });
 
     it('should it get user', async () => {
-      const userCreated = await userService.createUser(userMock);
+      const userCreated = await userService.createUser(USER_MOCK_1);
       const user = await userService.getUserById(userCreated._id);
 
-      expect(userMock.username).toEqual(user.username);
-      expect(userMock.password).not.toBe(user.password);
-      expect(userMock.email).toEqual(user.email);
-      expect(userMock.role).toEqual(user.role);
-      expect(userMock.firstName).toEqual(user.firstName);
+      expect(USER_MOCK_1.username).toEqual(user.username);
+      expect(USER_MOCK_1.password).not.toBe(user.password);
+      expect(USER_MOCK_1.email).toEqual(user.email);
+      expect(USER_MOCK_1.role).toEqual(user.role);
+      expect(USER_MOCK_1.firstName).toEqual(user.firstName);
     });
   });
 
   describe('updateUserById', () => {
     it('should update user success', async () => {
-      const userCreated = await userService.createUser(userMock);
-      const userChange = pick(userMock, ['fullName', 'role']);
+      const userCreated = await userService.createUser(USER_MOCK_1);
+      const userChange = pick(USER_MOCK_1, ['fullName', 'role']);
       userChange.fullName = 'AAAAAAA';
       userChange.role = 'hiringManager';
       const updatedUser = await userService.updateUserById(userCreated._id, userChange);
 
-      expect(updatedUser.fullName).not.toEqual(userMock.fullName);
-      expect(updatedUser.role).not.toEqual(userMock.role);
+      expect(updatedUser.fullName).not.toEqual(USER_MOCK_1.fullName);
+      expect(updatedUser.role).not.toEqual(USER_MOCK_1.role);
 
       expect(updatedUser.fullName).toEqual(userChange.fullName);
       expect(updatedUser.role).toEqual(userChange.role);
@@ -138,8 +169,8 @@ describe('user service', () => {
 
   describe('deleteUserById', () => {
     it('should delete user success', async () => {
-      const u1 = await userService.createUser(userMock);
-      const u2 = await userService.createUser(userMock2);
+      const u1 = await userService.createUser(USER_MOCK_1);
+      const u2 = await userService.createUser(USER_MOCK_2);
 
       let users = await userService.getUsers({}, {});
       expect(users.results.length).toBe(2);

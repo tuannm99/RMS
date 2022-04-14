@@ -13,8 +13,6 @@ import {
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { hasResponseError } from '../../../../utils/utils';
-import { toast } from 'react-toastify';
 
 function Summary(props) {
   const { getAllInterviews, cadidate, interviews } = props;
@@ -22,7 +20,7 @@ function Summary(props) {
   useEffect(() => {
     getAllInterviews(cadidate?.id);
   }, [getAllInterviews, cadidate]);
-  console.log(interviews);
+
   return (
     <Row>
       <Col span={24} className="offer-info">
