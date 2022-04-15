@@ -4,7 +4,6 @@ import PublicPage from '../../components/publicHomePage';
 import { Select } from 'antd';
 import { Input, Pagination, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
-
 import './style.css';
 import { toast } from 'react-toastify';
 import { hasResponseError } from '../../utils/utils';
@@ -13,11 +12,11 @@ function Home(props) {
   const { Option } = Select;
   const { Search } = Input;
   const [dataJob, setdataJob] = useState([]);
+  const [dataPage, setDataPage] = useState();
 
   const [param, setParam] = useState({
     limit: 6,
     page: 1,
-    // title: '',
   });
 
   useEffect(() => {
@@ -39,6 +38,16 @@ function Home(props) {
       }
       setdataJob(res.data.results);
     });
+
+    getAllPublishJob(param).then((res) => {
+      if (hasResponseError(res)) {
+        toast.success(`${res.data.message}`, {
+          autoClose: 3000,
+        });
+      }
+      setDataPage(res.data);
+      console.log(dataPage);
+    });
   };
 
   function handleChange(value) {
@@ -55,7 +64,6 @@ function Home(props) {
   }
 
   const handleChangeData = (pagination) => {
-    console.log(pagination);
     setParam({ ...param, page: pagination });
     loadDataJobs({ ...param, page: pagination });
   };
@@ -97,8 +105,16 @@ function Home(props) {
           </div>
         </div>
       </div>
-
-      <div className="container">
+      {dataPage && (
+        <Pagination
+          pageSize={dataPage?.limit}
+          current={dataPage?.page}
+          total={dataPage?.totalResults}
+          onChange={handleChangeData}
+          className="fr career-Pagination"
+        />
+      )}
+      <div className="container career-container">
         <Row gutter={20}>
           {dataJob.map((item) => {
             return (

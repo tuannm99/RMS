@@ -23,3 +23,24 @@ export function getDataChartSex() {
     method: 'GET',
   });
 }
+
+//snapshot
+export function getDataCountCandidate() {
+  return request(`${BASE_API}/chart/countCandidate`, {
+    method: 'GET',
+  });
+}
+
+//snapshot
+export function getDataCountRejected() {
+  return request(`${BASE_API}/chart/countCandidateRejected`, {
+    method: 'GET',
+  });
+}
+
+//snapshot
+export function getDataCountApproved() {
+  return request(`${BASE_API}/chart/countCandidateApproved`, {
+    method: 'GET',
+  });
+}
