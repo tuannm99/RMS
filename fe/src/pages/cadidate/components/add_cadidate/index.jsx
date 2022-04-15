@@ -34,6 +34,10 @@ function AddCadidate(props) {
   };
 
   const handleFile = (info) => {
+    if (info.file.originFileObj.size > 1024 * 1024 * 5) {
+      alert('Please choose PDF file less than 5mb!');
+      return;
+    }
     if (info && allowedFiles.includes(info.fileList[0].type)) {
       getBase64(info.fileList[0].originFileObj, (fileUrl) =>
         setPdfFile([fileUrl])
@@ -58,7 +62,7 @@ function AddCadidate(props) {
         values?.midName === undefined ? '' : values?.midName
       } ${values?.lastName}`,
       email: values?.email,
-      phone: values?.phone,
+      phone: `${values?.prefix}${values?.phone}`,
       hyperlink: values?.hyperlink,
       resume: {
         employer: {
@@ -110,7 +114,6 @@ function AddCadidate(props) {
 
     formRes.append('cv', fileList);
     formRes.append('candidate', JSON.stringify(body));
-
     const res = await addCadidateServices(formRes);
     if (hasResponseError(res)) {
       toast.error(res.data.message);
@@ -120,13 +123,13 @@ function AddCadidate(props) {
 
     if (
       cadidates?.totalResults >= cadidates?.limit &&
-      cadidates?.totalResults % 10 === 0 &&
-      params
+      cadidates?.totalResults % 10 === 0
     ) {
       await setParams({ ...params, page: cadidates?.page + 1 });
     } else {
       await setParams({ ...params });
     }
+
     form.resetFields();
     setFileList(null);
     setNameFile(null);
@@ -145,7 +148,7 @@ function AddCadidate(props) {
         <Col span={24} className="mb-32">
           <Upload onChange={handleFile} maxCount={1} fileList={pdfFile}>
             <Button type="primary" icon={<UploadOutlined />}>
-              Upload
+              CV
             </Button>
           </Upload>
           {pdfFile && (
@@ -172,6 +175,7 @@ function AddCadidate(props) {
         disableEmp={disableEmp}
         setDisableEdu={setDisableEdu}
         setDisableEmp={setDisableEmp}
+        stylesBtn={{ position: 'absolute', top: '10px', right: '15px' }}
       />
     </DrawerComponent>
   );

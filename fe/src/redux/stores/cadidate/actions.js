@@ -10,11 +10,19 @@ import {
   SAVE_ALL_LIST_INTERVIEW,
   SET_LOADING_INTERVIEWS,
   SET_VISIBLE_ADD_CANDIDATE,
+  SET_CHECK_TOKEN,
 } from './constants';
 
 export function setLoading(payload) {
   return {
     type: SET_LOADING,
+    payload,
+  };
+}
+
+export function setCheckToken(payload) {
+  return {
+    type: SET_CHECK_TOKEN,
     payload,
   };
 }

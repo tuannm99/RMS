@@ -37,7 +37,6 @@ function* getAllInterviews({ payload }) {
     if (hasResponseError(response)) {
       return;
     }
-    console.log(response);
     yield put(saveAllInterviews(response.data.results));
     yield put(setLoadingInterviews(false));
   } catch (error) {
@@ -67,7 +66,9 @@ function* editCadidate({ payload }) {
       toast.error(response.data.message);
       return;
     }
+    console.log(response.data);
     toast.success('Edit success!');
+    yield put(saveCadidate(response.data));
   } catch (error) {
     console.log(error);
   }

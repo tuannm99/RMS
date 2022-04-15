@@ -1,7 +1,9 @@
 import React from 'react';
-import { Col, Row, Form, Button, Input } from 'antd';
+import { Col, Row, Form, Button, Input, Select } from 'antd';
 import { PlusCircleFilled } from '@ant-design/icons';
-import { renderEducation, renderEmployee, prefixSelector } from '../render';
+import { renderEducation, renderEmployee } from '../render';
+
+const { Option } = Select;
 
 function FormInfo(props) {
   const {
@@ -13,6 +15,14 @@ function FormInfo(props) {
     disableEdu,
     setDisableEdu,
   } = props;
+
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select style={{ width: 70 }}>
+        <Option value="+84">+84</Option>
+      </Select>
+    </Form.Item>
+  );
 
   return (
     <Form
@@ -26,7 +36,13 @@ function FormInfo(props) {
           <Form.Item
             name="firstName"
             label="First Name"
-            rules={[{ required: true, message: 'Please enter First Name!' }]}
+            rules={[
+              { required: true, message: 'Please enter First Name!' },
+              {
+                pattern: new RegExp(/[a-zA-X]/),
+                message: 'Please enter First Name!',
+              },
+            ]}
           >
             <Input placeholder="Enter First Name" />
           </Form.Item>
@@ -40,12 +56,31 @@ function FormInfo(props) {
           <Form.Item
             name="lastName"
             label="Last Name"
-            rules={[{ required: true, message: 'Please enter Last Name!' }]}
+            rules={[
+              { required: true, message: 'Please enter Last Name!' },
+              {
+                pattern: new RegExp(/[a-zA-X]/),
+                message: 'Please enter Last Name!',
+              },
+            ]}
           >
             <Input placeholder="Enter Last Name" />
           </Form.Item>
         </Col>
-        <Col span={24}>
+        <Col span={12}>
+          <Form.Item
+            name="sex"
+            label="Sex"
+            rules={[{ required: true, message: 'Please select Sex!' }]}
+          >
+            <Select name="sex">
+              <Option value="male">male</Option>
+              <Option value="female">Female</Option>
+              <Option value="other">Other</Option>
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={12}>
           <Form.Item
             name="email"
             label="Email"
@@ -66,6 +101,10 @@ function FormInfo(props) {
                 required: true,
                 message: 'Please enter Hyperlink!',
               },
+              {
+                pattern: new RegExp(/[a-zA-X]/),
+                message: 'Please enter Hyperlink!',
+              },
             ]}
           >
             <Input placeholder="Enter Hyperlink" />
@@ -77,6 +116,10 @@ function FormInfo(props) {
             label="Phone Number"
             rules={[
               { required: true, message: 'Please input your phone number!' },
+              {
+                pattern: new RegExp('^[ ]*[0-9]{9}[ ]*$'),
+                message: 'Your phone is from 9 digits!',
+              },
             ]}
           >
             <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
@@ -103,7 +146,12 @@ function FormInfo(props) {
           </Col>
         </Row>
       )}
-      <Button type="primary" htmlType="submit" className="btn-submit">
+      <Button
+        type="primary"
+        htmlType="submit"
+        className="btn-submit"
+        style={props.stylesBtn}
+      >
         {btnName}
       </Button>
     </Form>

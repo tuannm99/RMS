@@ -34,13 +34,21 @@ const userSchema = mongoose.Schema({
       }
     },
   },
-  sex: { type: String, enum: [SEX.male, SEX.female] },
+  sex: { type: String, enum: [SEX.male, SEX.female, SEX.other] },
   firstName: { type: String },
   lastName: { type: String },
   middleName: { type: String },
   fullName: { type: String },
   address: { type: String },
-  phone: { type: Number },
+  phone: {
+    required: true,
+    type: String,
+    validate(value) {
+      if (!validator.isMobilePhone(value.toString(), ['vi-VN'])) {
+        throw new Error('Invalid phone number');
+      }
+    },
+  },
   dateOfBirth: { type: Date },
   languages: { type: String },
   materialStatus: { type: String },

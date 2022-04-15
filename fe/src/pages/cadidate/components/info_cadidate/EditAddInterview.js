@@ -9,11 +9,7 @@ import {
   cadidate,
   interviews,
 } from '../../../../redux/stores/cadidate/selectors';
-import {
-  getCadidate,
-  getAllCadidates,
-  getAllInterviews,
-} from '../../../../redux/stores/cadidate/actions';
+import { getAllInterviews } from '../../../../redux/stores/cadidate/actions';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -236,7 +232,12 @@ function EditAddInterview(props) {
             </Form.Item>
           </Col>
         </Row>
-        <Button type="primary" htmlType="submit" className="btn-submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="btn-submit"
+          style={{ position: 'absolute', top: '10px', right: '15px' }}
+        >
           {interviewerId ? `Edit Schedule` : 'Add Schedule'}
         </Button>
       </Form>
@@ -249,8 +250,6 @@ const mapStateToProps = createStructuredSelector({
   interviews: interviews,
 });
 const mapDispatchToProps = (dispatch) => ({
-  getCadidate: (payload) => dispatch(getCadidate(payload)),
-  getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
   getAllInterviews: (payload) => dispatch(getAllInterviews(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

@@ -44,7 +44,7 @@ export const getDetailCadidateServices = (id) => {
  * @param {*} body
  * @returns
  */
-export const updateCadidateServices = (id, body) => {
+export const updateCadidateServices = ({ id, body }) => {
   return request(`${BASE_API}/candidates/${id}`, {
     method: 'PUT',
     data: body,
@@ -57,7 +57,19 @@ export const updateCadidateServices = (id, body) => {
  * @returns
  */
 export const addCadidateServices = (body) => {
-  return requestPublic(`${BASE_API}/candidates`, {
+  return request(`${BASE_API}/candidates`, {
+    method: 'POST',
+    data: body,
+  });
+};
+
+/**
+ * create request add Cadidate
+ * @param {*} body
+ * @returns
+ */
+export const addCadidatePublicServices = (id, body) => {
+  return requestPublic(`${BASE_API}/careers/jobs/${id}/resume`, {
     method: 'POST',
     data: body,
   });

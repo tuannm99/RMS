@@ -68,6 +68,7 @@ function DashboardPage(props) {
   const loadDataChart = () => {
     getDataChart().then((res) => {
       if (hasResponseError(res)) {
+        toast.error(res.data.message);
         return;
       }
       setDataChart(res.data);
@@ -89,6 +90,7 @@ function DashboardPage(props) {
 
     getDataCountApproved().then((res) => {
       if (hasResponseError(res)) {
+        toast.error(res.data.message);
         return;
       }
       setDataCountApproved(res.data);

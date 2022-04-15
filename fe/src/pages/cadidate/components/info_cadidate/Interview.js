@@ -13,21 +13,38 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import moment from 'moment';
+import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 import { hasResponseError } from '../../../../utils/utils';
 import { toast } from 'react-toastify';
+import UpdateFeedBack from './UpdateFeedBack';
 
 function Interview(props) {
   const [visible, setVisible] = useState(false);
   const [interviewerId, setInterviewerId] = useState();
-  const { cadidate, getAllInterviews, interviews, loadingInterviews } = props;
-
-  const onClose = () => {
-    setVisible(false);
-  };
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const { cadidate, getAllInterviews, interviews, loadingInterviews, account } =
+    props;
 
   useEffect(() => {
     getAllInterviews(cadidate?.id);
   }, [cadidate, getAllInterviews]);
+
+  const showModal = (id) => {
+    setIsModalVisible(true);
+    setInterviewerId(id);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
 
   const handleDeleteInterview = async (id) => {
     const res = await deleteInterviewsServices(cadidate?.id, id);
@@ -39,7 +56,6 @@ function Interview(props) {
     getAllInterviews(cadidate?.id);
   };
 
-  console.log(interviews);
   const day = [
     'Sunday',
     'Monday',
@@ -55,18 +71,20 @@ function Interview(props) {
   return (
     <>
       <Row>
-        <Col span={24}>
-          <Button
-            type="primary"
-            className="fr"
-            onClick={() => {
-              setVisible(true);
-              setInterviewerId(null);
-            }}
-          >
-            Schedule Interview
-          </Button>
-        </Col>
+        {account?.role === 'hiringManager' && (
+          <Col span={24}>
+            <Button
+              type="primary"
+              className="fr"
+              onClick={() => {
+                setVisible(true);
+                setInterviewerId(null);
+              }}
+            >
+              Schedule Interview
+            </Button>
+          </Col>
+        )}
         {(interviews === undefined || interviews?.length === 0) && (
           <Col span={24} style={styles}>
             <Empty description={false} />,
@@ -101,33 +119,42 @@ function Interview(props) {
                 </div>
                 <div className="right-inteview">
                   <p className="name-right-inteview">
-                    {item?.candidateId?.fullName}
-                  </p>
-                  <p className="stage-right-inteview">{item?.stage}</p>
-                  <p className="sche-right-inteview">
                     Interviewer: <span>{item?.interviewer?.fullName}</span>
                   </p>
+                  <p className="stage-right-inteview">{item?.stage} round</p>
+                  <p className="sche-right-inteview">
+                    Schedule By: <span>{item?.scheduleBy?.fullName}</span>
+                  </p>
                 </div>
-                <div className="interview-icon">
-                  <Tooltip placement="bottomRight" title="Edit interview">
-                    <EditOutlined
-                      className="mr-8 cu"
-                      onClick={() => {
-                        setVisible(true);
-                        setInterviewerId(item?.id);
-                      }}
-                    />
-                  </Tooltip>
-                  <Tooltip placement="bottomRight" title="Delete interview">
-                    <Popconfirm
-                      onConfirm={() => handleDeleteInterview(item?.id)}
-                      title="Are you sure delete？"
-                    >
-                      <DeleteOutlined className="cu" />
-                    </Popconfirm>
-                  </Tooltip>
-                </div>
-                <Button className="feedback">Add feedback</Button>
+                {account?.role === 'hiringManager' && (
+                  <>
+                    <div className="interview-icon">
+                      <Tooltip placement="bottomRight" title="Edit interview">
+                        <EditOutlined
+                          className="mr-8 cu"
+                          onClick={() => {
+                            setVisible(true);
+                            setInterviewerId(item?.id);
+                          }}
+                        />
+                      </Tooltip>
+                      <Tooltip placement="bottomRight" title="Delete interview">
+                        <Popconfirm
+                          onConfirm={() => handleDeleteInterview(item?.id)}
+                          title="Are you sure delete？"
+                        >
+                          <DeleteOutlined className="cu" />
+                        </Popconfirm>
+                      </Tooltip>
+                    </div>
+                  </>
+                )}
+                <Button
+                  className="feedback"
+                  onClick={() => showModal(item?.id)}
+                >
+                  feedback
+                </Button>
               </div>
             ))}
         </Col>
@@ -142,6 +169,12 @@ function Interview(props) {
         onclose={onClose}
         interviewerId={interviewerId}
       />
+      <UpdateFeedBack
+        isModalVisible={isModalVisible}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        interviewerId={interviewerId}
+      />
     </>
   );
 }
@@ -149,6 +182,7 @@ const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
   interviews: interviews,
   loadingInterviews: loadingInterviews,
+  account: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllInterviews: (payload) => dispatch(getAllInterviews(payload)),

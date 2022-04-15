@@ -43,6 +43,7 @@ function UserEditAdd({
    */
   const [imageUser, setImageUser] = useState();
   const [fileList, setFileList] = useState(null);
+  const [fileL, setFileL] = useState(null);
   const [form] = Form.useForm();
 
   /**
@@ -62,7 +63,8 @@ function UserEditAdd({
           email: res.data.email,
           firstName: res.data.firstName,
           lastName: res.data.lastName,
-          phone: res.data.phone,
+          phone: res.data.phone.slice(3),
+          sex: res.data.sex,
           address: res.data.address,
           dateOfBirth: moment(res.data.dateOfBirth),
           languages: res.data.languages,
@@ -90,15 +92,23 @@ function UserEditAdd({
       file.file.type === 'image/png' ||
       file.file.type === 'image/gif';
     let fileImg = file.fileList[0].originFileObj;
-    if (isImg) {
+    if (fileImg.size > 1024 * 1024 * 5) {
+      alert('Please choose image less than 5mb!');
+      return;
+    }
+    if (isImg || fileImg.size > 1024 * 1024 * 5) {
       convertFileToBase64(fileImg).then((res) => {
         fileImg['base64'] = res;
         setImageUser(res);
         setFileList(fileImg);
+        setFileL(file.fileList);
       });
       setChecked(false);
     } else {
       setChecked(true);
+      alert(
+        'Please choose image have type image/jpeg, image/jpg, image/png, image/gif!'
+      );
     }
   };
 
@@ -114,7 +124,8 @@ function UserEditAdd({
       email: values.email,
       firstName: values.firstName,
       lastName: values.lastName,
-      phone: values.phone,
+      phone: `${values.prefix}${values.phone}`,
+      sex: values.sex,
       fullName: `${values.firstName} ${values.lastName}`,
       dateOfBirth: values.dateOfBirth,
       languages: values.languages,
@@ -183,7 +194,7 @@ function UserEditAdd({
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 70 }}>
-        <Option value="84">+84</Option>
+        <Option value="+84">+84</Option>
       </Select>
     </Form.Item>
   );
@@ -211,7 +222,7 @@ function UserEditAdd({
             {checked && <p style={{ color: 'red' }}>Only upload image</p>}
           </Col>
           <Col span={12}>
-            <Upload maxCount={1} onChange={handlePreview}>
+            <Upload maxCount={1} onChange={handlePreview} fileList={fileL}>
               <Button>Change Avatar</Button>
             </Upload>
           </Col>
@@ -228,7 +239,13 @@ function UserEditAdd({
             <Form.Item
               name="firstName"
               label="First Name"
-              rules={[{ required: true, message: 'Please enter First Name!' }]}
+              rules={[
+                { required: true, message: 'Please enter First Name!' },
+                {
+                  pattern: new RegExp(/[a-zA-X]/),
+                  message: 'Please enter First Name!',
+                },
+              ]}
             >
               <Input placeholder="Enter First Name" />
             </Form.Item>
@@ -237,7 +254,13 @@ function UserEditAdd({
             <Form.Item
               name="lastName"
               label="Last Name"
-              rules={[{ required: true, message: 'Please enter Last Name!' }]}
+              rules={[
+                { required: true, message: 'Please enter Last Name!' },
+                {
+                  pattern: new RegExp(/[a-zA-X]/),
+                  message: 'Please enter Last Name!',
+                },
+              ]}
             >
               <Input placeholder="Enter Last Name" />
             </Form.Item>
@@ -246,7 +269,13 @@ function UserEditAdd({
             <Form.Item
               name="address"
               label="Address"
-              rules={[{ required: true, message: 'Please enter Address' }]}
+              rules={[
+                { required: true, message: 'Please enter Address' },
+                {
+                  pattern: new RegExp(/[a-zA-X]/),
+                  message: 'Please enter Address!',
+                },
+              ]}
             >
               <Input placeholder="Enter Address" />
             </Form.Item>
@@ -259,6 +288,19 @@ function UserEditAdd({
           <Col span={12}>
             <Form.Item name="dateOfBirth" label="Date Of Birth">
               <DatePicker format={dateFormat} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="sex"
+              label="Sex"
+              rules={[{ required: true, message: 'Please select Sex!' }]}
+            >
+              <Select name="sex">
+                <Option value="male">male</Option>
+                <Option value="female">Female</Option>
+                <Option value="other">Other</Option>
+              </Select>
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -280,8 +322,20 @@ function UserEditAdd({
               name="username"
               label="Account"
               rules={[
-                { required: true, message: 'Please input your username!' },
-                { min: 6, message: 'Username must be minimum 6 characters.' },
+                { required: true, message: 'Please input your Account!' },
+                {
+                  pattern: new RegExp('[^s]'),
+                  message: 'Account do not space',
+                },
+                {
+                  pattern: new RegExp(/^\S+$/),
+                  message: "Account don't enter space!",
+                },
+                {
+                  min: 6,
+                  message:
+                    'Account must be minimum 6 characters and must character',
+                },
               ]}
             >
               <Input placeholder="Enter user name" disabled={user && true} />
@@ -297,7 +351,19 @@ function UserEditAdd({
                 hasFeedback
                 rules={[
                   { required: true, message: 'Please input your password!' },
-                  { min: 8, message: 'Password must be minimum 8 characters.' },
+                  {
+                    pattern: new RegExp('[^s]'),
+                    message: 'Password do not space',
+                  },
+                  {
+                    pattern: new RegExp(/^\S+$/),
+                    message: "password don't enter space!",
+                  },
+                  {
+                    min: 8,
+                    message:
+                      'Password must be minimum 8 characters and must character',
+                  },
                 ]}
               >
                 <Input.Password />
@@ -356,6 +422,10 @@ function UserEditAdd({
               label="Phone Number"
               rules={[
                 { required: true, message: 'Please input your phone number!' },
+                {
+                  pattern: new RegExp('^[ ]*[0-9]{9}[ ]*$'),
+                  message: 'Your phone is from 9 digits!',
+                },
               ]}
             >
               <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
@@ -402,7 +472,12 @@ function UserEditAdd({
             </Form.Item>
           </Col>
         </Row>
-        <Button type="primary" htmlType="submit" className="btn-submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="btn-submit"
+          style={{ position: 'absolute', top: '15px', right: '15px' }}
+        >
           {user ? 'Edit' : 'Add'}
         </Button>
       </Form>

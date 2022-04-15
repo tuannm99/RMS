@@ -61,8 +61,20 @@ function Login(props) {
               <Form.Item
                 name="username"
                 rules={[
-                  { required: true, message: 'Please input your username!' },
-                  { min: 6, message: 'Username must be minimum 6 characters.' },
+                  { required: true, message: 'Please input your Account!' },
+                  {
+                    pattern: new RegExp('[^s]'),
+                    message: 'Account do not space',
+                  },
+                  {
+                    pattern: new RegExp(/^\S+$/),
+                    message: "Account don't enter space!",
+                  },
+                  {
+                    min: 6,
+                    message:
+                      'Account must be minimum 6 characters and must character',
+                  },
                 ]}
               >
                 <Input
@@ -75,7 +87,19 @@ function Login(props) {
                 name="password"
                 rules={[
                   { required: true, message: 'Please input your password!' },
-                  { min: 8, message: 'Password must be minimum 8 characters.' },
+                  {
+                    pattern: new RegExp('[^s]'),
+                    message: 'Password do not space',
+                  },
+                  {
+                    pattern: new RegExp(/^\S+$/),
+                    message: "password don't enter space!",
+                  },
+                  {
+                    min: 8,
+                    message:
+                      'Password must be minimum 8 characters and must character',
+                  },
                 ]}
               >
                 <Input

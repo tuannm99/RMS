@@ -1,6 +1,7 @@
 const express = require('express');
 
 const authController = require('./auth.controller');
+const limiter = require('../core/ratelimit');
 
 // router
 const router = express.Router();
@@ -9,7 +10,7 @@ router.post('/login', authController.loginHandler);
 router.post('/register', authController.registerHandler);
 router.post('/logout', authController.logoutHandler);
 router.post('/refresh-token', authController.refreshTokenHandler);
-router.get('/forgot-pass', authController.forgotPassHandler);
+router.get('/forgot-pass', limiter.refreshPassLimiter, authController.forgotPassHandler);
 
 module.exports = router;
 

@@ -1,23 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './style.css';
 import { getPublishJobDetail } from '../../services/careerServices';
 import { TiArrowLeftThick } from 'react-icons/ti';
-import AddCadidate from '../cadidate/components/add_cadidate';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import { setVisibleAddCandi } from '../../redux/stores/cadidate/actions';
-import { setJobId } from '../../redux/stores/job/actions';
+import FormInfo from '../cadidate/components/form_info';
+import { Button, Col, Row, Upload, Form } from 'antd';
+import { DeleteOutlined, UploadOutlined } from '@ant-design/icons';
+import { toast } from 'react-toastify';
+import { addCadidatePublicServices } from '../../services/cadidateServices';
+import { hasResponseErrorPublic } from '../../utils/utils';
 
 function HomeDetail(props) {
   const [job, setJob] = useState({});
   let { id } = useParams();
+  const [form] = Form.useForm();
+  const [disableEmp, setDisableEmp] = useState(false);
+  const [disableEdu, setDisableEdu] = useState(false);
+  const [pdfFile, setPdfFile] = useState(null);
+  const [nameFile, setNameFile] = useState(null);
+  const [fileList, setFileList] = useState(null);
+  const [visibleForm, setVisibleForm] = useState(false);
+  const allowedFiles = ['application/pdf'];
+  const formRef = useRef();
 
-  const { setVisibleAddCandi, setJobId } = props;
+  const getBase64 = (file, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(file);
+  };
+
+  const handleFile = (info) => {
+    if (info && allowedFiles.includes(info.fileList[0].type)) {
+      getBase64(info.fileList[0].originFileObj, (fileUrl) =>
+        setPdfFile([fileUrl])
+      );
+      setFileList(info.fileList[0].originFileObj);
+      setNameFile(info.fileList[0].originFileObj.name);
+    } else {
+      alert('Please choose PDF file!');
+    }
+  };
 
   useEffect(() => {
     fetchJob();
+    return () => {
+      setJob({});
+    };
   }, []);
 
   const fetchJob = async () => {
@@ -26,12 +54,90 @@ function HomeDetail(props) {
   };
 
   const handleAddCandidate = async () => {
-    await setJobId(id);
-    setVisibleAddCandi(true);
+    await setVisibleForm(!visibleForm);
+    formRef.current.scrollIntoView({ behavior: 'smooth' });
   };
-  const onCloseAddCadi = () => {
-    setVisibleAddCandi(false);
+
+  const onFinish = async (values) => {
+    const formRes = new FormData();
+
+    let body = {
+      jobId: id,
+      status: 'open',
+      firstName: values?.firstName,
+      midName: values?.midName,
+      lastName: values?.lastName,
+      referral: `${values?.firstName} ${
+        values?.midName === undefined ? '' : values?.midName
+      } ${values?.lastName}`,
+      fullName: `${values?.firstName} ${
+        values?.midName === undefined ? '' : values?.midName
+      } ${values?.lastName}`,
+      email: values?.email,
+      phone: values?.phone,
+      hyperlink: values?.hyperlink,
+      resume: {
+        employer: {
+          designation: '',
+          bussinessName: '',
+          from: '',
+          to: '',
+          summary: '',
+        },
+        education: {
+          degree: '',
+          universityName: '',
+          fieldOfStudy: '',
+          grade: '',
+          from: '',
+          end: '',
+        },
+      },
+    };
+    if (disableEmp) {
+      body.resume = {
+        ...body.resume,
+        employer: {
+          designation: values?.designation,
+          bussinessName: values?.bussinessName,
+          from: values.fromto[0]._d.toISOString(),
+          to: values.fromto[1]._d.toISOString(),
+          summary: values?.summary,
+        },
+      };
+    }
+    if (disableEdu) {
+      body.resume = {
+        ...body.resume,
+        education: {
+          degree: values?.degree,
+          universityName: values?.universityName,
+          fieldOfStudy: values?.fieldOfStudy,
+          grade: values?.grade,
+          from: values?.fromend[0]._d.toISOString(),
+          end: values?.fromend[1]._d.toISOString(),
+        },
+      };
+    }
+    if (!fileList) {
+      toast.error('Please upload CV!');
+      return;
+    }
+
+    formRes.append('cv', fileList);
+    formRes.append('candidate', JSON.stringify(body));
+    const res = await addCadidatePublicServices(id, formRes);
+    if (hasResponseErrorPublic(res)) {
+      toast.error(res.data.message);
+      return;
+    }
+    toast.success('Add career success!');
+    form.resetFields();
+    setFileList(null);
+    setNameFile(null);
+    setPdfFile(null);
   };
+
   return (
     <>
       <div className="detail-public-header">
@@ -58,17 +164,55 @@ function HomeDetail(props) {
         <div className="detail-public-content-list">
           <span dangerouslySetInnerHTML={{ __html: job.jobDescription }}></span>
         </div>
+        {visibleForm && (
+          <div className="form-career" ref={formRef}>
+            <Row>
+              <Col span={24} className="mb-32">
+                <Upload onChange={handleFile} maxCount={1} fileList={pdfFile}>
+                  <Button
+                    type="primary"
+                    icon={<UploadOutlined />}
+                    style={{ backgroundColor: '#6a5376' }}
+                  >
+                    CV
+                  </Button>
+                </Upload>
+                {pdfFile && (
+                  <>
+                    <span style={{ color: 'green' }}>{nameFile}</span>
+                    <DeleteOutlined
+                      className="cu ml-28"
+                      style={{ fontSize: '16px', color: '#08c' }}
+                      onClick={() => {
+                        setFileList(null);
+                        setNameFile(null);
+                        setPdfFile(null);
+                      }}
+                    />
+                  </>
+                )}
+              </Col>
+            </Row>
+            <FormInfo
+              form={form}
+              onFinish={onFinish}
+              btnName="Apply career"
+              disableEdu={disableEdu}
+              disableEmp={disableEmp}
+              setDisableEdu={setDisableEdu}
+              setDisableEmp={setDisableEmp}
+              stylesBtn={{
+                width: '100%',
+                margin: '50px 0',
+                height: '50px',
+                backgroundColor: '#1ebea5',
+              }}
+            />
+          </div>
+        )}
       </div>
-      <AddCadidate onclose={onCloseAddCadi} />
     </>
   );
 }
 
-const mapStateToProps = createStructuredSelector({});
-const mapDispatchToProps = (dispatch) => ({
-  setVisibleAddCandi: (payload) => dispatch(setVisibleAddCandi(payload)),
-  setJobId: (payload) => dispatch(setJobId(payload)),
-});
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
-
-export default compose(withConnect)(HomeDetail);
+export default HomeDetail;
