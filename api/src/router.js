@@ -7,6 +7,7 @@ const candidateRouter = require('./candidate/candidate.router');
 const interviewRouter = require('./interview/interview.router');
 const careerRouter = require('./career/career.router');
 const chartRouter = require('./chart/chart.router');
+const mailRouter = require('./mail/mail.router');
 
 router.use('/auth', authRouter);
 router.use('/jobs', jobRouter);
@@ -15,5 +16,6 @@ router.use('/candidates', candidateRouter);
 router.use('/candidates', interviewRouter);
 router.use('/careers', careerRouter);
 router.use('/chart', chartRouter);
+router.use('/mail', mailRouter);
 
 module.exports = router;

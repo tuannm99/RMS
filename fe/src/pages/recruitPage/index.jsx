@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { getAllJobs } from '../../services/jobService';
 import './style.css';
 import { hasResponseError } from '../../utils/utils';
 import { GlobalOutlined, UserOutlined } from '@ant-design/icons';
@@ -9,11 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import { getAllJobs } from '../../services/jobService';
 import * as action from '../../redux/stores/job/actions';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
+import { createJobs } from '../../services/jobService';
+import { DrawerComponent } from '../../components';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {
-  Row,
-  Col,
   Button,
   Breadcrumb,
   Select,
@@ -21,8 +23,11 @@ import {
   Card,
   Progress,
   Divider,
+  Col,
+  Row,
+  Form,
+  Input,
 } from 'antd';
-import JobAdd from './component/jobAdd';
 
 function RecruitPage(props) {
   const [dataJobs, setDataJobs] = useState();
@@ -37,6 +42,10 @@ function RecruitPage(props) {
   const { setJobId } = props;
 
   const navigation = useNavigate();
+
+  const [formModal] = Form.useForm();
+  const [ckeditorData, setCkeditorData] = useState('');
+  const { TextArea } = Input;
 
   function handleChange(value) {
     if (value === 'allJob') {
@@ -83,6 +92,22 @@ function RecruitPage(props) {
   const handleLinkCadidate = async (id) => {
     await setJobId(id);
     navigation('/cadidate');
+  };
+
+  const onFinish = (values) => {
+    const body = { ...values, jobDescription: ckeditorData };
+    createJobs(body).then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(`${res.data.message}`, {
+          autoClose: 3000,
+        });
+      }
+      toast.success('Create Job Detail Successful!', {
+        autoClose: 3000,
+      });
+      loadDataJobs();
+      onclose();
+    });
   };
 
   return (
@@ -137,7 +162,6 @@ function RecruitPage(props) {
           </Button>
         </Col>
       </Row>
-
       <Row gutter={20}>
         {dataJobs &&
           dataJobs?.results?.map((item) => {
@@ -206,12 +230,154 @@ function RecruitPage(props) {
             );
           })}
       </Row>
-      <JobAdd
+      <DrawerComponent
+        title="Create Job"
+        onClose={onclose}
         visible={visible}
-        onclose={onclose}
-        job={dataJobs}
-        loadData={loadDataJobs}
-      />
+        width={720}
+      >
+        <Form
+          layout="vertical"
+          onFinish={onFinish}
+          form={formModal}
+          name="formModal"
+        >
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item
+                name="title"
+                label="Title Job"
+                rules={[{ required: true, message: 'Please Enter Title Job' }]}
+              >
+                <Input placeholder="Please enter user name" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                name="department"
+                label="Department"
+                rules={[{ required: true, message: 'Please Enter Department' }]}
+              >
+                <Select style={{ width: 300 }}>
+                  <Option value="administration">Administrtion</Option>
+                  <Option value="finance">Finance</Option>
+                  <Option value="marketing">Maketing</Option>
+                  <Option value="sale">Sale</Option>
+                  <Option value="engineering">Engineering</Option>
+                  <Option value="humanResources">HumanResources</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="jobType"
+                label="Job Type"
+                rules={[
+                  { required: true, message: 'Please enter First Name!' },
+                ]}
+              >
+                <Select style={{ width: 300 }}>
+                  <Option value="Full Time">Full Time</Option>
+                  <Option value="Part Time">Part Time</Option>
+                  <Option value="Remote">Internship</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+
+            <Col span={12}>
+              <Form.Item
+                name="location"
+                label="Location"
+                rules={[
+                  { required: true, message: 'Please Enter Job Location' },
+                ]}
+              >
+                <Input placeholder="address" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col span={24}>
+              <Form.Item name="shortDes" label="Short Description">
+                <TextArea rows={4} />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item name="jobDescription" label="Description">
+                <CKEditor
+                  type="string"
+                  editor={ClassicEditor}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    setCkeditorData(data);
+                  }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="skill"
+                label="Skills"
+                rules={[{ required: false }]}
+              >
+                <Input placeholder="skill" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="experience"
+                label="Experience"
+                rules={[{ required: false }]}
+              >
+                <Select style={{ width: 300 }}>
+                  <Option value="Internship">Internship</Option>
+                  <Option value="Entry level">Entry level</Option>
+                  <Option value="Asociate">Asociate</Option>
+                  <Option value="Mid-senior level">Mid-senior level</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={4}>
+              <Form.Item
+                name="minSalary"
+                label="Salary"
+                rules={[{ required: false }]}
+              >
+                <Input placeholder="minSalary" />
+              </Form.Item>
+            </Col>
+            <Form.Item
+              className="Detail-id"
+              name="id"
+              rules={[{ required: false }]}
+            >
+              <Input disabled />
+            </Form.Item>
+            <Col span={4}>
+              <Form.Item
+                name="maxSalary"
+                label=" "
+                rules={[{ required: false }]}
+              >
+                <Input placeholder="maxSalary" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </DrawerComponent>
     </>
   );
 }
@@ -222,6 +388,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
   setJobId: (payload) => dispatch(action.setJobId(payload)),
 });
+
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(RecruitPage);
