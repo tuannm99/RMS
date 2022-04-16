@@ -23,7 +23,7 @@ import { DrawerComponent } from '../../../../components';
 import {
   cadidate_Id,
   cadidate,
-  loading,
+  loadingCadidate,
 } from '../../../../redux/stores/cadidate/selectors';
 import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 import {
@@ -51,9 +51,8 @@ function CadidateInfo(props) {
     getCadidate,
     cadidate,
     params,
-    isloading,
-    getAllCadidates,
     account,
+    loadingCadidate,
   } = props;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -99,13 +98,12 @@ function CadidateInfo(props) {
       stage: key,
     };
     formRes.append('candidate', JSON.stringify(body));
-    const resEdit = await updateCadidateServices(id, formRes);
+    const resEdit = await updateCadidateServices({ id, body: formRes });
     if (hasResponseError(resEdit)) {
       toast.error(resEdit.data.message);
       return;
     }
     getCadidate(id);
-    getAllCadidates(params);
   };
 
   const handleMenuStatusClick = async ({ key }) => {
@@ -114,13 +112,12 @@ function CadidateInfo(props) {
       status: key,
     };
     formRes.append('candidate', JSON.stringify(body));
-    const resEdit = await updateCadidateServices(id, formRes);
+    const resEdit = await updateCadidateServices({ id, body: formRes });
     if (hasResponseError(resEdit)) {
       toast.error(resEdit.data.message);
       return;
     }
     getCadidate(id);
-    getAllCadidates(params);
   };
 
   const menu = (
@@ -151,39 +148,39 @@ function CadidateInfo(props) {
       bodyStyle={{ backgroundColor: '#ddd' }}
     >
       <Row gutter={20}>
-        {isloading ? (
-          <Col span={24} style={{ textAlign: 'center' }}>
-            <Spin />
-          </Col>
-        ) : (
-          <>
-            <Col md={{ span: 8 }} xxl={{ span: 6 }} className="main-info">
-              <div className="cl-bg">
-                <Row className="profile-cadidate">
-                  <Col span={12}>
-                    <Dropdown
-                      overlay={menuStatus}
-                      trigger={['click']}
-                      disabled={account?.role !== 'hiringManager' && true}
-                    >
-                      <Button className="btn-profile_right">
-                        Status <DownOutlined />
-                      </Button>
-                    </Dropdown>
-                  </Col>
-                  <Col span={12}>
-                    <Dropdown
-                      overlay={menu}
-                      trigger={['click']}
-                      disabled={account?.role !== 'hiringManager' && true}
-                    >
-                      <Button className="btn-profile_right">
-                        Advance <DownOutlined />
-                      </Button>
-                    </Dropdown>
-                  </Col>
-                </Row>
-                <Row>
+        <Col md={{ span: 8 }} xxl={{ span: 6 }} className="main-info">
+          <div className="cl-bg">
+            <Row className="profile-cadidate">
+              <Col span={12}>
+                <Dropdown
+                  overlay={menuStatus}
+                  trigger={['click']}
+                  disabled={account?.role !== 'hiringManager' && true}
+                >
+                  <Button className="btn-profile_right">
+                    Status <DownOutlined />
+                  </Button>
+                </Dropdown>
+              </Col>
+              <Col span={12}>
+                <Dropdown
+                  overlay={menu}
+                  trigger={['click']}
+                  disabled={account?.role !== 'hiringManager' && true}
+                >
+                  <Button className="btn-profile_right">
+                    Advance <DownOutlined />
+                  </Button>
+                </Dropdown>
+              </Col>
+            </Row>
+            <Row>
+              {loadingCadidate ? (
+                <Col span={24} style={{ textAlign: 'center' }}>
+                  <Spin />
+                </Col>
+              ) : (
+                <>
                   <Col span={24} className="cadidate-name">
                     <p>
                       {cadidate?.fullName}
@@ -214,7 +211,7 @@ function CadidateInfo(props) {
                   </Col>
                   <Col span={24} className="pl-16 pr-16 apply">
                     <p className="mb-0">APPLIED JOBS</p>
-                    <Button className="apply-btn" shape="round" size="large">
+                    <Button className="apply-btn" size="large">
                       {cadidate?.jobId?.title}
                     </Button>
                   </Col>
@@ -237,7 +234,11 @@ function CadidateInfo(props) {
                       rel="noreferrer"
                     >{`${imgURL}${cadidate?.cv?.path}`}</a>
                   </Col>
-                </Row>
+                </>
+              )}
+            </Row>
+            {!loadingCadidate && (
+              <>
                 <Divider />
                 <p className="pr-16 pl-16 profile-contact-title">CONTACT</p>
                 <p className="pr-16 pl-16 cm">
@@ -246,28 +247,28 @@ function CadidateInfo(props) {
                 <p className="pr-16 pl-16 cm">
                   <PhoneOutlined /> : <span>{cadidate?.phone}</span>
                 </p>
-              </div>
-            </Col>
-            <Col md={{ span: 16 }} xxl={{ span: 18 }} className="main-info">
-              <div className="cl-bg information-cadidate">
-                <Tabs defaultActiveKey="1">
-                  <TabPane tab="Summary" key="1" className="pl-20 pr-20">
-                    <Summary />
-                  </TabPane>
-                  <TabPane tab="Profile" key="2" className="pl-20 pr-20">
-                    <Profile />
-                  </TabPane>
-                  <TabPane tab="Interviews" key="3" className="pl-20 pr-20">
-                    <Interview />
-                  </TabPane>
-                  <TabPane tab="Mail" key="4" className="pl-20 pr-20">
-                    <Mail />
-                  </TabPane>
-                </Tabs>
-              </div>
-            </Col>
-          </>
-        )}
+              </>
+            )}
+          </div>
+        </Col>
+        <Col md={{ span: 16 }} xxl={{ span: 18 }} className="main-info">
+          <div className="cl-bg information-cadidate">
+            <Tabs defaultActiveKey="1">
+              <TabPane tab="Summary" key="1" className="pl-20 pr-20">
+                <Summary />
+              </TabPane>
+              <TabPane tab="Profile" key="2" className="pl-20 pr-20">
+                <Profile />
+              </TabPane>
+              <TabPane tab="Interviews" key="3" className="pl-20 pr-20">
+                <Interview />
+              </TabPane>
+              <TabPane tab="Mail" key="4" className="pl-20 pr-20">
+                <Mail />
+              </TabPane>
+            </Tabs>
+          </div>
+        </Col>
       </Row>
       <Modal
         title="EDIT INFORMATION CANDIDATE"
@@ -282,10 +283,10 @@ function CadidateInfo(props) {
   );
 }
 const mapStateToProps = createStructuredSelector({
-  isloading: loading,
   cadidate: cadidate,
   id: cadidate_Id,
   account: selectUserInfor,
+  loadingCadidate: loadingCadidate,
 });
 const mapDispatchToProps = (dispatch) => ({
   getCadidate: (payload) => dispatch(getCadidate(payload)),

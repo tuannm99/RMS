@@ -76,6 +76,7 @@ function CadidatePage(props) {
   };
 
   const onCloseInfoCadi = () => {
+    getAllCadidates(params);
     setVisibleInfoCadi(false);
   };
 

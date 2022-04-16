@@ -2,6 +2,8 @@ const CADIDATE = 'cadidate';
 
 const SET_LOADING = `${CADIDATE}/setLoading`;
 
+const SET_LOADING_CADIDATE = `${CADIDATE}/setLoadingCadidate`;
+
 const SET_LOADING_INTERVIEWS = `${CADIDATE}/setLoadinginterviews`;
 
 const SET_CHECK_TOKEN = `${CADIDATE}/setCheckToken`;
@@ -37,4 +39,5 @@ export {
   SET_LOADING_INTERVIEWS,
   SET_VISIBLE_ADD_CANDIDATE,
   SET_CHECK_TOKEN,
+  SET_LOADING_CADIDATE,
 };
