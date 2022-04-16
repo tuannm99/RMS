@@ -75,7 +75,7 @@ function HomeDetail(props) {
         values?.midName === undefined ? '' : values?.midName
       } ${values?.lastName}`,
       email: values?.email,
-      phone: values?.phone,
+      phone: `${values?.prefix}${values?.phone}`,
       hyperlink: values?.hyperlink,
       resume: {
         employer: {

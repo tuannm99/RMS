@@ -21,15 +21,15 @@ function UpdateFeedBack(props) {
     handleCancel,
     cadidate,
     getAllInterviews,
-    interviewerId,
+    interviewer,
     account,
   } = props;
 
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (interviewerId) {
-      getDetailInterviewsServices(cadidate?.id, interviewerId).then((res) => {
+    if (interviewer?.id) {
+      getDetailInterviewsServices(cadidate?.id, interviewer?.id).then((res) => {
         form.setFieldsValue({
           overallRecommendation: res.data.feedback.overallRecommendation,
           rate: res.data.feedback.rate,
@@ -37,7 +37,7 @@ function UpdateFeedBack(props) {
         });
       });
     }
-  }, [interviewerId, cadidate?.id, form]);
+  }, [interviewer?.id, cadidate?.id, form]);
 
   const onFinish = async (values) => {
     let body = {
@@ -49,7 +49,7 @@ function UpdateFeedBack(props) {
     };
     const resEdit = await updateIntervierServices(
       cadidate?.id,
-      interviewerId,
+      interviewer?.id,
       body
     );
     if (hasResponseError(resEdit)) {
@@ -80,7 +80,11 @@ function UpdateFeedBack(props) {
                 placeholder="Please choose the approver"
                 bordered={false}
                 showArrow={false}
-                disabled={account?.role !== 'hiringManager' && true}
+                disabled={
+                  (account?.role !== 'hiringManager' ||
+                    account?.id !== interviewer?.interviewer?.id) &&
+                  true
+                }
               >
                 <Option value="notYet">
                   <Tag color="red">Not Yet</Tag>
@@ -102,7 +106,13 @@ function UpdateFeedBack(props) {
           </Col>
           <Col span={12}>
             <Form.Item name="rate" label="Rate">
-              <Rate disabled={account?.role !== 'hiringManager' && true} />
+              <Rate
+                disabled={
+                  (account?.role !== 'hiringManager' ||
+                    account?.id !== interviewer?.interviewer?.id) &&
+                  true
+                }
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -112,7 +122,11 @@ function UpdateFeedBack(props) {
               <Input.TextArea
                 rows={4}
                 placeholder="Note"
-                disabled={account?.role !== 'hiringManager' && true}
+                disabled={
+                  (account?.role !== 'hiringManager' ||
+                    account?.id !== interviewer?.interviewer?.id) &&
+                  true
+                }
               />
             </Form.Item>
           </Col>

@@ -3,6 +3,7 @@ import {
   ContainerOutlined,
   ExceptionOutlined,
   FileDoneOutlined,
+  FileProtectOutlined,
 } from '@ant-design/icons';
 import { Row, Col, Descriptions, Tag, Rate, Spin } from 'antd';
 import { getAllInterviews } from '../../../../redux/stores/cadidate/actions';
@@ -15,6 +16,7 @@ import {
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import moment from 'moment';
 
 function Summary(props) {
   const {
@@ -28,6 +30,8 @@ function Summary(props) {
   useEffect(() => {
     getAllInterviews(cadidate?.id);
   }, [getAllInterviews, cadidate?.id]);
+
+  console.log(cadidate);
 
   return (
     <Row>
@@ -46,13 +50,21 @@ function Summary(props) {
               labelStyle={{ color: '#607787', fontWeight: 400 }}
             >
               <Descriptions.Item label="Status">
-                <Tag color="gold">Offer Draft</Tag>
+                {cadidate?.status === 'male' ? (
+                  <Tag color="green">open</Tag>
+                ) : cadidate?.status === 'female' ? (
+                  <Tag color="red">reject</Tag>
+                ) : (
+                  <Tag color="geekblue">approve</Tag>
+                )}
               </Descriptions.Item>
               <Descriptions.Item label="Drafted By">
-                <div className="text-bolder">Tuan Nguyuen</div>
+                <div className="text-bolder">{cadidate?.referral}</div>
               </Descriptions.Item>
-              <Descriptions.Item label="Drafted On">
-                <div className="text-bolder">Mar 03, 2022</div>
+              <Descriptions.Item label="Create At">
+                <div className="text-bolder">
+                  {moment(cadidate?.createAt).utc().format('YYYY-MM-DD')}
+                </div>
               </Descriptions.Item>
             </Descriptions>
           </Col>
@@ -63,13 +75,18 @@ function Summary(props) {
               interviews.map((item) => (
                 <Row className="content-feedBack-row" key={item.id}>
                   <Col span={8} className="text-normal">
-                    {item.stage}
+                    <span style={{ position: 'absolute', bottom: '3px' }}>
+                      {item.stage}
+                    </span>
                   </Col>
                   <Col span={8} className="text-center">
                     <Rate disabled={true} value={item.feedback.rate} />
                   </Col>
                   <Col span={8}>
-                    <span className="text-normal fr">
+                    <span
+                      className="text-normal"
+                      style={{ position: 'absolute', bottom: '3px', right: 0 }}
+                    >
                       {item.feedback.overallRecommendation}
                     </span>
                   </Col>
@@ -78,24 +95,71 @@ function Summary(props) {
           </Col>
           <Col span={24} className="content-feedBack">
             <FileDoneOutlined className="icon-des" />
-            <div className="lead-section-title">Comments</div>
-            {interviews &&
-              interviews.map((item) => {
-                if (item?.feedback?.comment) {
-                  return (
-                    <Row className="content-feedBack-row" key={item.id}>
-                      <Col span={24} className="text-normal">
-                        {item.stage}
-                      </Col>
-                      <Col span={24}>
-                        <span className="ml-8">
-                          - {item?.feedback?.comment}
-                        </span>
-                      </Col>
-                    </Row>
-                  );
-                }
-              })}
+            <div className="lead-section-title">Employee</div>
+            <Row className="content-feedBack-row">
+              <Col
+                span={24}
+                className="ml-8"
+                style={{ color: '#607787', fontWeight: 400 }}
+              >
+                Designation
+              </Col>
+              <Col className="ml-16 text-normal mb-20" span={24}>
+                {cadidate?.employer?.designation ? (
+                  <span>{cadidate?.employer?.designation}</span>
+                ) : (
+                  <span>-</span>
+                )}
+              </Col>
+              <Col
+                span={24}
+                className="ml-8"
+                style={{ color: '#607787', fontWeight: 400 }}
+              >
+                Bussiness Name
+              </Col>
+              <Col className="ml-16 text-normal" span={24}>
+                {cadidate?.employer?.bussinessName ? (
+                  <span>{cadidate?.employer?.bussinessName}</span>
+                ) : (
+                  <span>-</span>
+                )}
+              </Col>
+            </Row>
+          </Col>
+          <Col span={24} className="content-feedBack">
+            <FileProtectOutlined className="icon-des" />
+            <div className="lead-section-title">Education</div>
+            <Row className="content-feedBack-row">
+              <Col
+                span={24}
+                className="ml-8"
+                style={{ color: '#607787', fontWeight: 400 }}
+              >
+                Degree
+              </Col>
+              <Col className="ml-16 text-normal mb-20" span={24}>
+                {cadidate?.education?.degree ? (
+                  <span>{cadidate?.education?.degree}</span>
+                ) : (
+                  <span>-</span>
+                )}
+              </Col>
+              <Col
+                span={24}
+                className="ml-8"
+                style={{ color: '#607787', fontWeight: 400 }}
+              >
+                University
+              </Col>
+              <Col className="ml-16 text-normal" span={24}>
+                {cadidate?.education?.universityName ? (
+                  <span>{cadidate?.education?.universityName}</span>
+                ) : (
+                  <span>-</span>
+                )}
+              </Col>
+            </Row>
           </Col>
         </>
       )}

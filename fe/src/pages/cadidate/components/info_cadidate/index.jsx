@@ -200,12 +200,12 @@ function CadidateInfo(props) {
                       </a>
                     </p>
                     <p>
-                      {cadidate?.status === 'open' ? (
-                        <Tag color="green">{cadidate?.status}</Tag>
-                      ) : cadidate?.status === 'reject' ? (
-                        <Tag color="red">{cadidate?.status}</Tag>
+                      {cadidate?.sex === 'male' ? (
+                        <Tag color="green">Male</Tag>
+                      ) : cadidate?.sex === 'female' ? (
+                        <Tag color="green">Female</Tag>
                       ) : (
-                        <Tag color="geekblue">{cadidate?.status}</Tag>
+                        <Tag color="green">Other</Tag>
                       )}
                     </p>
                   </Col>
