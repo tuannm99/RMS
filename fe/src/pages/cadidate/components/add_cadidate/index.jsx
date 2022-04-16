@@ -10,6 +10,7 @@ import {
   cadidates,
   visibleAddCadi,
 } from '../../../../redux/stores/cadidate/selectors';
+import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 import { selectJobId } from '../../../../redux/stores/job/selectors';
 import FormInfo from '../form_info';
 import { DeleteOutlined, UploadOutlined } from '@ant-design/icons';
@@ -24,8 +25,15 @@ function AddCadidate(props) {
 
   const allowedFiles = ['application/pdf'];
 
-  const { jobId, onclose, params, cadidates, setParams, visibleAddCadi } =
-    props;
+  const {
+    jobId,
+    onclose,
+    params,
+    cadidates,
+    setParams,
+    visibleAddCadi,
+    account,
+  } = props;
 
   const getBase64 = (file, callback) => {
     const reader = new FileReader();
@@ -61,6 +69,7 @@ function AddCadidate(props) {
       fullName: `${values?.firstName} ${
         values?.midName === undefined ? '' : values?.midName
       } ${values?.lastName}`,
+      referral: account?.fullName,
       sex: values?.sex,
       email: values?.email,
       phone: `${values?.prefix}${values?.phone}`,
@@ -186,6 +195,7 @@ const mapStateToProps = createStructuredSelector({
   jobId: selectJobId,
   cadidates: cadidates,
   visibleAddCadi: visibleAddCadi,
+  account: selectUserInfor,
 });
 
 export default connect(mapStateToProps)(AddCadidate);

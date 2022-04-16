@@ -37,3 +37,14 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/rms-ui
+
+    - name: SSH deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.SSH_KEY }}
+        command_timeout: 200m
+        port: 22
+        script: |
+          ./deploy.sh
