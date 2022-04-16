@@ -14,13 +14,15 @@ import {
   cadidate,
 } from '../../../../redux/stores/cadidate/selectors';
 import moment from 'moment';
+import { updateCadidateServices } from '../../../../services/cadidateServices';
+import { hasResponseError } from '../../../../utils/utils';
+import { toast } from 'react-toastify';
 
 const dateFormatList = 'DD/MM/YYYY';
 
 function EditCadidateProfile(props) {
   const [form] = Form.useForm();
-  const { id, cadidate, params, getAllCadidates, getCadidate, editCadidate } =
-    props;
+  const { id, cadidate, getCadidate } = props;
   const [disableEmp, setDisableEmp] = useState(false);
   const [disableEdu, setDisableEdu] = useState(false);
 
@@ -114,9 +116,12 @@ function EditCadidateProfile(props) {
       };
     }
     formRes.append('candidate', JSON.stringify(body));
-    await editCadidate({ id: cadidate?.id, body: formRes });
+    const resEdit = await updateCadidateServices({ id, body: formRes });
+    if (hasResponseError(resEdit)) {
+      toast.error(resEdit.data.message);
+      return;
+    }
     getCadidate(id);
-    getAllCadidates(params);
     props.handleCancel();
   };
 

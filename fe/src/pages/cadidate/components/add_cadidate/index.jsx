@@ -61,6 +61,7 @@ function AddCadidate(props) {
       fullName: `${values?.firstName} ${
         values?.midName === undefined ? '' : values?.midName
       } ${values?.lastName}`,
+      sex: values?.sex,
       email: values?.email,
       phone: `${values?.prefix}${values?.phone}`,
       hyperlink: values?.hyperlink,
