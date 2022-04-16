@@ -8,7 +8,8 @@ import {
   Home,
   HomeDetail,
   Login,
-  ChangePassPage,
+  ForgotPassPage,
+  ChangePass,
 } from '../pages';
 import { ProtectedLayout } from '../layout';
 
@@ -37,6 +38,10 @@ export const AuthRoute = [
     path: '/employee/:visible/:userID',
     element: <EmployeePage />,
   },
+  {
+    path: '/changepass',
+    element: <ChangePass />,
+  },
 ];
 
 export const AppRoute = [
@@ -58,6 +63,6 @@ export const AppRoute = [
   },
   {
     path: '/changePassword',
-    element: <ChangePassPage />,
+    element: <ForgotPassPage />,
   },
 ];
