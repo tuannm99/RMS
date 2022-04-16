@@ -45,7 +45,6 @@ function CadidatePage(props) {
     page: 1,
     sortBy: '',
     fullName: '',
-    status: '',
   };
 
   const [params, setParams] = useState(payload);
@@ -127,7 +126,7 @@ function CadidatePage(props) {
 
   const handleSelectStatus = (value) => {
     console.log(value);
-    if (value === 'all') {
+    if (value === '') {
       delete params.status;
       setParams({ ...params });
     } else {
@@ -224,12 +223,12 @@ function CadidatePage(props) {
           <div>
             <strong>Status: </strong>
             <Select
-              defaultValue="all"
+              defaultValue=""
               style={{ width: 125 }}
               onSelect={handleSelectStatus}
               showArrow={true}
             >
-              <Option value="all">All</Option>
+              <Option value="">All</Option>
               <Option value="open">Open</Option>
               <Option value="approve">Approve</Option>
               <Option value="reject">Reject</Option>
