@@ -50,12 +50,12 @@ function Summary(props) {
               labelStyle={{ color: '#607787', fontWeight: 400 }}
             >
               <Descriptions.Item label="Status">
-                {cadidate?.status === 'male' ? (
-                  <Tag color="green">open</Tag>
-                ) : cadidate?.status === 'female' ? (
-                  <Tag color="red">reject</Tag>
+                {cadidate?.status === 'open' ? (
+                  <Tag color="green">Open</Tag>
+                ) : cadidate?.status === 'reject' ? (
+                  <Tag color="red">Reject</Tag>
                 ) : (
-                  <Tag color="geekblue">approve</Tag>
+                  <Tag color="geekblue">Approve</Tag>
                 )}
               </Descriptions.Item>
               <Descriptions.Item label="Drafted By">
