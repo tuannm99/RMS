@@ -5,6 +5,7 @@ import {
   saveCadidate,
   saveAllInterviews,
   setLoadingInterviews,
+  setLoadingCadidate,
 } from './actions';
 import * as services from '../../../services/cadidateServices';
 import {
@@ -46,13 +47,13 @@ function* getAllInterviews({ payload }) {
 
 function* getCadidate({ payload }) {
   try {
-    setLoading(true);
+    yield put(setLoadingCadidate(true));
     const response = yield call(services.getDetailCadidateServices, payload);
     if (hasResponseError(response)) {
       return;
     }
     yield put(saveCadidate(response.data));
-    setLoading(false);
+    yield put(setLoadingCadidate(false));
   } catch (error) {
     console.log(error);
     setLoading(false);

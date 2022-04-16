@@ -57,6 +57,7 @@
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
+  border-radius: 20px;
   text-overflow: ellipsis;
   outline: 0;
   cursor: default;

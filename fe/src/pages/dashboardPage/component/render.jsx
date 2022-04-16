@@ -1,28 +1,9 @@
-import {
-  Divider,
-  Col,
-  Row,
-  Form,
-  Select,
-  Input,
-  DatePicker,
-  Menu,
-  Popconfirm,
-  Dropdown,
-  Rate,
-  Tag,
-} from 'antd';
+import { Select } from 'antd';
 import moment from 'moment';
-import { MinusCircleFilled, DeleteOutlined } from '@ant-design/icons';
-import { MoreOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
 const current = new Date();
-
-const date = `${current.getFullYear()}-${
-  current.getMonth() + 1
-}-${current.getDate()}`;
 
 const styles = {
   tr: {
@@ -54,7 +35,14 @@ export const renderBodyTable = (item, index) => (
     <td style={styles.td}>{item.scheduleBy.fullName}</td>
     <td style={styles.td}>{item.interviewer.fullName}</td>
     <td>
-      <div className="mb-0">{item.feedback.comment}</div>
+      <div className="mb-0">
+        {moment(item?.interviewDate).format('DD-MM-YYYY').toString()} -{' '}
+        {moment(item?.interviewDate).format('HH:mm').toString()}
+        {moment(item?.interviewDate).format('DD-MM-YYYY').toString() ===
+        moment(current).format('DD-MM-YYYY').toString()
+          ? ' (today)'
+          : ''}
+      </div>
     </td>
   </tr>
 );

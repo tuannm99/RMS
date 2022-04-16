@@ -162,11 +162,12 @@ function DetailRecruitPage(props) {
                   label="Department"
                 >
                   <Select style={{ width: 300 }}>
-                    <Option value="administrtion">Administrtion</Option>
+                    <Option value="administration">Administrtion</Option>
                     <Option value="finance">Finance</Option>
-                    <Option value="maketing">Maketing</Option>
+                    <Option value="marketing">Maketing</Option>
                     <Option value="sale">Sale</Option>
                     <Option value="engineering">Engineering</Option>
+                    <Option value="humanResources">HumanResources</Option>
                   </Select>
                 </Form.Item>
               </Col>

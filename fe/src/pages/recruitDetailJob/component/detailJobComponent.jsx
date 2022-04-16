@@ -7,12 +7,6 @@ function DetailJobComponent(props) {
 
   const current = new Date();
 
-  const date = `${current.getFullYear()}-${
-    current.getMonth() + 1
-  }-${current.getDate()}`;
-
-  const create = moment.utc(data.createdAt).format('YYYY-MM-DD').toString();
-
   return (
     <>
       <div>

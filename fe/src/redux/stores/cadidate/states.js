@@ -1,10 +1,11 @@
 export const INIT_STATE = {
   isLoading: false,
+  loadingInterviews: false,
+  loadingCadidate: false,
   cadidates: {},
   cadidate: {},
   id: '',
   interviews: [],
-  loadingInterviews: false,
   visibleAddCadi: false,
   checkToken: true,
 };

@@ -10,6 +10,7 @@ import {
   SET_LOADING_INTERVIEWS,
   SET_VISIBLE_ADD_CANDIDATE,
   SET_CHECK_TOKEN,
+  SET_LOADING_CADIDATE,
 } from './constants';
 
 export default function cadidateReducers(state = INIT_STATE, action) {
@@ -17,6 +18,9 @@ export default function cadidateReducers(state = INIT_STATE, action) {
     switch (action.type) {
       case SET_LOADING:
         draft.isLoading = action.payload;
+        break;
+      case SET_LOADING_CADIDATE:
+        draft.loadingCadidate = action.payload;
         break;
       case SET_LOADING_INTERVIEWS:
         draft.loadingInterviews = action.payload;
