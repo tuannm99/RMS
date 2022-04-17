@@ -15,6 +15,8 @@ import { createJobs } from '../../services/jobService';
 import { DrawerComponent } from '../../components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { FaTimes } from 'react-icons/fa';
+
 import {
   Button,
   Breadcrumb,
@@ -174,7 +176,7 @@ function RecruitPage(props) {
                 key={item.id}
                 className="mb-24"
               >
-                <div className="card">
+                <div className="card card-effect">
                   <Card
                     style={{
                       width: '100%',
@@ -231,6 +233,8 @@ function RecruitPage(props) {
                         {item.jobType && <span>{item.jobType}</span>}
                       </div>
                     </div>
+
+                    <FaTimes className="recruit-card-icons" />
                   </Card>
                 </div>
               </Col>
