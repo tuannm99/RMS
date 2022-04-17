@@ -13,3 +13,16 @@
 .title-card {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+.recruit-card-icons {
+  display: none;
+  position: absolute;
+  top: 3%;
+  right: 3%;
+}
+.card-effect {
+  position: relative;
+}
+
+.card-effect :hover + .recruit-card-icons {
+  display: block;
+}

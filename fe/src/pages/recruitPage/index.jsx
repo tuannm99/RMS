@@ -8,14 +8,17 @@ import { useNavigate } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { getAllJobs } from '../../services/jobService';
+import { getAllJobs, deleteJobs } from '../../services/jobService';
 import * as action from '../../redux/stores/job/actions';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { createJobs } from '../../services/jobService';
 import { DrawerComponent } from '../../components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { FaTimes } from 'react-icons/fa';
+import { DeleteOutlined } from '@ant-design/icons';
 import {
+  Popconfirm,
   Button,
   Breadcrumb,
   Select,
@@ -71,7 +74,21 @@ function RecruitPage(props) {
           autoClose: 3000,
         });
       }
+      toast.success('Delete Job Successful!', {
+        autoClose: 3000,
+      });
       setDataJobs(res.data);
+    });
+  };
+
+  const handleDelete = (id) => {
+    deleteJobs(id).then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(`${res.data.message}`, {
+          autoClose: 3000,
+        });
+      }
+      loadDataJobs();
     });
   };
 
@@ -174,7 +191,7 @@ function RecruitPage(props) {
                 key={item.id}
                 className="mb-24"
               >
-                <div className="card">
+                <div className="card card-effect">
                   <Card
                     style={{
                       width: '100%',
@@ -188,16 +205,30 @@ function RecruitPage(props) {
                       </div>
                     }
                     actions={[
-                      <Link to={`/PublicJob/${item.id}`} target="_blank">
+                      item.status === 'published' ? (
+                        <Link to={`/PublicJob/${item.id}`} target="_blank">
+                          <div>
+                            <GlobalOutlined key="global" className="mr-8" />
+                            {item.status}
+                          </div>
+                        </Link>
+                      ) : (
                         <div>
                           <GlobalOutlined key="global" className="mr-8" />
                           {item.status}
                         </div>
-                      </Link>,
+                      ),
 
                       <Link to={`/recruit/${item.id}`}>
                         <div>Details</div>
                       </Link>,
+                      <Popconfirm
+                        onConfirm={() => handleDelete(item.id)}
+                        title="Are you sure？"
+                        icon={<DeleteOutlined style={{ color: 'red' }} />}
+                      >
+                        <DeleteOutlined />
+                      </Popconfirm>,
                     ]}
                   >
                     <div
