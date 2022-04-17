@@ -15,13 +15,7 @@
 }
 .recruit-card-icons {
   position: absolute;
-  top: 3%;
+  top: 2%;
   right: 3%;
+  color: rgb(158, 156, 156);
 }
-.card-effect {
-  position: relative;
-}
-
-/* .card-effect :hover + .recruit-card-icons {
-  display: block;
-} */

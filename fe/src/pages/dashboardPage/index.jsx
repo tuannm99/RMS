@@ -248,10 +248,10 @@ function DashboardPage(props) {
           <h1>HR SnapShot</h1>
           <div className="dashboard-snapshot">
             <div className="dashboard-snapshot-content">
-              <AiOutlineUserAdd className="dashboard-snapshot-icons dashboard-snapshot-add" />{' '}
+              <AiOutlineUserAdd className="dashboard-snapshot-icons dashboard-snapshot-total" />{' '}
               {dataSnapshot}
               <div>
-                <h5> Candidate Approved</h5>
+                <h5> Total Candidate </h5>
               </div>
             </div>
           </div>
@@ -269,7 +269,7 @@ function DashboardPage(props) {
               <AiOutlineUserSwitch className="dashboard-snapshot-icons" />
               {DataCountApproved}
               <div>
-                <h5>Candidate</h5>
+                <h5>Candidate Approved</h5>
               </div>
             </div>
           </div>
