@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { getAllJobs } from '../../services/jobService';
+import { getAllJobs, deleteJobs } from '../../services/jobService';
 import * as action from '../../redux/stores/job/actions';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { createJobs } from '../../services/jobService';
@@ -16,8 +16,9 @@ import { DrawerComponent } from '../../components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FaTimes } from 'react-icons/fa';
-
+import { DeleteOutlined } from '@ant-design/icons';
 import {
+  Popconfirm,
   Button,
   Breadcrumb,
   Select,
@@ -73,7 +74,21 @@ function RecruitPage(props) {
           autoClose: 3000,
         });
       }
+      toast.success('Delete Job Successful!', {
+        autoClose: 3000,
+      });
       setDataJobs(res.data);
+    });
+  };
+
+  const handleDelete = (id) => {
+    deleteJobs(id).then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(`${res.data.message}`, {
+          autoClose: 3000,
+        });
+      }
+      loadDataJobs();
     });
   };
 
@@ -207,6 +222,13 @@ function RecruitPage(props) {
                       <Link to={`/recruit/${item.id}`}>
                         <div>Details</div>
                       </Link>,
+                      <Popconfirm
+                        onConfirm={() => handleDelete(item.id)}
+                        title="Are you sure？"
+                        icon={<DeleteOutlined style={{ color: 'red' }} />}
+                      >
+                        <DeleteOutlined />
+                      </Popconfirm>,
                     ]}
                   >
                     <div
@@ -233,8 +255,6 @@ function RecruitPage(props) {
                         {item.jobType && <span>{item.jobType}</span>}
                       </div>
                     </div>
-
-                    <FaTimes className="recruit-card-icons" />
                   </Card>
                 </div>
               </Col>
