@@ -1,10 +1,11 @@
 const httpStatus = require('http-status');
-const fs = require('fs');
+const bcrypt = require('bcryptjs');
 
 const catchAsync = require('../core/catchAsync');
 const { pick } = require('../core/utils');
 
 const userService = require('./user.service');
+const ApiError = require('../core/apiError');
 
 /**
  * create user
@@ -64,6 +65,21 @@ const updateUserAvatarHandler = catchAsync(async (req, res) => {
 });
 
 /**
+ * change password
+ * @param {string} req
+ * @param {string} res
+ */
+const changePasswordHandler = catchAsync(async (req, res) => {
+  const user = await userService.getUserById(req.params.id);
+  if (!(await user.isPasswordMatch(req.body.oldPassword))) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Your old password not match!');
+  }
+
+  await userService.updateUserById(req.params.id, { password: req.body.newPassword });
+  res.status(httpStatus.OK).json({ msg: 'password updated!' });
+});
+
+/**
  * delete user
  * @param {string} req
  * @param {string} res
@@ -79,5 +95,6 @@ module.exports = {
   getUserHandler,
   updateUserHandler,
   deleteUserHandler,
+  changePasswordHandler,
   updateUserAvatarHandler,
 };
