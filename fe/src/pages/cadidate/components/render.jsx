@@ -214,7 +214,8 @@ export const renderBodyTable = (
   setVisibleInfoCadi,
   setCadidateId,
   setVisible,
-  userAccount
+  userAccount,
+  navigate
 ) => (
   <tr key={item.id} style={styles.tr}>
     <td
@@ -226,7 +227,14 @@ export const renderBodyTable = (
     >
       {item.firstName} {item.midName} {item.lastName}
     </td>
-    <td>{item?.jobId?.title}</td>
+    <td
+      className="pl-8 cu"
+      onClick={() => {
+        navigate(`/recruit/${item.jobId.id}`);
+      }}
+    >
+      {item?.jobId?.title}
+    </td>
     <td style={styles.td}>
       <div className="mb-0">
         <PhoneOutlined /> {item.phone}

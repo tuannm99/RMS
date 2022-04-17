@@ -103,6 +103,7 @@ function CadidateInfo(props) {
       toast.error(resEdit.data.message);
       return;
     }
+    toast.success(`You changed your stage to ${key}!`);
     getCadidate(id);
   };
 
@@ -117,6 +118,7 @@ function CadidateInfo(props) {
       toast.error(resEdit.data.message);
       return;
     }
+    toast.success(`You changed your status to ${key}!`);
     getCadidate(id);
   };
 
@@ -191,15 +193,6 @@ function CadidateInfo(props) {
                       )}
                     </p>
                     <p>
-                      <a
-                        href={cadidate?.hyperlink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {cadidate?.hyperlink}
-                      </a>
-                    </p>
-                    <p>
                       {cadidate?.sex === 'male' ? (
                         <Tag color="green">Male</Tag>
                       ) : cadidate?.sex === 'female' ? (
@@ -208,6 +201,11 @@ function CadidateInfo(props) {
                         <Tag color="green">Other</Tag>
                       )}
                     </p>
+                    <a
+                      href={`${cadidate?.hyperlink}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >{`${cadidate?.hyperlink}`}</a>
                   </Col>
                   <Col span={24} className="pl-16 pr-16 apply">
                     <p className="mb-0">APPLIED JOBS</p>
@@ -257,7 +255,7 @@ function CadidateInfo(props) {
               <TabPane tab="Summary" key="1" className="pl-20 pr-20">
                 <Summary />
               </TabPane>
-              <TabPane tab="Profile" key="2" className="pl-20 pr-20">
+              <TabPane tab="CV" key="2" className="pl-20 pr-20">
                 <Profile />
               </TabPane>
               <TabPane tab="Interviews" key="3" className="pl-20 pr-20">

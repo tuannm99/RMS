@@ -121,6 +121,7 @@ function EditCadidateProfile(props) {
       toast.error(resEdit.data.message);
       return;
     }
+    toast.success(`Edit information candidate success!`);
     getCadidate(id);
     props.handleCancel();
   };

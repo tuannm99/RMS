@@ -1,0 +1,26 @@
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 6px;
+}
+
+.table-wrapper:hover {
+  box-shadow: 0 0 5px #99b8bb;
+}
+
+.table {
+  width: 100%;
+  min-width: 400px;
+  border-spacing: 0;
+  box-shadow: 0 0 5px #99b8bb;
+  border-radius: 4px;
+}
+
+thead {
+  background-color: #3ec5d1;
+  color: #fff;
+  font-weight: 600;
+  text-align: left;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+}

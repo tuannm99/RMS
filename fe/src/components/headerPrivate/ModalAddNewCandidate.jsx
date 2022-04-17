@@ -36,7 +36,7 @@ function ModalAddNewCandidate(props) {
     if (job) {
       await setJobId(job);
       handleCancel();
-      navigation('/cadidate');
+      navigation('/candidate');
       setVisibleAddCandi(true);
     } else {
       toast.error('Please choose job!');
