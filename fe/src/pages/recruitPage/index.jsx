@@ -188,12 +188,19 @@ function RecruitPage(props) {
                       </div>
                     }
                     actions={[
-                      <Link to={`/PublicJob/${item.id}`} target="_blank">
+                      item.status === 'published' ? (
+                        <Link to={`/PublicJob/${item.id}`} target="_blank">
+                          <div>
+                            <GlobalOutlined key="global" className="mr-8" />
+                            {item.status}
+                          </div>
+                        </Link>
+                      ) : (
                         <div>
                           <GlobalOutlined key="global" className="mr-8" />
                           {item.status}
                         </div>
-                      </Link>,
+                      ),
 
                       <Link to={`/recruit/${item.id}`}>
                         <div>Details</div>
