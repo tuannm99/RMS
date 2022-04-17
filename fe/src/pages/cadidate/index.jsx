@@ -30,6 +30,7 @@ import {
   renderHeadTable,
 } from './components/render';
 import EditAddInterview from './components/info_cadidate/EditAddInterview';
+import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -40,6 +41,8 @@ function CadidatePage(props) {
   const [visibleInfoCadi, setVisibleInfoCadi] = useState(false);
   const [jobs, setjobs] = useState([]);
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
+
   const payload = {
     limit: 10,
     page: 1,
@@ -124,6 +127,16 @@ function CadidatePage(props) {
     }
   };
 
+  const handleSelectStatus = (value) => {
+    console.log(value);
+    if (value === '') {
+      delete params.status;
+      setParams({ ...params });
+    } else {
+      setParams({ ...params, status: value });
+    }
+  };
+
   /**
    * change radio sort allow asc and desc
    * @param {*} e
@@ -150,7 +163,7 @@ function CadidatePage(props) {
             value={jobId}
             style={{ width: 125 }}
             onSelect={handleSelctJob}
-            allowClear={true}
+            showArrow={true}
           >
             <Option value="">All</Option>
             {jobs.map((item) => (
@@ -180,16 +193,38 @@ function CadidatePage(props) {
       </Row>
 
       <Row>
-        <Col span={12} className="mt-12">
-          {(userAccount?.role === 'admin' ||
-            userAccount?.role === 'hiringManager') &&
-            jobId !== '' && (
-              <Button onClick={() => setVisibleAddCandi(true)}>
-                Add Candidate
-              </Button>
-            )}
+        <Col
+          lg={jobId !== '' ? { span: 8 } : { span: 0 }}
+          xs={{ span: 24 }}
+          className="mt-12"
+        >
+          {jobId !== '' && (
+            <Button onClick={() => setVisibleAddCandi(true)}>
+              Add Candidate
+            </Button>
+          )}
         </Col>
-        <Col span={11} className="mt-12">
+        <Col
+          lg={jobId !== '' ? { span: 8 } : { span: 16 }}
+          xs={{ span: 12 }}
+          className="mt-12"
+        >
+          <div>
+            <strong>Status: </strong>
+            <Select
+              defaultValue=""
+              style={{ width: 125 }}
+              onSelect={handleSelectStatus}
+              showArrow={true}
+            >
+              <Option value="">All</Option>
+              <Option value="open">Open</Option>
+              <Option value="approve">Approve</Option>
+              <Option value="reject">Reject</Option>
+            </Select>
+          </div>
+        </Col>
+        <Col lg={{ span: 7 }} xs={{ span: 10 }} className="mt-12">
           <div className="fr mr-8">
             <strong>Sort by: </strong>
             <Select
@@ -206,7 +241,7 @@ function CadidatePage(props) {
             </Select>
           </div>
         </Col>
-        <Col span={1} className="radio-sort">
+        <Col lg={{ span: 1 }} xs={{ span: 2 }} className="radio-sort">
           <Radio.Group onChange={onChangeRadio} value={radio}>
             <Radio value=":asc">Asc</Radio>
             <br />
@@ -233,7 +268,8 @@ function CadidatePage(props) {
                 setVisibleInfoCadi,
                 setCadidateId,
                 setVisible,
-                userAccount
+                userAccount,
+                navigate
               )
             }
           />

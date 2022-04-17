@@ -21,7 +21,8 @@ import UpdateFeedBack from './UpdateFeedBack';
 
 function Interview(props) {
   const [visible, setVisible] = useState(false);
-  const [interviewerId, setInterviewerId] = useState();
+  const [interviewer, setInterviewer] = useState(null);
+  const [interviewerId, setInterviewerId] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const {
     cadidate,
@@ -36,9 +37,9 @@ function Interview(props) {
     getAllInterviews(cadidate?.id);
   }, [cadidate, getAllInterviews]);
 
-  const showModal = (id) => {
+  const showModal = (item) => {
     setIsModalVisible(true);
-    setInterviewerId(id);
+    setInterviewer(item);
   };
 
   const handleOk = () => {
@@ -159,10 +160,8 @@ function Interview(props) {
                     </div>
                   </>
                 )}
-                <Button
-                  className="feedback"
-                  onClick={() => showModal(item?.id)}
-                >
+
+                <Button className="feedback" onClick={() => showModal(item)}>
                   feedback
                 </Button>
               </div>
@@ -183,7 +182,7 @@ function Interview(props) {
         isModalVisible={isModalVisible}
         handleOk={handleOk}
         handleCancel={handleCancel}
-        interviewerId={interviewerId}
+        interviewer={interviewer}
       />
     </>
   );

@@ -13,3 +13,9 @@
 .title-card {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+.recruit-card-icons {
+  position: absolute;
+  top: 2%;
+  right: 3%;
+  color: rgb(158, 156, 156);
+}

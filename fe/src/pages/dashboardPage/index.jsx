@@ -48,6 +48,15 @@ function DashboardPage(props) {
     sortBy: 'interviewDate:asc',
   });
 
+  function handleChange(value) {
+    if (value === 'for me') {
+      setParam({ ...param, interviewer: userAccount.id });
+    } else {
+      delete param['interviewer'];
+      setParam({ ...param });
+    }
+  }
+
   useEffect(() => {
     loadDataInterview(param);
   }, [param]);
@@ -55,6 +64,14 @@ function DashboardPage(props) {
   useEffect(() => {
     loadDataChart();
   }, []);
+
+  function handleTab(key) {
+    if (key === 'upcoming') {
+      setParam({ ...param, sortBy: 'interviewDate:asc', interviewDate: key });
+    } else if (key === 'recently') {
+      setParam({ ...param, sortBy: 'interviewDate:desc', interviewDate: key });
+    }
+  }
 
   const loadDataInterview = (param) => {
     getAllInterview(param).then((res) => {
@@ -105,14 +122,6 @@ function DashboardPage(props) {
       setDataChartSex(res.data);
     });
   };
-
-  function handleTab(key) {
-    if (key === 'upcoming') {
-      setParam({ ...param, sortBy: 'interviewDate:asc', interviewDate: key });
-    } else if (key === 'recently') {
-      setParam({ ...param, sortBy: 'interviewDate:desc', interviewDate: key });
-    }
-  }
 
   const handleChangeData = (pagination) => {
     setParam({ ...param, page: pagination });
@@ -178,14 +187,25 @@ function DashboardPage(props) {
         <div className="dashBoard-top">
           <div className="dashBoard-center-header">
             Interviews
-            <Select
-              defaultValue="all"
-              style={{ width: 120 }}
-              className="dashBoard-select"
-            >
-              <Option value="all">Overall</Option>
-              <Option value="for me">For Me</Option>
-            </Select>
+            {userAccount.role !== 'hiringManager' && true ? (
+              <Select
+                defaultValue="for me"
+                style={{ width: 120 }}
+                className="dashBoard-select"
+              >
+                <Option value="for me">For Me</Option>
+              </Select>
+            ) : (
+              <Select
+                defaultValue="all"
+                style={{ width: 120 }}
+                className="dashBoard-select"
+                onSelect={handleChange}
+              >
+                <Option value="all">Overall</Option>
+                <Option value="for me">For Me</Option>
+              </Select>
+            )}
           </div>
 
           <Tabs
@@ -228,10 +248,10 @@ function DashboardPage(props) {
           <h1>HR SnapShot</h1>
           <div className="dashboard-snapshot">
             <div className="dashboard-snapshot-content">
-              <AiOutlineUserAdd className="dashboard-snapshot-icons dashboard-snapshot-add" />{' '}
+              <AiOutlineUserAdd className="dashboard-snapshot-icons dashboard-snapshot-total" />{' '}
               {dataSnapshot}
               <div>
-                <h5> Candidate Approved</h5>
+                <h5> Total Candidate </h5>
               </div>
             </div>
           </div>
@@ -249,7 +269,7 @@ function DashboardPage(props) {
               <AiOutlineUserSwitch className="dashboard-snapshot-icons" />
               {DataCountApproved}
               <div>
-                <h5>Candidate</h5>
+                <h5>Candidate Approved</h5>
               </div>
             </div>
           </div>

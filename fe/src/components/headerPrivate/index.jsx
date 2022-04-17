@@ -9,6 +9,7 @@ import {
   TeamOutlined,
   ShoppingOutlined,
   ReadOutlined,
+  KeyOutlined,
 } from '@ant-design/icons';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
@@ -18,11 +19,13 @@ import './styles.css';
 import { imgURL } from '../../utils/utils';
 import { logoutRequestService } from '../../services/authServices';
 import ModalAddNewCandidate from './ModalAddNewCandidate';
+import { setVisibleAddJob } from '../../redux/stores/job/actions';
+import { compose } from 'recompose';
 
 const { Header } = Layout;
 
 function HeaderPrivate(props) {
-  const { selectUserInfor } = props;
+  const { selectUserInfor, setVisibleAddJob } = props;
 
   const navigate = useNavigate();
 
@@ -30,6 +33,11 @@ function HeaderPrivate(props) {
 
   const showModal = () => {
     setIsModalVisible(true);
+  };
+
+  const showAddJob = async () => {
+    await navigate('/recruit');
+    setVisibleAddJob(true);
   };
 
   const handleOk = () => {
@@ -58,7 +66,7 @@ function HeaderPrivate(props) {
    */
   const menuJob = (
     <Menu>
-      <Menu.Item key="1" icon={<ShoppingOutlined />}>
+      <Menu.Item key="1" icon={<ShoppingOutlined />} onClick={showAddJob}>
         Job posting
       </Menu.Item>
       {selectUserInfor?.role === 'admin' ? (
@@ -81,6 +89,9 @@ function HeaderPrivate(props) {
     <Menu>
       <Menu.Item key="1" icon={<ShoppingOutlined />}>
         <NavLink to={`/profile/${selectUserInfor.id}`}>Profile</NavLink>
+      </Menu.Item>
+      <Menu.Item key="3" icon={<KeyOutlined />}>
+        <NavLink to={`changepass`}>Change password</NavLink>
       </Menu.Item>
       <Menu.Item key="2" icon={<TeamOutlined />} onClick={handleLogout}>
         Logout
@@ -143,4 +154,9 @@ const mapStateToProps = createStructuredSelector({
   selectUserInfor: selectUserInfor,
 });
 
-export default connect(mapStateToProps)(HeaderPrivate);
+const mapDispatchToProps = (dispatch) => ({
+  setVisibleAddJob: (payload) => dispatch(setVisibleAddJob(payload)),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(HeaderPrivate);
