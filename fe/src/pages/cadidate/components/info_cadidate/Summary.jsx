@@ -31,8 +31,6 @@ function Summary(props) {
     getAllInterviews(cadidate?.id);
   }, [getAllInterviews, cadidate?.id]);
 
-  console.log(cadidate);
-
   return (
     <Row>
       {(loadingCadidate || loadingInterviews) && (
