@@ -74,9 +74,6 @@ function RecruitPage(props) {
           autoClose: 3000,
         });
       }
-      toast.success('Delete Job Successful!', {
-        autoClose: 3000,
-      });
       setDataJobs(res.data);
     });
   };
@@ -88,6 +85,9 @@ function RecruitPage(props) {
           autoClose: 3000,
         });
       }
+      toast.success('Delete Job Successful!', {
+        autoClose: 3000,
+      });
       loadDataJobs();
     });
   };
@@ -222,13 +222,6 @@ function RecruitPage(props) {
                       <Link to={`/recruit/${item.id}`}>
                         <div>Details</div>
                       </Link>,
-                      <Popconfirm
-                        onConfirm={() => handleDelete(item.id)}
-                        title="Are you sure？"
-                        icon={<DeleteOutlined style={{ color: 'red' }} />}
-                      >
-                        <DeleteOutlined />
-                      </Popconfirm>,
                     ]}
                   >
                     <div
@@ -255,6 +248,12 @@ function RecruitPage(props) {
                         {item.jobType && <span>{item.jobType}</span>}
                       </div>
                     </div>
+                    <Popconfirm
+                      title="Sure to delete?"
+                      onConfirm={() => handleDelete(item.id)}
+                    >
+                      <FaTimes className="recruit-card-icons" />
+                    </Popconfirm>
                   </Card>
                 </div>
               </Col>
