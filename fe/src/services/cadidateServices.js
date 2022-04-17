@@ -4,6 +4,18 @@ import requestPublic from '../utils/requestPublic';
 const BASE_API = 'http://rms-fpt.ddns.net:5000/api/v1';
 
 /**
+ * send mail
+ * @param {*} params
+ * @returns
+ */
+export function sendMailServices(body) {
+  return request(`${BASE_API}/mail`, {
+    method: 'POST',
+    data: body,
+  });
+}
+
+/**
  * create request get all list Cadidate
  * @param {*} params
  * @returns

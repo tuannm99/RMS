@@ -46,7 +46,7 @@ function ModalAddNewCandidate(props) {
 
   return (
     <Modal
-      title="Basic Modal"
+      title="CHOOSE JOB"
       visible={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -56,7 +56,7 @@ function ModalAddNewCandidate(props) {
           <Select
             showSearch
             style={{ width: '100%' }}
-            placeholder="Search to Select"
+            placeholder="Choose the job you want apply..."
             optionFilterProp="children"
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
