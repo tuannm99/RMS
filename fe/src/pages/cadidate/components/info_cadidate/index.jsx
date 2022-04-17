@@ -103,6 +103,7 @@ function CadidateInfo(props) {
       toast.error(resEdit.data.message);
       return;
     }
+    toast.success(`You changed your stage to ${key}!`);
     getCadidate(id);
   };
 
@@ -117,6 +118,7 @@ function CadidateInfo(props) {
       toast.error(resEdit.data.message);
       return;
     }
+    toast.success(`You changed your status to ${key}!`);
     getCadidate(id);
   };
 
@@ -257,7 +259,7 @@ function CadidateInfo(props) {
               <TabPane tab="Summary" key="1" className="pl-20 pr-20">
                 <Summary />
               </TabPane>
-              <TabPane tab="Profile" key="2" className="pl-20 pr-20">
+              <TabPane tab="CV" key="2" className="pl-20 pr-20">
                 <Profile />
               </TabPane>
               <TabPane tab="Interviews" key="3" className="pl-20 pr-20">

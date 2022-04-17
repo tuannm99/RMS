@@ -30,6 +30,7 @@ import {
   renderHeadTable,
 } from './components/render';
 import EditAddInterview from './components/info_cadidate/EditAddInterview';
+import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -40,6 +41,8 @@ function CadidatePage(props) {
   const [visibleInfoCadi, setVisibleInfoCadi] = useState(false);
   const [jobs, setjobs] = useState([]);
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
+
   const payload = {
     limit: 10,
     page: 1,
@@ -191,32 +194,18 @@ function CadidatePage(props) {
 
       <Row>
         <Col
-          lg={
-            (userAccount?.role === 'admin' ||
-              userAccount?.role === 'hiringManager') &&
-            jobId !== ''
-              ? { span: 8 }
-              : { span: 0 }
-          }
+          lg={jobId !== '' ? { span: 8 } : { span: 0 }}
           xs={{ span: 24 }}
           className="mt-12"
         >
-          {(userAccount?.role === 'admin' ||
-            userAccount?.role === 'hiringManager') &&
-            jobId !== '' && (
-              <Button onClick={() => setVisibleAddCandi(true)}>
-                Add Candidate
-              </Button>
-            )}
+          {jobId !== '' && (
+            <Button onClick={() => setVisibleAddCandi(true)}>
+              Add Candidate
+            </Button>
+          )}
         </Col>
         <Col
-          lg={
-            (userAccount?.role === 'admin' ||
-              userAccount?.role === 'hiringManager') &&
-            jobId !== ''
-              ? { span: 8 }
-              : { span: 16 }
-          }
+          lg={jobId !== '' ? { span: 8 } : { span: 16 }}
           xs={{ span: 12 }}
           className="mt-12"
         >
@@ -279,7 +268,8 @@ function CadidatePage(props) {
                 setVisibleInfoCadi,
                 setCadidateId,
                 setVisible,
-                userAccount
+                userAccount,
+                navigate
               )
             }
           />
