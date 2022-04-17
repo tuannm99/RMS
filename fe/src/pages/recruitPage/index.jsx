@@ -108,7 +108,7 @@ function RecruitPage(props) {
 
   const handleLinkCadidate = async (id) => {
     await setJobId(id);
-    navigation('/cadidate');
+    navigation('/candidate');
   };
 
   const onFinish = (values) => {

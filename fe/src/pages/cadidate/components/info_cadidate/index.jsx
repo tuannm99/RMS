@@ -193,15 +193,6 @@ function CadidateInfo(props) {
                       )}
                     </p>
                     <p>
-                      <a
-                        href={cadidate?.hyperlink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {cadidate?.hyperlink}
-                      </a>
-                    </p>
-                    <p>
                       {cadidate?.sex === 'male' ? (
                         <Tag color="green">Male</Tag>
                       ) : cadidate?.sex === 'female' ? (
@@ -210,6 +201,11 @@ function CadidateInfo(props) {
                         <Tag color="green">Other</Tag>
                       )}
                     </p>
+                    <a
+                      href={`${cadidate?.hyperlink}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >{`${cadidate?.hyperlink}`}</a>
                   </Col>
                   <Col span={24} className="pl-16 pr-16 apply">
                     <p className="mb-0">APPLIED JOBS</p>

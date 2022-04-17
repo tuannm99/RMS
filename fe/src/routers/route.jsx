@@ -27,7 +27,7 @@ export const AuthRoute = [
     element: <DetailRecruitPage />,
   },
   {
-    path: '/cadidate',
+    path: '/candidate',
     element: <CadidatePage />,
   },
   {
