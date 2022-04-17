@@ -7,6 +7,7 @@ import {
   cadidate,
   interviews,
   loadingInterviews,
+  loadingCadidate,
 } from '../../../../redux/stores/cadidate/selectors';
 import { getAllInterviews } from '../../../../redux/stores/cadidate/actions';
 import { createStructuredSelector } from 'reselect';
@@ -20,18 +21,25 @@ import UpdateFeedBack from './UpdateFeedBack';
 
 function Interview(props) {
   const [visible, setVisible] = useState(false);
-  const [interviewerId, setInterviewerId] = useState();
+  const [interviewer, setInterviewer] = useState(null);
+  const [interviewerId, setInterviewerId] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { cadidate, getAllInterviews, interviews, loadingInterviews, account } =
-    props;
+  const {
+    cadidate,
+    getAllInterviews,
+    interviews,
+    loadingInterviews,
+    account,
+    loadingCadidate,
+  } = props;
 
   useEffect(() => {
     getAllInterviews(cadidate?.id);
   }, [cadidate, getAllInterviews]);
 
-  const showModal = (id) => {
+  const showModal = (item) => {
     setIsModalVisible(true);
-    setInterviewerId(id);
+    setInterviewer(item);
   };
 
   const handleOk = () => {
@@ -85,7 +93,10 @@ function Interview(props) {
             </Button>
           </Col>
         )}
-        {(interviews === undefined || interviews?.length === 0) && (
+        {(interviews === undefined ||
+          (interviews?.length === 0 &&
+            !loadingInterviews &&
+            !loadingCadidate)) && (
           <Col span={24} style={styles}>
             <Empty description={false} />,
           </Col>
@@ -149,10 +160,8 @@ function Interview(props) {
                     </div>
                   </>
                 )}
-                <Button
-                  className="feedback"
-                  onClick={() => showModal(item?.id)}
-                >
+
+                <Button className="feedback" onClick={() => showModal(item)}>
                   feedback
                 </Button>
               </div>
@@ -173,7 +182,7 @@ function Interview(props) {
         isModalVisible={isModalVisible}
         handleOk={handleOk}
         handleCancel={handleCancel}
-        interviewerId={interviewerId}
+        interviewer={interviewer}
       />
     </>
   );
@@ -182,6 +191,7 @@ const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
   interviews: interviews,
   loadingInterviews: loadingInterviews,
+  loadingCadidate: loadingCadidate,
   account: selectUserInfor,
 });
 const mapDispatchToProps = (dispatch) => ({

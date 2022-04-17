@@ -6,7 +6,7 @@ import { changPassRequestService } from '../../services/authServices';
 import { toast } from 'react-toastify';
 import { UserOutlined, MailOutlined } from '@ant-design/icons';
 
-function ChangePassPage() {
+function ForgotPassPage() {
   const onFinish = (values) => {
     const params = {
       email: values.email,
@@ -89,4 +89,4 @@ function ChangePassPage() {
   );
 }
 
-export default ChangePassPage;
+export default ForgotPassPage;

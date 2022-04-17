@@ -11,11 +11,19 @@ import {
   SET_LOADING_INTERVIEWS,
   SET_VISIBLE_ADD_CANDIDATE,
   SET_CHECK_TOKEN,
+  SET_LOADING_CADIDATE,
 } from './constants';
 
 export function setLoading(payload) {
   return {
     type: SET_LOADING,
+    payload,
+  };
+}
+
+export function setLoadingCadidate(payload) {
+  return {
+    type: SET_LOADING_CADIDATE,
     payload,
   };
 }
