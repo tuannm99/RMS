@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
-const { Candidate, Job } = require('../core/db/schema');
+const { Candidate, Job, Interview } = require('../core/db/schema');
 const jobService = require('../job/job.service');
 
 /**
@@ -81,6 +81,8 @@ const deleteCandidateById = async (id) => {
       },
     }
   );
+  // delete candidate ref in Job
+  await Interview.deleteMany({ candidateId: candidate._id });
 };
 
 module.exports = {

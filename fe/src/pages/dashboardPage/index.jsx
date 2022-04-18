@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs, Select, Pagination } from 'antd';
+import { Tabs, Select, Pagination, Spin, Col } from 'antd';
 import './style.css';
 import { Pie } from '@ant-design/plots';
 import { Table } from '../../components';
@@ -28,9 +28,9 @@ import {
   renderBodyTable,
 } from './component/render';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
+import { useNavigate } from 'react-router-dom';
 
 const { TabPane } = Tabs;
-
 function DashboardPage(props) {
   const [dataInterview, setDataInterview] = useState();
   const [dataChart, setDataChart] = useState([]);
@@ -41,6 +41,8 @@ function DashboardPage(props) {
   const [key, setKey] = useState(1);
   const { Option } = Select;
   const { userAccount } = props;
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [param, setParam] = useState({
     limit: 3,
     page: 1,
@@ -74,11 +76,13 @@ function DashboardPage(props) {
   }
 
   const loadDataInterview = (param) => {
+    setLoading(true);
     getAllInterview(param).then((res) => {
       if (hasResponseError(res)) {
         return;
       }
       setDataInterview(res.data);
+      setLoading(false);
     });
   };
 
@@ -214,22 +218,34 @@ function DashboardPage(props) {
             onChange={handleTab}
           >
             <TabPane tab="Upcoming" key="upcoming">
-              {dataInterview && (
+              {loading ? (
+                <Col style={{ textAlign: 'center' }} span={24}>
+                  <Spin tip="loading..." />
+                </Col>
+              ) : (
                 <Table
                   headData={customerTableHead}
                   renderHead={(item, index) => renderHeadTable(item, index)}
                   bodyData={dataInterview?.results}
-                  renderBody={(item, index) => renderBodyTable(item, index)}
+                  renderBody={(item, index) =>
+                    renderBodyTable(item, index, navigate)
+                  }
                 />
               )}
             </TabPane>
             <TabPane tab="Recently" key="recently">
-              {dataInterview && (
+              {loading ? (
+                <Col style={{ textAlign: 'center' }} span={24}>
+                  <Spin tip="loading..." />
+                </Col>
+              ) : (
                 <Table
                   headData={customerTableHead}
                   renderHead={(item, index) => renderHeadTable(item, index)}
                   bodyData={dataInterview?.results}
-                  renderBody={(item, index) => renderBodyTable(item, index)}
+                  renderBody={(item, index) =>
+                    renderBodyTable(item, index, navigate)
+                  }
                 />
               )}
             </TabPane>
@@ -248,10 +264,10 @@ function DashboardPage(props) {
           <h1>HR SnapShot</h1>
           <div className="dashboard-snapshot">
             <div className="dashboard-snapshot-content">
-              <AiOutlineUserAdd className="dashboard-snapshot-icons dashboard-snapshot-add" />{' '}
+              <AiOutlineUserAdd className="dashboard-snapshot-icons dashboard-snapshot-total" />{' '}
               {dataSnapshot}
               <div>
-                <h5> Candidate Approved</h5>
+                <h5> Total Candidate </h5>
               </div>
             </div>
           </div>
@@ -269,7 +285,7 @@ function DashboardPage(props) {
               <AiOutlineUserSwitch className="dashboard-snapshot-icons" />
               {DataCountApproved}
               <div>
-                <h5>Candidate</h5>
+                <h5>Candidate Approved</h5>
               </div>
             </div>
           </div>

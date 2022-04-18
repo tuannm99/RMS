@@ -19,11 +19,13 @@ import './styles.css';
 import { imgURL } from '../../utils/utils';
 import { logoutRequestService } from '../../services/authServices';
 import ModalAddNewCandidate from './ModalAddNewCandidate';
+import { setVisibleAddJob } from '../../redux/stores/job/actions';
+import { compose } from 'recompose';
 
 const { Header } = Layout;
 
 function HeaderPrivate(props) {
-  const { selectUserInfor } = props;
+  const { selectUserInfor, setVisibleAddJob } = props;
 
   const navigate = useNavigate();
 
@@ -31,6 +33,11 @@ function HeaderPrivate(props) {
 
   const showModal = () => {
     setIsModalVisible(true);
+  };
+
+  const showAddJob = async () => {
+    await navigate('/recruit');
+    setVisibleAddJob(true);
   };
 
   const handleOk = () => {
@@ -59,7 +66,7 @@ function HeaderPrivate(props) {
    */
   const menuJob = (
     <Menu>
-      <Menu.Item key="1" icon={<ShoppingOutlined />}>
+      <Menu.Item key="1" icon={<ShoppingOutlined />} onClick={showAddJob}>
         Job posting
       </Menu.Item>
       {selectUserInfor?.role === 'admin' ? (
@@ -147,4 +154,9 @@ const mapStateToProps = createStructuredSelector({
   selectUserInfor: selectUserInfor,
 });
 
-export default connect(mapStateToProps)(HeaderPrivate);
+const mapDispatchToProps = (dispatch) => ({
+  setVisibleAddJob: (payload) => dispatch(setVisibleAddJob(payload)),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(HeaderPrivate);
