@@ -74,7 +74,7 @@ function FormInfo(props) {
             rules={[{ required: true, message: 'Please select Sex!' }]}
           >
             <Select name="sex">
-              <Option value="male">male</Option>
+              <Option value="male">Male</Option>
               <Option value="female">Female</Option>
               <Option value="other">Other</Option>
             </Select>

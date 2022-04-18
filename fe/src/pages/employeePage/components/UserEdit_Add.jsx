@@ -199,6 +199,11 @@ function UserEditAdd({
     </Form.Item>
   );
 
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current > moment().endOf('day');
+  }
+
   return (
     <DrawerComponent
       title={user ? 'EDIT EMPLOYEE.' : 'CREATE EMPLOYEE.'}
@@ -287,7 +292,7 @@ function UserEditAdd({
           </Col>
           <Col span={12}>
             <Form.Item name="dateOfBirth" label="Date Of Birth">
-              <DatePicker format={dateFormat} />
+              <DatePicker format={dateFormat} disabledDate={disabledDate} />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -297,7 +302,7 @@ function UserEditAdd({
               rules={[{ required: true, message: 'Please select Sex!' }]}
             >
               <Select name="sex">
-                <Option value="male">male</Option>
+                <Option value="male">Male</Option>
                 <Option value="female">Female</Option>
                 <Option value="other">Other</Option>
               </Select>
