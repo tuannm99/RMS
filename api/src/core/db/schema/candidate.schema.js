@@ -21,6 +21,7 @@ const candidateSchema = new mongoose.Schema({
   midName: { type: String },
   lastName: { required: true, type: String },
   fullName: { type: String },
+  unsignedFullName: { type: String },
   email: {
     type: String,
     required: true,

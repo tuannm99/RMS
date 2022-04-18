@@ -23,7 +23,10 @@ const createCandidate = async (candidatePayload) => {
  * @returns {Promise<Candidate>}
  */
 const getAllCandidate = async (filter, options) => {
-  filter.fullName = { $regex: `${filter.fullName ? filter.fullName : ''}`, $options: 'i' };
+  filter.unsignedFullName = {
+    $regex: `${filter.unsignedFullName ? filter.unsignedFullName : ''}`,
+    $options: 'i',
+  };
   options.populate = [];
   options.populate.push({
     path: 'jobId',
