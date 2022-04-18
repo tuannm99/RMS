@@ -3,12 +3,16 @@
 
 autonumber 1.1
 actor User
+participant UI
 control  authController
 boundary userService
 boundary tokenService
 database Mongodb
 
-User -> authController: registerHandler()
+User -> UI: Register
+activate UI
+UI -> authController: registerHandler()
+deactivate UI
 activate authController
 authController -> authController: validate
 authController ->> userService: createUser()
@@ -32,6 +36,9 @@ Mongodb --> tokenService: success
 deactivate Mongodb
 tokenService --> authController: tokenData
 deactivate tokenService
-authController --> User
+authController --> UI
 deactivate authController
+activate UI
+UI --> User
+deactivate UI
 @enduml
