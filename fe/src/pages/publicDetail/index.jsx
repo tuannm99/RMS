@@ -23,6 +23,26 @@ function HomeDetail(props) {
   const allowedFiles = ['application/pdf'];
   const formRef = useRef();
 
+  const DEPARTMENT = {
+    administration: 'Administration',
+    sale: 'Sale',
+    humanResources: 'Human Resources',
+    engineering: 'Engineering',
+    marketing: 'Marketing',
+    finance: 'Finance',
+    engineering: 'Engineering',
+  };
+
+  const beautyDepartment = (val) => {
+    let newVal;
+    Object.keys(DEPARTMENT).forEach((key) => {
+      if (key === val) {
+        newVal = DEPARTMENT[key];
+      }
+    });
+    return newVal;
+  };
+
   const getBase64 = (file, callback) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
@@ -148,7 +168,7 @@ function HomeDetail(props) {
               <Link to={`/Career`}>
                 <TiArrowLeftThick className="detail-public-icon" />
               </Link>
-              <h3>{job.department}</h3>
+              <h3>{beautyDepartment(job.department)}</h3>
             </div>
             <h1>{job.title}</h1>
             <div className="detail-public-header-sub">
