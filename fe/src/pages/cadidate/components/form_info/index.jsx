@@ -98,12 +98,11 @@ function FormInfo(props) {
             label="Hyperlink"
             rules={[
               {
-                required: true,
-                message: 'Please enter Hyperlink!',
-              },
-              {
-                pattern: new RegExp(/[a-zA-X]/),
-                message: 'Please enter Hyperlink!',
+                pattern: new RegExp(
+                  /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+                ),
+                message:
+                  'Please enter Hyperlink start http(s), www and correct format',
               },
             ]}
           >
