@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../core/catchAsync');
 
 const candidateService = require('./candidate.service');
-const { pick, utf8ToASCII } = require('../core/utils');
+const { pick, utf8ToASCII, removeSpace } = require('../core/utils');
 
 /**
  * middleware add candidate
@@ -25,6 +25,7 @@ const getAllCandidate = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['fullName', 'jobId', 'status', 'stages']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   filter.unsignedFullName = utf8ToASCII(filter.fullName);
+  filter.fullName = removeSpace(filter.fullName);
   const listCandidate = await candidateService.getAllCandidate(filter, options);
   res.status(httpStatus.OK).json(listCandidate);
 });

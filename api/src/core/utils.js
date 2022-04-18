@@ -29,6 +29,7 @@ const omit = (object, keys) => {
 };
 
 const utf8ToASCII = (text) => {
+  if (!text) return '';
   let str = text.trim().toLowerCase();
   str = str
     .normalize('NFD') // converts to unicode
@@ -41,4 +42,9 @@ const utf8ToASCII = (text) => {
   return str;
 };
 
-module.exports = { pick, omit, utf8ToASCII };
+const removeSpace = (text) => {
+  if (!text) return '';
+  return text.trim().replace(/(\s+)/g, ' ');
+};
+
+module.exports = { pick, omit, utf8ToASCII, removeSpace };
