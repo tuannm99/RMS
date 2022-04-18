@@ -31,6 +31,7 @@ import {
   Row,
   Form,
   Input,
+  Spin,
 } from 'antd';
 
 function RecruitPage(props) {
@@ -44,7 +45,7 @@ function RecruitPage(props) {
 
   const { setJobId, visibleAddJob, setVisibleAddJob } = props;
   const navigation = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [formModal] = Form.useForm();
   const [ckeditorData, setCkeditorData] = useState('');
   const { TextArea } = Input;
@@ -67,6 +68,7 @@ function RecruitPage(props) {
   }, [param]);
 
   const loadDataJobs = (param) => {
+    setLoading(true);
     getAllJobs(param).then((res) => {
       if (hasResponseError(res)) {
         toast.success(`${res.data.message}`, {
@@ -74,6 +76,7 @@ function RecruitPage(props) {
         });
       }
       setDataJobs(res.data);
+      setLoading(false);
     });
   };
 
@@ -179,7 +182,13 @@ function RecruitPage(props) {
         </Col>
       </Row>
       <Row gutter={20}>
+        {loading && (
+          <Col style={{ textAlign: 'center' }} span={24}>
+            <Spin tip="loading..." />
+          </Col>
+        )}
         {dataJobs &&
+          !loading &&
           dataJobs?.results?.map((item) => {
             return (
               <Col
@@ -192,6 +201,7 @@ function RecruitPage(props) {
               >
                 <div className="card">
                   <Card
+                    className="card-effect"
                     style={{
                       width: '100%',
                       minHeight: '350px',

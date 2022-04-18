@@ -14,8 +14,12 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .recruit-card-icons {
+  display: none;
   position: absolute;
   top: 2%;
   right: 3%;
   color: rgb(158, 156, 156);
+}
+.card-effect:hover .recruit-card-icons {
+  display: block;
 }
