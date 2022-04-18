@@ -159,6 +159,7 @@ function EditAddInterview(props) {
                 disabledDate={disabledDate}
                 disabledTime={disabledDateTime}
                 showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                showNow={false}
               />
             </Form.Item>
           </Col>

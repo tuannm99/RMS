@@ -10,6 +10,7 @@ import {
   ShoppingOutlined,
   ReadOutlined,
   KeyOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
@@ -93,7 +94,7 @@ function HeaderPrivate(props) {
       <Menu.Item key="3" icon={<KeyOutlined />}>
         <NavLink to={`changepass`}>Change password</NavLink>
       </Menu.Item>
-      <Menu.Item key="2" icon={<TeamOutlined />} onClick={handleLogout}>
+      <Menu.Item key="2" icon={<LogoutOutlined />} onClick={handleLogout}>
         Logout
       </Menu.Item>
     </Menu>
@@ -117,13 +118,6 @@ function HeaderPrivate(props) {
           }
         )}
         <div className="header-right">
-          <Button
-            className="header-right-search-box mr-32"
-            icon={<SearchOutlined />}
-            size={32}
-          >
-            Search...
-          </Button>
           <Dropdown className="header-right-add-new mr-32" overlay={menuJob}>
             <Button>
               Add new <DownOutlined />

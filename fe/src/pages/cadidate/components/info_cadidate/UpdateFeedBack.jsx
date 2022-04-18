@@ -81,9 +81,10 @@ function UpdateFeedBack(props) {
                 bordered={false}
                 showArrow={false}
                 disabled={
-                  (account?.role !== 'hiringManager' ||
-                    account?.id !== interviewer?.interviewer?.id) &&
-                  true
+                  account?.role === 'hiringManager' ||
+                  account?.id === interviewer?.interviewer?.id
+                    ? false
+                    : true
                 }
               >
                 <Option value="notYet">
@@ -108,9 +109,10 @@ function UpdateFeedBack(props) {
             <Form.Item name="rate" label="Rate">
               <Rate
                 disabled={
-                  (account?.role !== 'hiringManager' ||
-                    account?.id !== interviewer?.interviewer?.id) &&
-                  true
+                  account?.role === 'hiringManager' ||
+                  account?.id === interviewer?.interviewer?.id
+                    ? false
+                    : true
                 }
               />
             </Form.Item>
@@ -123,14 +125,16 @@ function UpdateFeedBack(props) {
                 rows={4}
                 placeholder="Note"
                 disabled={
-                  (account?.role !== 'hiringManager' ||
-                    account?.id !== interviewer?.interviewer?.id) &&
-                  true
+                  account?.role === 'hiringManager' ||
+                  account?.id === interviewer?.interviewer?.id
+                    ? false
+                    : true
                 }
               />
             </Form.Item>
           </Col>
-          {account?.role === 'hiringManager' && (
+          {(account?.role === 'hiringManager' ||
+            account?.id === interviewer?.interviewer?.id) && (
             <Col span={24}>
               <Button
                 style={{ width: '100%' }}
