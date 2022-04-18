@@ -2,7 +2,6 @@ import { Select } from 'antd';
 import moment from 'moment';
 
 const { Option } = Select;
-
 const current = new Date();
 
 const styles = {
@@ -30,19 +29,28 @@ export const renderHeadTable = (item, index) => (
 
 export const customerTableHead = ['Candidate', 'interviewer', 'Schedule info'];
 
-export const renderBodyTable = (item, index) => (
-  <tr key={item.id} style={styles.tr}>
-    <td style={styles.td}>{item.scheduleBy.fullName}</td>
-    <td style={styles.td}>{item.interviewer.fullName}</td>
-    <td>
-      <div className="mb-0">
-        {moment(item?.interviewDate).format('DD-MM-YYYY').toString()} -{' '}
-        {moment(item?.interviewDate).format('HH:mm').toString()}
-        {moment(item?.interviewDate).format('DD-MM-YYYY').toString() ===
-        moment(current).format('DD-MM-YYYY').toString()
-          ? ' (today)'
-          : ''}
-      </div>
-    </td>
-  </tr>
-);
+export const renderBodyTable = (item, navigate, index) =>
+  item.candidateId != null && (
+    <tr key={item.id} style={styles.tr}>
+      <td style={styles.td}>{item.candidateId.fullName}</td>
+      <td
+        className="pl-8 cu"
+        style={{ ...styles.td, cursor: 'pointer' }}
+        onClick={() => {
+          navigate(`/profile/${item.interviewer.id}`);
+        }}
+      >
+        {item.interviewer.fullName}
+      </td>
+      <td>
+        <div className="mb-0">
+          {moment(item?.interviewDate).format('DD-MM-YYYY').toString()} -{' '}
+          {moment(item?.interviewDate).format('HH:mm').toString()}
+          {moment(item?.interviewDate).format('DD-MM-YYYY').toString() ===
+          moment(current).format('DD-MM-YYYY').toString()
+            ? ' (today)'
+            : ''}
+        </div>
+      </td>
+    </tr>
+  );
