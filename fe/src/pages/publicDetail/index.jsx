@@ -145,7 +145,7 @@ function HomeDetail(props) {
         <div className="detail-public-header-content">
           <div className="detail-public-header-left">
             <div className="detail-public-sub">
-              <Link to={`/PublicJob`}>
+              <Link to={`/Career`}>
                 <TiArrowLeftThick className="detail-public-icon" />
               </Link>
               <h3>{job.department}</h3>

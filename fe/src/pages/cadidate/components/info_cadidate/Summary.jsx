@@ -43,7 +43,7 @@ function Summary(props) {
           <Col span={24} className="offer-info">
             <ExceptionOutlined className="icon-des" />
             <Descriptions
-              title="User Info"
+              title="Candidate Info"
               layout="vertical"
               labelStyle={{ color: '#607787', fontWeight: 400 }}
             >

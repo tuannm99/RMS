@@ -27,7 +27,7 @@ export const AuthRoute = [
     element: <DetailRecruitPage />,
   },
   {
-    path: '/cadidate',
+    path: '/candidate',
     element: <CadidatePage />,
   },
   {
@@ -54,11 +54,11 @@ export const AppRoute = [
     element: <ProtectedLayout />,
   },
   {
-    path: '/PublicJob',
+    path: '/Career',
     element: <Home />,
   },
   {
-    path: '/PublicJob/:id',
+    path: '/Career/:id',
     element: <HomeDetail />,
   },
   {

@@ -128,7 +128,7 @@ function Home(props) {
               >
                 <div>
                   <Link
-                    to={`/PublicJob/${item.id}`}
+                    to={`/Career/${item.id}`}
                     style={{ textDecoration: 'none' }}
                   >
                     <PublicPage

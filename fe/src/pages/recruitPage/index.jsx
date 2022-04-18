@@ -16,7 +16,8 @@ import { DrawerComponent } from '../../components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FaTimes } from 'react-icons/fa';
-import { DeleteOutlined } from '@ant-design/icons';
+import { setVisibleAddJob } from '../../redux/stores/job/actions';
+import { visibleAddJob } from '../../redux/stores/job/selectors';
 import {
   Popconfirm,
   Button,
@@ -34,7 +35,6 @@ import {
 
 function RecruitPage(props) {
   const [dataJobs, setDataJobs] = useState();
-  const [visible, setVisible] = useState(false);
   const { Option } = Select;
   const { userAccount } = props;
   const [param, setParam] = useState({
@@ -42,8 +42,7 @@ function RecruitPage(props) {
     page: 1,
   });
 
-  const { setJobId } = props;
-
+  const { setJobId, visibleAddJob, setVisibleAddJob } = props;
   const navigation = useNavigate();
 
   const [formModal] = Form.useForm();
@@ -99,16 +98,16 @@ function RecruitPage(props) {
   };
 
   const onclose = () => {
-    setVisible(false);
+    setVisibleAddJob(false);
   };
 
   const showDrawp = () => {
-    setVisible(true);
+    setVisibleAddJob(true);
   };
 
   const handleLinkCadidate = async (id) => {
     await setJobId(id);
-    navigation('/cadidate');
+    navigation('/candidate');
   };
 
   const onFinish = (values) => {
@@ -165,7 +164,7 @@ function RecruitPage(props) {
           </Select>
         </Col>
         <Col span={3}>
-          <Link to={`/PublicJob`} target="_blank">
+          <Link to={`/Career`} target="_blank">
             <Button type="primary">Career</Button>
           </Link>
         </Col>
@@ -191,7 +190,7 @@ function RecruitPage(props) {
                 key={item.id}
                 className="mb-24"
               >
-                <div className="card card-effect">
+                <div className="card">
                   <Card
                     style={{
                       width: '100%',
@@ -206,7 +205,7 @@ function RecruitPage(props) {
                     }
                     actions={[
                       item.status === 'published' ? (
-                        <Link to={`/PublicJob/${item.id}`} target="_blank">
+                        <Link to={`/Career/${item.id}`} target="_blank">
                           <div>
                             <GlobalOutlined key="global" className="mr-8" />
                             {item.status}
@@ -263,7 +262,7 @@ function RecruitPage(props) {
       <DrawerComponent
         title="Create Job"
         onClose={onclose}
-        visible={visible}
+        visible={visibleAddJob}
         width={720}
       >
         <Form
@@ -414,9 +413,12 @@ function RecruitPage(props) {
 
 const mapStateToProps = createStructuredSelector({
   userAccount: selectUserInfor,
+  visibleAddJob: visibleAddJob,
 });
+
 const mapDispatchToProps = (dispatch) => ({
   setJobId: (payload) => dispatch(action.setJobId(payload)),
+  setVisibleAddJob: (payload) => dispatch(setVisibleAddJob(payload)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

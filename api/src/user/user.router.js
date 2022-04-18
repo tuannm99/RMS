@@ -18,6 +18,11 @@ router.put(
   uploadImg.single('avatar'),
   userController.updateUserAvatarHandler
 );
+router.put(
+  '/:id/change-password',
+  // checkAuth(),
+  userController.changePasswordHandler
+);
 router.delete('/:id', checkAuth(ROLES.admin), userController.deleteUserHandler);
 
 module.exports = router;

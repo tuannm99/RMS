@@ -11,7 +11,7 @@ function DetailPublic(props) {
         <div className={props.HeaderContent}>
           <div className={props.detailHeaderLeft}>
             <div className="public-header-sub">
-              <Link to={`/PublicJob`}>
+              <Link to={`/Career`}>
                 <FaArrowLeft className="public-header-icon" />
               </Link>
               <h3>{data.department}</h3>
