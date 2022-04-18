@@ -1,17 +1,27 @@
 import React from 'react';
 import './styles.css';
-import { Button, Divider, Form, Input } from 'antd';
+import { Button, Divider, Form, Input, Popconfirm } from 'antd';
 import { NavLink } from 'react-router-dom';
 import { changPassRequestService } from '../../services/authServices';
 import { toast } from 'react-toastify';
-import { UserOutlined, MailOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  MailOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 
 function ForgotPassPage() {
-  const onFinish = (values) => {
+  const [form] = Form.useForm();
+
+  const onFinish = () => {
     const params = {
-      email: values.email,
-      username: values.username,
+      email: form.getFieldValue().email,
+      username: form.getFieldValue().username,
     };
+    if (!form.getFieldValue().email || !form.getFieldValue().username) {
+      toast.error('Please enter your email and username!');
+      return;
+    }
     changPassRequestService(params).then((res) => {
       if (res.status < 200 || res.status > 300) {
         toast.error(res.data.message);
@@ -29,7 +39,7 @@ function ForgotPassPage() {
       </div>
       <Divider />
       <div className="content-mail">
-        <Form onFinish={onFinish} autoComplete="off">
+        <Form autoComplete="off">
           <Form.Item
             name="username"
             rules={[
@@ -75,13 +85,16 @@ function ForgotPassPage() {
             />
           </Form.Item>
           <Form.Item>
-            <Button
-              className="content-mail_btn"
-              type="primary"
-              htmlType="submit"
+            <Popconfirm
+              onConfirm={onFinish}
+              placement="bottomLeft"
+              title="Are you sure to send this email?"
+              icon={<QuestionCircleOutlined style={{ color: 'royalblue' }} />}
             >
-              Send mail
-            </Button>
+              <Button type="primary" style={{ width: '100%' }}>
+                Send Mail
+              </Button>
+            </Popconfirm>
           </Form.Item>
         </Form>
       </div>

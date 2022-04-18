@@ -6,6 +6,7 @@ const jobSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   candidateId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Candidate' }],
   title: { required: true, type: String },
+  unsignedTitle: { type: String },
   status: {
     type: String,
     enum: [JOB_STATUS.published, JOB_STATUS.onHold, JOB_STATUS.deleted],

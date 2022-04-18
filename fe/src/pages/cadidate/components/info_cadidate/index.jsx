@@ -178,7 +178,11 @@ function CadidateInfo(props) {
             </Row>
             <Row>
               {loadingCadidate ? (
-                <Col span={24} style={{ textAlign: 'center' }}>
+                <Col
+                  span={24}
+                  style={{ textAlign: 'center' }}
+                  className="mt-20"
+                >
                   <Spin />
                 </Col>
               ) : (

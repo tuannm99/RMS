@@ -18,7 +18,7 @@ function Mail(props) {
   );
   const { cadidate } = props;
 
-  const onFinish = (values) => {
+  const onFinish = () => {
     let body = {
       to: cadidate?.email,
       subject: form.getFieldValue().subject,
@@ -43,7 +43,7 @@ function Mail(props) {
         <Col span={24}>
           <Popconfirm
             onConfirm={onFinish}
-            title="Are you sure you want to send this email?"
+            title="Are you sure to send this email?"
             icon={<QuestionCircleOutlined style={{ color: 'royalblue' }} />}
           >
             <Button type="primary" className="btn-submit mb-32 fr">
