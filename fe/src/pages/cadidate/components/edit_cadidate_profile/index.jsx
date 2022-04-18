@@ -44,7 +44,7 @@ function EditCadidateProfile(props) {
 
           summary: cadidate?.resume?.employer?.summary,
         });
-        if (cadidate?.resume?.employer?.from !== null) {
+        if (cadidate?.resume?.employer?.from !== undefined) {
           form.setFieldsValue({
             fromto: [
               moment(cadidate?.resume?.employer?.from, dateFormatList[0]),
@@ -60,7 +60,7 @@ function EditCadidateProfile(props) {
           fieldOfStudy: cadidate?.resume?.education?.fieldOfStudy,
           grade: cadidate?.resume?.education?.grade,
         });
-        if (cadidate?.resume?.education?.from !== null) {
+        if (cadidate?.resume?.education?.from !== undefined) {
           form.setFieldsValue({
             fromend: [
               moment(cadidate?.resume?.education?.from, dateFormatList[0]),
