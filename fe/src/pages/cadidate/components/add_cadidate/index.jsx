@@ -149,7 +149,7 @@ function AddCadidate(props) {
 
   return (
     <DrawerComponent
-      title="ADD CREATE YOUR APPLICATION PROFILE"
+      title="CREATE CANDIDATE PROFILE"
       onClose={onclose}
       visible={visibleAddCadi}
       width={720}
