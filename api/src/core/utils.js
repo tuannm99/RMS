@@ -30,7 +30,7 @@ const omit = (object, keys) => {
 
 const utf8ToASCII = (text) => {
   if (!text) return '';
-  let str = text.trim().toLowerCase();
+  let str = text.trim();
   str = str
     .normalize('NFD') // converts to unicode
     .replace(/[\u0300-\u036f]/g, ''); // remove signed

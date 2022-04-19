@@ -3,7 +3,7 @@ const catchAsync = require('../core/catchAsync');
 
 const jobService = require('../job/job.service');
 const candidateService = require('../candidate/candidate.service');
-const { pick, utf8ToASCII } = require('../core/utils');
+const { pick, utf8ToASCII, removeSpace } = require('../core/utils');
 
 /**
  * middleware show all job
@@ -33,8 +33,15 @@ const getPublishedJobHandler = catchAsync(async (req, res) => {
 const addResumeHandler = catchAsync(async (req, res) => {
   const candidatePayload = JSON.parse(req.body.candidate);
   candidatePayload.jobId = req.params.id;
-  candidatePayload.unsignedFullName = utf8ToASCII(candidatePayload.fullName);
-  const candidate = await candidateService.createCandidate({ ...candidatePayload, cv: req.file });
+  const candidate = await candidateService.createCandidate({
+    ...candidatePayload,
+    cv: req.file,
+    unsignedFullName: utf8ToASCII(candidatePayload.fullName),
+    fullName: removeSpace(candidatePayload.fullName),
+    firstName: removeSpace(candidatePayload.fullName),
+    lastName: removeSpace(candidatePayload.lastName),
+    midName: removeSpace(candidatePayload.midName),
+  });
   res.status(httpStatus.OK).json(candidate);
 });
 

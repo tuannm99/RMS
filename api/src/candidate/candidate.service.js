@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
 const { Candidate, Job, Interview } = require('../core/db/schema');
 const jobService = require('../job/job.service');
+const { utf8ToASCII } = require('../core/utils');
 
 /**
  * create new candidate
@@ -23,14 +24,20 @@ const createCandidate = async (candidatePayload) => {
  * @returns {Promise<Candidate>}
  */
 const getAllCandidate = async (filter, options) => {
-  filter.fullName = {
-    $regex: `${filter.fullName ? filter.fullName : ''}`,
-    $options: 'i',
-  };
-  filter.unsignedFullName = {
-    $regex: `${filter.unsignedFullName ? filter.unsignedFullName : ''}`,
-    $options: 'i',
-  };
+  if (filter.fullName === utf8ToASCII(filter.fullName)) {
+    filter.unsignedFullName = {
+      $regex: `${filter.unsignedFullName ? filter.unsignedFullName : ''}`,
+      $options: 'i',
+    };
+    delete filter.fullName;
+  } else {
+    filter.fullName = {
+      $regex: `${filter.fullName ? filter.fullName : ''}`,
+      $options: 'i',
+    };
+    delete filter.unsignedFullName;
+  }
+
   options.populate = [];
   options.populate.push({
     path: 'jobId',

@@ -11,8 +11,16 @@ const { pick, utf8ToASCII, removeSpace } = require('../core/utils');
  */
 const addCandidate = catchAsync(async (req, res) => {
   const candidatePayload = JSON.parse(req.body.candidate);
-  candidatePayload.unsignedFullName = utf8ToASCII(candidatePayload.fullName);
-  const candidate = await candidateService.createCandidate({ ...candidatePayload, cv: req.file });
+
+  const candidate = await candidateService.createCandidate({
+    ...candidatePayload,
+    cv: req.file,
+    unsignedFullName: utf8ToASCII(candidatePayload.fullName),
+    fullName: removeSpace(candidatePayload.fullName),
+    firstName: removeSpace(candidatePayload.fullName),
+    lastName: removeSpace(candidatePayload.lastName),
+    midName: removeSpace(candidatePayload.midName),
+  });
   res.status(httpStatus.OK).json(candidate);
 });
 
@@ -24,8 +32,9 @@ const addCandidate = catchAsync(async (req, res) => {
 const getAllCandidate = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['fullName', 'jobId', 'status', 'stages']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  filter.fullName = filter.fullName.trim();
   filter.unsignedFullName = utf8ToASCII(filter.fullName);
-  filter.fullName = removeSpace(filter.fullName);
+
   const listCandidate = await candidateService.getAllCandidate(filter, options);
   res.status(httpStatus.OK).json(listCandidate);
 });
