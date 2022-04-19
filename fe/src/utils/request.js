@@ -28,9 +28,6 @@ request.interceptors.request.use(async (config) => {
           localStorage.setItem('expires', res.data.newToken.access.expires);
           localStorage.setItem('refreshToken', res.data.newToken.refresh.token);
         }
-        config.headers.Authorization = `Bearer ${localStorage.getItem(
-          'token'
-        )}`;
       })
       .catch(() => {
         axios
@@ -45,13 +42,11 @@ request.interceptors.request.use(async (config) => {
             localStorage.clear();
           });
       });
-    return config;
-  } else {
-    config.headers.Authorization = localStorage.getItem('token')
-      ? `Bearer ${localStorage.getItem('token')}`
-      : '';
-    return config;
   }
+  config.headers.Authorization = localStorage.getItem('token')
+    ? `Bearer ${localStorage.getItem('token')}`
+    : '';
+  return config;
 });
 
 const handleError = (error) => {
