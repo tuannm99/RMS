@@ -39,6 +39,7 @@ const userSchema = mongoose.Schema({
   lastName: { type: String },
   middleName: { type: String },
   fullName: { type: String },
+  unsignedFullName: { type: String },
   address: { type: String },
   phone: {
     required: true,

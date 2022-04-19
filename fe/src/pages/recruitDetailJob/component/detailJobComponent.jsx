@@ -4,8 +4,25 @@ import moment from 'moment';
 
 function DetailJobComponent(props) {
   const { data } = props;
+  const DEPARTMENT = {
+    administration: 'Administration',
+    sale: 'Sale',
+    humanResources: 'Human Resources',
+    engineering: 'Engineering',
+    marketing: 'Marketing',
+    finance: 'Finance',
+    engineering: 'Engineering',
+  };
 
-  const current = new Date();
+  const beautyDepartment = (val) => {
+    let newVal;
+    Object.keys(DEPARTMENT).forEach((key) => {
+      if (key === val) {
+        newVal = DEPARTMENT[key];
+      }
+    });
+    return newVal;
+  };
 
   return (
     <>
@@ -28,7 +45,7 @@ function DetailJobComponent(props) {
         <div className={props.detailJobContentRight}>
           <h1>Job Posting Details</h1>
           <p>Department</p>
-          <h5>{data.department}</h5>
+          <h5>{beautyDepartment(data.department)}</h5>
           <p>Experience</p>
           <h5>{data.experience}</h5>
           <p>Location</p>

@@ -49,6 +49,25 @@ function RecruitPage(props) {
   const [formModal] = Form.useForm();
   const [ckeditorData, setCkeditorData] = useState('');
   const { TextArea } = Input;
+  const DEPARTMENT = {
+    administration: 'Administration',
+    sale: 'Sale',
+    humanResources: 'Human Resources',
+    engineering: 'Engineering',
+    marketing: 'Marketing',
+    finance: 'Finance',
+    engineering: 'Engineering',
+  };
+
+  const beautyDepartment = (val) => {
+    let newVal;
+    Object.keys(DEPARTMENT).forEach((key) => {
+      if (key === val) {
+        newVal = DEPARTMENT[key];
+      }
+    });
+    return newVal;
+  };
 
   function handleChange(value) {
     if (value === 'allJob') {
@@ -153,7 +172,7 @@ function RecruitPage(props) {
       </Row>
       <Divider className="mb-0 mt-12" />
       <Row className="mt-12">
-        <Col span={20}>
+        <Col span={19}>
           <Select
             defaultValue="allJob"
             style={{ width: 120 }}
@@ -166,12 +185,12 @@ function RecruitPage(props) {
             <Option value="deleted">deleted</Option>
           </Select>
         </Col>
-        <Col span={3}>
+        <Col span={2}>
           <Link to={`/Career`} target="_blank">
             <Button type="primary">Career</Button>
           </Link>
         </Col>
-        <Col span={1}>
+        <Col span={3}>
           <Button
             className="fr"
             onClick={showDrawp}
@@ -210,7 +229,7 @@ function RecruitPage(props) {
                     hoverable="true"
                     title={
                       <div onClick={() => handleLinkCadidate(item.id)}>
-                        {item.department}
+                        {beautyDepartment(item.department)}
                       </div>
                     }
                     actions={[
@@ -299,11 +318,11 @@ function RecruitPage(props) {
               >
                 <Select style={{ width: 300 }}>
                   <Option value="administration">Administrtion</Option>
-                  <Option value="finance">Finance</Option>
+                  <Option value="finance ">Finance</Option>
                   <Option value="marketing">Maketing</Option>
                   <Option value="sale">Sale</Option>
                   <Option value="engineering">Engineering</Option>
-                  <Option value="humanResources">HumanResources</Option>
+                  <Option value="humanResources ">HumanResources</Option>
                 </Select>
               </Form.Item>
             </Col>

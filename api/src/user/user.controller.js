@@ -13,7 +13,7 @@ const ApiError = require('../core/apiError');
  * @param {string} res
  */
 const createUserHandler = catchAsync(async (req, res) => {
-  const result = await userService.createUser();
+  const result = await userService.createUser(req.body);
   res.status(httpStatus.OK).json(result);
 });
 

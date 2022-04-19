@@ -28,4 +28,23 @@ const omit = (object, keys) => {
   return result;
 };
 
-module.exports = { pick, omit };
+const utf8ToASCII = (text) => {
+  if (!text) return '';
+  let str = text.trim();
+  str = str
+    .normalize('NFD') // converts to unicode
+    .replace(/[\u0300-\u036f]/g, ''); // remove signed
+
+  // đĐ character
+  str = str.replace(/[đĐ]/g, 'd');
+  // remove space
+  str = str.replace(/(\s+)/g, ' ');
+  return str;
+};
+
+const removeSpace = (text) => {
+  if (!text) return '';
+  return text.trim().replace(/(\s+)/g, ' ');
+};
+
+module.exports = { pick, omit, utf8ToASCII, removeSpace };

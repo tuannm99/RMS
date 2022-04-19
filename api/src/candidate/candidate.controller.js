@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../core/catchAsync');
 
 const candidateService = require('./candidate.service');
-const { pick } = require('../core/utils');
+const { pick, utf8ToASCII, removeSpace } = require('../core/utils');
 
 /**
  * middleware add candidate
@@ -11,7 +11,16 @@ const { pick } = require('../core/utils');
  */
 const addCandidate = catchAsync(async (req, res) => {
   const candidatePayload = JSON.parse(req.body.candidate);
-  const candidate = await candidateService.createCandidate({ ...candidatePayload, cv: req.file });
+
+  const candidate = await candidateService.createCandidate({
+    ...candidatePayload,
+    cv: req.file,
+    unsignedFullName: utf8ToASCII(candidatePayload.fullName),
+    fullName: removeSpace(candidatePayload.fullName),
+    firstName: removeSpace(candidatePayload.firstName),
+    lastName: removeSpace(candidatePayload.lastName),
+    midName: removeSpace(candidatePayload.midName),
+  });
   res.status(httpStatus.OK).json(candidate);
 });
 
@@ -23,6 +32,9 @@ const addCandidate = catchAsync(async (req, res) => {
 const getAllCandidate = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['fullName', 'jobId', 'status', 'stages']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  filter.fullName = removeSpace(filter.fullName);
+  filter.unsignedFullName = utf8ToASCII(filter.fullName);
+
   const listCandidate = await candidateService.getAllCandidate(filter, options);
   res.status(httpStatus.OK).json(listCandidate);
 });
@@ -43,14 +55,22 @@ const getCandidate = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const editCandidate = catchAsync(async (req, res) => {
-  const candidateBody = {};
+  const candidatePayload = {};
   if (req.body.candidate) {
-    Object.assign(candidateBody, JSON.parse(req.body.candidate));
+    Object.assign(candidatePayload, JSON.parse(req.body.candidate));
   }
   if (req.file) {
-    Object.assign(candidateBody, { cv: req.file });
+    Object.assign(candidatePayload, { cv: req.file });
   }
-  const candidateEdited = await candidateService.editCandidateById(req.params.id, candidateBody);
+  candidatePayload.unsignedFullName = utf8ToASCII(candidatePayload.fullName);
+  const candidateEdited = await candidateService.editCandidateById(req.params.id, {
+    ...candidatePayload,
+    unsignedFullName: utf8ToASCII(candidatePayload.fullName),
+    fullName: removeSpace(candidatePayload.fullName),
+    firstName: removeSpace(candidatePayload.firstName),
+    lastName: removeSpace(candidatePayload.lastName),
+    midName: removeSpace(candidatePayload.midName),
+  });
   res.status(httpStatus.OK).json(candidateEdited);
 });
 
