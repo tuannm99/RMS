@@ -32,7 +32,7 @@ const addCandidate = catchAsync(async (req, res) => {
 const getAllCandidate = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['fullName', 'jobId', 'status', 'stages']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  filter.fullName = filter.fullName.trim();
+  filter.fullName = removeSpace(filter.fullName);
   filter.unsignedFullName = utf8ToASCII(filter.fullName);
 
   const listCandidate = await candidateService.getAllCandidate(filter, options);
