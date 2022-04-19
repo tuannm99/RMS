@@ -63,7 +63,14 @@ const editCandidate = catchAsync(async (req, res) => {
     Object.assign(candidatePayload, { cv: req.file });
   }
   candidatePayload.unsignedFullName = utf8ToASCII(candidatePayload.fullName);
-  const candidateEdited = await candidateService.editCandidateById(req.params.id, candidatePayload);
+  const candidateEdited = await candidateService.editCandidateById(req.params.id, {
+    ...candidatePayload,
+    unsignedFullName: utf8ToASCII(candidatePayload.fullName),
+    fullName: removeSpace(candidatePayload.fullName),
+    firstName: removeSpace(candidatePayload.fullName),
+    lastName: removeSpace(candidatePayload.lastName),
+    midName: removeSpace(candidatePayload.midName),
+  });
   res.status(httpStatus.OK).json(candidateEdited);
 });
 
