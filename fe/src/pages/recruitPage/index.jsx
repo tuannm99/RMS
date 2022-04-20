@@ -171,26 +171,22 @@ function RecruitPage(props) {
         </Col>
       </Row>
       <Divider className="mb-0 mt-12" />
-      <Row className="mt-12">
-        <Col span={19}>
-          <Select
-            defaultValue="allJob"
-            style={{ width: 120 }}
-            onSelect={handleChange}
-            className="mb-12"
-          >
-            <Option value="allJob">All Job</Option>
-            <Option value="published">Published</Option>
-            <Option value="onHold">Hode On</Option>
-            <Option value="deleted">deleted</Option>
-          </Select>
-        </Col>
-        <Col span={2}>
-          <Link to={`/Career`} target="_blank">
+      <div className="function-header">
+        <Select
+          defaultValue="allJob"
+          style={{ width: 120 }}
+          onSelect={handleChange}
+          className="mb-12"
+        >
+          <Option value="allJob">All Job</Option>
+          <Option value="published">Published</Option>
+          <Option value="onHold">Hode On</Option>
+          <Option value="deleted">deleted</Option>
+        </Select>
+        <div>
+          <Link to={`/Career`} target="_blank" className="mr-12">
             <Button type="primary">Career</Button>
           </Link>
-        </Col>
-        <Col span={3}>
           <Button
             className="fr"
             onClick={showDrawp}
@@ -198,8 +194,8 @@ function RecruitPage(props) {
           >
             Add Job Posting
           </Button>
-        </Col>
-      </Row>
+        </div>
+      </div>
       <Row gutter={20}>
         {loading && (
           <Col style={{ textAlign: 'center' }} span={24}>

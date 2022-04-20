@@ -23,3 +23,9 @@
 .card-effect:hover .recruit-card-icons {
   display: block;
 }
+
+.function-header {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
