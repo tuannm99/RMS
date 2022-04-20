@@ -72,6 +72,8 @@ function DashboardPage(props) {
       setParam({ ...param, sortBy: 'interviewDate:asc', interviewDate: key });
     } else if (key === 'recently') {
       setParam({ ...param, sortBy: 'interviewDate:desc', interviewDate: key });
+    } else if (key === 'today') {
+      setParam({ ...param, sortBy: 'interviewDate:desc', interviewDate: key });
     }
   }
 
@@ -217,6 +219,22 @@ function DashboardPage(props) {
             defaultActiveKey="upcoming"
             onChange={handleTab}
           >
+            <TabPane tab="Today" key="today">
+              {loading ? (
+                <Col style={{ textAlign: 'center' }} span={24}>
+                  <Spin tip="loading..." />
+                </Col>
+              ) : (
+                <Table
+                  headData={customerTableHead}
+                  renderHead={(item, index) => renderHeadTable(item, index)}
+                  bodyData={dataInterview?.results}
+                  renderBody={(item, index) =>
+                    renderBodyTable(item, index, navigate)
+                  }
+                />
+              )}
+            </TabPane>
             <TabPane tab="Upcoming" key="upcoming">
               {loading ? (
                 <Col style={{ textAlign: 'center' }} span={24}>

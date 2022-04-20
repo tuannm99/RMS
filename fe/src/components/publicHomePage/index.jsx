@@ -1,9 +1,9 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import { MdLocationOn } from 'react-icons/md';
 function PublicPage(props) {
   const { data } = props;
-  console.log(data);
+
   return (
     <>
       <div className={props.classContent}>
