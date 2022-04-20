@@ -38,7 +38,7 @@ const addResumeHandler = catchAsync(async (req, res) => {
     cv: req.file,
     unsignedFullName: utf8ToASCII(candidatePayload.fullName),
     fullName: removeSpace(candidatePayload.fullName),
-    firstName: removeSpace(candidatePayload.fullName),
+    firstName: removeSpace(candidatePayload.firstName),
     lastName: removeSpace(candidatePayload.lastName),
     midName: removeSpace(candidatePayload.midName),
   });

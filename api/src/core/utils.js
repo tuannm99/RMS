@@ -28,8 +28,13 @@ const omit = (object, keys) => {
   return result;
 };
 
+/**
+ * remove unsign character
+ * @param {string} text
+ * @returns {string}
+ */
 const utf8ToASCII = (text) => {
-  if (!text) return '';
+  if (!text) return undefined;
   let str = text.trim();
   str = str
     .normalize('NFD') // converts to unicode
@@ -42,8 +47,13 @@ const utf8ToASCII = (text) => {
   return str;
 };
 
+/**
+ * remove space of text
+ * @param {string} text
+ * @returns {string}
+ */
 const removeSpace = (text) => {
-  if (!text) return '';
+  if (!text) return undefined;
   return text.trim().replace(/(\s+)/g, ' ');
 };
 
