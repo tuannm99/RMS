@@ -11,16 +11,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import {
-  Breadcrumb,
-  Button,
-  Input,
-  Form,
-  Select,
-  Col,
-  Row,
-  Drawer,
-} from 'antd';
+import { Breadcrumb, Button, Input, Form, Select, Col, Row, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { set } from 'lodash';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
@@ -37,6 +28,7 @@ function DetailRecruitPage(props) {
   const { userAccount } = props;
   const { Option } = Select;
   const { TextArea } = Input;
+  const [loading, setLoading] = useState(false);
 
   const handleCancel = () => {
     setVisible(false);
@@ -47,9 +39,11 @@ function DetailRecruitPage(props) {
   }, []);
 
   const fetchJob = async () => {
+    setLoading(true);
     const jobDetail = await getJobsDetail(id);
     setJob(jobDetail.data);
     setCkeditorData(jobDetail.data.jobDescription);
+    setLoading(false);
   };
 
   const openModal = (id) => {
@@ -79,7 +73,7 @@ function DetailRecruitPage(props) {
       ...jobValue,
       jobDescription: ckeditorData === '' ? job.jobDescription : ckeditorData,
     };
-
+    setLoading(true);
     updateJobs(jobValue.id, body)
       .then((res) => {
         setJob(res.data);
@@ -89,7 +83,7 @@ function DetailRecruitPage(props) {
     toast.success('Edit Job Detail Successful!', {
       autoClose: 3000,
     });
-
+    setLoading(false);
     handleCancel();
   };
 
@@ -136,151 +130,157 @@ function DetailRecruitPage(props) {
             <Option value="deleted">Delete</Option>
           </Select>
         </div>
-
         <DrawerComponent
           title="Edit Job"
           onClose={onclose}
           visible={visible}
           width={720}
         >
-          <Form
-            layout="vertical"
-            onFinish={onFinish}
-            form={formModal}
-            name="formModal"
-          >
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item name="title" label="Title Job">
-                  <Input placeholder="Please enter user name" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  name="department"
-                  rules={[{ required: false }]}
-                  label="Department"
-                >
-                  <Select style={{ width: 300 }}>
-                    <Option value="administration">Administrtion</Option>
-                    <Option value="finance">Finance</Option>
-                    <Option value="marketing">Maketing</Option>
-                    <Option value="sale">Sale</Option>
-                    <Option value="engineering">Engineering</Option>
-                    <Option value="humanResources">HumanResources</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="jobType"
-                  label="Job Type"
-                  rules={[{ required: false }]}
-                >
-                  <Select style={{ width: 300 }}>
-                    <Option value="Full Time">Full Time</Option>
-                    <Option value="Pass Time">Pass Time</Option>
-                    <Option value="Remote">Internship</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="location"
-                  label="Location"
-                  rules={[{ required: false }]}
-                >
-                  <Input placeholder="address" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={24}>
-              <Col span={24}>
-                <Form.Item name="shortDes" label="Short Description">
-                  <TextArea rows={4} />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item name="jobDescription" label="Description">
-                  <CKEditor
-                    type="string"
-                    editor={ClassicEditor}
-                    data={`${job.jobDescription}`}
-                    onChange={(event, editor) => {
-                      const data = editor.getData();
-                      setCkeditorData(data);
-                    }}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="skill"
-                  label="Skills"
-                  rules={[{ required: false }]}
-                >
-                  <Input placeholder="skill" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="experience"
-                  label="Experience"
-                  rules={[{ required: false }]}
-                >
-                  <Select style={{ width: 300 }}>
-                    <Option value="Internship">Internship</Option>
-                    <Option value="Entry level">Entry level</Option>
-                    <Option value="Asociate">Asociate</Option>
-                    <Option value="Mid-senior level">Mid-senior level</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={4}>
-                <Form.Item
-                  name="minSalary"
-                  label="Salary"
-                  rules={[{ required: false }]}
-                >
-                  <Input placeholder="minSalary" />
-                </Form.Item>
-              </Col>
-
-              <Col span={4}>
-                <Form.Item
-                  name="maxSalary"
-                  label=" "
-                  rules={[{ required: false }]}
-                >
-                  <Input placeholder="maxSalary" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Form.Item
-              className="Detail-id"
-              name="id"
-              rules={[{ required: false }]}
+          {loading ? (
+            <Col style={{ textAlign: 'center' }} span={24}>
+              <Spin tip="loading..." />
+            </Col>
+          ) : (
+            <Form
+              layout="vertical"
+              onFinish={onFinish}
+              form={formModal}
+              name="formModal"
             >
-              <Input disabled />
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item name="title" label="Title Job">
+                    <Input placeholder="Please enter user name" />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    name="department"
+                    rules={[{ required: false }]}
+                    label="Department"
+                  >
+                    <Select style={{ width: 300 }}>
+                      <Option value="administration">Administrtion</Option>
+                      <Option value="finance">Finance</Option>
+                      <Option value="marketing">Maketing</Option>
+                      <Option value="sale">Sale</Option>
+                      <Option value="engineering">Engineering</Option>
+                      <Option value="humanResources">HumanResources</Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item
+                    name="jobType"
+                    label="Job Type"
+                    rules={[{ required: false }]}
+                  >
+                    <Select style={{ width: 300 }}>
+                      <Option value="Full Time">Full Time</Option>
+                      <Option value="Pass Time">Pass Time</Option>
+                      <Option value="Remote">Internship</Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item
+                    name="location"
+                    label="Location"
+                    rules={[{ required: false }]}
+                  >
+                    <Input placeholder="address" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={24}>
+                  <Form.Item name="shortDes" label="Short Description">
+                    <TextArea rows={4} />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item name="jobDescription" label="Description">
+                    <CKEditor
+                      type="string"
+                      editor={ClassicEditor}
+                      data={`${job.jobDescription}`}
+                      onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setCkeditorData(data);
+                      }}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item
+                    name="skill"
+                    label="Skills"
+                    rules={[{ required: false }]}
+                  >
+                    <Input placeholder="skill" />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item
+                    name="experience"
+                    label="Experience"
+                    rules={[{ required: false }]}
+                  >
+                    <Select style={{ width: 300 }}>
+                      <Option value="Internship">Internship</Option>
+                      <Option value="Entry level">Entry level</Option>
+                      <Option value="Asociate">Asociate</Option>
+                      <Option value="Mid-senior level">Mid-senior level</Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={4}>
+                  <Form.Item
+                    name="minSalary"
+                    label="Salary"
+                    rules={[{ required: false }]}
+                  >
+                    <Input placeholder="minSalary" />
+                  </Form.Item>
+                </Col>
+
+                <Col span={4}>
+                  <Form.Item
+                    name="maxSalary"
+                    label=" "
+                    rules={[{ required: false }]}
+                  >
+                    <Input placeholder="maxSalary" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Form.Item
+                className="Detail-id"
+                name="id"
+                rules={[{ required: false }]}
+              >
+                <Input disabled />
+              </Form.Item>
+              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
+          )}
         </DrawerComponent>
       </div>
       <DetailJobComponent
         data={job}
+        loading={loading}
         detailJobContentCenter="DetailJob-Content-center"
         detailJobHead="DetailJob-head"
         HeaderContent="DetailJob-container"

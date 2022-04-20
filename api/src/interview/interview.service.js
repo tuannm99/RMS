@@ -28,6 +28,11 @@ const getAllInterview = async (filter, options) => {
     filter.interviewDate = { $gt: Date.now() };
   } else if (filter.interviewDate === 'recently') {
     filter.interviewDate = { $lt: Date.now() };
+  } else if (filter.interviewDate === 'today') {
+    const now = new Date();
+    const start = now.setHours(0, 0, 0, 0);
+    const end = now.setHours(23, 59, 59, 999);
+    filter.interviewDate = { $gte: start, $lte: end };
   }
   options.populate = [];
   options.populate.push({

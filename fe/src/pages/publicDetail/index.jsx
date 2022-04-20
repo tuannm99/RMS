@@ -4,7 +4,7 @@ import './style.css';
 import { getPublishJobDetail } from '../../services/careerServices';
 import { TiArrowLeftThick } from 'react-icons/ti';
 import FormInfo from '../cadidate/components/form_info';
-import { Button, Col, Row, Upload, Form } from 'antd';
+import { Button, Col, Row, Upload, Form, Spin } from 'antd';
 import { DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import { addCadidatePublicServices } from '../../services/cadidateServices';
@@ -22,6 +22,7 @@ function HomeDetail(props) {
   const [visibleForm, setVisibleForm] = useState(false);
   const allowedFiles = ['application/pdf'];
   const formRef = useRef();
+  const [loading, setLoading] = useState(false);
 
   const DEPARTMENT = {
     administration: 'Administration',

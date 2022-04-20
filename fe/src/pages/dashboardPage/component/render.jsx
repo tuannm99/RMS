@@ -30,7 +30,8 @@ export const renderHeadTable = (item, index) => (
 export const customerTableHead = ['Candidate', 'interviewer', 'Schedule info'];
 
 export const renderBodyTable = (item, navigate, index) =>
-  item.candidateId != null && (
+  item.candidateId != null &&
+  item.candidateId.fullName != '' && (
     <tr key={item.id} style={styles.tr}>
       <td style={styles.td}>{item.candidateId.fullName}</td>
       <td
@@ -46,10 +47,6 @@ export const renderBodyTable = (item, navigate, index) =>
         <div className="mb-0">
           {moment(item?.interviewDate).format('DD-MM-YYYY').toString()} -{' '}
           {moment(item?.interviewDate).format('HH:mm').toString()}
-          {moment(item?.interviewDate).format('DD-MM-YYYY').toString() ===
-          moment(current).format('DD-MM-YYYY').toString()
-            ? ' (today)'
-            : ''}
         </div>
       </td>
     </tr>
