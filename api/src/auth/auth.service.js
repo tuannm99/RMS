@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const passGenerator = require('generate-password');
 const { TokenExpiredError } = require('jsonwebtoken');
 
 const userService = require('../user/user.service');
@@ -37,11 +38,12 @@ const logout = async (refreshToken) => {
  */
 const forgotPass = async (username, email) => {
   const user = await userService.getUserByUsernameAndEmail(username, email);
-  await userService.updateUserById(user._id, { password: '123456ab' });
+  const newPass = passGenerator.generate({ length: 8, numbers: true });
+  await userService.updateUserById(user._id, { password: newPass });
   eventProducer.sendMailProducer({
     to: email,
     subject: 'Reset password',
-    text: 'Your new password: 123456ab',
+    text: `Your new password: ${newPass}`,
   });
 };
 
