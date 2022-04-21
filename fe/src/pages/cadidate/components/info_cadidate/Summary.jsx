@@ -85,7 +85,18 @@ function Summary(props) {
                       className="text-normal"
                       style={{ position: 'absolute', bottom: '3px', right: 0 }}
                     >
-                      {item.feedback.overallRecommendation}
+                      {item.feedback.overallRecommendation === 'notYet' ? (
+                        <Tag color="red">Not Yet</Tag>
+                      ) : item.feedback.overallRecommendation === 'hire' ? (
+                        <Tag color="green">Hire</Tag>
+                      ) : item.feedback.overallRecommendation === 'noHire' ? (
+                        <Tag color="magenta">No Hire</Tag>
+                      ) : item.feedback.overallRecommendation ===
+                        'strongHire' ? (
+                        <Tag color="orange">Strong Hire</Tag>
+                      ) : (
+                        <Tag color="purple">Strong No Hire</Tag>
+                      )}
                     </span>
                   </Col>
                 </Row>
