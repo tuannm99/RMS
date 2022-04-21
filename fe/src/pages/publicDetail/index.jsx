@@ -88,12 +88,12 @@ function HomeDetail(props) {
       midName: values?.midName,
       lastName: values?.lastName,
       sex: values?.sex,
-      referral: `${values?.firstName} ${
+      referral: `${values?.lastName} ${
         values?.midName === undefined ? '' : values?.midName
-      } ${values?.lastName}`,
-      fullName: `${values?.firstName} ${
+      } ${values?.firstName}`,
+      fullName: `${values?.lastName} ${
         values?.midName === undefined ? '' : values?.midName
-      } ${values?.lastName}`,
+      } ${values?.firstName}`,
       email: values?.email,
       phone: `${values?.prefix}${values?.phone}`,
       hyperlink: values?.hyperlink,
