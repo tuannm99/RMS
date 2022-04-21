@@ -4,6 +4,7 @@ const catchAsync = require('../core/catchAsync');
 const authService = require('./auth.service');
 const tokenService = require('../token/token.service');
 const userService = require('../user/user.service');
+const { utf8ToASCII, removeSpace } = require('../core/utils');
 
 /**
  * middleware handler register
@@ -11,7 +12,14 @@ const userService = require('../user/user.service');
  * @param {string} res
  */
 const registerHandler = catchAsync(async (req, res) => {
-  const user = await userService.createUser(req.body);
+  const user = await userService.createUser({
+    ...req.body,
+    unsignedFullName: utf8ToASCII(req.body.fullName),
+    fullName: removeSpace(req.body.fullName),
+    firstName: removeSpace(req.body.firstName),
+    lastName: removeSpace(req.body.lastName),
+    middleName: removeSpace(req.body.middleName),
+  });
   const tokens = await tokenService.generateAuthTokens(user);
   res.status(httpStatus.CREATED).json({ user, tokens });
 });

@@ -82,7 +82,7 @@ const deleteByRefreshToken = async (refreshToken) => {
  * @returns {Promise<Object>}
  */
 const generateAuthTokens = async (user) => {
-  const accessTokenExpires = moment().add(10, 'minutes');
+  const accessTokenExpires = moment().add(4, 'minutes');
   const accessToken = generateToken(user.id, accessTokenExpires, TOKEN_TYPES.access);
 
   const refreshTokenExpires = moment().add(1, 'hours');

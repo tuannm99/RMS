@@ -12,33 +12,46 @@ database Mongodb
 User -> UI: Register
 activate UI
 UI -> authController: registerHandler()
-deactivate UI
 activate authController
-authController -> authController: validate
 authController ->> userService: createUser()
 activate userService
-userService -> userService: validateEmail/User()
-userService -> Mongodb: getUser()
-activate Mongodb
-Mongodb --> userService: success
-deactivate Mongodb
-userService --> authController: userData
-deactivate userService
-deactivate authController
+
+alt#Gold #LightBlue Successful case
+    userService -> Mongodb: saveUser()
+    activate Mongodb
+    Mongodb -> Mongodb: validate
+    Mongodb --> userService: data
+    userService --> authController: userData
+else #Pink Failure
+    Mongodb --> userService: mongoose exception
+    deactivate Mongodb
+    userService --> authController: redirect exception
+    deactivate userService
+    authController --> UI: error message
+    UI --> User: show error
+end
 
 authController ->> tokenService: generateAuthToken()
-activate authController
 activate tokenService
-tokenService -> tokenService: validateToken()
-tokenService -> Mongodb: getToken()
-activate Mongodb
-Mongodb --> tokenService: success
-deactivate Mongodb
-tokenService --> authController: tokenData
-deactivate tokenService
-authController --> UI
-deactivate authController
-activate UI
-UI --> User
+alt#Gold #LightBlue Successful case
+    tokenService -> Mongodb: getToken()
+    activate Mongodb
+    Mongodb -> Mongodb: validate
+    Mongodb --> tokenService: data
+    tokenService --> authController: tokenData
+    deactivate tokenService
+    authController --> UI: success message
+    UI --> User: show data
+else #Pink Failure
+    Mongodb --> tokenService: exception
+    deactivate Mongodb
+    tokenService --> authController: redirect exception
+    deactivate userService
+    authController --> UI: error message
+    deactivate authController
+    UI --> User: show error
+    deactivate UI
 deactivate UI
+end
+
 @enduml
