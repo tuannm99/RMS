@@ -11,9 +11,10 @@
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --check **/*.js",
     "prettier:fix": "prettier --write **/*.js",
-    "test": "jest",
+    "test": "jest --detectOpenHandles --silent",
     "test:co": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch --detectOpenHandles",
+    "test:silent": "jest --watch --silent --detectOpenHandles"
   },
   "keywords": [],
   "author": "",

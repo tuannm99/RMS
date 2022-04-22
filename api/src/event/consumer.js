@@ -14,7 +14,9 @@ function sendMailConsumer() {
 }
 
 const initializeEvent = () => {
-  logger.info('initializeEvent');
+  if (process.env.NODE_ENV !== 'test') {
+    logger.info('initializeEvent');
+  }
 
   sendMailConsumer();
 };
