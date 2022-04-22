@@ -126,7 +126,7 @@ function UserEditAdd({
       lastName: values.lastName,
       phone: `${values.prefix}${values.phone}`,
       sex: values.sex,
-      fullName: `${values.firstName} ${values.lastName}`,
+      fullName: `${values.lastName} ${values.firstName}`,
       dateOfBirth: values.dateOfBirth,
       languages: values.languages,
       address: values.address,

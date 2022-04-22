@@ -3,7 +3,7 @@ const catchAsync = require('../core/catchAsync');
 
 const jobService = require('./job.service');
 const userService = require('../user/user.service');
-const { pick } = require('../core/utils');
+const { pick, utf8ToASCII, removeSpace } = require('../core/utils');
 
 /**
  * middleware add job
@@ -14,6 +14,8 @@ const addJobPosting = catchAsync(async (req, res) => {
   const userId = await userService.getUserIdFromHeaderToken(req.headers.authorization);
   const { body } = req;
   body.userId = userId;
+  body.unsignedTitle = utf8ToASCII(body.title);
+  body.title = removeSpace(body.title);
   const jobPosting = await jobService.createJob(body);
   res.status(httpStatus.OK).json(jobPosting);
 });
@@ -24,8 +26,11 @@ const addJobPosting = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const getAllJob = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['status']);
+  const filter = pick(req.query, ['status', 'title']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+  filter.title = removeSpace(filter.title);
+  filter.unsignedTitle = utf8ToASCII(filter.title);
   const listJob = await jobService.getAllJob(filter, options);
   res.status(httpStatus.OK).json(listJob);
 });
@@ -46,7 +51,11 @@ const getJob = catchAsync(async (req, res) => {
  * @param {object} res
  */
 const editJob = catchAsync(async (req, res) => {
-  const jobEdited = await jobService.editJobById(req.params.id, req.body);
+  const jobEdited = await jobService.editJobById(req.params.id, {
+    ...req.body,
+    unsignedTitle: utf8ToASCII(req.body.title),
+    title: removeSpace(req.body.title),
+  });
   res.status(httpStatus.OK).json(jobEdited);
 });
 

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const ApiError = require('../core/apiError');
 const config = require('../core/config');
 const { User } = require('../core/db/schema');
+const { utf8ToASCII } = require('../core/utils');
 
 /**
  * Create a user
@@ -66,7 +67,19 @@ const getUserIdFromHeaderToken = async (authorization) => {
  * @returns {Promise<QueryResult>}
  */
 const getUsers = async (filter, options) => {
-  filter.fullName = { $regex: `${filter.fullName ? filter.fullName : ''}`, $options: 'i' };
+  if (filter.fullName === utf8ToASCII(filter.fullName)) {
+    filter.unsignedFullName = {
+      $regex: `${filter.unsignedFullName ? filter.unsignedFullName : ''}`,
+      $options: 'i',
+    };
+    delete filter.fullName;
+  } else {
+    filter.fullName = {
+      $regex: `${filter.fullName ? filter.fullName : ''}`,
+      $options: 'i',
+    };
+    delete filter.unsignedFullName;
+  }
   const users = await User.paginate(filter, options);
   return users;
 };
