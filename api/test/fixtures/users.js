@@ -26,6 +26,7 @@ const USERS = [
     address: 'Hà Nội',
     dateOfBirth: '1999-07-20T16:08:20.447Z',
     fullName: 'Tuan Nguyen Minh',
+    unsignedFullName: 'Tuan Nguyen Minh',
     languages: 'HN',
     phone: '+84351218531',
   },
@@ -38,6 +39,7 @@ const USERS = [
     firstName: 'Phạm',
     lastName: 'Nguyen',
     fullName: 'Phạm Nguyen',
+    unsignedFullName: 'Pham Nguyen',
     address: 'Hà Nội',
     phone: '+84551218531',
     dateOfBirth: '2022-03-08T16:27:35.185Z',
@@ -75,6 +77,7 @@ const USERS = [
     address: 'Hà Nội',
     dateOfBirth: '2022-03-27T16:34:00.201Z',
     fullName: 'hm tuan',
+    unsignedFullName: 'hm tuan',
     languages: 'VN',
     phone: '+84051218531',
     avatar: {

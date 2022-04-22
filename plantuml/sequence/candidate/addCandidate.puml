@@ -21,9 +21,9 @@ else #Pink Failure
 end
 candidateController -> candidateService: createCandidate()
 activate candidateService
+candidateService -> Mongodb: save()
 
 alt#Gold #LightBlue Successful case
-    candidateService -> Mongodb: save()
     activate Mongodb
     Mongodb -> Mongodb: validate
     Mongodb --> candidateService: success
