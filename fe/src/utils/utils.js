@@ -19,22 +19,9 @@ export function dispatchAction(action, ...params) {
  * @returns
  */
 export function hasResponseError(response, action, ...params) {
-  let refreshToken = localStorage.getItem('refreshToken');
   const statusCode = _get(response, 'status', null);
   if (statusCode === null || statusCode === undefined || statusCode === '')
     return false;
-  if (statusCode === 401) {
-    axios
-      .post('http://rms-fpt.ddns.net:5000/api/v1/auth/logout', {
-        refreshToken: refreshToken,
-      })
-      .then(() => {
-        alert('Authentication, please login again!');
-        window.location.pathname = '/login';
-        localStorage.clear();
-      });
-    return;
-  }
   const isValidStatus = statusCode >= 200 && statusCode < 300;
   if (!isValidStatus && action) {
     dispatchAction(action, ...params);

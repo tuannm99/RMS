@@ -171,7 +171,7 @@ function CadidateInfo(props) {
                   disabled={account?.role !== 'hiringManager' && true}
                 >
                   <Button className="btn-profile_right">
-                    Advance <DownOutlined />
+                    Stage <DownOutlined />
                   </Button>
                 </Dropdown>
               </Col>
