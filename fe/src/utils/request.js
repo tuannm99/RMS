@@ -46,23 +46,25 @@ request.interceptors.response.use(
           : '';
         return request(config);
       })
-      .catch(() => {
-        axios
-          .post('http://rms-fpt.ddns.net:5000/api/v1/auth/logout', {
-            refreshToken: refreshToken,
-          })
-          .then(() => {
-            localStorage.clear();
-            window.location.pathname = '/login';
-            alert('Authentication, please login again!');
-          })
-          .catch((error) => {
-            if (error.response.status !== 429) {
+      .catch((error) => {
+        if (error.response.status !== 429) {
+          axios
+            .post('http://rms-fpt.ddns.net:5000/api/v1/auth/logout', {
+              refreshToken: refreshToken,
+            })
+            .then(() => {
               localStorage.clear();
               window.location.pathname = '/login';
               alert('Authentication, please login again!');
-            }
-          });
+            })
+            .catch((error) => {
+              if (error.response.status !== 429) {
+                localStorage.clear();
+                window.location.pathname = '/login';
+                alert('Authentication, please login again!');
+              }
+            });
+        }
       });
   }
 );

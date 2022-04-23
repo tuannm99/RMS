@@ -45,12 +45,12 @@ function ForgotPassPage() {
             rules={[
               { required: true, message: 'Please input your Account!' },
               {
-                pattern: new RegExp('[^s]'),
-                message: 'Account do not space',
-              },
-              {
                 pattern: new RegExp(/^\S+$/),
                 message: "Account don't enter space!",
+              },
+              {
+                pattern: new RegExp(/[a-zA-Z]/),
+                message: 'Account exists at least 1 character',
               },
               {
                 min: 6,

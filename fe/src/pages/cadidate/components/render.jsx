@@ -55,14 +55,14 @@ export const renderEmployee = ({ setDisableEmp }) => {
             name="designation"
             label="Designation"
             rules={[
-              { required: true, message: 'Please enter Designation!' },
+              { required: true, message: 'Please enter designation!' },
               {
-                pattern: new RegExp(/[a-zA-X]/),
-                message: 'Please enter Designation!',
+                pattern: new RegExp(/^[^\s].*/),
+                message: 'The start character cannot be a space.',
               },
             ]}
           >
-            <Input placeholder="Enter designation" />
+            <Input allowClear={true} placeholder="Enter designation" />
           </Form.Item>
         </Col>
         <Col span={24}>
@@ -75,12 +75,15 @@ export const renderEmployee = ({ setDisableEmp }) => {
                 message: 'Please enter Company/ Business Name!',
               },
               {
-                pattern: new RegExp(/[a-zA-X]/),
-                message: 'Please enter Company/ Business Name!',
+                pattern: new RegExp(/^[^\s].*/),
+                message: 'The start character cannot be a space.',
               },
             ]}
           >
-            <Input placeholder="Enter Company/ Business Name" />
+            <Input
+              allowClear={true}
+              placeholder="Enter Company/ Business Name"
+            />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -94,7 +97,7 @@ export const renderEmployee = ({ setDisableEmp }) => {
         </Col>
         <Col span={24}>
           <Form.Item name="summary" label="Summary">
-            <Input.TextArea />
+            <Input.TextArea allowClear={true} />
           </Form.Item>
         </Col>
         <Col span={24}>
@@ -116,14 +119,14 @@ export const renderEducation = ({ setDisableEdu }) => (
           name="degree"
           label="Degree"
           rules={[
-            { required: true, message: 'Please enter Degree!' },
+            { required: true, message: 'Please enter degree!' },
             {
-              pattern: new RegExp(/[a-zA-X]/),
-              message: 'Please enter Degree!',
+              pattern: new RegExp(/^[^\s].*/),
+              message: 'The start character cannot be a space.',
             },
           ]}
         >
-          <Input placeholder="Enter designation" />
+          <Input allowClear={true} placeholder="Enter designation" />
         </Form.Item>
       </Col>
       <Col span={24}>
@@ -133,25 +136,46 @@ export const renderEducation = ({ setDisableEdu }) => (
           rules={[
             {
               required: true,
-              message: 'Please enterInstitution/ School Name!',
+              message: 'Please enter Institution/ School Name!',
             },
             {
-              pattern: new RegExp(/[a-zA-X]/),
-              message: 'Please enter enterInstitution/ School Name!',
+              pattern: new RegExp(/^[^\s].*/),
+              message: 'The start character cannot be a space.',
             },
           ]}
         >
-          <Input placeholder="Enter Institution/ School Name" />
+          <Input
+            allowClear={true}
+            placeholder="Enter Institution/ School Name"
+          />
         </Form.Item>
       </Col>
       <Col span={24}>
-        <Form.Item name="fieldOfStudy" label="Field of study/ Major">
-          <Input placeholder="Enter Field of study/ Major" />
+        <Form.Item
+          name="fieldOfStudy"
+          label="Field of study/ Major"
+          rules={[
+            {
+              pattern: new RegExp(/^[^\s].*/),
+              message: 'The start character cannot be a space.',
+            },
+          ]}
+        >
+          <Input allowClear={true} placeholder="Enter Field of study/ Major" />
         </Form.Item>
       </Col>
       <Col span={8}>
-        <Form.Item name="grade" label="Grade">
-          <Input placeholder="Enter Grade" />
+        <Form.Item
+          name="grade"
+          label="Grade"
+          rules={[
+            {
+              pattern: new RegExp(/^[^\s].*/),
+              message: 'The start character cannot be a space.',
+            },
+          ]}
+        >
+          <Input allowClear={true} placeholder="Enter Grade" />
         </Form.Item>
       </Col>
       <Col span={16}>
