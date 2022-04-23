@@ -24,4 +24,26 @@ const refreshPassLimiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-module.exports = { limiter, candidateSubmitCVLimiter, refreshPassLimiter };
+const refreshTokenLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // limit each 15 minutes
+  max: 1,
+  message: 'you have send too many request!',
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+const logoutLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // limit each 15 minutes
+  max: 1,
+  message: 'you have send too many request!',
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+module.exports = {
+  limiter,
+  candidateSubmitCVLimiter,
+  refreshPassLimiter,
+  refreshTokenLimiter,
+  logoutLimiter,
+};
