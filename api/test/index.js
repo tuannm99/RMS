@@ -1,4 +1,5 @@
 process.env.SECRET = 'super-secrect-token';
+process.env.NODE_ENV = 'test';
 
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
@@ -10,6 +11,7 @@ const connect = async () => {
   const uri = mongod.getUri();
   const mongooseOpts = {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
   };
   await mongoose.connect(uri, mongooseOpts);
 };

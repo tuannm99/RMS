@@ -1,8 +1,7 @@
 const httpStatus = require('http-status');
-const bcrypt = require('bcryptjs');
 
 const catchAsync = require('../core/catchAsync');
-const { pick } = require('../core/utils');
+const { pick, utf8ToASCII, removeSpace } = require('../core/utils');
 
 const userService = require('./user.service');
 const ApiError = require('../core/apiError');
@@ -13,7 +12,14 @@ const ApiError = require('../core/apiError');
  * @param {string} res
  */
 const createUserHandler = catchAsync(async (req, res) => {
-  const result = await userService.createUser(req.body);
+  const result = await userService.createUser({
+    ...req.body,
+    unsignedFullName: utf8ToASCII(req.body.fullName),
+    fullName: removeSpace(req.body.fullName),
+    firstName: removeSpace(req.body.firstName),
+    lastName: removeSpace(req.body.lastName),
+    middleName: removeSpace(req.body.middleName),
+  });
   res.status(httpStatus.OK).json(result);
 });
 
@@ -26,6 +32,8 @@ const getAllUsersHandler = catchAsync(async (req, res) => {
   // TODO: Need refactor
   const filter = pick(req.query, ['fullName', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  filter.fullName = removeSpace(filter.fullName);
+  filter.unsignedFullName = utf8ToASCII(filter.fullName);
   const result = await userService.getUsers(filter, options);
   res.status(httpStatus.OK).json(result);
 });
@@ -46,7 +54,14 @@ const getUserHandler = catchAsync(async (req, res) => {
  * @param {string} res
  */
 const updateUserHandler = catchAsync(async (req, res) => {
-  await userService.updateUserById(req.params.id, req.body);
+  await userService.updateUserById(req.params.id, {
+    ...req.body,
+    unsignedFullName: utf8ToASCII(req.body.fullName),
+    fullName: removeSpace(req.body.fullName),
+    firstName: removeSpace(req.body.firstName),
+    lastName: removeSpace(req.body.lastName),
+    middleName: removeSpace(req.body.middleName),
+  });
   res.status(httpStatus.OK).json();
 });
 

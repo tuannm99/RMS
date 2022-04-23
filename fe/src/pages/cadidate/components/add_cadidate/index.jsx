@@ -66,9 +66,9 @@ function AddCadidate(props) {
       firstName: values?.firstName,
       midName: values?.midName,
       lastName: values?.lastName,
-      fullName: `${values?.firstName} ${
+      fullName: `${values?.lastName} ${
         values?.midName === undefined ? '' : values?.midName
-      } ${values?.lastName}`,
+      } ${values?.firstName}`,
       referral: account?.fullName,
       sex: values?.sex,
       email: values?.email,

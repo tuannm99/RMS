@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
 const { Job } = require('../core/db/schema');
-const { omit } = require('../core/utils');
+const { omit, utf8ToASCII } = require('../core/utils');
 
 /**
  * create new job
@@ -25,6 +25,19 @@ const createJob = async (jobData) => {
  * @returns {Promise<QueryResult>}
  */
 const getAllJob = async (filter, options) => {
+  if (filter.title === utf8ToASCII(filter.title)) {
+    filter.unsignedTitle = {
+      $regex: `${filter.unsignedTitle ? filter.unsignedTitle : ''}`,
+      $options: 'i',
+    };
+    delete filter.title;
+  } else {
+    filter.title = {
+      $regex: `${filter.title ? filter.title : ''}`,
+      $options: 'i',
+    };
+    delete filter.unsignedTitle;
+  }
   const listJob = await Job.paginate(filter, options);
   // count all candidate
   const results = listJob.results.map((job) => {
@@ -48,7 +61,19 @@ const getAllJob = async (filter, options) => {
  * @returns {Promise<QueryResult>}
  */
 const getAllPublishedJob = async (filter, options) => {
-  if (filter.title) filter.title = { $regex: filter.title, $options: 'i' };
+  if (filter.title === utf8ToASCII(filter.title)) {
+    filter.unsignedTitle = {
+      $regex: `${filter.unsignedTitle ? filter.unsignedTitle : ''}`,
+      $options: 'i',
+    };
+    delete filter.title;
+  } else {
+    filter.title = {
+      $regex: `${filter.title ? filter.title : ''}`,
+      $options: 'i',
+    };
+    delete filter.unsignedTitle;
+  }
   filter.status = 'published';
   const listJob = await Job.paginate(filter, options);
   return listJob;

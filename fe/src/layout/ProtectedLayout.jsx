@@ -22,6 +22,7 @@ function ProtectedLayout(props) {
       localStorage.clear();
     }
   }, [tokenLocal]);
+  localStorage.setItem('index', 0);
 
   /**
    * toggle display sibar

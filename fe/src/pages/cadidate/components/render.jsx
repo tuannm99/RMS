@@ -225,7 +225,7 @@ export const renderBodyTable = (
         setCadidateId(item.id);
       }}
     >
-      {item.firstName} {item.midName} {item.lastName}
+      {item.lastName} {item.midName} {item.firstName}
     </td>
     <td
       className="pl-8 cu"

@@ -13,6 +13,8 @@ const { pick, utf8ToASCII, removeSpace } = require('../core/utils');
 const getAllPublishJobsHandler = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['title', 'department']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  filter.title = removeSpace(filter.title);
+  filter.unsignedTitle = utf8ToASCII(filter.title);
   const listJob = await jobService.getAllPublishedJob(filter, options);
   res.status(httpStatus.OK).json(listJob);
 });

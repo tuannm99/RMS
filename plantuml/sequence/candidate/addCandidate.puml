@@ -12,22 +12,34 @@ database Mongodb
 User -> UI: add candidate
 activate UI
 UI -> candidateController: call api
-deactivate UI
 activate candidateController
-candidateController -> candidateController: checkAuth()
+alt#Gold #LightBlue Successful case
+    candidateController -> candidateController: checkAuth()
+else #Pink Failure
+    candidateController --> UI: auth error
+    UI --> User: display error
+end
 candidateController -> candidateService: createCandidate()
 activate candidateService
 candidateService -> Mongodb: save()
-activate Mongodb
-Mongodb -> Mongodb: Validate
-Mongodb --> candidateService: success
-deactivate Mongodb
-candidateService --> candidateController: candidateData
-deactivate candidateService
-candidateController --> UI: candidateData
-deactivate candidateController
-activate UI
-UI --> User: display data
-deactivate UI
+
+alt#Gold #LightBlue Successful case
+    activate Mongodb
+    Mongodb -> Mongodb: validate
+    Mongodb --> candidateService: success
+    candidateService --> candidateController: candidateData
+    candidateController --> UI: candidateData
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> candidateService: mongoose exception
+    deactivate candidateService
+    deactivate Mongodb
+    candidateService --> candidateController: redirect exception
+    candidateController --> UI: error message
+    deactivate candidateController
+    UI --> User: show error
+    deactivate Mongodb
+    deactivate UI
+end
 
 @enduml

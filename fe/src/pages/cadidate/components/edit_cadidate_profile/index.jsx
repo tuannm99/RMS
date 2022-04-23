@@ -80,9 +80,9 @@ function EditCadidateProfile(props) {
       firstName: values?.firstName,
       midName: values?.midName,
       lastName: values?.lastName,
-      fullName: `${values?.firstName} ${
+      fullName: `${values?.lastName} ${
         values?.midName === undefined ? '' : values?.midName
-      } ${values?.lastName}`,
+      } ${values?.firstName}`,
       email: values?.email,
       phone: `${values?.prefix}${values?.phone}`,
       sex: values?.sex,
