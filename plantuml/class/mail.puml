@@ -1,0 +1,35 @@
+@startuml mailClass
+!theme reddress-lightblue
+
+skinparam classAttributeIconSize 0
+class mail.controller{
+    - {field} eventProducer: Event
+
+    + {method} send(req: express.Request, res: express.Response): void
+}
+
+class mail.service{
+    + {field} transport: Transport
+
+    + {method} sendMail(to, subject, text, html): void
+}
+
+class mail.router{
+    + {field} router: express.Router
+}
+
+class event.producer {
+
+    + {method} sendMailProducer(): void
+}
+
+class event.consumer {
+    - {method} sendMailConsumer(): void
+
+    + {method} initializeEvent(): void
+}
+
+mail.router ..> mail.controller
+mail.controller ..> event.producer
+event.consumer ..> mail.service
+@enduml

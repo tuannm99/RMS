@@ -16,7 +16,7 @@ const INTERVIEWS = [
   {
     _id: '625f9e495d2f60b8eef0f7b2',
     interviewer: '62569867ad1ecbf37b143164',
-    candidateId: '625ea2b1c46e3b06519c44a8',
+    candidateId: '625d92bc61d3cb0962467a40',
     scheduleBy: '62569867ad1ecbf37b143164',
     feedback: {
       overallRecommendation: 'notYet',

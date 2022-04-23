@@ -274,14 +274,14 @@ function RecruitPage(props) {
                         {item.jobType && <span>{item.jobType}</span>}
                       </div>
                     </div>
-                    <div>
+                    {userAccount.role === 'hiringManager' && (
                       <Popconfirm
                         title="Sure to delete?"
                         onConfirm={() => handleDelete(item.id)}
                       >
                         <FaTimes className="recruit-card-icons" />
                       </Popconfirm>
-                    </div>
+                    )}
                   </Card>
                 </div>
               </Col>

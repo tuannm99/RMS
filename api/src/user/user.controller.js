@@ -54,7 +54,7 @@ const getUserHandler = catchAsync(async (req, res) => {
  * @param {string} res
  */
 const updateUserHandler = catchAsync(async (req, res) => {
-  await userService.updateUserById(req.params.id, {
+  const user = await userService.updateUserById(req.params.id, {
     ...req.body,
     unsignedFullName: utf8ToASCII(req.body.fullName),
     fullName: removeSpace(req.body.fullName),
@@ -62,7 +62,7 @@ const updateUserHandler = catchAsync(async (req, res) => {
     lastName: removeSpace(req.body.lastName),
     middleName: removeSpace(req.body.middleName),
   });
-  res.status(httpStatus.OK).json();
+  res.status(httpStatus.OK).json(user);
 });
 
 /**
