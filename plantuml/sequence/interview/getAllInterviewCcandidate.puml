@@ -1,4 +1,4 @@
-@startuml add Interview 
+@startuml getAllInterview
 !theme reddress-lightblue
 
 autonumber 1.1
@@ -9,7 +9,7 @@ boundary interviewService
 database Mongodb
 
 
-User -> UI: add interview
+User -> UI: get all interview by candidate
 activate UI
 UI -> interviewController: call api
 activate interviewController
@@ -21,7 +21,7 @@ else #Pink Failure
     UI --> User: display error
 end
 
-interviewController -> interviewService: createInterview()
+interviewController -> interviewService: getAllInterviewByCandidateId()
 
 alt#Gold #LightBlue Successful case
     activate interviewService
@@ -29,7 +29,7 @@ alt#Gold #LightBlue Successful case
     activate Mongodb
     Mongodb -> Mongodb: Validate
     Mongodb --> interviewService: success
-    interviewService --> interviewController: save()
+    interviewService --> interviewController: interviewData
     interviewController --> UI: data
     UI --> User: display data
 else #Pink Failure
@@ -43,5 +43,5 @@ else #Pink Failure
     deactivate UI
 end
 
-
 @enduml
+

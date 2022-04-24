@@ -1,0 +1,45 @@
+@startuml sendMail
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  mailController
+boundary mailService
+boundary producer
+boundary consumer
+
+
+User -> UI: count sex
+activate UI
+UI -> mailController: send()
+activate mailController
+alt#Gold #LightBlue Successful case
+    mailController -> mailController: checkAuth()
+else #Pink Failure
+    mailController --> UI: auth error
+    UI --> User: display error
+end
+
+mailController -> mailService: sendMail()
+activate mailService
+mailService ->> producer: sendMailProducer()
+activate producer
+mailService --> mailController: success
+deactivate mailService
+
+mailController -> UI: success message
+deactivate mailController
+UI --> User: display success message
+deactivate UI
+
+producer <<- consumer: read message()
+deactivate producer
+activate consumer
+consumer --> User: mail
+deactivate consumer
+
+
+@enduml
+
+

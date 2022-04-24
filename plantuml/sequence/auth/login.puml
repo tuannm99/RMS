@@ -1,0 +1,57 @@
+@startuml loginSequence
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  authController
+boundary userService
+boundary tokenService
+database Mongodb
+
+User -> UI: login
+activate UI
+UI -> authController: loginHandler()
+activate authController
+authController ->> userService: loginByUsernamePassword()
+activate userService
+
+alt#Gold #LightBlue Successful case
+    userService -> Mongodb: getUserByUsername()
+    activate Mongodb
+    Mongodb -> Mongodb: validate
+    Mongodb --> userService: data
+    userService --> authController: userData
+else #Pink Failure
+    Mongodb --> userService: mongoose exception
+    deactivate Mongodb
+    userService --> authController: redirect exception
+    deactivate userService
+    authController --> UI: error message
+    UI --> User: show error
+end
+
+authController ->> tokenService: generateAuthToken()
+activate tokenService
+alt#Gold #LightBlue Successful case
+    tokenService -> Mongodb: getToken()
+    activate Mongodb
+    Mongodb -> Mongodb: validate
+    Mongodb --> tokenService: data
+    tokenService --> authController: tokenData
+    deactivate tokenService
+    authController --> UI: success message
+    UI --> User: show data
+else #Pink Failure
+    Mongodb --> tokenService: exception
+    deactivate Mongodb
+    tokenService --> authController: redirect exception
+    deactivate userService
+    authController --> UI: error message
+    deactivate authController
+    UI --> User: show error
+    deactivate UI
+deactivate UI
+end
+
+@enduml
