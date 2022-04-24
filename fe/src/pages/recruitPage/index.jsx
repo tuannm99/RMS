@@ -366,14 +366,32 @@ function RecruitPage(props) {
           </Row>
           <Row gutter={24}>
             <Col span={24}>
-              <Form.Item name="shortDes" label="Short Description">
+              <Form.Item
+                name="shortDes"
+                label="Short Description"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please Enter Short Description',
+                  },
+                ]}
+              >
                 <TextArea rows={4} />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item name="jobDescription" label="Description">
+              <Form.Item
+                name="jobDescription"
+                label="Description"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please Enter Job Description',
+                  },
+                ]}
+              >
                 <CKEditor
                   type="string"
                   editor={ClassicEditor}
