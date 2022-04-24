@@ -95,7 +95,7 @@ function DetailRecruitPage(props) {
       })
       .catch((err) => console.log(err));
     fetchJob();
-    toast.success('update Status!', {
+    toast.success('update Status Successful!', {
       autoClose: 3000,
     });
   };
@@ -125,9 +125,15 @@ function DetailRecruitPage(props) {
             onSelect={updateStatus}
             className="recruit-Detail-selector"
           >
-            <Option value="published">Published</Option>
-            <Option value="onHold">Hode On</Option>
-            <Option value="deleted">Delete</Option>
+            <Option disabled={job.status === 'published'} value="published">
+              Published
+            </Option>
+            <Option disabled={job.status === 'onHold'} value="onHold">
+              Hode On
+            </Option>
+            <Option disabled={job.status === 'deleted'} value="deleted">
+              Delete
+            </Option>
           </Select>
         </div>
         <DrawerComponent
@@ -149,14 +155,22 @@ function DetailRecruitPage(props) {
             >
               <Row gutter={16}>
                 <Col span={24}>
-                  <Form.Item name="title" label="Title Job">
+                  <Form.Item
+                    name="title"
+                    label="Title Job"
+                    rules={[
+                      { required: true, message: 'Please Enter Job Title' },
+                    ]}
+                  >
                     <Input placeholder="Please enter user name" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
                   <Form.Item
                     name="department"
-                    rules={[{ required: false }]}
+                    rules={[
+                      { required: true, message: 'Please Select Department' },
+                    ]}
                     label="Department"
                   >
                     <Select style={{ width: 300 }}>
@@ -165,7 +179,7 @@ function DetailRecruitPage(props) {
                       <Option value="marketing">Maketing</Option>
                       <Option value="sale">Sale</Option>
                       <Option value="engineering">Engineering</Option>
-                      <Option value="humanResources">HumanResources</Option>
+                      <Option value="humanResources">Human Resources</Option>
                     </Select>
                   </Form.Item>
                 </Col>
@@ -175,7 +189,9 @@ function DetailRecruitPage(props) {
                   <Form.Item
                     name="jobType"
                     label="Job Type"
-                    rules={[{ required: false }]}
+                    rules={[
+                      { required: true, message: 'Please Select Job Type!' },
+                    ]}
                   >
                     <Select style={{ width: 300 }}>
                       <Option value="Full Time">Full Time</Option>
@@ -188,7 +204,9 @@ function DetailRecruitPage(props) {
                   <Form.Item
                     name="location"
                     label="Location"
-                    rules={[{ required: false }]}
+                    rules={[
+                      { required: true, message: 'Please Enter Job Location' },
+                    ]}
                   >
                     <Input placeholder="address" />
                   </Form.Item>
@@ -196,14 +214,32 @@ function DetailRecruitPage(props) {
               </Row>
               <Row gutter={24}>
                 <Col span={24}>
-                  <Form.Item name="shortDes" label="Short Description">
+                  <Form.Item
+                    name="shortDes"
+                    label="Short Description"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please Enter Short Description',
+                      },
+                    ]}
+                  >
                     <TextArea rows={4} />
                   </Form.Item>
                 </Col>
               </Row>
               <Row gutter={16}>
                 <Col span={24}>
-                  <Form.Item name="jobDescription" label="Description">
+                  <Form.Item
+                    name="jobDescription"
+                    label="Description"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please Enter Job Description',
+                      },
+                    ]}
+                  >
                     <CKEditor
                       type="string"
                       editor={ClassicEditor}
@@ -271,7 +307,7 @@ function DetailRecruitPage(props) {
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  Update
                 </Button>
               </Form.Item>
             </Form>

@@ -18,6 +18,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FaTimes } from 'react-icons/fa';
 import { setVisibleAddJob } from '../../redux/stores/job/actions';
 import { visibleAddJob } from '../../redux/stores/job/selectors';
+
 import {
   Popconfirm,
   Button,
@@ -105,12 +106,21 @@ function RecruitPage(props) {
         toast.error(`${res.data.message}`, {
           autoClose: 3000,
         });
+      } else {
+        toast.success('Delete Job Successful!', {
+          autoClose: 3000,
+        });
+        loadDataJobs();
       }
-      toast.success('Delete Job Successful!', {
-        autoClose: 3000,
-      });
-      loadDataJobs();
     });
+    if (
+      dataJobs?.totalResults > 9 &&
+      dataJobs?.totalResults % param.limit === 1
+    ) {
+      setParam({ ...param, page: dataJobs?.page - 1 });
+    } else {
+      setParam({ ...param });
+    }
   };
 
   const handleChangeData = (pagination) => {
@@ -140,7 +150,7 @@ function RecruitPage(props) {
           autoClose: 3000,
         });
       }
-      toast.success('Create Job Detail Successful!', {
+      toast.success('Create Job Successful!', {
         autoClose: 3000,
       });
       loadDataJobs();
@@ -192,7 +202,7 @@ function RecruitPage(props) {
             onClick={showDrawp}
             disabled={userAccount.role !== 'hiringManager' && true}
           >
-            Add Job Posting
+            Create Job
           </Button>
         </div>
       </div>
@@ -272,12 +282,14 @@ function RecruitPage(props) {
                         {item.jobType && <span>{item.jobType}</span>}
                       </div>
                     </div>
-                    <Popconfirm
-                      title="Sure to delete?"
-                      onConfirm={() => handleDelete(item.id)}
-                    >
-                      <FaTimes className="recruit-card-icons" />
-                    </Popconfirm>
+                    {userAccount.role === 'hiringManager' && (
+                      <Popconfirm
+                        title="Sure to delete?"
+                        onConfirm={() => handleDelete(item.id)}
+                      >
+                        <FaTimes className="recruit-card-icons" />
+                      </Popconfirm>
+                    )}
                   </Card>
                 </div>
               </Col>
@@ -300,25 +312,27 @@ function RecruitPage(props) {
             <Col span={24}>
               <Form.Item
                 name="title"
-                label="Title Job"
-                rules={[{ required: true, message: 'Please Enter Title Job' }]}
+                label="Job Title"
+                rules={[{ required: true, message: 'Please Enter Job Title' }]}
               >
-                <Input placeholder="Please enter user name" />
+                <Input placeholder="Please Enter Job Title" />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item
                 name="department"
                 label="Department"
-                rules={[{ required: true, message: 'Please Enter Department' }]}
+                rules={[
+                  { required: true, message: 'Please Select Department' },
+                ]}
               >
                 <Select style={{ width: 300 }}>
                   <Option value="administration">Administrtion</Option>
-                  <Option value="finance ">Finance</Option>
+                  <Option value="finance">Finance</Option>
                   <Option value="marketing">Maketing</Option>
                   <Option value="sale">Sale</Option>
                   <Option value="engineering">Engineering</Option>
-                  <Option value="humanResources ">HumanResources</Option>
+                  <Option value="humanResources">Human Resources</Option>
                 </Select>
               </Form.Item>
             </Col>
@@ -328,9 +342,7 @@ function RecruitPage(props) {
               <Form.Item
                 name="jobType"
                 label="Job Type"
-                rules={[
-                  { required: true, message: 'Please enter First Name!' },
-                ]}
+                rules={[{ required: true, message: 'Please Select Job Type!' }]}
               >
                 <Select style={{ width: 300 }}>
                   <Option value="Full Time">Full Time</Option>
@@ -354,14 +366,32 @@ function RecruitPage(props) {
           </Row>
           <Row gutter={24}>
             <Col span={24}>
-              <Form.Item name="shortDes" label="Short Description">
+              <Form.Item
+                name="shortDes"
+                label="Short Description"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please Enter Short Description',
+                  },
+                ]}
+              >
                 <TextArea rows={4} />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item name="jobDescription" label="Description">
+              <Form.Item
+                name="jobDescription"
+                label="Description"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please Enter Job Description',
+                  },
+                ]}
+              >
                 <CKEditor
                   type="string"
                   editor={ClassicEditor}
@@ -427,7 +457,7 @@ function RecruitPage(props) {
           </Row>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
-              Submit
+              Create
             </Button>
           </Form.Item>
         </Form>

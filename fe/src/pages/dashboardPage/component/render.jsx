@@ -29,14 +29,13 @@ export const renderHeadTable = (item, index) => (
 
 export const customerTableHead = ['Candidate', 'interviewer', 'Schedule info'];
 
-export const renderBodyTable = (item, navigate, index) =>
-  item.candidateId != null &&
-  item.candidateId.fullName != '' && (
+export const renderBodyTable = (item, index, navigate) =>
+  item.candidateId != null && (
     <tr key={item.id} style={styles.tr}>
       <td style={styles.td}>{item.candidateId.fullName}</td>
       <td
         className="pl-8 cu"
-        style={{ ...styles.td, cursor: 'pointer' }}
+        style={{ ...styles.td, color: '#2c5cc5', cursor: 'pointer' }}
         onClick={() => {
           navigate(`/profile/${item.interviewer.id}`);
         }}

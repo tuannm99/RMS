@@ -3,7 +3,7 @@ const config = require('../core/config');
 const logger = require('../core/logger');
 
 const transport = nodemailer.createTransport(config.email.smtp);
-if (config.env !== 'test') {
+if (process.env.NODE_ENV !== 'test') {
   transport
     .verify()
     .then(() => logger.info('Connected to email server'))

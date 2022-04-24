@@ -126,7 +126,7 @@ function UserEditAdd({
       lastName: values.lastName,
       phone: `${values.prefix}${values.phone}`,
       sex: values.sex,
-      fullName: `${values.firstName} ${values.lastName}`,
+      fullName: `${values.lastName} ${values.firstName}`,
       dateOfBirth: values.dateOfBirth,
       languages: values.languages,
       address: values.address,
@@ -238,6 +238,7 @@ function UserEditAdd({
         form={form}
         onFinish={onFinish}
         initialValues={{ prefix: '+84' }}
+        autoComplete="off"
       >
         <Row gutter={16}>
           <Col span={12}>
@@ -247,12 +248,15 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please enter First Name!' },
                 {
-                  pattern: new RegExp(/[a-zA-X]/),
-                  message: 'Please enter First Name!',
+                  pattern: new RegExp(
+                    "^[A-Z][a-z]*(([,.] |[ '-])[A-Za-z][a-z]*)*(.?)( [IVXLCDM]+)?$"
+                  ),
+                  message:
+                    'Please enter the correct format of the name, including letters and the first letter must be capitalized.',
                 },
               ]}
             >
-              <Input placeholder="Enter First Name" />
+              <Input placeholder="Enter First Name" allowClear={true} />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -262,12 +266,15 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please enter Last Name!' },
                 {
-                  pattern: new RegExp(/[a-zA-X]/),
-                  message: 'Please enter Last Name!',
+                  pattern: new RegExp(
+                    "^[A-Z][a-z]*(([,.] |[ '-])[A-Za-z][a-z]*)*(.?)( [IVXLCDM]+)?$"
+                  ),
+                  message:
+                    'Please enter the correct format of the name, including letters and the first letter must be capitalized.',
                 },
               ]}
             >
-              <Input placeholder="Enter Last Name" />
+              <Input placeholder="Enter Last Name" allowClear={true} />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -277,17 +284,17 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please enter Address' },
                 {
-                  pattern: new RegExp(/[a-zA-X]/),
-                  message: 'Please enter Address!',
+                  pattern: new RegExp(/^[^\s].*/),
+                  message: 'The start character cannot be a space.',
                 },
               ]}
             >
-              <Input placeholder="Enter Address" />
+              <Input placeholder="Enter Address" allowClear={true} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item name="languages" label="Language">
-              <Input placeholder="Enter Language" />
+              <Input placeholder="Enter Language" allowClear={true} />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -329,12 +336,12 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please input your Account!' },
                 {
-                  pattern: new RegExp('[^s]'),
-                  message: 'Account do not space',
-                },
-                {
                   pattern: new RegExp(/^\S+$/),
                   message: "Account don't enter space!",
+                },
+                {
+                  pattern: new RegExp(/[a-zA-Z]/),
+                  message: 'Account exists at least 1 character',
                 },
                 {
                   min: 6,
@@ -343,7 +350,11 @@ function UserEditAdd({
                 },
               ]}
             >
-              <Input placeholder="Enter user name" disabled={user && true} />
+              <Input
+                placeholder="Enter user name"
+                disabled={user && true}
+                allowClear={true}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -357,10 +368,6 @@ function UserEditAdd({
                 rules={[
                   { required: true, message: 'Please input your password!' },
                   {
-                    pattern: new RegExp('[^s]'),
-                    message: 'Password do not space',
-                  },
-                  {
                     pattern: new RegExp(/^\S+$/),
                     message: "password don't enter space!",
                   },
@@ -371,7 +378,7 @@ function UserEditAdd({
                   },
                 ]}
               >
-                <Input.Password />
+                <Input.Password allowClear={true} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -400,7 +407,7 @@ function UserEditAdd({
                   }),
                 ]}
               >
-                <Input.Password />
+                <Input.Password allowClear={true} />
               </Form.Item>
             </Col>
           </Row>
@@ -418,7 +425,7 @@ function UserEditAdd({
                 { type: 'email', message: 'Please enter the correct email!' },
               ]}
             >
-              <Input placeholder="Enter Email" />
+              <Input placeholder="Enter Email" allowClear={true} />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -433,7 +440,11 @@ function UserEditAdd({
                 },
               ]}
             >
-              <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+              <Input
+                addonBefore={prefixSelector}
+                style={{ width: '100%' }}
+                allowClear={true}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -443,24 +454,60 @@ function UserEditAdd({
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item name="employeeType" label="Position">
-              <Input placeholder="Enter Position" />
+              <Input
+                placeholder="Enter Position"
+                allowClear={true}
+                rules={[
+                  {
+                    pattern: new RegExp(/^[^\s].*/),
+                    message: 'The start character cannot be a space.',
+                  },
+                ]}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="primaryTeam" label="Team">
-              <Input placeholder="Enter Team" />
+            <Form.Item
+              name="primaryTeam"
+              label="Team"
+              rules={[
+                {
+                  pattern: new RegExp(/^[^\s].*/),
+                  message: 'The start character cannot be a space.',
+                },
+              ]}
+            >
+              <Input placeholder="Enter Team" allowClear={true} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="department" label="Department">
-              <Input placeholder="Please enter Department!" />
+            <Form.Item
+              name="department"
+              label="Department"
+              rules={[
+                {
+                  pattern: new RegExp(/^[^\s].*/),
+                  message: 'The start character cannot be a space.',
+                },
+              ]}
+            >
+              <Input placeholder="Please enter Department!" allowClear={true} />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="level" label="Level">
-              <Input placeholder="Please enter Level" />
+            <Form.Item
+              name="level"
+              label="Level"
+              rules={[
+                {
+                  pattern: new RegExp(/^[^\s].*/),
+                  message: 'The start character cannot be a space.',
+                },
+              ]}
+            >
+              <Input placeholder="Please enter Level" allowClear={true} />
             </Form.Item>
           </Col>
           <Col span={12}>

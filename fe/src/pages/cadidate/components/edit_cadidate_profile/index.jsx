@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Form } from 'antd';
 import FormInfo from '../form_info';
 import {
-  getAllCadidates,
   getCadidate,
   editCadidate,
 } from '../../../../redux/stores/cadidate/actions';
@@ -80,9 +79,9 @@ function EditCadidateProfile(props) {
       firstName: values?.firstName,
       midName: values?.midName,
       lastName: values?.lastName,
-      fullName: `${values?.firstName} ${
+      fullName: `${values?.lastName} ${
         values?.midName === undefined ? '' : values?.midName
-      } ${values?.lastName}`,
+      } ${values?.firstName}`,
       email: values?.email,
       phone: `${values?.prefix}${values?.phone}`,
       sex: values?.sex,
@@ -145,7 +144,6 @@ const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
 });
 const mapDispatchToProps = (dispatch) => ({
-  getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
   getCadidate: (payload) => dispatch(getCadidate(payload)),
   editCadidate: (payload) => dispatch(editCadidate(payload)),
 });

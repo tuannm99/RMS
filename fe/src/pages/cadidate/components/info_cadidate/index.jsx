@@ -26,10 +26,7 @@ import {
   loadingCadidate,
 } from '../../../../redux/stores/cadidate/selectors';
 import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
-import {
-  getCadidate,
-  getAllCadidates,
-} from '../../../../redux/stores/cadidate/actions';
+import { getCadidate } from '../../../../redux/stores/cadidate/actions';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -171,7 +168,7 @@ function CadidateInfo(props) {
                   disabled={account?.role !== 'hiringManager' && true}
                 >
                   <Button className="btn-profile_right">
-                    Advance <DownOutlined />
+                    Stage <DownOutlined />
                   </Button>
                 </Dropdown>
               </Col>
@@ -209,7 +206,9 @@ function CadidateInfo(props) {
                       href={`${cadidate?.hyperlink}`}
                       target="_blank"
                       rel="noreferrer"
-                    >{`${cadidate?.hyperlink}`}</a>
+                    >
+                      {cadidate?.hyperlink && `${cadidate?.hyperlink}`}
+                    </a>
                   </Col>
                   <Col span={24} className="pl-16 pr-16 apply">
                     <p className="mb-0">APPLIED JOBS</p>
@@ -292,7 +291,6 @@ const mapStateToProps = createStructuredSelector({
 });
 const mapDispatchToProps = (dispatch) => ({
   getCadidate: (payload) => dispatch(getCadidate(payload)),
-  getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

@@ -5,29 +5,44 @@ autonumber 1.1
 actor User
 participant UI
 control  careerController
-boundary jobService
+boundary candidateService
 database Mongodb
 
 
 User -> UI: add resume
 activate UI
 UI -> careerController: call api
-deactivate UI
 activate careerController
-careerController -> careerController: checkAuth()
-careerController -> jobService: createCandidate()
-activate jobService
-jobService -> Mongodb: save()
-activate Mongodb
-Mongodb -> Mongodb: Validate
-Mongodb --> jobService: success
-deactivate Mongodb
-jobService --> careerController: candidateData
-deactivate jobService
-careerController --> UI: candidateData
-deactivate careerController
-activate UI
-UI --> User: display data
-deactivate UI
+
+alt#Gold #LightBlue Successful case
+    careerController -> careerController: checkAuth()
+else #Pink Failure
+    careerController --> UI: auth error
+    UI --> User: display error
+end
+
+careerController -> candidateService: createCandidate()
+activate candidateService
+
+alt#Gold #LightBlue Successful case
+    candidateService -> Mongodb: save()
+    activate Mongodb
+    Mongodb -> Mongodb: validate
+    Mongodb --> candidateService: success
+    candidateService --> careerController: candidateData
+    careerController --> UI: candidateData
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> candidateService: mongoose exception
+    deactivate Mongodb
+    candidateService --> careerController: redirect exception
+    deactivate candidateService
+    careerController --> UI: error message
+    deactivate careerController
+    UI --> User: show error
+    deactivate Mongodb
+    deactivate UI
+end
+
 
 @enduml

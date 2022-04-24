@@ -1,0 +1,46 @@
+@startuml countchart
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  chartController
+boundary chartService
+database Mongodb
+
+
+User -> UI: count candidate
+activate UI
+UI -> chartController: call api
+activate chartController
+alt#Gold #LightBlue Successful case
+    chartController -> chartController: checkAuth()
+else #Pink Failure
+    chartController --> UI: auth error
+    UI --> User: display error
+end
+chartController -> chartService: countCandidate()
+activate chartService
+
+alt#Gold #LightBlue Successful case
+    chartService -> Mongodb: save()
+    activate Mongodb
+    Mongodb -> Mongodb: validate
+    Mongodb --> chartService: success
+    chartService --> chartController: chartData
+    chartController --> UI: chartData
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> chartService: mongoose exception
+    deactivate chartService
+    deactivate Mongodb
+    chartService --> chartController: redirect exception
+    chartController --> UI: error message
+    deactivate chartController
+    UI --> User: show error
+    deactivate Mongodb
+    deactivate UI
+end
+
+@enduml
+

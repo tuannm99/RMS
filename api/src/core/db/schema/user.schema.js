@@ -52,7 +52,7 @@ const userSchema = mongoose.Schema({
   },
   dateOfBirth: { type: Date },
   languages: { type: String },
-  materialStatus: { type: String },
+  maritalStatus: { type: String },
 
   avatar: {
     mimetype: String,

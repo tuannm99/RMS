@@ -12,22 +12,36 @@ database Mongodb
 User -> UI: add interview
 activate UI
 UI -> interviewController: call api
-deactivate UI
 activate interviewController
-interviewController -> interviewController: checkAuth()
+
+alt#Gold #LightBlue Successful case
+    interviewController -> interviewController: checkAuth()
+else #Pink Failure
+    interviewController --> UI: auth error
+    UI --> User: display error
+end
+
 interviewController -> interviewService: createInterview()
-activate interviewService
-interviewService -> Mongodb: save()
-activate Mongodb
-Mongodb -> Mongodb: Validate
-Mongodb --> interviewService: success
-deactivate Mongodb
-interviewService --> interviewController: interviewData
-deactivate interviewService
-interviewController --> UI: interviewData
-deactivate interviewController
-activate UI
-UI --> User: display data
-deactivate UI
+
+alt#Gold #LightBlue Successful case
+    activate interviewService
+    interviewService -> Mongodb: find()
+    activate Mongodb
+    Mongodb -> Mongodb: Validate
+    Mongodb --> interviewService: success
+    interviewService --> interviewController: save()
+    interviewController --> UI: data
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> interviewService: mongoose exception
+    deactivate Mongodb
+    interviewService --> interviewController: redirect exception
+    deactivate interviewService
+    interviewController --> UI: error message
+    deactivate interviewController
+    UI --> User: show error
+    deactivate UI
+end
+
 
 @enduml

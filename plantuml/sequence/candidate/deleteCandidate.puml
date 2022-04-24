@@ -1,0 +1,46 @@
+@startuml delete Candidate
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  candidateController
+boundary candidateService
+database Mongodb
+
+
+User -> UI: delete candidate 
+UI -> candidateController: call api
+activate candidateController
+
+alt#Gold #LightBlue Successful case
+    candidateController -> candidateController: checkAuth()
+else #Pink Failure
+    candidateController --> UI: auth error
+    UI --> User: display error
+end
+
+candidateController -> candidateService: deleteCandidateById()
+
+alt#Gold #LightBlue Successful case
+    activate candidateService
+    candidateService -> Mongodb: findAndDelete()
+    activate Mongodb
+    Mongodb -> Mongodb: Validate
+    Mongodb --> candidateService: success
+    candidateService --> candidateController: candidateData
+    candidateController --> UI: candidateData
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> candidateService: mongoose exception
+    deactivate Mongodb
+    candidateService --> candidateController: redirect exception
+    deactivate candidateService
+    candidateController --> UI: error message
+    deactivate candidateController
+    UI --> User: show error
+    deactivate Mongodb
+    deactivate UI
+end
+
+@enduml

@@ -1,0 +1,47 @@
+@startuml getAllInterview
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  interviewController
+boundary interviewService
+database Mongodb
+
+
+User -> UI: get all interview by candidate
+activate UI
+UI -> interviewController: call api
+activate interviewController
+
+alt#Gold #LightBlue Successful case
+    interviewController -> interviewController: checkAuth()
+else #Pink Failure
+    interviewController --> UI: auth error
+    UI --> User: display error
+end
+
+interviewController -> interviewService: getAllInterviewByCandidateId()
+
+alt#Gold #LightBlue Successful case
+    activate interviewService
+    interviewService -> Mongodb: find()
+    activate Mongodb
+    Mongodb -> Mongodb: Validate
+    Mongodb --> interviewService: success
+    interviewService --> interviewController: interviewData
+    interviewController --> UI: data
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> interviewService: mongoose exception
+    deactivate Mongodb
+    interviewService --> interviewController: redirect exception
+    deactivate interviewService
+    interviewController --> UI: error message
+    deactivate interviewController
+    UI --> User: show error
+    deactivate UI
+end
+
+@enduml
+

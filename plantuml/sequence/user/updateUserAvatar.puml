@@ -11,23 +11,34 @@ database Mongodb
 User -> UI: update avatar User
 activate UI
 UI -> userController: call api
-deactivate UI
-activate userController
-userController -> userController: checkAuth()
-userController -> userController: uploadImg()
-userController -> userService: updateUserAvatarById()
-activate userService
-userService -> Mongodb: findByIdAndUpdate()
-activate Mongodb
-Mongodb -> Mongodb: Validate
-Mongodb --> userService: success
-deactivate Mongodb
-userService --> userController: userAvatar
-deactivate userService
-userController --> UI: userAvatar
-deactivate userController
-activate UI
-UI --> User: display userAvatar
-deactivate UI
 
+alt#Gold #LightBlue Successful case
+    userController -> userController: checkAuth()
+else #Pink Failure
+    userController --> UI: auth error
+    UI --> User: display error
+end
+
+userController -> userService: updateUserAvatarId()
+
+alt#Gold #LightBlue Successful case
+    activate userService
+    userService -> Mongodb: query()
+    activate Mongodb
+    Mongodb -> Mongodb: Validate
+    Mongodb --> userService: success
+    userService --> userController: updatedUser
+    userController --> UI: userData
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> userService: mongoose exception
+    deactivate Mongodb
+    userService --> userController: redirect exception
+    deactivate userService
+    userController --> UI: error message
+    deactivate userController
+    UI --> User: show error
+    deactivate Mongodb
+    deactivate UI
+end
 @enduml

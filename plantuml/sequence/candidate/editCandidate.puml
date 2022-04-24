@@ -12,22 +12,36 @@ database Mongodb
 User -> UI: update candidate
 activate UI
 UI -> candidateController: call api
-deactivate UI
 activate candidateController
-candidateController -> candidateController: checkAuth()
+alt#Gold #LightBlue Successful case
+    candidateController -> candidateController: checkAuth()
+else #Pink Failure
+    candidateController --> UI: auth error
+    UI --> User: display error
+end
+
 candidateController -> candidateService: findByIdAndUpdate()
 activate candidateService
-candidateService -> Mongodb: findById()
-activate Mongodb
-Mongodb -> Mongodb: Validate
-Mongodb --> candidateService: success
-deactivate Mongodb
-candidateService --> candidateController: candidateData
-deactivate candidateService
-candidateController --> UI: candidateData
-deactivate candidateController
-activate UI
-UI --> User: display data
-deactivate UI
+
+alt#Gold #LightBlue Successful case
+    candidateService -> Mongodb: findById()
+    activate Mongodb
+    Mongodb -> Mongodb: Validate
+    Mongodb --> candidateService: success
+    candidateService --> candidateController: candidateData
+    candidateController --> UI: candidateData
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> candidateService: mongoose exception
+    deactivate Mongodb
+    candidateService --> candidateController: redirect exception
+    deactivate candidateService
+    candidateController --> UI: error message
+    deactivate candidateController
+    UI --> User: show error
+    deactivate Mongodb
+    deactivate UI
+end
+
 
 @enduml

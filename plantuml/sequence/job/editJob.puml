@@ -13,20 +13,35 @@ activate UI
 UI -> jobController: call api
 deactivate UI
 activate jobController
-jobController -> jobController: checkAuth()
+
+alt#Gold #LightBlue Successful case
+    jobController -> jobController: checkAuth()
+else #Pink Failure
+    jobController --> UI: auth error
+    UI --> User: display error
+end
+
 jobController -> jobService: editJobById()
-activate jobService
-jobService -> Mongodb: findByIdAndUpdate()
-activate Mongodb
-Mongodb -> Mongodb: Validate
-Mongodb --> jobService: success
-deactivate Mongodb
-jobService --> jobController: jobData
-deactivate jobService
-jobController --> UI: jobData
-deactivate jobController
-activate UI
-UI --> User: display data
-deactivate UI
+
+alt#Gold #LightBlue Successful case
+    activate jobService
+    jobService -> Mongodb: findByIdAndUpdate()
+    activate Mongodb
+    Mongodb -> Mongodb: Validate
+    Mongodb --> jobService: success
+    jobService --> jobController: jobData
+    jobController --> UI: data
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> jobService: mongoose exception
+    deactivate Mongodb
+    jobService --> jobController: redirect exception
+    deactivate jobService
+    jobController --> UI: error message
+    deactivate jobController
+    UI --> User: show error
+    deactivate UI
+end
+
 
 @enduml

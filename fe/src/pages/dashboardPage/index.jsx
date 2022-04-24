@@ -43,11 +43,13 @@ function DashboardPage(props) {
   const { userAccount } = props;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
   const [param, setParam] = useState({
     limit: 3,
     page: 1,
     interviewDate: 'upcoming',
     sortBy: 'interviewDate:asc',
+    interviewer: userAccount.id,
   });
 
   function handleChange(value) {
@@ -197,13 +199,14 @@ function DashboardPage(props) {
               <Select
                 defaultValue="for me"
                 style={{ width: 120 }}
+                onSelect={handleChange}
                 className="dashBoard-select"
               >
                 <Option value="for me">For Me</Option>
               </Select>
             ) : (
               <Select
-                defaultValue="all"
+                defaultValue="for me"
                 style={{ width: 120 }}
                 className="dashBoard-select"
                 onSelect={handleChange}
@@ -279,7 +282,7 @@ function DashboardPage(props) {
           )}
         </div>
         <div className="dashboard-right">
-          <h1>HR SnapShot</h1>
+          <h1>SnapShot</h1>
           <div className="dashboard-snapshot">
             <div className="dashboard-snapshot-content">
               <AiOutlineUserAdd className="dashboard-snapshot-icons dashboard-snapshot-total" />{' '}

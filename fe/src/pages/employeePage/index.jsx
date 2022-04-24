@@ -235,7 +235,7 @@ function EmployeePage(props) {
             >
               <Option value="createdAt">All</Option>
               <Option value="fullName">Name</Option>
-              <Option value="updatedAt">Update By</Option>
+              <Option value="updatedAt">Applied Date</Option>
               <Option value="email">Email</Option>
             </Select>
           </div>

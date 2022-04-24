@@ -67,9 +67,11 @@ function HeaderPrivate(props) {
    */
   const menuJob = (
     <Menu>
-      <Menu.Item key="1" icon={<ShoppingOutlined />} onClick={showAddJob}>
-        Job posting
-      </Menu.Item>
+      {selectUserInfor?.role === 'hiringManager' && (
+        <Menu.Item key="1" icon={<ShoppingOutlined />} onClick={showAddJob}>
+          Job posting
+        </Menu.Item>
+      )}
       {selectUserInfor?.role === 'admin' ? (
         <Menu.Item key="2" icon={<TeamOutlined />}>
           <NavLink to={`/employee/${true}/${null}`}>Employee</NavLink>
