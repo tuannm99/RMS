@@ -13,8 +13,8 @@
     "prettier:fix": "prettier --write **/*.js",
     "test": "jest --detectOpenHandles --silent",
     "test:co": "jest --coverage",
-    "test:watch": "jest --watch --detectOpenHandles",
-    "test:silent": "jest --watch --silent --detectOpenHandles"
+    "test:watch": "jest --watch --detectOpenHandles --verbose",
+    "test:silent": "jest --watch --silent --detectOpenHandles --verbose"
   },
   "keywords": [],
   "author": "",

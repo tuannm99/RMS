@@ -30,6 +30,7 @@ function FormInfo(props) {
       form={form}
       onFinish={onFinish}
       initialValues={{ prefix: '+84' }}
+      autoComplete="off"
     >
       <Row gutter={16}>
         <Col span={8}>
@@ -39,17 +40,29 @@ function FormInfo(props) {
             rules={[
               { required: true, message: 'Please enter First Name!' },
               {
-                pattern: new RegExp(/[a-zA-X]/),
-                message: 'Please enter First Name!',
+                pattern: new RegExp(
+                  "^[A-Z][a-z]*(([,.] |[ '-])[A-Za-z][a-z]*)*(.?)( [IVXLCDM]+)?$"
+                ),
+                message:
+                  'Please enter the correct format of the name, including letters and the first letter must be capitalized.',
               },
             ]}
           >
-            <Input placeholder="Enter First Name" />
+            <Input allowClear={true} placeholder="Enter First Name" />
           </Form.Item>
         </Col>
         <Col span={8}>
           <Form.Item name="midName" label="Middle Name">
-            <Input placeholder="Enter Full Name" />
+            <Input
+              allowClear={true}
+              placeholder="Enter Full Name"
+              rules={[
+                {
+                  pattern: new RegExp(/^[^\s].*/),
+                  message: 'The start character cannot be a space.',
+                },
+              ]}
+            />
           </Form.Item>
         </Col>
         <Col span={8}>
@@ -59,12 +72,15 @@ function FormInfo(props) {
             rules={[
               { required: true, message: 'Please enter Last Name!' },
               {
-                pattern: new RegExp(/[a-zA-X]/),
-                message: 'Please enter Last Name!',
+                pattern: new RegExp(
+                  "^[A-Z][a-z]*(([,.] |[ '-])[A-Za-z][a-z]*)*(.?)( [IVXLCDM]+)?$"
+                ),
+                message:
+                  'Please enter the correct format of the name, including letters and the first letter must be capitalized.',
               },
             ]}
           >
-            <Input placeholder="Enter Last Name" />
+            <Input allowClear={true} placeholder="Enter Last Name" />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -89,7 +105,7 @@ function FormInfo(props) {
               { type: 'email', message: 'Please enter the correct email!' },
             ]}
           >
-            <Input placeholder="Enter Email" />
+            <Input allowClear={true} placeholder="Enter Email" />
           </Form.Item>
         </Col>
         <Col span={24}>
@@ -106,7 +122,7 @@ function FormInfo(props) {
               },
             ]}
           >
-            <Input placeholder="Enter Hyperlink" />
+            <Input allowClear={true} placeholder="Enter Hyperlink" />
           </Form.Item>
         </Col>
         <Col span={24}>
@@ -121,7 +137,11 @@ function FormInfo(props) {
               },
             ]}
           >
-            <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+            <Input
+              addonBefore={prefixSelector}
+              style={{ width: '100%' }}
+              allowClear={true}
+            />
           </Form.Item>
         </Col>
       </Row>

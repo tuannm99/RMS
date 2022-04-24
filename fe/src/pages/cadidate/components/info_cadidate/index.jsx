@@ -26,10 +26,7 @@ import {
   loadingCadidate,
 } from '../../../../redux/stores/cadidate/selectors';
 import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
-import {
-  getCadidate,
-  getAllCadidates,
-} from '../../../../redux/stores/cadidate/actions';
+import { getCadidate } from '../../../../redux/stores/cadidate/actions';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -294,7 +291,6 @@ const mapStateToProps = createStructuredSelector({
 });
 const mapDispatchToProps = (dispatch) => ({
   getCadidate: (payload) => dispatch(getCadidate(payload)),
-  getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

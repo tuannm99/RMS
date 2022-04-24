@@ -91,6 +91,9 @@ describe('user controller', () => {
         .send({ firstName: 'new' })
         .expect('Content-Type', /json/)
         .expect(httpStatus.OK);
+
+      expect(res.body.firstName).toEqual('new');
+      expect(res.body.role).toEqual(USERS[1].role);
     });
 
     it('should it wrong id', async () => {

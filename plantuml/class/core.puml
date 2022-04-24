@@ -7,30 +7,153 @@ package core {
   class config {
     + {field} envConf: object
   }
+
   class ApiError {}
+  ApiError  ..|> Error
+
   class catchAsync {
       + {method} CatchAsync(): function
   }
+
   class globalMiddleware {
       - {method} _verifyCallback(req: Request, resolve: Resolve, reject: Reject, requiredRoles: array): void
       + {method} errorConverter(err: Error, req: Request, res: Response, next: NextCallBack): void
       + {method} errorConverter(err: Error, req: Request, res: Response, next: NextCallBack): void
       + {method} checkAuth(...object): void
   }
+
   class logger {
-  }
-  class moganConfig {}
-  class utils {}
-
-  package db{
-
-    package schema {}
-    class dbConfig {    
-        + {field} connectDatabase(): mongoose.Connection
-    }
+      + {field} logger: Winston
   }
 
-  ApiError  ..|> Error
+  class moganConfig {
+      + {field} getIpFormat: void
+      + {field} successHandler: Morgan
+      + {field} errorHandler: Morgan
+  }
+
+  class multer {
+      + {field} uploadImg: Multer
+      + {field} uploadFile: Multer
+  }
+
+  class rateLimit {
+      + {field} limiter: RateLimit
+      + {field} candidateSubmitCVLimiter: RateLimit
+      + {field} refreshTokenLimiter: RateLimit
+      + {field} logoutLimiter: RateLimit
+  }
+
+  class utils {
+      + {method} pick(object: Object, keys: any): Object
+      + {method} omit(object: Object, keys: any): Object
+      + {method} utf8ToASCII(text: string): string
+      + {method} removeSpace(text: string): string
+
+  }
+
+  package db {
+
+    package schema {
+
+  '     class candidateSchema {
+  '       + {field} jobId: ObjectId
+  '       + {field} interviewId: [ObjectId]
+  '       + {field} status: String
+  '       + {field} stage:  String
+  '       + {field} firstName:  String 
+  '       + {field} midName: String
+  '       + {field} lastName:  String 
+  '       + {field} fullName: String 
+  '       + {field} unsignedFullName:  String
+  '       + {field} email:  String
+  '       + {field} phone:  String
+  '       + {field} sex: enum 
+  '       + {field} referral: String 
+  '       + {field} cv: Object
+  '       + {field} hyperlink: String 
+  '       + {field} employer: Object
+  '       + {field} education: Object
+  '       + {field} createdAt:  Date
+  '       + {field} updatedAt: Date
+  '     }
+
+  '     class interviewSchema {
+  '       + {field} interviewer: ObjectId
+  '       + {field} candidateId: ObjectId
+  '       + {field} scheduleBy: String
+  '       + {field} feedback:  Object
+  '       + {field} rate:  enum 
+  '       + {field} comment: String
+  '       + {field} state:  String 
+  '       + {field} interviewDate: Date 
+  '       + {field} duration:  Number
+  '       + {field} createdAt: Date
+  '       + {field} updatedAt: Date
+  '     }
+
+  '     class jobSchema {
+  '       + {field} userId: ObjectId
+  '       + {field} candidateId: [ObjectId]
+  '       + {field} title: String
+  '       + {field} unsignedTitle: String
+  '       + {field} status:  enum 
+  '       + {field} department: enum
+  '       + {field} jobType:  String 
+  '       + {field} location: String 
+  '       + {field} jobDescription:  String
+  '       + {field} jobDescription: String
+  '       + {field} shortDes: String
+  '       + {field} skill: String
+  '       + {field} experience: String
+  '       + {field} minSalary: Number
+  '       + {field} maxSalary: Number
+  '       + {field} currency: String
+  '       + {field} createdAt: Date
+  '       + {field} updatedAt: Date
+  '     }
+
+  '     class tokenSchema {
+  '       + {field} token: String
+  '       + {field} userId: ObjectId
+  '       + {field} type: enum 
+  '       + {field} expires: Date
+  '       + {field} blackedlisted: Boolean
+  '     }
+
+  '     class userSchema {
+  '       + {field} username: String
+  '       + {field} password: String
+  '       + {field} email: String 
+  '       + {field} sex: enum
+  '       + {field} firstName: String 
+  '       + {field} midName: String
+  '       + {field} lastName: String 
+  '       + {field} fullName: String 
+  '       + {field} unsignedFullName: String
+  '       + {field} phone: String
+  '       + {field} address: String
+  '       + {field} dateOfBirth: Date
+  '       + {field} languages: String
+  '       + {field} maritalStatus: String
+  '       + {field} role: enum
+  '       + {field} jobStatus: Object
+  '       + {field} createdAt: Date
+  '       + {field} updatedAt: Date
+
+  '       + {method} isUsernameTaken: Boolean
+  '       + {method} isEmailTaken: Boolean
+  '       + {method} isPasswordMatch: Boolean
+  '       + {method} isPasswordMatch: Boolean
+  '     }
+
+  '     interviewSchema .> userSchema
+  '     jobSchema <..> candidateSchema
+  '     jobSchema ..> userSchema
+  '     candidateSchema <..> interviewSchema 
+  '     tokenSchema <..> userSchema
+  '   }
+  }
 }
 
 

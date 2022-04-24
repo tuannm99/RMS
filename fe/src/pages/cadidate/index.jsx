@@ -86,6 +86,7 @@ function CadidatePage(props) {
       toast.error(`${res.data.message}`);
       return;
     }
+    setCadidateId('');
     toast.success('Delete success!');
 
     if (
