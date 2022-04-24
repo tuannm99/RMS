@@ -20,6 +20,7 @@ class auth.service{
   - {field} eventProducer: event
 
   + {method} loginByUsernamePassword(username: string, password:string): void
+  + {method} forgotPass(username: string, email: string): void
   + {method} logout(refreshToken: string): void
   + {method} refreshAuth(refreshToken: string): void
 }
@@ -54,11 +55,37 @@ class token.service{
 }
 
 class schema.Token {
-
+  + {field} token: String
+  + {field} userId: ObjectId
+  + {field} type: enum 
+  + {field} expires: Date
+  + {field} blackedlisted: Boolean
 }
 
 class schema.User {
+  + {field} username: String
+  + {field} password: String
+  + {field} email: String 
+  + {field} sex: enum
+  + {field} firstName: String 
+  + {field} midName: String
+  + {field} lastName: String 
+  + {field} fullName: String 
+  + {field} unsignedFullName: String
+  + {field} phone: String
+  + {field} address: String
+  + {field} dateOfBirth: Date
+  + {field} languages: String
+  + {field} maritalStatus: String
+  + {field} role: enum
+  + {field} jobStatus: Object
+  + {field} createdAt: Date
+  + {field} updatedAt: Date
 
+  + {method} isUsernameTaken: Boolean
+  + {method} isEmailTaken: Boolean
+  + {method} isPasswordMatch: Boolean
+  + {method} isPasswordMatch: Boolean
 }
 
 auth.controller ..> auth.service

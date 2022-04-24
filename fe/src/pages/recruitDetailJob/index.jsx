@@ -29,6 +29,29 @@ function DetailRecruitPage(props) {
   const { Option } = Select;
   const { TextArea } = Input;
   const [loading, setLoading] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const OPTIONS_SKILL = [
+    '  NODEJS',
+    '  GAAP',
+    '  SCRUM',
+    '  MONGODB',
+    '  MS-OFFICE',
+    '  IDE',
+    '  REACTJS',
+    '  FIXBUG',
+    '  TRAINING',
+    '  MANAGEUSER',
+    '  CONFIGURATION',
+    '  NEW-TECHNOLOGIES',
+    '  MICROSOFT-OFFICE',
+    '  LEADER',
+    '  PHP',
+    '  JAVA',
+    '  HTML',
+    '  CSS',
+    '  REACT-NATIVE',
+    '  WEB-APP',
+  ];
 
   const handleCancel = () => {
     setVisible(false);
@@ -37,6 +60,10 @@ function DetailRecruitPage(props) {
   useEffect(() => {
     fetchJob();
   }, []);
+
+  const handleChangeItem = () => {
+    setSelectedItems(selectedItems);
+  };
 
   const fetchJob = async () => {
     setLoading(true);
@@ -95,7 +122,7 @@ function DetailRecruitPage(props) {
       })
       .catch((err) => console.log(err));
     fetchJob();
-    toast.success('update Status!', {
+    toast.success('update Status Successful!', {
       autoClose: 3000,
     });
   };
@@ -125,9 +152,15 @@ function DetailRecruitPage(props) {
             onSelect={updateStatus}
             className="recruit-Detail-selector"
           >
-            <Option value="published">Published</Option>
-            <Option value="onHold">Hode On</Option>
-            <Option value="deleted">Delete</Option>
+            <Option disabled={job.status === 'published'} value="published">
+              Published
+            </Option>
+            <Option disabled={job.status === 'onHold'} value="onHold">
+              Hode On
+            </Option>
+            <Option disabled={job.status === 'deleted'} value="deleted">
+              Delete
+            </Option>
           </Select>
         </div>
         <DrawerComponent
@@ -149,14 +182,22 @@ function DetailRecruitPage(props) {
             >
               <Row gutter={16}>
                 <Col span={24}>
-                  <Form.Item name="title" label="Title Job">
+                  <Form.Item
+                    name="title"
+                    label="Title Job"
+                    rules={[
+                      { required: true, message: 'Please Enter Job Title' },
+                    ]}
+                  >
                     <Input placeholder="Please enter user name" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
                   <Form.Item
                     name="department"
-                    rules={[{ required: false }]}
+                    rules={[
+                      { required: true, message: 'Please Select Department' },
+                    ]}
                     label="Department"
                   >
                     <Select style={{ width: 300 }}>
@@ -165,7 +206,7 @@ function DetailRecruitPage(props) {
                       <Option value="marketing">Maketing</Option>
                       <Option value="sale">Sale</Option>
                       <Option value="engineering">Engineering</Option>
-                      <Option value="humanResources">HumanResources</Option>
+                      <Option value="humanResources">Human Resources</Option>
                     </Select>
                   </Form.Item>
                 </Col>
@@ -175,11 +216,13 @@ function DetailRecruitPage(props) {
                   <Form.Item
                     name="jobType"
                     label="Job Type"
-                    rules={[{ required: false }]}
+                    rules={[
+                      { required: true, message: 'Please Select Job Type!' },
+                    ]}
                   >
                     <Select style={{ width: 300 }}>
                       <Option value="Full Time">Full Time</Option>
-                      <Option value="Pass Time">Pass Time</Option>
+                      <Option value="Part Time">Pass Time</Option>
                       <Option value="Remote">Internship</Option>
                     </Select>
                   </Form.Item>
@@ -188,7 +231,9 @@ function DetailRecruitPage(props) {
                   <Form.Item
                     name="location"
                     label="Location"
-                    rules={[{ required: false }]}
+                    rules={[
+                      { required: true, message: 'Please Enter Job Location' },
+                    ]}
                   >
                     <Input placeholder="address" />
                   </Form.Item>
@@ -196,14 +241,32 @@ function DetailRecruitPage(props) {
               </Row>
               <Row gutter={24}>
                 <Col span={24}>
-                  <Form.Item name="shortDes" label="Short Description">
+                  <Form.Item
+                    name="shortDes"
+                    label="Short Description"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please Enter Short Description',
+                      },
+                    ]}
+                  >
                     <TextArea rows={4} />
                   </Form.Item>
                 </Col>
               </Row>
               <Row gutter={16}>
                 <Col span={24}>
-                  <Form.Item name="jobDescription" label="Description">
+                  <Form.Item
+                    name="jobDescription"
+                    label="Description"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please Enter Job Description',
+                      },
+                    ]}
+                  >
                     <CKEditor
                       type="string"
                       editor={ClassicEditor}
@@ -223,7 +286,19 @@ function DetailRecruitPage(props) {
                     label="Skills"
                     rules={[{ required: false }]}
                   >
-                    <Input placeholder="skill" />
+                    <Select
+                      mode="multiple"
+                      placeholder="Inserted are removed"
+                      value={selectedItems}
+                      onChange={handleChangeItem}
+                      style={{ width: '100%' }}
+                    >
+                      {OPTIONS_SKILL.map((item) => (
+                        <Select.Option key={item} value={item}>
+                          {item}
+                        </Select.Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -271,7 +346,7 @@ function DetailRecruitPage(props) {
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  Update
                 </Button>
               </Form.Item>
             </Form>

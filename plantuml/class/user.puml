@@ -16,6 +16,7 @@ class user.controller{
 class user.service{
     + {method} createUser(userBody: Object): void
     + {method} getUserByUsername(username: string): void
+    + {method} getUserByUsernameAndEmail(username: string, email: string): void
     + {method} getUserIdFromHeaderToken(authorization: string): void
     + {method} getUsers(filter: Object, options: Object): void
     + {method} getUserById(id: string): void
@@ -28,16 +29,33 @@ class user.router{
     + {field} router: express.Router
 }
 
-class core.multer{
-    + {method} upload(): void
-}
-
 class schema.User {
+  + {field} username: String
+  + {field} password: String
+  + {field} email: String 
+  + {field} sex: enum
+  + {field} firstName: String 
+  + {field} midName: String
+  + {field} lastName: String 
+  + {field} fullName: String 
+  + {field} unsignedFullName: String
+  + {field} phone: String
+  + {field} address: String
+  + {field} dateOfBirth: Date
+  + {field} languages: String
+  + {field} maritalStatus: String
+  + {field} role: enum
+  + {field} jobStatus: Object
+  + {field} createdAt: Date
+  + {field} updatedAt: Date
 
+  + {method} isUsernameTaken: Boolean
+  + {method} isEmailTaken: Boolean
+  + {method} isPasswordMatch: Boolean
+  + {method} isPasswordMatch: Boolean
 }
 
 user.router ..> user.controller
-user.router ..> core.multer
 user.controller ..> user.service
 user.service ..> schema.User
 @enduml

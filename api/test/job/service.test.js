@@ -30,10 +30,10 @@ describe('job service', () => {
       expect(job.candidateId.length).toEqual(1);
       expect(job.department).toEqual(JOB_MOCK_1.department);
       expect(job.jobDescription).toEqual(JOB_MOCK_1.jobDescription);
-      expect(job.skill).toEqual(JOB_MOCK_1.skill);
+      expect(job.skill).toEqual([JOB_MOCK_1.skill]);
       expect(job.experience).toEqual(JOB_MOCK_1.experience);
       expect(job.shortDes).toEqual(JOB_MOCK_1.shortDes);
-      expect(job.jobType).toEqual(JOB_MOCK_1.jobType);
+      expect(job.jobType).toEqual([JOB_MOCK_1.jobType]);
     });
 
     it('should create job failed - wrong department', async () => {
@@ -61,16 +61,16 @@ describe('job service', () => {
       expect(jobs.results.length).toEqual(2);
       expect(jobs.results[0].department).toEqual(JOB_MOCK_1.department);
       expect(jobs.results[0].jobDescription).toEqual(JOB_MOCK_1.jobDescription);
-      expect(jobs.results[0].skill).toEqual(JOB_MOCK_1.skill);
+      expect(jobs.results[0].skill).toEqual([JOB_MOCK_1.skill]);
       expect(jobs.results[0].experience).toEqual(JOB_MOCK_1.experience);
       expect(jobs.results[0].shortDes).toEqual(JOB_MOCK_1.shortDes);
-      expect(jobs.results[0].jobType).toEqual(JOB_MOCK_1.jobType);
+      expect(jobs.results[0].jobType).toEqual([JOB_MOCK_1.jobType]);
       expect(jobs.results[1].department).toEqual(JOB_MOCK_2.department);
       expect(jobs.results[1].jobDescription).toEqual(JOB_MOCK_2.jobDescription);
-      expect(jobs.results[1].skill).toEqual(JOB_MOCK_2.skill);
+      expect(jobs.results[1].skill).toEqual([JOB_MOCK_2.skill]);
       expect(jobs.results[1].experience).toEqual(JOB_MOCK_2.experience);
       expect(jobs.results[1].shortDes).toEqual(JOB_MOCK_2.shortDes);
-      expect(jobs.results[1].jobType).toEqual(JOB_MOCK_2.jobType);
+      expect(jobs.results[1].jobType).toEqual([JOB_MOCK_2.jobType]);
     });
   });
 
@@ -85,16 +85,16 @@ describe('job service', () => {
       expect(jobs.results.length).toEqual(2);
       expect(jobs.results[0].department).toEqual(JOB_MOCK_1.department);
       expect(jobs.results[0].jobDescription).toEqual(JOB_MOCK_1.jobDescription);
-      expect(jobs.results[0].skill).toEqual(JOB_MOCK_1.skill);
+      expect(jobs.results[0].skill).toEqual([JOB_MOCK_1.skill]);
       expect(jobs.results[0].experience).toEqual(JOB_MOCK_1.experience);
       expect(jobs.results[0].shortDes).toEqual(JOB_MOCK_1.shortDes);
-      expect(jobs.results[0].jobType).toEqual(JOB_MOCK_1.jobType);
+      expect(jobs.results[0].jobType).toEqual([JOB_MOCK_1.jobType]);
       expect(jobs.results[1].department).toEqual(JOB_MOCK_3.department);
       expect(jobs.results[1].jobDescription).toEqual(JOB_MOCK_3.jobDescription);
-      expect(jobs.results[1].skill).toEqual(JOB_MOCK_3.skill);
+      expect(jobs.results[1].skill).toEqual([JOB_MOCK_3.skill]);
       expect(jobs.results[1].experience).toEqual(JOB_MOCK_3.experience);
       expect(jobs.results[1].shortDes).toEqual(JOB_MOCK_3.shortDes);
-      expect(jobs.results[1].jobType).toEqual(JOB_MOCK_3.jobType);
+      expect(jobs.results[1].jobType).toEqual([JOB_MOCK_3.jobType]);
     });
 
     it('should it not get published job', async () => {
@@ -117,10 +117,10 @@ describe('job service', () => {
       expect(job.candidateId.length).toEqual(1);
       expect(job.department).toEqual(JOB_MOCK_1.department);
       expect(job.jobDescription).toEqual(JOB_MOCK_1.jobDescription);
-      expect(job.skill).toEqual(JOB_MOCK_1.skill);
+      expect(job.skill).toEqual([JOB_MOCK_1.skill]);
       expect(job.experience).toEqual(JOB_MOCK_1.experience);
       expect(job.shortDes).toEqual(JOB_MOCK_1.shortDes);
-      expect(job.jobType).toEqual(JOB_MOCK_1.jobType);
+      expect(job.jobType).toEqual([JOB_MOCK_1.jobType]);
     });
 
     it('should job id not found', async () => {
@@ -143,10 +143,10 @@ describe('job service', () => {
       expect(job.title).toEqual(body.title);
       expect(job.department).toEqual(JOB_MOCK_1.department);
       expect(job.jobDescription).toEqual(body.jobDescription);
-      expect(job.skill).toEqual(JOB_MOCK_1.skill);
+      expect(job.skill).toEqual([JOB_MOCK_1.skill]);
       expect(job.experience).toEqual(JOB_MOCK_1.experience);
       expect(job.shortDes).toEqual(JOB_MOCK_1.shortDes);
-      expect(job.jobType).toEqual(JOB_MOCK_1.jobType);
+      expect(job.jobType).toEqual([JOB_MOCK_1.jobType]);
     });
 
     it('should job id not found', async () => {

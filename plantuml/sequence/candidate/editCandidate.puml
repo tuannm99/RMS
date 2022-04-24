@@ -22,9 +22,9 @@ end
 
 candidateController -> candidateService: findByIdAndUpdate()
 activate candidateService
-candidateService -> Mongodb: findById()
 
 alt#Gold #LightBlue Successful case
+    candidateService -> Mongodb: findById()
     activate Mongodb
     Mongodb -> Mongodb: Validate
     Mongodb --> candidateService: success

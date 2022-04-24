@@ -3,7 +3,7 @@
 
 skinparam classAttributeIconSize 0
 class candidate.controller{
-    - {field} candidateService: object
+    - {field} candidateservice: object
 
     + {method} addCandidate(req: express.Request, res: express.Response): void
     + {method} getAllCandidate(req: express.Request, res: express.Response): void
@@ -25,11 +25,46 @@ class candidate.router{
 }
 
 class schema.Candidate {
-
+    + {field} jobId: ObjectId
+    + {field} interviewId: [ObjectId]
+    + {field} status: String
+    + {field} stage:  String
+    + {field} firstName:  String 
+    + {field} midName: String
+    + {field} lastName:  String 
+    + {field} fullName: String 
+    + {field} unsignedFullName:  String
+    + {field} email:  String
+    + {field} phone:  String
+    + {field} sex: enum 
+    + {field} referral: String 
+    + {field} cv: Object
+    + {field} hyperlink: String 
+    + {field} employer: Object
+    + {field} education: Object
+    + {field} createdAt:  Date
+    + {field} updatedAt: Date
 }
 
 class schema.Job {
-
+    + {field} userId: ObjectId
+    + {field} candidateId: [ObjectId]
+    + {field} title: String
+    + {field} unsignedTitle: String
+    + {field} status:  enum 
+    + {field} department: enum
+    + {field} jobType:  String 
+    + {field} location: String 
+    + {field} jobDescription:  String
+    + {field} jobDescription: String
+    + {field} shortDes: String
+    + {field} skill: String
+    + {field} experience: String
+    + {field} minSalary: Number
+    + {field} maxSalary: Number
+    + {field} currency: String
+    + {field} createdAt: Date
+    + {field} updatedAt: Date
 }
 
 candidate.router ..> candidate.controller
