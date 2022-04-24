@@ -1,4 +1,4 @@
-@startuml addCandidate
+@startuml delete Candidate
 !theme reddress-lightblue
 
 autonumber 1.1
@@ -9,32 +9,33 @@ boundary candidateService
 database Mongodb
 
 
-User -> UI: add candidate
-activate UI
+User -> UI: delete candidate 
 UI -> candidateController: call api
 activate candidateController
+
 alt#Gold #LightBlue Successful case
     candidateController -> candidateController: checkAuth()
 else #Pink Failure
     candidateController --> UI: auth error
     UI --> User: display error
 end
-candidateController -> candidateService: createCandidate()
-activate candidateService
+
+candidateController -> candidateService: deleteCandidateById()
 
 alt#Gold #LightBlue Successful case
-    candidateService -> Mongodb: save()
+    activate candidateService
+    candidateService -> Mongodb: findAndDelete()
     activate Mongodb
-    Mongodb -> Mongodb: validate
+    Mongodb -> Mongodb: Validate
     Mongodb --> candidateService: success
     candidateService --> candidateController: candidateData
     candidateController --> UI: candidateData
     UI --> User: display data
 else #Pink Failure
     Mongodb --> candidateService: mongoose exception
-    deactivate candidateService
     deactivate Mongodb
     candidateService --> candidateController: redirect exception
+    deactivate candidateService
     candidateController --> UI: error message
     deactivate candidateController
     UI --> User: show error

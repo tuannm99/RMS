@@ -11,23 +11,35 @@ database Mongodb
 User -> UI: add job
 activate UI
 UI -> jobController: call api
-deactivate UI
 activate jobController
-jobController -> jobController: checkAuth()
-jobController -> jobService: createJob()
-activate jobService
-jobService -> Mongodb: getJob()
-activate Mongodb
-Mongodb -> Mongodb: Validate
-Mongodb --> jobService: success
-deactivate Mongodb
-jobService --> jobController: jobData
-deactivate jobService
-jobController --> UI: data
-deactivate jobController
-activate UI
-UI --> User: display data
-deactivate UI
 
+alt#Gold #LightBlue Successful case
+    jobController -> jobController: checkAuth()
+else #Pink Failure
+    jobController --> UI: auth error
+    UI --> User: display error
+end
+
+jobController -> jobService: createJob()
+
+alt#Gold #LightBlue Successful case
+    activate jobService
+    jobService -> Mongodb: query()
+    activate Mongodb
+    Mongodb -> Mongodb: Validate
+    Mongodb --> jobService: success
+    jobService --> jobController: jobData
+    jobController --> UI: data
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> jobService: mongoose exception
+    deactivate Mongodb
+    jobService --> jobController: redirect exception
+    deactivate jobService
+    jobController --> UI: error message
+    deactivate jobController
+    UI --> User: show error
+    deactivate UI
+end
 
 @enduml

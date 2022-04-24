@@ -50,6 +50,9 @@ function RecruitPage(props) {
   const [formModal] = Form.useForm();
   const [ckeditorData, setCkeditorData] = useState('');
   const { TextArea } = Input;
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedJobType, setSelectedJobType] = useState([]);
+
   const DEPARTMENT = {
     administration: 'Administration',
     sale: 'Sale',
@@ -59,6 +62,31 @@ function RecruitPage(props) {
     finance: 'Finance',
     engineering: 'Engineering',
   };
+
+  const OPTIONS_TYPE = ['   Full Time', '  Part Time', '  Remote'];
+
+  const OPTIONS_SKILL = [
+    '  NODEJS',
+    '  GAAP',
+    '  SCRUM',
+    '  MONGODB',
+    '  MS-OFFICE',
+    '  IDE',
+    '  REACTJS',
+    '  FIXBUG',
+    '  TRAINING',
+    '  MANAGEUSER',
+    '  CONFIGURATION',
+    '  NEW-TECHNOLOGIES',
+    '  MICROSOFT-OFFICE',
+    '  LEADER',
+    '  PHP',
+    '  JAVA',
+    '  HTML',
+    '  CSS',
+    '  REACT-NATIVE',
+    '  WEB-APP',
+  ];
 
   const beautyDepartment = (val) => {
     let newVal;
@@ -156,6 +184,14 @@ function RecruitPage(props) {
       loadDataJobs();
       onclose();
     });
+  };
+
+  const handleChangeItem = () => {
+    setSelectedItems(selectedItems);
+  };
+
+  const handleChangeJobType = () => {
+    setSelectedJobType(selectedJobType);
   };
 
   return (
@@ -279,7 +315,7 @@ function RecruitPage(props) {
                             <UserOutlined /> {item.location} |{' '}
                           </span>
                         )}
-                        {item.jobType && <span>{item.jobType}</span>}
+                        {item.jobType && <span>{item.jobType[0]}</span>}
                       </div>
                     </div>
                     {userAccount.role === 'hiringManager' && (
@@ -344,10 +380,18 @@ function RecruitPage(props) {
                 label="Job Type"
                 rules={[{ required: true, message: 'Please Select Job Type!' }]}
               >
-                <Select style={{ width: 300 }}>
-                  <Option value="Full Time">Full Time</Option>
-                  <Option value="Part Time">Part Time</Option>
-                  <Option value="Remote">Internship</Option>
+                <Select
+                  mode="multiple"
+                  placeholder="Inserted are removed"
+                  value={selectedJobType}
+                  onChange={handleChangeJobType}
+                  style={{ width: '100%' }}
+                >
+                  {OPTIONS_SKILL.map((item) => (
+                    <Select.Option key={item} value={item}>
+                      {item}
+                    </Select.Option>
+                  ))}
                 </Select>
               </Form.Item>
             </Col>
@@ -405,12 +449,20 @@ function RecruitPage(props) {
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item
-                name="skill"
-                label="Skills"
-                rules={[{ required: false }]}
-              >
-                <Input placeholder="skill" />
+              <Form.Item name="skill" label="Skills">
+                <Select
+                  mode="multiple"
+                  placeholder="Inserted are removed"
+                  value={selectedItems}
+                  onChange={handleChangeItem}
+                  style={{ width: '100%' }}
+                >
+                  {OPTIONS_SKILL.map((item) => (
+                    <Select.Option key={item} value={item}>
+                      {item}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col span={12}>
