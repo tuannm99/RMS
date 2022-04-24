@@ -1,0 +1,51 @@
+@startuml refreshTokenSequence
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  authController
+boundary tokenService
+boundary userService
+database Mongodb
+
+User -> UI: refresh token
+activate UI
+UI -> authController: refreshTokenHandler()
+activate authController
+
+authController ->> tokenService: refreshToken()
+activate tokenService
+alt#Gold #LightBlue Successful case
+    tokenService -> tokenService: refreshAuth()
+    tokenService -> userService: getUserById()
+    alt#Gold #LightBlue Successful case
+        userService -> Mongodb: find()
+        Mongodb --> userService: data
+        userService --> tokenService: ok
+    else #Pink Failure
+        Mongodb --> tokenService: exception
+        tokenService --> authController: redirect exception
+        authController --> UI: error message
+        UI --> User: show error
+    end
+    activate Mongodb
+    tokenService -> tokenService: generateAuthToken()
+    tokenService -> Mongodb: save()
+    Mongodb -> Mongodb: validate
+    Mongodb --> tokenService: data
+    tokenService --> authController: tokenData
+    authController --> UI: success message
+    UI --> User: show data
+else #Pink Failure
+    Mongodb --> tokenService: exception
+    deactivate Mongodb
+    tokenService --> authController: redirect exception
+    deactivate tokenService
+    authController --> UI: error message
+    deactivate authController
+    UI --> User: show error
+    deactivate UI
+end
+
+@enduml

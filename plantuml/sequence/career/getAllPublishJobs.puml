@@ -14,20 +14,34 @@ activate UI
 UI -> careerController: call api
 deactivate UI
 activate careerController
-careerController -> careerController: checkAuth()
-careerController -> jobService: getAllPublishedJob()
-activate jobService
-jobService -> Mongodb: find()
-activate Mongodb
-Mongodb -> Mongodb: Validate
-Mongodb --> jobService: success
-deactivate Mongodb
-jobService --> careerController: jobData
-deactivate jobService
-careerController --> UI: jobData
-deactivate careerController
-activate UI
-UI --> User: display data
-deactivate UI
+
+alt#Gold #LightBlue Successful case
+    careerController -> careerController: checkAuth()
+else #Pink Failure
+    careerController --> UI: auth error
+    UI --> User: display error
+end
+
+careerController -> jobService: getAllJob()
+
+alt#Gold #LightBlue Successful case
+    activate jobService
+    jobService -> Mongodb: find()
+    activate Mongodb
+    Mongodb -> Mongodb: Validate
+    Mongodb --> jobService: success
+    jobService --> careerController: jobData
+    careerController --> UI: data
+    UI --> User: display data
+else #Pink Failure
+    Mongodb --> jobService: mongoose exception
+    deactivate Mongodb
+    jobService --> careerController: redirect exception
+    deactivate jobService
+    careerController --> UI: error message
+    deactivate careerController
+    UI --> User: show error
+    deactivate UI
+end
 
 @enduml

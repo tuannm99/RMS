@@ -1,0 +1,38 @@
+@startuml logoutSequence
+!theme reddress-lightblue
+
+autonumber 1.1
+actor User
+participant UI
+control  authController
+boundary authService
+database Mongodb
+
+User -> UI: logout
+activate UI
+UI -> authController: logoutHandler()
+activate authController
+
+authController ->> authService: logout()
+activate authService
+alt#Gold #LightBlue Successful case
+    authService -> Mongodb: deleteByRefreshToken()
+    activate Mongodb
+    Mongodb -> Mongodb: validate
+    Mongodb --> authService: data
+    authService --> authController: tokenData
+    authController --> UI: success message
+    UI --> User: show data
+else #Pink Failure
+    Mongodb --> authService: exception
+    deactivate Mongodb
+    authService --> authController: redirect exception
+    deactivate authService
+    authController --> UI: error message
+    deactivate authController
+    UI --> User: show error
+    deactivate UI
+deactivate UI
+end
+
+@enduml
