@@ -16,11 +16,8 @@ import { getAllJobs } from '../../services/jobService';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-
 import { hasResponseError } from '../../utils/utils';
-
 import { Table } from '../../components';
-
 import { toast } from 'react-toastify';
 import AddCadidate from './components/add_cadidate';
 import CadidateInfo from './components/info_cadidate';

@@ -165,7 +165,7 @@ function DetailRecruitPage(props) {
                       <Option value="marketing">Maketing</Option>
                       <Option value="sale">Sale</Option>
                       <Option value="engineering">Engineering</Option>
-                      <Option value="humanResources">HumanResources</Option>
+                      <Option value="humanResources">Human Resources</Option>
                     </Select>
                   </Form.Item>
                 </Col>
@@ -271,7 +271,7 @@ function DetailRecruitPage(props) {
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  Update
                 </Button>
               </Form.Item>
             </Form>

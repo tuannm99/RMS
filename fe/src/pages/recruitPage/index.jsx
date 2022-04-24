@@ -113,6 +113,14 @@ function RecruitPage(props) {
         loadDataJobs();
       }
     });
+    if (
+      dataJobs?.totalResults > 9 &&
+      dataJobs?.totalResults % param.limit === 1
+    ) {
+      setParam({ ...param, page: dataJobs?.page - 1 });
+    } else {
+      setParam({ ...param });
+    }
   };
 
   const handleChangeData = (pagination) => {
@@ -324,7 +332,7 @@ function RecruitPage(props) {
                   <Option value="marketing">Maketing</Option>
                   <Option value="sale">Sale</Option>
                   <Option value="engineering">Engineering</Option>
-                  <Option value="humanResources">HumanResources</Option>
+                  <Option value="humanResources">Human Resources</Option>
                 </Select>
               </Form.Item>
             </Col>
