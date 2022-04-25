@@ -307,7 +307,7 @@ function UserEditAdd({
           <Col span={12}>
             <Form.Item
               name="sex"
-              label="Sex"
+              label="Gender"
               rules={[{ required: true, message: 'Please select Sex!' }]}
             >
               <Select name="sex">
