@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs, Select, Pagination, Spin, Col } from 'antd';
+import { Tabs, Select, Pagination, Spin, Col, Row } from 'antd';
 import './style.css';
 import { Pie } from '@ant-design/plots';
 import { Table } from '../../components';
@@ -191,10 +191,10 @@ function DashboardPage(props) {
 
   return (
     <>
-      <div className="dashBoard-container">
-        <div className="dashBoard-top">
-          <div className="dashBoard-center-header">
-            Interviews
+      <Row>
+        <Col span={18}>
+          <div className="dashBoard-center-header fr">
+            <span className="mr-8">Interviews</span>
             {userAccount.role !== 'hiringManager' && true ? (
               <Select
                 defaultValue="for me"
@@ -216,118 +216,135 @@ function DashboardPage(props) {
               </Select>
             )}
           </div>
-
-          <Tabs
-            className="dashBoard-top-center"
-            defaultActiveKey="upcoming"
-            onChange={handleTab}
-          >
-            <TabPane tab="Today" key="today">
-              {loading ? (
-                <Col style={{ textAlign: 'center' }} span={24}>
-                  <Spin tip="loading..." />
-                </Col>
-              ) : (
-                <Table
-                  headData={customerTableHead}
-                  renderHead={(item, index) => renderHeadTable(item, index)}
-                  bodyData={dataInterview?.results}
-                  renderBody={(item, index) =>
-                    renderBodyTable(item, index, navigate)
-                  }
-                />
-              )}
-            </TabPane>
-            <TabPane tab="Upcoming" key="upcoming">
-              {loading ? (
-                <Col style={{ textAlign: 'center' }} span={24}>
-                  <Spin tip="loading..." />
-                </Col>
-              ) : (
-                <Table
-                  headData={customerTableHead}
-                  renderHead={(item, index) => renderHeadTable(item, index)}
-                  bodyData={dataInterview?.results}
-                  renderBody={(item, index) =>
-                    renderBodyTable(item, index, navigate)
-                  }
-                />
-              )}
-            </TabPane>
-            <TabPane tab="Recently" key="recently">
-              {loading ? (
-                <Col style={{ textAlign: 'center' }} span={24}>
-                  <Spin tip="loading..." />
-                </Col>
-              ) : (
-                <Table
-                  headData={customerTableHead}
-                  renderHead={(item, index) => renderHeadTable(item, index)}
-                  bodyData={dataInterview?.results}
-                  renderBody={(item, index) =>
-                    renderBodyTable(item, index, navigate)
-                  }
-                />
-              )}
-            </TabPane>
-          </Tabs>
-          {dataInterview && (
-            <Pagination
-              pageSize={dataInterview?.limit}
-              current={dataInterview?.page}
-              total={dataInterview?.totalResults}
-              onChange={handleChangeData}
-              className="fr dashboard-Pagination"
-            />
-          )}
-        </div>
-        <div className="dashboard-right">
-          <h1>SnapShot</h1>
-          <div className="dashboard-snapshot">
-            <div className="dashboard-snapshot-content">
-              <AiOutlineUserAdd className="dashboard-snapshot-icons dashboard-snapshot-total" />{' '}
-              {dataSnapshot}
-              <div>
-                <h5> Total Candidate </h5>
+        </Col>
+        <Col span={18}>
+          <Row>
+            <Col span={24}>
+              <div className="dashBoard-top">
+                <Tabs
+                  className="dashBoard-top-center"
+                  defaultActiveKey="upcoming"
+                  onChange={handleTab}
+                >
+                  <TabPane tab="Today" key="today">
+                    {loading ? (
+                      <Col style={{ textAlign: 'center' }} span={24}>
+                        <Spin tip="loading..." />
+                      </Col>
+                    ) : (
+                      <Table
+                        headData={customerTableHead}
+                        renderHead={(item, index) =>
+                          renderHeadTable(item, index)
+                        }
+                        bodyData={dataInterview?.results}
+                        renderBody={(item, index) =>
+                          renderBodyTable(item, index, navigate)
+                        }
+                      />
+                    )}
+                  </TabPane>
+                  <TabPane tab="Upcoming" key="upcoming">
+                    {loading ? (
+                      <Col style={{ textAlign: 'center' }} span={24}>
+                        <Spin tip="loading..." />
+                      </Col>
+                    ) : (
+                      <Table
+                        headData={customerTableHead}
+                        renderHead={(item, index) =>
+                          renderHeadTable(item, index)
+                        }
+                        bodyData={dataInterview?.results}
+                        renderBody={(item, index) =>
+                          renderBodyTable(item, index, navigate)
+                        }
+                      />
+                    )}
+                  </TabPane>
+                  <TabPane tab="Recently" key="recently">
+                    {loading ? (
+                      <Col style={{ textAlign: 'center' }} span={24}>
+                        <Spin tip="loading..." />
+                      </Col>
+                    ) : (
+                      <Table
+                        headData={customerTableHead}
+                        renderHead={(item, index) =>
+                          renderHeadTable(item, index)
+                        }
+                        bodyData={dataInterview?.results}
+                        renderBody={(item, index) =>
+                          renderBodyTable(item, index, navigate)
+                        }
+                      />
+                    )}
+                  </TabPane>
+                </Tabs>
+                {dataInterview && (
+                  <Pagination
+                    pageSize={dataInterview?.limit}
+                    current={dataInterview?.page}
+                    total={dataInterview?.totalResults}
+                    onChange={handleChangeData}
+                    className="fr dashboard-Pagination"
+                  />
+                )}
+              </div>
+            </Col>
+            <Col span={24}>
+              <div className="dashBoard-center">
+                <Row style={{ background: '#FFF' }} className="mt-32 mb-20">
+                  <Col span={12}>
+                    <Pie {...config} />
+                  </Col>
+                  <Col span={12}>
+                    <Pie {...configChartSex} />
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+          </Row>
+        </Col>
+        <Col span={6}>
+          <div className="dashboard-right">
+            <h1>SnapShot</h1>
+            <div className="dashboard-snapshot">
+              <div className="dashboard-snapshot-content">
+                <div className="mount">
+                  <AiOutlineUserAdd className="dashboard-snapshot-icons dashboard-snapshot-total" />{' '}
+                  <span className="ml-8 number">{dataSnapshot}</span>
+                </div>
+                <div>
+                  <h5> Total Candidate </h5>
+                </div>
+              </div>
+            </div>
+            <div className="dashboard-snapshot">
+              <div className="dashboard-snapshot-content ">
+                <div className="mount">
+                  <AiOutlineUserDelete className="dashboard-snapshot-icons dashboard-snapshot-add" />{' '}
+                  <span className="ml-8 number">{dataCountRejected}</span>
+                </div>
+                <div>
+                  <h5>Candidate Rejected</h5>
+                </div>
+              </div>
+            </div>
+            <div className="dashboard-snapshot dashboard-snapshot-last">
+              <div className="dashboard-snapshot-content">
+                <div className="mount">
+                  <AiOutlineUserSwitch className="dashboard-snapshot-icons" />
+                  <span className="ml-8 number">{DataCountApproved}</span>
+                </div>
+                <div>
+                  <h5>Candidate Approved</h5>
+                </div>
               </div>
             </div>
           </div>
-          <div className="dashboard-snapshot">
-            <div className="dashboard-snapshot-content ">
-              <AiOutlineUserDelete className="dashboard-snapshot-icons dashboard-snapshot-add" />{' '}
-              {dataCountRejected}
-              <div>
-                <h5>Candidate Rejected</h5>
-              </div>
-            </div>
-          </div>
-          <div className="dashboard-snapshot dashboard-snapshot-last">
-            <div className="dashboard-snapshot-content">
-              <AiOutlineUserSwitch className="dashboard-snapshot-icons" />
-              {DataCountApproved}
-              <div>
-                <h5>Candidate Approved</h5>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="dashBoard-center">
-        <div className="dashBoard-center-chartJob">
-          <Pie {...config} />
-        </div>
-        <div className="dashBoard-center-chartJob chartSex">
-          <Pie {...configChartSex} />
-        </div>
-      </div>
-      <div className="dashBoard-center">
-        {/* <div className="dashBoard-center-chartJob">
-          <Pie {...config} />
-        </div> */}
-        {/* <div className="dashBoard-center-chartJob2">
-          <Pie {...configg} />
-        </div> */}
-      </div>
+        </Col>
+      </Row>
     </>
   );
 }
