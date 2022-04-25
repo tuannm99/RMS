@@ -166,7 +166,7 @@ function UserEditAdd({
           toast.error(`${res.data.message} `);
           return;
         }
-        toast.success('Add success');
+        toast.success('Add employee successful!');
       });
       if (
         users.totalResults >= users.limit &&
@@ -248,11 +248,12 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please enter First Name!' },
                 {
-                  pattern: new RegExp(
-                    "^[A-Z][a-z]*(([,.] |[ '-])[A-Za-z][a-z]*)*(.?)( [IVXLCDM]+)?$"
-                  ),
-                  message:
-                    'Please enter the correct format of the name, including letters and the first letter must be capitalized.',
+                  pattern: new RegExp(/^\S+$/),
+                  message: "First Name don't enter space!",
+                },
+                {
+                  pattern: new RegExp(/[a-zA-Z]/),
+                  message: 'First Name exists at least 1 character',
                 },
               ]}
             >
@@ -266,11 +267,12 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please enter Last Name!' },
                 {
-                  pattern: new RegExp(
-                    "^[A-Z][a-z]*(([,.] |[ '-])[A-Za-z][a-z]*)*(.?)( [IVXLCDM]+)?$"
-                  ),
-                  message:
-                    'Please enter the correct format of the name, including letters and the first letter must be capitalized.',
+                  pattern: new RegExp(/^\S+$/),
+                  message: "Last Name don't enter space!",
+                },
+                {
+                  pattern: new RegExp(/[a-zA-Z]/),
+                  message: 'Last Name exists at least 1 character',
                 },
               ]}
             >
@@ -345,8 +347,11 @@ function UserEditAdd({
                 },
                 {
                   min: 6,
-                  message:
-                    'Account must be minimum 6 characters and must character',
+                  message: 'Account must be minimum 6 characters',
+                },
+                {
+                  max: 50,
+                  message: 'Account must be maximum 50 characters',
                 },
               ]}
             >
@@ -373,8 +378,11 @@ function UserEditAdd({
                   },
                   {
                     min: 8,
-                    message:
-                      'Password must be minimum 8 characters and must character',
+                    message: 'Password must be minimum 8 characters',
+                  },
+                  {
+                    max: 50,
+                    message: 'Password must be maximum 50 characters',
                   },
                 ]}
               >

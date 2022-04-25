@@ -55,7 +55,6 @@ export const renderEmployee = ({ setDisableEmp }) => {
             name="designation"
             label="Designation"
             rules={[
-              { required: true, message: 'Please enter designation!' },
               {
                 pattern: new RegExp(/^[^\s].*/),
                 message: 'The start character cannot be a space.',
@@ -71,10 +70,6 @@ export const renderEmployee = ({ setDisableEmp }) => {
             label="Company/ Business Name"
             rules={[
               {
-                required: true,
-                message: 'Please enter Company/ Business Name!',
-              },
-              {
                 pattern: new RegExp(/^[^\s].*/),
                 message: 'The start character cannot be a space.',
               },
@@ -87,11 +82,7 @@ export const renderEmployee = ({ setDisableEmp }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item
-            name="fromto"
-            label="From - To"
-            rules={[{ required: true, message: 'Please enter From - To!' }]}
-          >
+          <Form.Item name="fromto" label="From - To">
             <RangePicker />
           </Form.Item>
         </Col>
@@ -119,7 +110,6 @@ export const renderEducation = ({ setDisableEdu }) => (
           name="degree"
           label="Degree"
           rules={[
-            { required: true, message: 'Please enter degree!' },
             {
               pattern: new RegExp(/^[^\s].*/),
               message: 'The start character cannot be a space.',
@@ -134,10 +124,6 @@ export const renderEducation = ({ setDisableEdu }) => (
           name="universityName"
           label="Institution/ School Name"
           rules={[
-            {
-              required: true,
-              message: 'Please enter Institution/ School Name!',
-            },
             {
               pattern: new RegExp(/^[^\s].*/),
               message: 'The start character cannot be a space.',
@@ -179,11 +165,7 @@ export const renderEducation = ({ setDisableEdu }) => (
         </Form.Item>
       </Col>
       <Col span={16}>
-        <Form.Item
-          name="fromend"
-          label="From - To"
-          rules={[{ required: true, message: 'Please enter From - To!' }]}
-        >
+        <Form.Item name="fromend" label="From - To">
           <RangePicker />
         </Form.Item>
       </Col>
