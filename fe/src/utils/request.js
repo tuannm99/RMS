@@ -17,11 +17,6 @@ request.interceptors.request.use((config) => {
   return config;
 });
 
-const handleError = (error) => {
-  const { response = {} } = error;
-  const { data, status, statusText } = response;
-  return { data, status, statusText };
-};
 request.interceptors.response.use(
   (response) => {
     return response;
