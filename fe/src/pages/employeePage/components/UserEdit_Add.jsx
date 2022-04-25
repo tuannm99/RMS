@@ -347,8 +347,11 @@ function UserEditAdd({
                 },
                 {
                   min: 6,
-                  message:
-                    'Account must be minimum 6 characters and must character',
+                  message: 'Account must be minimum 6 characters',
+                },
+                {
+                  max: 50,
+                  message: 'Account must be maximum 50 characters',
                 },
               ]}
             >
@@ -375,8 +378,11 @@ function UserEditAdd({
                   },
                   {
                     min: 8,
-                    message:
-                      'Password must be minimum 8 characters and must character',
+                    message: 'Password must be minimum 8 characters',
+                  },
+                  {
+                    max: 50,
+                    message: 'Password must be maximum 50 characters',
                   },
                 ]}
               >

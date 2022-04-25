@@ -54,8 +54,11 @@ function ForgotPassPage() {
               },
               {
                 min: 6,
-                message:
-                  'Account must be minimum 6 characters and must character',
+                message: 'Account must be minimum 6 characters',
+              },
+              {
+                max: 50,
+                message: 'Account must be maximum 50 characters',
               },
             ]}
           >

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import moment from 'moment';
+import { hasResponseError } from './utils';
 /**
  * set up axios configuation
  */
@@ -28,9 +28,10 @@ request.interceptors.response.use(
   },
   async (error) => {
     const { response, config } = error;
+    const { data, status, statusText } = response;
     const refreshToken = localStorage.getItem('refreshToken');
     if (response.status !== 401) {
-      return handleError;
+      return { data, status, statusText };
     }
     return axios
       .post('http://rms-fpt.ddns.net:5000/api/v1/auth/refresh-token', {
