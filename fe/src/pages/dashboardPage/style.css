@@ -1,5 +1,4 @@
 .dashBoard-top {
-  margin-top: 10px;
   border-radius: 5px;
   background-color: white;
   padding-left: 20px;
@@ -9,7 +8,6 @@
 
 .dashBoard-center-chartJob {
   margin-top: 20px;
-  background-color: white;
   border-radius: 5px;
 }
 .dashBoard-center-header {
@@ -29,7 +27,7 @@
   font-size: 18px;
   font-weight: 600;
   border-bottom: 1.8px dashed #2c5cc5;
-  background-color: white;
+  background-color: transparent;
 }
 .dashBoard-container {
   display: flex;
@@ -38,23 +36,27 @@
   display: none;
 }
 .dashboard-right {
-  background-color: white;
+  background-color: rgba(67, 221, 149, 0.298);
   position: sticky;
   top: 50px;
   margin: 0 20px;
-  padding: 20px 0;
   width: 100%;
+  min-height: 500px;
   border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 .dashboard-right h1 {
   text-align: center;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 600;
   padding-right: 5px;
+  font-family: 'Times New Roman', Times, serif;
 }
 .dashboard-snapshot {
   margin: 0 auto;
-  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,7 +73,6 @@
   font-size: 20px;
   font-weight: 400;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: darkgreen;
 }
 
 .dashBoard-top-center .ant-tabs-nav .ant-tabs-nav-wrap {

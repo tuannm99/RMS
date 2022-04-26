@@ -192,7 +192,11 @@ function DashboardPage(props) {
   return (
     <>
       <Row>
-        <Col span={18}>
+        <Col
+          md={{ span: 18 }}
+          xl={{ span: 19 }}
+          style={{ marginBottom: '20px' }}
+        >
           <div className="dashBoard-center-header fr">
             <span className="mr-8">Interviews</span>
             {userAccount.role !== 'hiringManager' && true ? (
@@ -217,7 +221,7 @@ function DashboardPage(props) {
             )}
           </div>
         </Col>
-        <Col span={18}>
+        <Col md={{ span: 18 }} xl={{ span: 19 }}>
           <Row>
             <Col span={24}>
               <div className="dashBoard-top">
@@ -294,51 +298,70 @@ function DashboardPage(props) {
             </Col>
             <Col span={24}>
               <div className="dashBoard-center">
-                <Row style={{ background: '#FFF' }} className="mt-32 mb-20">
-                  <Col span={12}>
-                    <Pie {...config} />
+                <Row className="mt-32 mb-20" gutter={20}>
+                  <Col md={{ span: 24 }} xl={{ span: 12 }} className="mb-20">
+                    <div style={{ background: '#FFF', borderRadius: '6px' }}>
+                      <Pie {...config} />
+                    </div>
                   </Col>
-                  <Col span={12}>
-                    <Pie {...configChartSex} />
+                  <Col md={{ span: 24 }} xl={{ span: 12 }} className="mb-20">
+                    <div style={{ background: '#FFF', borderRadius: '6px' }}>
+                      <Pie {...configChartSex} />
+                    </div>
                   </Col>
                 </Row>
               </div>
             </Col>
           </Row>
         </Col>
-        <Col span={6}>
+        <Col md={{ span: 6 }} xl={{ span: 5 }}>
           <div className="dashboard-right">
             <h1>SnapShot</h1>
             <div className="dashboard-snapshot">
               <div className="dashboard-snapshot-content">
                 <div className="mount">
-                  <AiOutlineUserAdd className="dashboard-snapshot-icons dashboard-snapshot-total" />{' '}
-                  <span className="ml-8 number">{dataSnapshot}</span>
+                  <AiOutlineUserAdd
+                    className="dashboard-snapshot-icons dashboard-snapshot-total"
+                    style={{ color: 'steelblue' }}
+                  />{' '}
+                  <span className="ml-8 number" style={{ color: 'steelblue' }}>
+                    {dataSnapshot}
+                  </span>
                 </div>
                 <div>
-                  <h5> Total Candidate </h5>
+                  <h5 style={{ color: 'steelblue' }}> Total Candidate </h5>
                 </div>
               </div>
             </div>
             <div className="dashboard-snapshot">
               <div className="dashboard-snapshot-content ">
                 <div className="mount">
-                  <AiOutlineUserDelete className="dashboard-snapshot-icons dashboard-snapshot-add" />{' '}
-                  <span className="ml-8 number">{dataCountRejected}</span>
+                  <AiOutlineUserDelete
+                    className="dashboard-snapshot-icons dashboard-snapshot-add"
+                    style={{ color: 'red' }}
+                  />{' '}
+                  <span className="ml-8 number" style={{ color: 'red' }}>
+                    {dataCountRejected}
+                  </span>
                 </div>
                 <div>
-                  <h5>Candidate Rejected</h5>
+                  <h5 style={{ color: 'red' }}>Candidate Rejected</h5>
                 </div>
               </div>
             </div>
             <div className="dashboard-snapshot dashboard-snapshot-last">
               <div className="dashboard-snapshot-content">
                 <div className="mount">
-                  <AiOutlineUserSwitch className="dashboard-snapshot-icons" />
-                  <span className="ml-8 number">{DataCountApproved}</span>
+                  <AiOutlineUserSwitch
+                    className="dashboard-snapshot-icons"
+                    style={{ color: 'darkgreen' }}
+                  />
+                  <span className="ml-8 number" style={{ color: 'darkgreen' }}>
+                    {DataCountApproved}
+                  </span>
                 </div>
                 <div>
-                  <h5>Candidate Approved</h5>
+                  <h5 style={{ color: 'darkgreen' }}>Candidate Approved</h5>
                 </div>
               </div>
             </div>
