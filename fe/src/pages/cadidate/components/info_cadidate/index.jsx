@@ -264,7 +264,12 @@ function CadidateInfo(props) {
               <TabPane tab="Interviews" key="3" className="pl-20 pr-20">
                 <Interview />
               </TabPane>
-              <TabPane tab="Mail" key="4" className="pl-20 pr-20">
+              <TabPane
+                tab="Mail"
+                key="4"
+                className="pl-20 pr-20"
+                disabled={account?.role !== 'hiringManager' && true}
+              >
                 <Mail />
               </TabPane>
             </Tabs>

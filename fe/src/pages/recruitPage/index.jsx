@@ -256,7 +256,7 @@ function RecruitPage(props) {
                 md={{ span: 12 }}
                 lg={{ span: 8 }}
                 xl={{ span: 6 }}
-                xxl={{ span: 3 }}
+                xxl={{ span: 4 }}
                 key={item.id}
                 className="mb-24"
               >

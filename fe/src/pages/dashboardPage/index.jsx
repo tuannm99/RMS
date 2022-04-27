@@ -75,7 +75,7 @@ function DashboardPage(props) {
     } else if (key === 'recently') {
       setParam({ ...param, sortBy: 'interviewDate:desc', interviewDate: key });
     } else if (key === 'today') {
-      setParam({ ...param, sortBy: 'interviewDate:desc', interviewDate: key });
+      setParam({ ...param, sortBy: 'interviewDate:asc', interviewDate: key });
     }
   }
 
