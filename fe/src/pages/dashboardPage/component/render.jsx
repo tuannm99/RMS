@@ -33,15 +33,20 @@ export const renderBodyTable = (item, index, navigate) =>
   item.candidateId != null && (
     <tr key={item.id} style={styles.tr}>
       <td style={styles.td}>{item.candidateId.fullName}</td>
-      <td
-        className="pl-8 cu"
-        style={{ ...styles.td, color: '#2c5cc5', cursor: 'pointer' }}
-        onClick={() => {
-          navigate(`/profile/${item.interviewer.id}`);
-        }}
-      >
-        {item.interviewer.fullName}
-      </td>
+      {item.interviewer != null ? (
+        <td
+          className="pl-8 cu"
+          style={{ ...styles.td, color: '#2c5cc5', cursor: 'pointer' }}
+          onClick={() => {
+            navigate(`/profile/${item.interviewer.id}`);
+          }}
+        >
+          {item.interviewer.fullName}
+        </td>
+      ) : (
+        <td></td>
+      )}
+
       <td>
         <div className="mb-0">
           {moment(item?.interviewDate).format('DD-MM-YYYY').toString()} -{' '}
