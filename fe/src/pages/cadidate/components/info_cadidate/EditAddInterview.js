@@ -63,12 +63,16 @@ function EditAddInterview(props) {
 
   const disabledDate = (current) => {
     // Can not select days before today and today
-    return current && current < moment().endOf('day');
+    const now = new Date();
+    return current < now;
   };
 
-  const range = (start, end) => {
+  const range = (start, end, start1, end1) => {
     const result = [];
     for (let i = start; i < end; i++) {
+      result.push(i);
+    }
+    for (let i = start1; i < end1; i++) {
       result.push(i);
     }
     return result;
@@ -76,10 +80,12 @@ function EditAddInterview(props) {
 
   const disabledDateTime = () => {
     return {
+      disabledHours: () => {
+        return range(0, 8, 19, 24);
+      },
       disabledSeconds: () => range(0, 60),
     };
   };
-
   const desc = ['contact', 'test', 'technical', 'cultureFit'];
 
   const durationTime = [
@@ -94,7 +100,6 @@ function EditAddInterview(props) {
   ];
 
   const onFinish = async (values) => {
-    console.log(values);
     let body = {
       interviewer: values?.Interviewer,
       interviewDate: values?.interviewDate?._d.toISOString(),
@@ -130,7 +135,6 @@ function EditAddInterview(props) {
     await getAllInterviews(cadidate?.id);
     onclose();
   };
-
   return (
     <DrawerComponent
       title="SCHEDULE INTERVIEW"
@@ -145,54 +149,6 @@ function EditAddInterview(props) {
         initialValues={{ prefix: '+84' }}
       >
         <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name="interviewDate"
-              label="Interview Date "
-              rules={[
-                { required: true, message: 'Please enter Interview Date !' },
-              ]}
-            >
-              <DatePicker
-                style={{ width: '100%' }}
-                format="YYYY-MM-DD HH:mm:ss"
-                disabledDate={disabledDate}
-                disabledTime={disabledDateTime}
-                showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                showNow={false}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="Duration"
-              label="Duration"
-              rules={[{ required: true, message: 'Please enter Duration!' }]}
-            >
-              <Select style={{ width: '100%' }}>
-                {durationTime.map((item, index) => (
-                  <Option value={item.value} key={index}>
-                    {item.label}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="Stages"
-              label="Stages"
-              rules={[{ required: true, message: 'Please enter Stages!' }]}
-            >
-              <Select style={{ width: '100%' }}>
-                {desc.map((item, index) => (
-                  <Option value={item} key={index}>
-                    {item}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col>
           <Col span={12}>
             <Form.Item
               name="Interviewer"
@@ -232,15 +188,69 @@ function EditAddInterview(props) {
               </Select>
             </Form.Item>
           </Col>
+          <>
+            <Col span={12}>
+              <Form.Item
+                name="Stages"
+                label="Stages"
+                rules={[{ required: true, message: 'Please enter Stages!' }]}
+              >
+                <Select style={{ width: '100%' }}>
+                  {desc.map((item, index) => (
+                    <Option value={item} key={index}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="interviewDate"
+                label="Interview Date "
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please enter Interview Date !',
+                  },
+                ]}
+              >
+                <DatePicker
+                  style={{ width: '100%' }}
+                  format="YYYY-MM-DD HH:mm:ss"
+                  disabledDate={disabledDate}
+                  disabledTime={disabledDateTime}
+                  showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                  showNow={false}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="Duration"
+                label="Duration"
+                rules={[{ required: true, message: 'Please enter Duration!' }]}
+              >
+                <Select style={{ width: '100%' }}>
+                  {durationTime.map((item, index) => (
+                    <Option value={item.value} key={index}>
+                      {item.label}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="btn-submit"
+              style={{ position: 'absolute', top: '10px', right: '15px' }}
+            >
+              {interviewerId ? `Edit Schedule` : 'Add Schedule'}
+            </Button>
+          </>
         </Row>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className="btn-submit"
-          style={{ position: 'absolute', top: '10px', right: '15px' }}
-        >
-          {interviewerId ? `Edit Schedule` : 'Add Schedule'}
-        </Button>
       </Form>
     </DrawerComponent>
   );
