@@ -2,7 +2,7 @@ import React from 'react';
 import './styles.css';
 import { Button, Divider, Form, Input, Popconfirm } from 'antd';
 import { NavLink } from 'react-router-dom';
-import { changPassRequestService } from '../../services/authServices';
+import { forgotRequestService } from '../../services/authServices';
 import { toast } from 'react-toastify';
 import {
   UserOutlined,
@@ -22,7 +22,7 @@ function ForgotPassPage() {
       toast.error('Please enter your email and username!');
       return;
     }
-    changPassRequestService(params).then((res) => {
+    forgotRequestService(params).then((res) => {
       if (res.status < 200 || res.status > 300) {
         toast.error(res.data.message);
         return;
@@ -54,8 +54,11 @@ function ForgotPassPage() {
               },
               {
                 min: 6,
-                message:
-                  'Account must be minimum 6 characters and must character',
+                message: 'Account must be minimum 6 characters',
+              },
+              {
+                max: 50,
+                message: 'Account must be maximum 50 characters',
               },
             ]}
           >

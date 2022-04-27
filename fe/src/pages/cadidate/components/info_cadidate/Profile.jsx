@@ -6,17 +6,22 @@ import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { Row, Col, Button, Upload } from 'antd';
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
-import { cadidate } from '../../../../redux/stores/cadidate/selectors';
-import { editCadidate } from '../../../../redux/stores/cadidate/actions';
+import {
+  cadidate,
+  cadidate_Id,
+} from '../../../../redux/stores/cadidate/selectors';
+import { getCadidate } from '../../../../redux/stores/cadidate/actions';
 import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { imgURL } from '../../../../utils/utils';
+import { hasResponseError, imgURL } from '../../../../utils/utils';
 import { compose } from 'recompose';
+import { toast } from 'react-toastify';
+import { updateCadidateServices } from '../../../../services/cadidateServices';
 
 function Profile(props) {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
-  const { cadidate, account, editCadidate } = props;
+  const { cadidate, account, id, getCadidate } = props;
 
   const [pdfFile, setPdfFile] = useState(null);
   const [nameFile, setNameFile] = useState(null);
@@ -52,7 +57,13 @@ function Profile(props) {
   const handleChangeCv = async () => {
     const formRes = new FormData();
     formRes.append('cv', file);
-    await editCadidate({ id: cadidate?.id, body: formRes });
+    const resEdit = await updateCadidateServices({ id, body: formRes });
+    if (hasResponseError(resEdit)) {
+      toast.error(resEdit.data.message);
+      return;
+    }
+    toast.success(`Edit information candidate success!`);
+    getCadidate(id);
   };
 
   return (
@@ -106,9 +117,10 @@ function Profile(props) {
 const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
   account: selectUserInfor,
+  id: cadidate_Id,
 });
 const mapDispatchToProps = (dispatch) => ({
-  editCadidate: (payload) => dispatch(editCadidate(payload)),
+  getCadidate: (payload) => dispatch(getCadidate(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 export default compose(withConnect)(Profile);

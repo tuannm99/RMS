@@ -40,11 +40,12 @@ function FormInfo(props) {
             rules={[
               { required: true, message: 'Please enter First Name!' },
               {
-                pattern: new RegExp(
-                  "^[A-Z][a-z]*(([,.] |[ '-])[A-Za-z][a-z]*)*(.?)( [IVXLCDM]+)?$"
-                ),
-                message:
-                  'Please enter the correct format of the name, including letters and the first letter must be capitalized.',
+                pattern: new RegExp(/^\S+$/),
+                message: "First Name don't enter space!",
+              },
+              {
+                pattern: new RegExp(/[a-zA-Z]/),
+                message: 'First Name exists at least 1 character',
               },
             ]}
           >
@@ -72,11 +73,12 @@ function FormInfo(props) {
             rules={[
               { required: true, message: 'Please enter Last Name!' },
               {
-                pattern: new RegExp(
-                  "^[A-Z][a-z]*(([,.] |[ '-])[A-Za-z][a-z]*)*(.?)( [IVXLCDM]+)?$"
-                ),
-                message:
-                  'Please enter the correct format of the name, including letters and the first letter must be capitalized.',
+                pattern: new RegExp(/^\S+$/),
+                message: "Last Name don't enter space!",
+              },
+              {
+                pattern: new RegExp(/[a-zA-Z]/),
+                message: 'Last Name exists at least 1 character',
               },
             ]}
           >
@@ -86,7 +88,7 @@ function FormInfo(props) {
         <Col span={12}>
           <Form.Item
             name="sex"
-            label="Sex"
+            label="Gender"
             rules={[{ required: true, message: 'Please select Sex!' }]}
           >
             <Select name="sex">

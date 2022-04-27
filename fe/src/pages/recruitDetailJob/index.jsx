@@ -29,6 +29,29 @@ function DetailRecruitPage(props) {
   const { Option } = Select;
   const { TextArea } = Input;
   const [loading, setLoading] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const OPTIONS_SKILL = [
+    '  NODEJS',
+    '  GAAP',
+    '  SCRUM',
+    '  MONGODB',
+    '  MS-OFFICE',
+    '  IDE',
+    '  REACTJS',
+    '  FIXBUG',
+    '  TRAINING',
+    '  MANAGEUSER',
+    '  CONFIGURATION',
+    '  NEW-TECHNOLOGIES',
+    '  MICROSOFT-OFFICE',
+    '  LEADER',
+    '  PHP',
+    '  JAVA',
+    '  HTML',
+    '  CSS',
+    '  REACT-NATIVE',
+    '  WEB-APP',
+  ];
 
   const handleCancel = () => {
     setVisible(false);
@@ -37,6 +60,10 @@ function DetailRecruitPage(props) {
   useEffect(() => {
     fetchJob();
   }, []);
+
+  const handleChangeItem = () => {
+    setSelectedItems(selectedItems);
+  };
 
   const fetchJob = async () => {
     setLoading(true);
@@ -195,7 +222,7 @@ function DetailRecruitPage(props) {
                   >
                     <Select style={{ width: 300 }}>
                       <Option value="Full Time">Full Time</Option>
-                      <Option value="Pass Time">Pass Time</Option>
+                      <Option value="Part Time">Pass Time</Option>
                       <Option value="Remote">Internship</Option>
                     </Select>
                   </Form.Item>
@@ -259,7 +286,19 @@ function DetailRecruitPage(props) {
                     label="Skills"
                     rules={[{ required: false }]}
                   >
-                    <Input placeholder="skill" />
+                    <Select
+                      mode="multiple"
+                      placeholder="Inserted are removed"
+                      value={selectedItems}
+                      onChange={handleChangeItem}
+                      style={{ width: '100%' }}
+                    >
+                      {OPTIONS_SKILL.map((item) => (
+                        <Select.Option key={item} value={item}>
+                          {item}
+                        </Select.Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
                 <Col span={12}>
