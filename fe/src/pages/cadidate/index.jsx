@@ -159,7 +159,7 @@ function CadidatePage(props) {
           <strong>Jobs: </strong>
           <Select
             showSearch
-            style={{ width: '100%' }}
+            style={{ width: '150px' }}
             placeholder="Search to Select"
             optionFilterProp="children"
             filterOption={(input, option) =>
@@ -168,7 +168,6 @@ function CadidatePage(props) {
             value={jobId}
             onSelect={handleSelctJob}
             showArrow={true}
-            style={{ width: 150 }}
           >
             <Option value="">All</Option>
             {jobs.map((item) => (
