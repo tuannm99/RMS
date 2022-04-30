@@ -57,8 +57,8 @@ const candidateSchema = new mongoose.Schema({
   employer: {
     designation: { type: String },
     bussinessName: { type: String },
-    from: { type: Date, default: Date.now },
-    to: { type: Date, default: Date.now },
+    from: { type: Date },
+    to: { type: Date },
     summary: { type: String },
   },
   education: {
