@@ -63,7 +63,7 @@ function CadidatePage(props) {
   }, [jobId, params, getAllCadidates]);
 
   useEffect(() => {
-    getAllJobs().then((res) => {
+    getAllJobs({ limit: 1000 }).then((res) => {
       setjobs(res.data.results);
     });
     return () => {
@@ -76,7 +76,7 @@ function CadidatePage(props) {
   };
 
   const onCloseInfoCadi = () => {
-    getAllCadidates(params);
+    getAllCadidates({ ...params });
     setVisibleInfoCadi(false);
   };
 
@@ -90,7 +90,7 @@ function CadidatePage(props) {
     toast.success('Delete success!');
 
     if (
-      cadidates?.totalResults > 9 &&
+      cadidates?.totalResults >= params.limit &&
       cadidates?.totalResults % params.limit === 1
     ) {
       setParams({ ...params, page: cadidates?.page - 1 });

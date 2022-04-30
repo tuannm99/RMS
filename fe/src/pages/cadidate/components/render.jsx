@@ -48,13 +48,14 @@ export const prefixSelector = (
 export const renderEmployee = ({ setDisableEmp }) => {
   return (
     <>
-      <Divider orientation="left">Employee</Divider>
+      <Divider orientation="left">Employeer</Divider>
       <Row gutter={16}>
         <Col span={24}>
           <Form.Item
             name="designation"
             label="Designation"
             rules={[
+              { required: true, message: 'please enter designation' },
               {
                 pattern: new RegExp(/^[^\s].*/),
                 message: 'The start character cannot be a space.',
@@ -70,6 +71,10 @@ export const renderEmployee = ({ setDisableEmp }) => {
             label="Company/ Business Name"
             rules={[
               {
+                required: true,
+                message: 'please enter Company/ Business Name',
+              },
+              {
                 pattern: new RegExp(/^[^\s].*/),
                 message: 'The start character cannot be a space.',
               },
@@ -82,7 +87,11 @@ export const renderEmployee = ({ setDisableEmp }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="fromto" label="From - To">
+          <Form.Item
+            name="fromto"
+            label="From - To"
+            rules={[{ required: true, message: 'please enter date' }]}
+          >
             <RangePicker />
           </Form.Item>
         </Col>
@@ -93,7 +102,7 @@ export const renderEmployee = ({ setDisableEmp }) => {
         </Col>
         <Col span={24}>
           <div className="cu" onClick={() => setDisableEmp(false)}>
-            <MinusCircleFilled style={{ color: 'red' }} /> Remove Employee
+            <MinusCircleFilled style={{ color: 'red' }} /> Remove Employeer
           </div>
         </Col>
       </Row>
@@ -110,6 +119,7 @@ export const renderEducation = ({ setDisableEdu }) => (
           name="degree"
           label="Degree"
           rules={[
+            { required: true, message: 'please enter Degree' },
             {
               pattern: new RegExp(/^[^\s].*/),
               message: 'The start character cannot be a space.',
@@ -124,6 +134,10 @@ export const renderEducation = ({ setDisableEdu }) => (
           name="universityName"
           label="Institution/ School Name"
           rules={[
+            {
+              required: true,
+              message: 'please enter Institution/ School Name',
+            },
             {
               pattern: new RegExp(/^[^\s].*/),
               message: 'The start character cannot be a space.',
@@ -141,6 +155,8 @@ export const renderEducation = ({ setDisableEdu }) => (
           name="fieldOfStudy"
           label="Field of study/ Major"
           rules={[
+            { required: true, message: 'please enter Field of study/ Major' },
+
             {
               pattern: new RegExp(/^[^\s].*/),
               message: 'The start character cannot be a space.',
@@ -155,6 +171,7 @@ export const renderEducation = ({ setDisableEdu }) => (
           name="grade"
           label="Grade"
           rules={[
+            { required: true, message: 'please enter Grade' },
             {
               pattern: new RegExp(/^[^\s].*/),
               message: 'The start character cannot be a space.',
@@ -165,7 +182,11 @@ export const renderEducation = ({ setDisableEdu }) => (
         </Form.Item>
       </Col>
       <Col span={16}>
-        <Form.Item name="fromend" label="From - To">
+        <Form.Item
+          name="fromend"
+          label="From - To"
+          rules={[{ required: true, message: 'please enter date' }]}
+        >
           <RangePicker />
         </Form.Item>
       </Col>

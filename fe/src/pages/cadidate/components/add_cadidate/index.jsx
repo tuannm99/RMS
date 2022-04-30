@@ -74,27 +74,25 @@ function AddCadidate(props) {
       email: values?.email,
       phone: `${values?.prefix}${values?.phone}`,
       hyperlink: values?.hyperlink,
-      resume: {
-        employer: {
-          designation: '',
-          bussinessName: '',
-          from: '',
-          to: '',
-          summary: '',
-        },
-        education: {
-          degree: '',
-          universityName: '',
-          fieldOfStudy: '',
-          grade: '',
-          from: '',
-          end: '',
-        },
+      employer: {
+        designation: '',
+        bussinessName: '',
+        from: '',
+        to: '',
+        summary: '',
+      },
+      education: {
+        degree: '',
+        universityName: '',
+        fieldOfStudy: '',
+        grade: '',
+        from: '',
+        end: '',
       },
     };
     if (disableEmp) {
-      body.resume = {
-        ...body.resume,
+      body = {
+        ...body,
         employer: {
           designation: values?.designation,
           bussinessName: values?.bussinessName,
@@ -105,8 +103,8 @@ function AddCadidate(props) {
       };
     }
     if (disableEdu) {
-      body.resume = {
-        ...body.resume,
+      body = {
+        ...body,
         education: {
           degree: values?.degree,
           universityName: values?.universityName,
