@@ -158,10 +158,17 @@ function CadidatePage(props) {
         <Col flex={1} className="mt-12">
           <strong>Jobs: </strong>
           <Select
+            showSearch
+            style={{ width: '100%' }}
+            placeholder="Search to Select"
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
             value={jobId}
-            style={{ width: 125 }}
             onSelect={handleSelctJob}
             showArrow={true}
+            style={{ width: 150 }}
           >
             <Option value="">All</Option>
             {jobs.map((item) => (
