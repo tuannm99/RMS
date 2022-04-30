@@ -152,7 +152,7 @@ function FormInfo(props) {
         <Row>
           <Col>
             <div onClick={() => setDisableEmp(true)} className="cu">
-              <PlusCircleFilled style={{ color: 'green' }} /> Add Employee
+              <PlusCircleFilled style={{ color: 'green' }} /> Add Employer
             </div>
           </Col>
         </Row>

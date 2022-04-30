@@ -17,8 +17,6 @@ import { updateCadidateServices } from '../../../../services/cadidateServices';
 import { hasResponseError } from '../../../../utils/utils';
 import { toast } from 'react-toastify';
 
-const dateFormatList = 'DD/MM/YYYY';
-
 function EditCadidateProfile(props) {
   const [form] = Form.useForm();
   const { id, cadidate, getCadidate } = props;
@@ -26,6 +24,9 @@ function EditCadidateProfile(props) {
   const [disableEdu, setDisableEdu] = useState(false);
 
   useEffect(() => {
+    form.resetFields();
+    setDisableEdu(false);
+    setDisableEdu(false);
     if (id !== '') {
       form.setFieldsValue({
         firstName: cadidate?.firstName,
@@ -36,40 +37,48 @@ function EditCadidateProfile(props) {
         sex: cadidate?.sex,
         hyperlink: cadidate?.hyperlink,
       });
-      if (disableEmp) {
+      if (
+        cadidate?.employer?.designation ||
+        cadidate?.employer?.bussinessName ||
+        cadidate?.employer?.summary ||
+        cadidate?.employer?.from
+      ) {
+        setDisableEmp(true);
         form.setFieldsValue({
-          designation: cadidate?.resume?.employer?.designation,
-          bussinessName: cadidate?.resume?.employer?.bussinessName,
-
-          summary: cadidate?.resume?.employer?.summary,
+          designation: cadidate?.employer?.designation,
+          bussinessName: cadidate?.employer?.bussinessName,
+          summary: cadidate?.employer?.summary,
+          fromto: [
+            moment(cadidate?.employer?.from),
+            moment(cadidate?.employer?.to),
+          ],
         });
-        if (cadidate?.resume?.employer?.from !== undefined) {
-          form.setFieldsValue({
-            fromto: [
-              moment(cadidate?.resume?.employer?.from, dateFormatList[0]),
-              moment(cadidate?.resume?.employer?.to, dateFormatList[1]),
-            ],
-          });
-        }
+      } else {
+        setDisableEmp(false);
       }
-      if (disableEdu) {
+      if (
+        cadidate?.education?.degree ||
+        cadidate?.education?.universityName ||
+        cadidate?.education?.fieldOfStudy ||
+        cadidate?.education?.grade ||
+        cadidate?.education?.from
+      ) {
+        setDisableEdu(true);
         form.setFieldsValue({
-          degree: cadidate?.resume?.education?.degree,
-          universityName: cadidate?.resume?.education?.universityName,
-          fieldOfStudy: cadidate?.resume?.education?.fieldOfStudy,
-          grade: cadidate?.resume?.education?.grade,
+          degree: cadidate?.education?.degree,
+          universityName: cadidate?.education?.universityName,
+          fieldOfStudy: cadidate?.education?.fieldOfStudy,
+          grade: cadidate?.education?.grade,
+          fromend: [
+            moment(cadidate?.education?.from),
+            moment(cadidate?.education?.end),
+          ],
         });
-        if (cadidate?.resume?.education?.from !== undefined) {
-          form.setFieldsValue({
-            fromend: [
-              moment(cadidate?.resume?.education?.from, dateFormatList[0]),
-              moment(cadidate?.resume?.education?.end, dateFormatList[1]),
-            ],
-          });
-        }
+      } else {
+        setDisableEdu(false);
       }
     }
-  }, [id, cadidate, disableEmp, disableEdu, form]);
+  }, [id, cadidate, form]);
 
   const onFinish = async (values) => {
     const formRes = new FormData();
@@ -87,33 +96,33 @@ function EditCadidateProfile(props) {
       sex: values?.sex,
       hyperlink: values?.hyperlink,
       cv: cadidate?.cv,
-      resume: {},
     };
     if (disableEmp) {
-      body.resume = {
-        ...body.resume,
+      body = {
+        ...body,
         employer: {
-          designation: values.designation,
-          bussinessName: values.bussinessName,
-          from: values.fromto[0]._d.toISOString(),
-          to: values.fromto[1]._d.toISOString(),
-          summary: values.summary,
+          designation: values?.designation,
+          bussinessName: values?.bussinessName,
+          from: values?.fromto[0]?._d?.toISOString(),
+          to: values?.fromto[1]?._d?.toISOString(),
+          summary: values?.summary,
         },
       };
     }
     if (disableEdu) {
-      body.resume = {
-        ...body.resume,
+      body = {
+        ...body,
         education: {
           degree: values?.degree,
           universityName: values?.universityName,
           fieldOfStudy: values?.fieldOfStudy,
           grade: values?.grade,
-          from: values?.fromend[0]._d.toISOString(),
-          end: values?.fromend[1]._d.toISOString(),
+          from: values?.fromend[0]?._d?.toISOString(),
+          end: values?.fromend[1]?._d?.toISOString(),
         },
       };
     }
+
     formRes.append('candidate', JSON.stringify(body));
     const resEdit = await updateCadidateServices({ id, body: formRes });
     if (hasResponseError(resEdit)) {
@@ -121,6 +130,7 @@ function EditCadidateProfile(props) {
       return;
     }
     toast.success(`Edit information candidate success!`);
+    form.resetFields();
     getCadidate(id);
     props.handleCancel();
   };

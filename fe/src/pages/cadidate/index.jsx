@@ -63,7 +63,7 @@ function CadidatePage(props) {
   }, [jobId, params, getAllCadidates]);
 
   useEffect(() => {
-    getAllJobs().then((res) => {
+    getAllJobs({ limit: 1000 }).then((res) => {
       setjobs(res.data.results);
     });
     return () => {
@@ -76,7 +76,7 @@ function CadidatePage(props) {
   };
 
   const onCloseInfoCadi = () => {
-    getAllCadidates(params);
+    getAllCadidates({ ...params });
     setVisibleInfoCadi(false);
   };
 
@@ -90,7 +90,7 @@ function CadidatePage(props) {
     toast.success('Delete success!');
 
     if (
-      cadidates?.totalResults > 9 &&
+      cadidates?.totalResults >= params.limit &&
       cadidates?.totalResults % params.limit === 1
     ) {
       setParams({ ...params, page: cadidates?.page - 1 });
@@ -158,8 +158,14 @@ function CadidatePage(props) {
         <Col flex={1} className="mt-12">
           <strong>Jobs: </strong>
           <Select
+            showSearch
+            style={{ width: '150px' }}
+            placeholder="Search to Select"
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
             value={jobId}
-            style={{ width: 125 }}
             onSelect={handleSelctJob}
             showArrow={true}
           >
@@ -231,9 +237,9 @@ function CadidatePage(props) {
               onSelect={handleSelectSort}
               showArrow={true}
             >
-              <Option value="createdAt">All</Option>
+              <Option value="updatedAt">All</Option>
               <Option value="fullName">Name</Option>
-              <Option value="updatedAt">Update At</Option>
+              <Option value="createdAt">Applied Date</Option>
               <Option value="email">Email</Option>
               <Option value="stage">Stage</Option>
             </Select>

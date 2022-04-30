@@ -24,6 +24,10 @@ function Interview(props) {
   const [interviewer, setInterviewer] = useState(null);
   const [interviewerId, setInterviewerId] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [idInterviewer, setIdIntervier] = useState(null);
+  const [dateInterview, setDateInterview] = useState(null);
+  const [nameInterviewer, setNameInterviewer] = useState(null);
+
   const {
     cadidate,
     getAllInterviews,
@@ -51,6 +55,10 @@ function Interview(props) {
   };
 
   const onClose = () => {
+    setIdIntervier(null);
+    setNameInterviewer(null);
+    setDateInterview(null);
+    setInterviewerId(null);
     setVisible(false);
   };
 
@@ -177,6 +185,12 @@ function Interview(props) {
         visible={visible}
         onclose={onClose}
         interviewerId={interviewerId}
+        idInterviewer={idInterviewer}
+        setIdIntervier={setIdIntervier}
+        dateInterview={dateInterview}
+        setDateInterview={setDateInterview}
+        nameInterviewer={nameInterviewer}
+        setNameInterviewer={setNameInterviewer}
       />
       <UpdateFeedBack
         isModalVisible={isModalVisible}
