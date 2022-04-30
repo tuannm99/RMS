@@ -48,7 +48,7 @@ export const prefixSelector = (
 export const renderEmployee = ({ setDisableEmp }) => {
   return (
     <>
-      <Divider orientation="left">Employeer</Divider>
+      <Divider orientation="left">Employer</Divider>
       <Row gutter={16}>
         <Col span={24}>
           <Form.Item
@@ -102,7 +102,7 @@ export const renderEmployee = ({ setDisableEmp }) => {
         </Col>
         <Col span={24}>
           <div className="cu" onClick={() => setDisableEmp(false)}>
-            <MinusCircleFilled style={{ color: 'red' }} /> Remove Employeer
+            <MinusCircleFilled style={{ color: 'red' }} /> Remove Employer
           </div>
         </Col>
       </Row>

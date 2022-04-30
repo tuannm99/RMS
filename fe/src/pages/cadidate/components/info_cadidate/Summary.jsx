@@ -104,7 +104,7 @@ function Summary(props) {
           </Col>
           <Col span={24} className="content-feedBack">
             <FileDoneOutlined className="icon-des" />
-            <div className="lead-section-title">Employee</div>
+            <div className="lead-section-title">Employer</div>
             <Row className="content-feedBack-row">
               <Col
                 span={24}
