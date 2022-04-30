@@ -19,7 +19,10 @@ const createInterview = async (interviewData) => {
     const startExist = moment.utc(interview.toJSON().interviewDate).toDate().getTime();
     const endExist = startExist + interview.toJSON().duration * 60 * 1000;
     if (startInput < endExist && endInput > startExist) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'User has busy for another interview');
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        'User has busy for another interview, please check calender!'
+      );
     }
   });
 
@@ -90,14 +93,15 @@ const getInterviewById = async (id) => {
  */
 const editInterviewById = async (id, interviewData) => {
   // check overlap date
+  const currentInterview = await Interview.findById(id);
   const interviews = await Interview.find({
-    interviewDate: { $gte: Date.now(), $ne: interviewData.interviewDate },
+    interviewDate: { $gte: Date.now(), interviewer: interviewData.interviewer },
   });
-  const currentInterviewDate = await Interview.findById(id);
-  interviews.filter((interview) => {
-    return !(interview.interviewDate === currentInterviewDate.interviewDate);
+
+  const removeUpdatedDate = interviews.filter((interview) => {
+    return !(interview.interviewDate === currentInterview.interviewDate);
   });
-  interviews.forEach((interview) => {
+  removeUpdatedDate.forEach((interview) => {
     const startInput = moment.utc(interviewData.interviewDate).toDate().getTime();
     const endInput = startInput + interviewData.duration * 60 * 1000;
     const startExist = moment.utc(interview.toJSON().interviewDate).toDate().getTime();
