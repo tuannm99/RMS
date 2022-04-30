@@ -17,8 +17,6 @@ import { updateCadidateServices } from '../../../../services/cadidateServices';
 import { hasResponseError } from '../../../../utils/utils';
 import { toast } from 'react-toastify';
 
-const dateFormatList = 'DD/MM/YYYY';
-
 function EditCadidateProfile(props) {
   const [form] = Form.useForm();
   const { id, cadidate, getCadidate } = props;
