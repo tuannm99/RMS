@@ -40,7 +40,7 @@ function RecruitPage(props) {
   const { Option } = Select;
   const { userAccount } = props;
   const [param, setParam] = useState({
-    limit: 10,
+    limit: 12,
     page: 1,
   });
 
@@ -142,7 +142,7 @@ function RecruitPage(props) {
       }
     });
     if (
-      dataJobs?.totalResults > 9 &&
+      dataJobs?.totalResults >= param.limit &&
       dataJobs?.totalResults % param.limit === 1
     ) {
       setParam({ ...param, page: dataJobs?.page - 1 });
