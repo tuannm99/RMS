@@ -95,12 +95,14 @@ const editInterviewById = async (id, interviewData) => {
   // check overlap date
   const currentInterview = await Interview.findById(id);
   const interviews = await Interview.find({
-    interviewDate: { $gte: Date.now(), interviewer: interviewData.interviewer },
+    interviewDate: { $gte: Date.now() },
+    interviewer: interviewData.interviewer,
   });
 
   const removeUpdatedDate = interviews.filter((interview) => {
-    return !(interview.interviewDate === currentInterview.interviewDate);
+    return !(interview.interviewDate.toString() === currentInterview.interviewDate.toString());
   });
+
   removeUpdatedDate.forEach((interview) => {
     const startInput = moment.utc(interviewData.interviewDate).toDate().getTime();
     const endInput = startInput + interviewData.duration * 60 * 1000;
