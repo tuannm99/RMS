@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Breadcrumb, Button, Input, Form, Select, Col, Row, Spin } from 'antd';
 import { Link } from 'react-router-dom';
-import { set } from 'lodash';
+import { defaults, set } from 'lodash';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -30,6 +30,8 @@ function DetailRecruitPage(props) {
   const { TextArea } = Input;
   const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [inputMin, setInputMin] = useState('');
+  const [inputMax, setInputMax] = useState('');
   const OPTIONS_SKILL = [
     '  NODEJS',
     '  GAAP',
@@ -51,6 +53,14 @@ function DetailRecruitPage(props) {
     '  CSS',
     '  REACT-NATIVE',
     '  WEB-APP',
+  ];
+
+  const OPTIONS_JOB_TYPE = [
+    '   Full Time',
+    '   Part Time',
+    '   Internship',
+    '   Seasonal',
+    '   Remote',
   ];
 
   const handleCancel = () => {
@@ -101,21 +111,32 @@ function DetailRecruitPage(props) {
       jobDescription: ckeditorData === '' ? job.jobDescription : ckeditorData,
     };
     setLoading(true);
-    updateJobs(jobValue.id, body)
-      .then((res) => {
-        setJob(res.data);
-      })
-      .catch((err) => console.log(err));
-    fetchJob();
-    toast.success('Edit Job Detail Successful!', {
-      autoClose: 3000,
-    });
+    if (inputMin < inputMax) {
+      updateJobs(jobValue.id, body)
+        .then((res) => {
+          setJob(res.data);
+        })
+        .catch((err) => console.log(err));
+      fetchJob();
+      toast.success('Edit Job Detail Successful!', {
+        autoClose: 3000,
+      });
+    } else if (inputMin === '') {
+      toast.success('Edit Job Detail Successful!', {
+        autoClose: 3000,
+      });
+    } else {
+      toast.error('min salary must be less than max salary!', {
+        autoClose: 3000,
+      });
+    }
     setLoading(false);
     handleCancel();
   };
 
   const updateStatus = (value) => {
     const body = { status: value };
+
     updateJobs(id, body)
       .then((res) => {
         setJob(res.data);
@@ -220,10 +241,18 @@ function DetailRecruitPage(props) {
                       { required: true, message: 'Please Select Job Type!' },
                     ]}
                   >
-                    <Select style={{ width: 300 }}>
-                      <Option value="Full Time">Full Time</Option>
-                      <Option value="Part Time">Pass Time</Option>
-                      <Option value="Remote">Internship</Option>
+                    <Select
+                      mode="multiple"
+                      placeholder="Inserted are removed"
+                      value={selectedItems}
+                      onChange={handleChangeItem}
+                      style={{ width: '100%' }}
+                    >
+                      {OPTIONS_JOB_TYPE.map((item) => (
+                        <Select.Option key={item} value={item}>
+                          {item}
+                        </Select.Option>
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>
@@ -323,7 +352,11 @@ function DetailRecruitPage(props) {
                     label="Salary"
                     rules={[{ required: false }]}
                   >
-                    <Input placeholder="minSalary" />
+                    <Input
+                      placeholder="minSalary"
+                      value={inputMin}
+                      onInput={(e) => setInputMin(e.target.value)}
+                    />
                   </Form.Item>
                 </Col>
 
@@ -333,7 +366,11 @@ function DetailRecruitPage(props) {
                     label=" "
                     rules={[{ required: false }]}
                   >
-                    <Input placeholder="maxSalary" />
+                    <Input
+                      placeholder="maxSalary"
+                      value={inputMax}
+                      onInput={(e) => setInputMax(e.target.value)}
+                    />
                   </Form.Item>
                 </Col>
               </Row>

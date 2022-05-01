@@ -39,6 +39,8 @@ function RecruitPage(props) {
   const [dataJobs, setDataJobs] = useState();
   const { Option } = Select;
   const { userAccount } = props;
+  const [inputMin, setInputMin] = useState('');
+  const [inputMax, setInputMax] = useState('');
   const [param, setParam] = useState({
     limit: 10,
     page: 1,
@@ -63,8 +65,6 @@ function RecruitPage(props) {
     engineering: 'Engineering',
   };
 
-  const OPTIONS_TYPE = ['   Full Time', '  Part Time', '  Remote'];
-
   const OPTIONS_SKILL = [
     '  NODEJS',
     '  GAAP',
@@ -86,6 +86,14 @@ function RecruitPage(props) {
     '  CSS',
     '  REACT-NATIVE',
     '  WEB-APP',
+  ];
+
+  const OPTIONS_JOB_TYPE = [
+    '   Full Time',
+    '   Part Time',
+    '   Internship',
+    '   Seasonal',
+    '   Remote',
   ];
 
   const beautyDepartment = (val) => {
@@ -172,20 +180,31 @@ function RecruitPage(props) {
 
   const onFinish = (values) => {
     const body = { ...values, jobDescription: ckeditorData };
-    createJobs(body).then((res) => {
-      if (hasResponseError(res)) {
-        toast.error(`${res.data.message}`, {
+    if (inputMin < inputMax) {
+      createJobs(body).then((res) => {
+        if (hasResponseError(res)) {
+          toast.error(`${res.data.message}`, {
+            autoClose: 3000,
+          });
+        }
+        toast.success('Create Job Successful!', {
           autoClose: 3000,
         });
-      }
-      toast.success('Create Job Successful!', {
+        loadDataJobs();
+        onclose();
+      });
+    } else if (inputMin >= inputMax) {
+      toast.error('min salary must be less than max salary!', {
         autoClose: 3000,
       });
-      loadDataJobs();
-      onclose();
-    });
+    }
+    console.log(inputMin);
+    console.log(inputMax);
   };
 
+  const onChange = (value) => {
+    console.log(value);
+  };
   const handleChangeItem = () => {
     setSelectedItems(selectedItems);
   };
@@ -230,7 +249,7 @@ function RecruitPage(props) {
           <Option value="deleted">deleted</Option>
         </Select>
         <div>
-          <Link to={`/Career`} target="_blank" className="mr-12">
+          <Link to={`/career`} target="_blank" className="mr-12">
             <Button type="primary">Career</Button>
           </Link>
           <Button
@@ -276,7 +295,7 @@ function RecruitPage(props) {
                     }
                     actions={[
                       item.status === 'published' ? (
-                        <Link to={`/Career/${item.id}`} target="_blank">
+                        <Link to={`/career/${item.id}`} target="_blank">
                           <div>
                             <GlobalOutlined key="global" className="mr-8" />
                             {item.status}
@@ -387,7 +406,7 @@ function RecruitPage(props) {
                   onChange={handleChangeJobType}
                   style={{ width: '100%' }}
                 >
-                  {OPTIONS_SKILL.map((item) => (
+                  {OPTIONS_JOB_TYPE.map((item) => (
                     <Select.Option key={item} value={item}>
                       {item}
                     </Select.Option>
@@ -487,7 +506,11 @@ function RecruitPage(props) {
                 label="Salary"
                 rules={[{ required: false }]}
               >
-                <Input placeholder="minSalary" />
+                <Input
+                  placeholder="minSalary"
+                  value={inputMin}
+                  onInput={(e) => setInputMin(e.target.value)}
+                />
               </Form.Item>
             </Col>
             <Form.Item
@@ -503,7 +526,11 @@ function RecruitPage(props) {
                 label=" "
                 rules={[{ required: false }]}
               >
-                <Input placeholder="maxSalary" />
+                <Input
+                  placeholder="maxSalary"
+                  value={inputMax}
+                  onInput={(e) => setInputMax(e.target.value)}
+                />
               </Form.Item>
             </Col>
           </Row>
