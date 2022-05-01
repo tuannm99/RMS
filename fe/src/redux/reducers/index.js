@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import authReducers from '../stores/auth/reducer';
 import jobReducers from '../stores/job/reducer';
+import interviewReducers from '../stores/interview/reducer';
 import cadidateReducers from '../stores/cadidate/reducer';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -28,6 +29,7 @@ export default function createReducer() {
       persistCadidateJobConfig,
       cadidateReducers
     ),
+    interviewReducers,
   });
   return rootReducer;
 }

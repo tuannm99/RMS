@@ -46,7 +46,7 @@ function EmployeePage(props) {
   const [loading, setLoading] = useState(false);
   const [params, setParams] = useState({
     fullName: '',
-    limit: 10,
+    limit: 12,
     page: 1,
     sortBy: '',
   });
@@ -130,9 +130,9 @@ function EmployeePage(props) {
   const handleSelectRole = (value) => {
     if (value === 'all') {
       delete params['role'];
-      setParams({ ...params });
+      setParams({ ...params, page: 1 });
     } else {
-      setParams({ ...params, role: value });
+      setParams({ ...params, role: value, page: 1 });
     }
   };
 
@@ -174,7 +174,10 @@ function EmployeePage(props) {
       return;
     }
     toast.success('Delete success!');
-    if (users.totalResults > 9 && users.totalResults % users.limit === 1) {
+    if (
+      users.totalResults >= params.limit &&
+      users.totalResults % users.limit === 1
+    ) {
       setParams({ ...params, page: users.page - 1 });
     } else {
       setParams({ ...params });

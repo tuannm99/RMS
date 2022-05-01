@@ -162,7 +162,7 @@ describe('job service', () => {
     it('should job id not found', async () => {
       await jobService.createJob(JOB_MOCK_2);
 
-      await expect(() => jobService.getJobById(JOB_MOCK_1._id)).rejects.toThrow(
+      await expect(() => jobService.getJobById(JOB_MOCK_4._id)).rejects.toThrow(
         'No such job found'
       );
     });
@@ -174,12 +174,9 @@ describe('job service', () => {
       await jobService.createJob(JOB_MOCK_4);
 
       await jobService.deleteJobById(JOB_MOCK_1._id);
-      const jobs = await jobService.getAllJob({}, {});
 
-      expect(jobs.results.length).toEqual(3);
-      await expect(() => jobService.getJobById(JOB_MOCK_1._id)).rejects.toThrow(
-        'No such job found'
-      );
+      const job = await jobService.getJobById(JOB_MOCK_1._id);
+      expect(job.status).toEqual('deleted');
     });
   });
 });

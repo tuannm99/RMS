@@ -80,6 +80,9 @@ const getUsers = async (filter, options) => {
     };
     delete filter.unsignedFullName;
   }
+  if (!options.limit) {
+    options.limit = 12;
+  }
   const users = await User.paginate(filter, options);
   return users;
 };

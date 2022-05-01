@@ -125,6 +125,18 @@ export function getAllInterviewsServices(id) {
   });
 }
 
+/**
+ * create request get all date interview
+ * @param {*} params
+ * @returns
+ */
+export function getAllInfoInterviewerServices(param) {
+  return request(`${BASE_API}/candidates/interview/all`, {
+    method: 'GET',
+    params: param,
+  });
+}
+
 export function getDetailInterviewsServices(cadidateId, interviewId) {
   return request(
     `${BASE_API}/candidates/${cadidateId}/interview/${interviewId}`,

@@ -18,12 +18,24 @@ import { selectUserInfor } from '../../../../redux/stores/auth/selectors';
 import { hasResponseError } from '../../../../utils/utils';
 import { toast } from 'react-toastify';
 import UpdateFeedBack from './UpdateFeedBack';
+import {
+  interviewerId,
+  idInterviewer,
+  dateInterview,
+  nameInterviewer,
+} from '../../../../redux/stores/interview/selectors';
+import {
+  setDateInterview,
+  setIdIntervier,
+  setInterviewerId,
+  setNameInterviewer,
+} from '../../../../redux/stores/interview/actions';
 
 function Interview(props) {
   const [visible, setVisible] = useState(false);
   const [interviewer, setInterviewer] = useState(null);
-  const [interviewerId, setInterviewerId] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
   const {
     cadidate,
     getAllInterviews,
@@ -31,6 +43,14 @@ function Interview(props) {
     loadingInterviews,
     account,
     loadingCadidate,
+    interviewerId,
+    idInterviewer,
+    dateInterview,
+    nameInterviewer,
+    setDateInterview,
+    setIdIntervier,
+    setInterviewerId,
+    setNameInterviewer,
   } = props;
 
   useEffect(() => {
@@ -51,6 +71,10 @@ function Interview(props) {
   };
 
   const onClose = () => {
+    setIdIntervier(null);
+    setNameInterviewer(null);
+    setDateInterview(null);
+    setInterviewerId(null);
     setVisible(false);
   };
 
@@ -161,7 +185,16 @@ function Interview(props) {
                   </>
                 )}
 
-                <Button className="feedback" onClick={() => showModal(item)}>
+                <Button
+                  className="feedback"
+                  onClick={() => showModal(item)}
+                  disabled={
+                    account?.role === 'hiringManager' ||
+                    account?.id === item?.interviewer?.id
+                      ? false
+                      : true
+                  }
+                >
                   feedback
                 </Button>
               </div>
@@ -173,11 +206,7 @@ function Interview(props) {
           </Col>
         )}
       </Row>
-      <EditAddInterview
-        visible={visible}
-        onclose={onClose}
-        interviewerId={interviewerId}
-      />
+      <EditAddInterview visible={visible} onclose={onClose} />
       <UpdateFeedBack
         isModalVisible={isModalVisible}
         handleOk={handleOk}
@@ -193,9 +222,17 @@ const mapStateToProps = createStructuredSelector({
   loadingInterviews: loadingInterviews,
   loadingCadidate: loadingCadidate,
   account: selectUserInfor,
+  interviewerId: interviewerId,
+  idInterviewer: idInterviewer,
+  dateInterview: dateInterview,
+  nameInterviewer: nameInterviewer,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllInterviews: (payload) => dispatch(getAllInterviews(payload)),
+  setDateInterview: (payload) => dispatch(setDateInterview(payload)),
+  setIdIntervier: (payload) => dispatch(setIdIntervier(payload)),
+  setInterviewerId: (payload) => dispatch(setInterviewerId(payload)),
+  setNameInterviewer: (payload) => dispatch(setNameInterviewer(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

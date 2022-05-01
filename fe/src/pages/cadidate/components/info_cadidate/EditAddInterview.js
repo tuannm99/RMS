@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Row, Form, DatePicker, Select, Empty } from 'antd';
+import {
+  Button,
+  Col,
+  Row,
+  DatePicker,
+  Select,
+  Typography,
+  List,
+  Divider,
+  Spin,
+  Form,
+} from 'antd';
 import moment from 'moment';
 import { DrawerComponent } from '../../../../components';
 import { getAllUsersServices } from '../../../../services/employeeServices';
@@ -15,9 +26,23 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import {
   addIntervierServices,
+  getAllInfoInterviewerServices,
   getDetailInterviewsServices,
   updateIntervierServices,
 } from '../../../../services/cadidateServices';
+import {
+  interviewerId,
+  idInterviewer,
+  dateInterview,
+  nameInterviewer,
+} from '../../../../redux/stores/interview/selectors';
+import {
+  setDateInterview,
+  setIdIntervier,
+  setInterviewerId,
+  setNameInterviewer,
+} from '../../../../redux/stores/interview/actions';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const { Option } = Select;
 
@@ -29,8 +54,15 @@ function EditAddInterview(props) {
     cadidate,
     interviews,
     getAllInterviews,
+    setIdIntervier,
+    idInterviewer,
+    setDateInterview,
+    dateInterview,
+    setNameInterviewer,
+    nameInterviewer,
   } = props;
   const [interviewer, setInterviewer] = useState();
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -38,19 +70,59 @@ function EditAddInterview(props) {
   }, []);
 
   useEffect(() => {
+    if (interviewer && idInterviewer) {
+      const interviewerDetail = interviewer.filter(
+        (item) => item.id === idInterviewer
+      );
+      setNameInterviewer(interviewerDetail);
+    }
+  }, [idInterviewer, interviewer, setNameInterviewer]);
+
+  useEffect(() => {
     if (interviewerId) {
-      getDetailInterviewsServices(cadidate?.id, interviewerId).then((res) => {
-        form.setFieldsValue({
-          Interviewer: res?.data?.interviewer,
-          interviewDate: moment(res?.data?.interviewDate),
-          Stages: res?.data?.stage,
-          Duration: res?.data?.duration,
+      getDetailInterviewsServices(cadidate?.id, interviewerId)
+        .then(setLoading(true))
+        .then((res) => {
+          form.setFieldsValue({
+            Interviewer: res?.data?.interviewer,
+            interviewDate: moment(res?.data?.interviewDate),
+            Stages: res?.data?.stage,
+            Duration: res?.data?.duration,
+          });
+          setIdIntervier(res?.data?.interviewer);
+        })
+        .finally(() => {
+          setLoading(false);
         });
-      });
     } else {
       form.resetFields();
     }
   }, [interviewerId, cadidate?.id, form]);
+
+  useEffect(() => {
+    if (idInterviewer) {
+      getInfo();
+    } else {
+      form.resetFields();
+    }
+  }, [idInterviewer, setDateInterview]);
+
+  const getInfo = () => {
+    getAllInfoInterviewerServices({
+      interviewer: idInterviewer,
+    }).then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(res.data.message);
+        return;
+      }
+      const data = res?.data?.results;
+      const dataFilter = data.filter((item) => {
+        const now = new Date();
+        return moment(now).isBefore(moment(item.interviewDate));
+      });
+      setDateInterview(dataFilter);
+    });
+  };
 
   const getAllInterviewer = async (params) => {
     const res = await getAllUsersServices(params);
@@ -63,23 +135,28 @@ function EditAddInterview(props) {
 
   const disabledDate = (current) => {
     // Can not select days before today and today
-    return current && current < moment().endOf('day');
+    const now = new Date();
+    return current < now;
   };
 
-  const range = (start, end) => {
+  const range = (start, end, start1, end1) => {
     const result = [];
     for (let i = start; i < end; i++) {
       result.push(i);
     }
+    for (let i = start1; i < end1; i++) {
+      result.push(i);
+    }
     return result;
   };
-
   const disabledDateTime = () => {
     return {
+      disabledHours: () => {
+        return range(0, 8, 19, 24);
+      },
       disabledSeconds: () => range(0, 60),
     };
   };
-
   const desc = ['contact', 'test', 'technical', 'cultureFit'];
 
   const durationTime = [
@@ -94,7 +171,6 @@ function EditAddInterview(props) {
   ];
 
   const onFinish = async (values) => {
-    console.log(values);
     let body = {
       interviewer: values?.Interviewer,
       interviewDate: values?.interviewDate?._d.toISOString(),
@@ -124,13 +200,11 @@ function EditAddInterview(props) {
           return;
         }
         toast.success('Add schedule interview success!');
-        form.resetFields();
       }
     }
     await getAllInterviews(cadidate?.id);
     onclose();
   };
-
   return (
     <DrawerComponent
       title="SCHEDULE INTERVIEW"
@@ -138,110 +212,219 @@ function EditAddInterview(props) {
       visible={visible}
       width={600}
     >
-      <Form
-        layout="vertical"
-        onFinish={onFinish}
-        form={form}
-        initialValues={{ prefix: '+84' }}
-      >
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name="interviewDate"
-              label="Interview Date "
-              rules={[
-                { required: true, message: 'Please enter Interview Date !' },
-              ]}
-            >
-              <DatePicker
-                style={{ width: '100%' }}
-                format="YYYY-MM-DD HH:mm:ss"
-                disabledDate={disabledDate}
-                disabledTime={disabledDateTime}
-                showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                showNow={false}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="Duration"
-              label="Duration"
-              rules={[{ required: true, message: 'Please enter Duration!' }]}
-            >
-              <Select style={{ width: '100%' }}>
-                {durationTime.map((item, index) => (
-                  <Option value={item.value} key={index}>
-                    {item.label}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="Stages"
-              label="Stages"
-              rules={[{ required: true, message: 'Please enter Stages!' }]}
-            >
-              <Select style={{ width: '100%' }}>
-                {desc.map((item, index) => (
-                  <Option value={item} key={index}>
-                    {item}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="Interviewer"
-              label="Interviewer"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please enter Interviewer!',
-                },
-              ]}
-            >
-              <Select
-                showSearch
-                style={{ width: '100%' }}
-                placeholder="Search to Select"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
-                filterSort={(optionA, optionB) =>
-                  optionA.children
-                    .toLowerCase()
-                    .localeCompare(optionB.children.toLowerCase())
-                }
-              >
-                {interviewer &&
-                  interviewer.map((item) => {
-                    return (
-                      item.role !== 'admin' && (
-                        <Option value={item.id} key={item.id}>
-                          {item.fullName}
-                        </Option>
-                      )
-                    );
-                  })}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className="btn-submit"
-          style={{ position: 'absolute', top: '10px', right: '15px' }}
-        >
-          {interviewerId ? `Edit Schedule` : 'Add Schedule'}
-        </Button>
-      </Form>
+      {loading && (
+        <Col span={24} className="text-center">
+          <Spin />
+        </Col>
+      )}
+      {!loading && (
+        <>
+          <Form
+            layout="vertical"
+            onFinish={onFinish}
+            form={form}
+            initialValues={{ prefix: '+84' }}
+          >
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="Interviewer"
+                  label="Interviewer"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter Interviewer!',
+                    },
+                  ]}
+                >
+                  <Select
+                    showSearch
+                    style={{ width: '100%' }}
+                    placeholder="Search to Select"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA, optionB) =>
+                      optionA.children
+                        .toLowerCase()
+                        .localeCompare(optionB.children.toLowerCase())
+                    }
+                    onChange={(value) => setIdIntervier(value)}
+                  >
+                    {interviewer &&
+                      interviewer.map((item) => {
+                        return (
+                          item.role !== 'admin' && (
+                            <Option value={item.id} key={item.id}>
+                              {item.fullName}
+                            </Option>
+                          )
+                        );
+                      })}
+                  </Select>
+                </Form.Item>
+              </Col>
+              {idInterviewer && (
+                <>
+                  <Col span={12}>
+                    <Form.Item
+                      name="Stages"
+                      label="Stages"
+                      rules={[
+                        { required: true, message: 'Please enter Stages!' },
+                      ]}
+                    >
+                      <Select style={{ width: '100%' }}>
+                        {desc.map((item, index) => (
+                          <Option value={item} key={index}>
+                            {item}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      name="interviewDate"
+                      label="Interview Date "
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Please enter Interview Date !',
+                        },
+                      ]}
+                    >
+                      <DatePicker
+                        style={{ width: '100%' }}
+                        format="YYYY-MM-DD HH:mm:ss"
+                        disabledDate={disabledDate}
+                        disabledTime={disabledDateTime}
+                        showTime={{
+                          defaultValue: moment('08:00:00', 'HH:mm:ss'),
+                        }}
+                        showNow={false}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      name="Duration"
+                      label="Duration"
+                      rules={[
+                        { required: true, message: 'Please enter Duration!' },
+                      ]}
+                    >
+                      <Select style={{ width: '100%' }}>
+                        {durationTime.map((item, index) => (
+                          <Option value={item.value} key={index}>
+                            {item.label}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="btn-submit"
+                    style={{ position: 'absolute', top: '10px', right: '15px' }}
+                  >
+                    {interviewerId ? `Edit Schedule` : 'Add Schedule'}
+                  </Button>
+                </>
+              )}
+            </Row>
+          </Form>
+          <Row>
+            <Col span={24}>
+              <Row>
+                {dateInterview && nameInterviewer && (
+                  <>
+                    <Col span={24} className="mt-32 mb-32">
+                      <Typography.Text italic>
+                        Schedule interview of
+                      </Typography.Text>
+                      <Typography.Text
+                        type="success"
+                        className="ml-8"
+                        strong
+                        style={{ fontSize: 24 }}
+                      >
+                        {nameInterviewer[0].fullName}
+                      </Typography.Text>
+                    </Col>
+                    <div
+                      id="scrollableDiv"
+                      style={{
+                        width: '100%',
+                        overflow: 'auto',
+                        padding: '0 16px',
+                        border: '1px solid rgba(140, 140, 140, 0.35)',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <InfiniteScroll
+                        dataLength={dateInterview.length}
+                        scrollableTarget="scrollableDiv"
+                        endMessage={
+                          <Divider plain>It is all, nothing more 🤐</Divider>
+                        }
+                      >
+                        <List
+                          dataSource={dateInterview}
+                          renderItem={(item) => (
+                            <List.Item key={item.id}>
+                              <Col span={12}>
+                                <Typography.Text type="danger">
+                                  {moment(item.interviewDate).format(
+                                    'YYYY/MM/DD'
+                                  )}
+                                </Typography.Text>
+                                <Typography.Text
+                                  type="danger"
+                                  className="ml-8 mr-8"
+                                >
+                                  -
+                                </Typography.Text>
+                                <Typography.Text type="danger" className="">
+                                  {moment(item.interviewDate).format('HH:mm')}
+                                </Typography.Text>
+                                <Typography.Text
+                                  type="danger"
+                                  className="ml-8 mr-8"
+                                >
+                                  -
+                                </Typography.Text>
+                                <Typography.Text type="danger">
+                                  {item?.duration < 60
+                                    ? `(${item?.duration}Mins)`
+                                    : item?.duration % 60 !== 0
+                                    ? `(${Math.floor(item?.duration / 60)}Hr${
+                                        item?.duration % 60
+                                      }Mins)`
+                                    : `(${item?.duration / 60}Hr)`}
+                                </Typography.Text>
+                              </Col>
+                              <Col span={12}>
+                                <Typography.Text className="fr" strong mark>
+                                  {item?.candidateId.fullName}
+                                </Typography.Text>
+                              </Col>
+                            </List.Item>
+                          )}
+                        />
+                      </InfiniteScroll>
+                    </div>
+                  </>
+                )}
+              </Row>
+            </Col>
+          </Row>
+        </>
+      )}
     </DrawerComponent>
   );
 }
@@ -249,9 +432,17 @@ function EditAddInterview(props) {
 const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
   interviews: interviews,
+  interviewerId: interviewerId,
+  idInterviewer: idInterviewer,
+  dateInterview: dateInterview,
+  nameInterviewer: nameInterviewer,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllInterviews: (payload) => dispatch(getAllInterviews(payload)),
+  setDateInterview: (payload) => dispatch(setDateInterview(payload)),
+  setIdIntervier: (payload) => dispatch(setIdIntervier(payload)),
+  setInterviewerId: (payload) => dispatch(setInterviewerId(payload)),
+  setNameInterviewer: (payload) => dispatch(setNameInterviewer(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

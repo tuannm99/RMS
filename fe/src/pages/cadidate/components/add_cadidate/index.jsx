@@ -42,8 +42,8 @@ function AddCadidate(props) {
   };
 
   const handleFile = (info) => {
-    if (info.file.originFileObj.size > 1024 * 1024 * 5) {
-      alert('Please choose PDF file less than 5mb!');
+    if (info.file.originFileObj.size > 1024 * 1024 * 1) {
+      alert('Please choose PDF file less than 1mb!');
       return;
     }
     if (info && allowedFiles.includes(info.fileList[0].type)) {
@@ -74,27 +74,25 @@ function AddCadidate(props) {
       email: values?.email,
       phone: `${values?.prefix}${values?.phone}`,
       hyperlink: values?.hyperlink,
-      resume: {
-        employer: {
-          designation: '',
-          bussinessName: '',
-          from: '',
-          to: '',
-          summary: '',
-        },
-        education: {
-          degree: '',
-          universityName: '',
-          fieldOfStudy: '',
-          grade: '',
-          from: '',
-          end: '',
-        },
+      employer: {
+        designation: '',
+        bussinessName: '',
+        from: '',
+        to: '',
+        summary: '',
+      },
+      education: {
+        degree: '',
+        universityName: '',
+        fieldOfStudy: '',
+        grade: '',
+        from: '',
+        end: '',
       },
     };
     if (disableEmp) {
-      body.resume = {
-        ...body.resume,
+      body = {
+        ...body,
         employer: {
           designation: values?.designation,
           bussinessName: values?.bussinessName,
@@ -105,8 +103,8 @@ function AddCadidate(props) {
       };
     }
     if (disableEdu) {
-      body.resume = {
-        ...body.resume,
+      body = {
+        ...body,
         education: {
           degree: values?.degree,
           universityName: values?.universityName,

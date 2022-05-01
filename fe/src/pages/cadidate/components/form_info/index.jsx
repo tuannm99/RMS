@@ -40,8 +40,8 @@ function FormInfo(props) {
             rules={[
               { required: true, message: 'Please enter First Name!' },
               {
-                pattern: new RegExp(/^\S+$/),
-                message: "First Name don't enter space!",
+                pattern: new RegExp(/^[^\s].*/),
+                message: 'The start character cannot be a space.',
               },
               {
                 pattern: new RegExp(/[a-zA-Z]/),
@@ -73,8 +73,8 @@ function FormInfo(props) {
             rules={[
               { required: true, message: 'Please enter Last Name!' },
               {
-                pattern: new RegExp(/^\S+$/),
-                message: "Last Name don't enter space!",
+                pattern: new RegExp(/^[^\s].*/),
+                message: 'The start character cannot be a space.',
               },
               {
                 pattern: new RegExp(/[a-zA-Z]/),
@@ -152,7 +152,7 @@ function FormInfo(props) {
         <Row>
           <Col>
             <div onClick={() => setDisableEmp(true)} className="cu">
-              <PlusCircleFilled style={{ color: 'green' }} /> Add Employee
+              <PlusCircleFilled style={{ color: 'green' }} /> Add Employer
             </div>
           </Col>
         </Row>
