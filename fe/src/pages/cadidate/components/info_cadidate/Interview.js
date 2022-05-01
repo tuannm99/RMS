@@ -185,7 +185,16 @@ function Interview(props) {
                   </>
                 )}
 
-                <Button className="feedback" onClick={() => showModal(item)}>
+                <Button
+                  className="feedback"
+                  onClick={() => showModal(item)}
+                  disabled={
+                    account?.role === 'hiringManager' ||
+                    account?.id === item?.interviewer?.id
+                      ? false
+                      : true
+                  }
+                >
                   feedback
                 </Button>
               </div>
