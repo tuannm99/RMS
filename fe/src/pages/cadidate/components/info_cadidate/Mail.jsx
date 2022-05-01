@@ -14,7 +14,7 @@ function Mail(props) {
   const [form] = Form.useForm();
 
   const [ckeditorData, setCkeditorData] = useState(
-    '<p>Chào bạn,</p><p>Mình là là …… - Chuyên viên nhân sự tại ….. .Cảm ơn Bạnđã quan tâm và ứng tuyển vào vị trí ….. . Theo quy trình tuyển dụng, mình mời bạn tham gia …… và trao đổi chi tiết về công việc theo thông tin sau:</p><p><strong>- Thời gian BẮT ĐẦU …..:</strong> …….<br><strong>- Địa điểm:</strong> …..</p><ul><li><strong>Nội dung …… :</strong> …….</li><li><strong>Thời lượng:</strong> …….</li><li><strong>Ngôn ngữ ……:</strong> ………</li></ul><p>Bạn vui lòng reply email của mình để confirm việc tham dự ……. của mình và lưu ý tham đúng giờ nhé.Để cập nhật và được tư vấn sớm nhất khi có thông tin về các vị trí phù hợp, bạn có thể <i>kết nối với mình qua Zalo …..</i></p><p>Chúc Bạn một ngày vui vẻ!</p>'
+    '<p>Chào bạn,</p><p>Mình là là …… - Chuyên viên nhân sự tại ….. .Cảm ơn Bạn đã quan tâm và ứng tuyển vào vị trí ….. . Theo quy trình tuyển dụng, mình mời bạn tham gia …… và trao đổi chi tiết về công việc theo thông tin sau:</p><p><strong>- Thời gian BẮT ĐẦU …..:</strong> …….<br><strong>- Địa điểm:</strong> …..</p><ul><li><strong>Nội dung …… :</strong> …….</li><li><strong>Thời lượng:</strong> …….</li><li><strong>Ngôn ngữ ……:</strong> ………</li></ul><p>Bạn vui lòng reply email của mình để confirm việc tham dự ……. của mình và lưu ý tham đúng giờ nhé.Để cập nhật và được tư vấn sớm nhất khi có thông tin về các vị trí phù hợp, bạn có thể <i>kết nối với mình qua Zalo …..</i></p><p>Chúc Bạn một ngày vui vẻ!</p>'
   );
   const { cadidate } = props;
 

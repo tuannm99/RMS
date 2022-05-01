@@ -35,6 +35,11 @@ const getAllJob = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(listJob);
 });
 
+const getAllJobShort = catchAsync(async (req, res) => {
+  const listJob = await jobService.getAllJobTitle();
+  res.status(httpStatus.OK).json(listJob);
+});
+
 /**
  * middleware get job by id
  * @param {object} req
@@ -82,6 +87,7 @@ const deleteJob = catchAsync(async (req, res) => {
 module.exports = {
   addJobPosting,
   getAllJob,
+  getAllJobShort,
   getJob,
   editJob,
   changeJobStatus,

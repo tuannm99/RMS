@@ -6,6 +6,7 @@ const jobController = require('./job.controller');
 
 router.get('/', checkAuth(), jobController.getAllJob);
 router.get('/:id', checkAuth(), jobController.getJob);
+router.get('/short/title', jobController.getAllJobShort);
 router.post('/', checkAuth(ROLES.hiringManager), jobController.addJobPosting);
 router.put('/:id', checkAuth(ROLES.hiringManager), jobController.editJob);
 router.put('/:id/status', checkAuth(ROLES.hiringManager), jobController.changeJobStatus);

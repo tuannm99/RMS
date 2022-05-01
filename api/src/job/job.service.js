@@ -38,6 +38,13 @@ const getAllJob = async (filter, options) => {
     };
     delete filter.unsignedTitle;
   }
+  // not showing deleted job
+  if (!filter.status) {
+    filter.status = { $ne: 'deleted' };
+  }
+  if (!options.limit) {
+    options.limit = 12;
+  }
   const listJob = await Job.paginate(filter, options);
   // count all candidate
   const results = listJob.results.map((job) => {
@@ -79,6 +86,11 @@ const getAllPublishedJob = async (filter, options) => {
   return listJob;
 };
 
+const getAllJobTitle = async () => {
+  const listJob = await Job.find({}).sort({ title: 'asc' }).select({ _id: 1, title: 1 });
+  return listJob;
+};
+
 /**
  * show job by id
  * @param {objectId} id
@@ -111,7 +123,13 @@ const editJobById = async (id, jobData) => {
  * @param {objectId} id
  */
 const deleteJobById = async (id) => {
-  const job = await Job.findByIdAndDelete(id);
+  // NOTE: No hard delete
+
+  // const job = await Job.findByIdAndDelete(id);
+  // if (!job) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'No such job found');
+  // }
+  const job = await Job.findByIdAndUpdate(id, { status: 'deleted' }, { new: true });
   if (!job) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such job found');
   }
@@ -120,6 +138,7 @@ const deleteJobById = async (id) => {
 module.exports = {
   createJob,
   getAllJob,
+  getAllJobTitle,
   getAllPublishedJob,
   getJobById,
   editJobById,

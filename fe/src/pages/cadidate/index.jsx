@@ -11,7 +11,7 @@ import {
   setVisibleAddCandi,
 } from '../../redux/stores/cadidate/actions';
 import * as services from '../../services/cadidateServices';
-import { getAllJobs } from '../../services/jobService';
+import { getAllTitleJobs } from '../../services/jobService';
 
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -28,6 +28,18 @@ import {
 } from './components/render';
 import EditAddInterview from './components/info_cadidate/EditAddInterview';
 import { useNavigate } from 'react-router-dom';
+import {
+  interviewerId,
+  idInterviewer,
+  dateInterview,
+  nameInterviewer,
+} from '../../redux/stores/interview/selectors';
+import {
+  setDateInterview,
+  setIdIntervier,
+  setInterviewerId,
+  setNameInterviewer,
+} from '../../redux/stores/interview/actions';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -49,8 +61,20 @@ function CadidatePage(props) {
 
   const [params, setParams] = useState(payload);
 
-  const { getAllCadidates, setCadidateId, setJobId, setVisibleAddCandi } =
-    props;
+  const {
+    getAllCadidates,
+    setCadidateId,
+    setJobId,
+    setVisibleAddCandi,
+    interviewerId,
+    idInterviewer,
+    dateInterview,
+    nameInterviewer,
+    setDateInterview,
+    setIdIntervier,
+    setInterviewerId,
+    setNameInterviewer,
+  } = props;
   const { jobId, userAccount } = props;
   const { loading, cadidates } = props;
 
@@ -63,8 +87,11 @@ function CadidatePage(props) {
   }, [jobId, params, getAllCadidates]);
 
   useEffect(() => {
-    getAllJobs().then((res) => {
-      setjobs(res.data.results);
+    getAllTitleJobs().then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(res.data.message);
+      }
+      setjobs(res.data);
     });
     return () => {
       setjobs([]);
@@ -76,7 +103,7 @@ function CadidatePage(props) {
   };
 
   const onCloseInfoCadi = () => {
-    getAllCadidates(params);
+    getAllCadidates({ ...params });
     setVisibleInfoCadi(false);
   };
 
@@ -90,7 +117,7 @@ function CadidatePage(props) {
     toast.success('Delete success!');
 
     if (
-      cadidates?.totalResults > 9 &&
+      cadidates?.totalResults >= params.limit &&
       cadidates?.totalResults % params.limit === 1
     ) {
       setParams({ ...params, page: cadidates?.page - 1 });
@@ -119,9 +146,9 @@ function CadidatePage(props) {
     setJobId(value);
     if (value === '') {
       delete params.jobId;
-      setParams({ ...params });
+      setParams({ ...params, page: 1 });
     } else {
-      setParams({ ...params, jobId: value });
+      setParams({ ...params, jobId: value, page: 1 });
     }
   };
 
@@ -149,6 +176,10 @@ function CadidatePage(props) {
   };
 
   const onClose = () => {
+    setIdIntervier(null);
+    setNameInterviewer(null);
+    setDateInterview(null);
+    setInterviewerId(null);
     setVisible(false);
   };
 
@@ -158,8 +189,14 @@ function CadidatePage(props) {
         <Col flex={1} className="mt-12">
           <strong>Jobs: </strong>
           <Select
+            showSearch
+            style={{ width: '150px' }}
+            placeholder="Search to Select"
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
             value={jobId}
-            style={{ width: 125 }}
             onSelect={handleSelctJob}
             showArrow={true}
           >
@@ -231,9 +268,9 @@ function CadidatePage(props) {
               onSelect={handleSelectSort}
               showArrow={true}
             >
-              <Option value="createdAt">All</Option>
+              <Option value="updatedAt">All</Option>
               <Option value="fullName">Name</Option>
-              <Option value="updatedAt">Update At</Option>
+              <Option value="createdAt">Applied Date</Option>
               <Option value="email">Email</Option>
               <Option value="stage">Stage</Option>
             </Select>
@@ -293,12 +330,20 @@ const mapStateToProps = createStructuredSelector({
   jobId: selectJobId,
   loading: loading,
   cadidates: cadidates,
+  interviewerId: interviewerId,
+  idInterviewer: idInterviewer,
+  dateInterview: dateInterview,
+  nameInterviewer: nameInterviewer,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
   setCadidateId: (payload) => dispatch(setId(payload)),
   setJobId: (payload) => dispatch(setJobId(payload)),
   setVisibleAddCandi: (payload) => dispatch(setVisibleAddCandi(payload)),
+  setDateInterview: (payload) => dispatch(setDateInterview(payload)),
+  setIdIntervier: (payload) => dispatch(setIdIntervier(payload)),
+  setInterviewerId: (payload) => dispatch(setInterviewerId(payload)),
+  setNameInterviewer: (payload) => dispatch(setNameInterviewer(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
