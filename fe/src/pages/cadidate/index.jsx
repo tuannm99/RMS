@@ -11,7 +11,7 @@ import {
   setVisibleAddCandi,
 } from '../../redux/stores/cadidate/actions';
 import * as services from '../../services/cadidateServices';
-import { getAllJobs } from '../../services/jobService';
+import { getAllTitleJobs } from '../../services/jobService';
 
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -28,6 +28,18 @@ import {
 } from './components/render';
 import EditAddInterview from './components/info_cadidate/EditAddInterview';
 import { useNavigate } from 'react-router-dom';
+import {
+  interviewerId,
+  idInterviewer,
+  dateInterview,
+  nameInterviewer,
+} from '../../redux/stores/interview/selectors';
+import {
+  setDateInterview,
+  setIdIntervier,
+  setInterviewerId,
+  setNameInterviewer,
+} from '../../redux/stores/interview/actions';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -49,8 +61,16 @@ function CadidatePage(props) {
 
   const [params, setParams] = useState(payload);
 
-  const { getAllCadidates, setCadidateId, setJobId, setVisibleAddCandi } =
-    props;
+  const {
+    getAllCadidates,
+    setCadidateId,
+    setJobId,
+    setVisibleAddCandi,
+    setDateInterview,
+    setIdIntervier,
+    setInterviewerId,
+    setNameInterviewer,
+  } = props;
   const { jobId, userAccount } = props;
   const { loading, cadidates } = props;
 
@@ -63,8 +83,11 @@ function CadidatePage(props) {
   }, [jobId, params, getAllCadidates]);
 
   useEffect(() => {
-    getAllJobs({ limit: 1000 }).then((res) => {
-      setjobs(res.data.results);
+    getAllTitleJobs().then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(res.data.message);
+      }
+      setjobs(res.data);
     });
     return () => {
       setjobs([]);
@@ -119,9 +142,9 @@ function CadidatePage(props) {
     setJobId(value);
     if (value === '') {
       delete params.jobId;
-      setParams({ ...params });
+      setParams({ ...params, page: 1 });
     } else {
-      setParams({ ...params, jobId: value });
+      setParams({ ...params, jobId: value, page: 1 });
     }
   };
 
@@ -149,6 +172,10 @@ function CadidatePage(props) {
   };
 
   const onClose = () => {
+    setIdIntervier(null);
+    setNameInterviewer(null);
+    setDateInterview(null);
+    setInterviewerId(null);
     setVisible(false);
   };
 
@@ -299,12 +326,20 @@ const mapStateToProps = createStructuredSelector({
   jobId: selectJobId,
   loading: loading,
   cadidates: cadidates,
+  interviewerId: interviewerId,
+  idInterviewer: idInterviewer,
+  dateInterview: dateInterview,
+  nameInterviewer: nameInterviewer,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllCadidates: (payload) => dispatch(getAllCadidates(payload)),
   setCadidateId: (payload) => dispatch(setId(payload)),
   setJobId: (payload) => dispatch(setJobId(payload)),
   setVisibleAddCandi: (payload) => dispatch(setVisibleAddCandi(payload)),
+  setDateInterview: (payload) => dispatch(setDateInterview(payload)),
+  setIdIntervier: (payload) => dispatch(setIdIntervier(payload)),
+  setInterviewerId: (payload) => dispatch(setInterviewerId(payload)),
+  setNameInterviewer: (payload) => dispatch(setNameInterviewer(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

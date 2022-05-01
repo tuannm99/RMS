@@ -155,16 +155,18 @@ describe('job controller', () => {
     });
 
     it('should delete jobs successful', async () => {
-      const res = await request(app)
+      await request(app)
         .delete(`/api/v1/jobs/${JOBS[0]._id}`)
         .set('Authorization', `Bearer ${hmToken}`)
         .expect(httpStatus.OK);
 
-      await request(app)
+      const res = await request(app)
         .get(`/api/v1/jobs/${JOBS[0]._id}`)
         .set('Authorization', `Bearer ${adminToken}`)
         .expect('Content-Type', /json/)
-        .expect(httpStatus.NOT_FOUND);
+        .expect(httpStatus.OK);
+
+      expect(res.body.status).toEqual('deleted');
     });
   });
 });

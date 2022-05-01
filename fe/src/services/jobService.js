@@ -10,6 +10,14 @@ export function getAllJobs(params) {
   });
 }
 
+//get jobs title
+export function getAllTitleJobs(params) {
+  return request(`${BASE_API}/Jobs/short/title`, {
+    method: 'GET',
+    params: params,
+  });
+}
+
 //get job detail
 export function getJobsDetail(id) {
   return request(`${BASE_API}/Jobs/${id}`, {
