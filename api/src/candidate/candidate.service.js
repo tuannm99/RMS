@@ -70,6 +70,7 @@ const getCandidateById = async (id) => {
  * @returns {Promise<Candidate>}
  */
 const editCandidateById = async (id, candidateData) => {
+  candidateData.updatedAt = Date.now();
   const candidate = await Candidate.findByIdAndUpdate(id, candidateData, { new: true });
   if (!candidate) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such candidate found');

@@ -86,12 +86,12 @@ function Home(props) {
               onChange={handleChange}
             >
               <Option value="All">All</Option>
-              <Option value="administration">Administrtion</Option>
+              <Option value="administration">Administration</Option>
               <Option value="finance">Finance</Option>
               <Option value="marketing">Maketing</Option>
               <Option value="sale">Sale</Option>
               <Option value="engineering">Engineering</Option>
-              <Option value="humanResources">HumanResources</Option>
+              <Option value="humanResources">Human Resources</Option>
             </Select>
           </div>
           <div className="public-Search">
@@ -128,7 +128,7 @@ function Home(props) {
               >
                 <div>
                   <Link
-                    to={`/Career/${item.id}`}
+                    to={`/career/${item.id}`}
                     style={{ textDecoration: 'none' }}
                   >
                     <PublicPage

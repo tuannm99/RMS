@@ -54,11 +54,11 @@ export const AppRoute = [
     element: <ProtectedLayout />,
   },
   {
-    path: '/Career',
+    path: '/career',
     element: <Home />,
   },
   {
-    path: '/Career/:id',
+    path: '/career/:id',
     element: <HomeDetail />,
   },
   {

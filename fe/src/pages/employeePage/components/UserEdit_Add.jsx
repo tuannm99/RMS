@@ -248,8 +248,8 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please enter First Name!' },
                 {
-                  pattern: new RegExp(/^\S+$/),
-                  message: "First Name don't enter space!",
+                  pattern: new RegExp(/^[^\s].*/),
+                  message: 'The start character cannot be a space.',
                 },
                 {
                   pattern: new RegExp(/[a-zA-Z]/),
@@ -267,8 +267,8 @@ function UserEditAdd({
               rules={[
                 { required: true, message: 'Please enter Last Name!' },
                 {
-                  pattern: new RegExp(/^\S+$/),
-                  message: "Last Name don't enter space!",
+                  pattern: new RegExp(/^[^\s].*/),
+                  message: 'The start character cannot be a space.',
                 },
                 {
                   pattern: new RegExp(/[a-zA-Z]/),
@@ -324,10 +324,8 @@ function UserEditAdd({
               rules={[{ required: true, message: 'Please select Role!' }]}
             >
               <Select name="role" disabled={account?.role !== 'admin' && true}>
-                <Option value="admin">Admin</Option>
                 <Option value="hiringManager">Hiring Manager</Option>
                 <Option value="employee">Employee</Option>
-                <Option value="guest">Guest</Option>
               </Select>
             </Form.Item>
           </Col>

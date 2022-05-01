@@ -111,6 +111,7 @@ const getJobById = async (id) => {
  * @returns {Promise<Job>}
  */
 const editJobById = async (id, jobData) => {
+  jobData.updatedAt = Date.now();
   const job = await Job.findByIdAndUpdate(id, jobData, { new: true });
   if (!job) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such job found');
