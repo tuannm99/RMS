@@ -146,9 +146,9 @@ function CadidatePage(props) {
     setJobId(value);
     if (value === '') {
       delete params.jobId;
-      setParams({ ...params });
+      setParams({ ...params, page: 1 });
     } else {
-      setParams({ ...params, jobId: value });
+      setParams({ ...params, jobId: value, page: 1 });
     }
   };
 
