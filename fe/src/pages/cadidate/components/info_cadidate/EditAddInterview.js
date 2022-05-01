@@ -30,6 +30,18 @@ import {
   getDetailInterviewsServices,
   updateIntervierServices,
 } from '../../../../services/cadidateServices';
+import {
+  interviewerId,
+  idInterviewer,
+  dateInterview,
+  nameInterviewer,
+} from '../../../../redux/stores/interview/selectors';
+import {
+  setDateInterview,
+  setIdIntervier,
+  setInterviewerId,
+  setNameInterviewer,
+} from '../../../../redux/stores/interview/actions';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const { Option } = Select;
@@ -420,9 +432,17 @@ function EditAddInterview(props) {
 const mapStateToProps = createStructuredSelector({
   cadidate: cadidate,
   interviews: interviews,
+  interviewerId: interviewerId,
+  idInterviewer: idInterviewer,
+  dateInterview: dateInterview,
+  nameInterviewer: nameInterviewer,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllInterviews: (payload) => dispatch(getAllInterviews(payload)),
+  setDateInterview: (payload) => dispatch(setDateInterview(payload)),
+  setIdIntervier: (payload) => dispatch(setIdIntervier(payload)),
+  setInterviewerId: (payload) => dispatch(setInterviewerId(payload)),
+  setNameInterviewer: (payload) => dispatch(setNameInterviewer(payload)),
 });
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
