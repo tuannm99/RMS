@@ -1,6 +1,6 @@
 import { Button, Col, Modal, Row, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { getAllJobs } from '../../services/jobService';
+import { getAllTitleJobs } from '../../services/jobService';
 import { hasResponseError } from '../../utils/utils';
 import { toast } from 'react-toastify';
 import { selectJobId } from '../../redux/stores/job/selectors';
@@ -20,11 +20,11 @@ function ModalAddNewCandidate(props) {
   const navigation = useNavigate();
 
   useEffect(() => {
-    getAllJobs().then((res) => {
+    getAllTitleJobs().then((res) => {
       if (hasResponseError(res)) {
-        return;
+        toast.error(res.data.message);
       }
-      setRecruit(res.data.results);
+      setRecruit(res.data);
     });
   }, []);
 
