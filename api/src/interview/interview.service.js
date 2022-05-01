@@ -116,6 +116,7 @@ const editInterviewById = async (id, interviewData) => {
     }
   });
 
+  interviewData.updatedAt = Date.now();
   const interview = await Interview.findByIdAndUpdate(id, interviewData, { new: true });
   if (!interview) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such interview found');
