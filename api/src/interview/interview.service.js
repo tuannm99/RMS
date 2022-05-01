@@ -1,3 +1,4 @@
+const moment = require('moment');
 const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
 const { Interview } = require('../core/db/schema');
@@ -8,6 +9,23 @@ const { Interview } = require('../core/db/schema');
  * @returns {Promise<Interview>}
  */
 const createInterview = async (interviewData) => {
+  // check overlap date
+  const interviews = await Interview.find({
+    interviewDate: { $gte: Date.now() },
+  });
+  interviews.forEach((interview) => {
+    const startInput = moment.utc(interviewData.interviewDate).toDate().getTime();
+    const endInput = startInput + interviewData.duration * 60 * 1000;
+    const startExist = moment.utc(interview.toJSON().interviewDate).toDate().getTime();
+    const endExist = startExist + interview.toJSON().duration * 60 * 1000;
+    if (startInput < endExist && endInput > startExist) {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        'User has busy for another interview, please check calender!'
+      );
+    }
+  });
+
   const newInterview = new Interview(interviewData);
 
   // eslint-disable-next-line no-return-await
@@ -47,6 +65,9 @@ const getAllInterview = async (filter, options) => {
     path: 'scheduleBy',
     select: 'fullName',
   });
+  if (!options.limit) {
+    options.limit = 1000;
+  }
   const interviews = await Interview.paginate(filter, options);
   return interviews;
 };
@@ -71,6 +92,28 @@ const getInterviewById = async (id) => {
  * @returns {Promise<Interview>}
  */
 const editInterviewById = async (id, interviewData) => {
+  // check overlap date
+  const currentInterview = await Interview.findById(id);
+  const interviews = await Interview.find({
+    interviewDate: { $gte: Date.now(), interviewer: interviewData.interviewer },
+  });
+
+  const removeUpdatedDate = interviews.filter((interview) => {
+    return !(interview.interviewDate === currentInterview.interviewDate);
+  });
+  removeUpdatedDate.forEach((interview) => {
+    const startInput = moment.utc(interviewData.interviewDate).toDate().getTime();
+    const endInput = startInput + interviewData.duration * 60 * 1000;
+    const startExist = moment.utc(interview.toJSON().interviewDate).toDate().getTime();
+    const endExist = startExist + interview.toJSON().duration * 60 * 1000;
+    if (startInput < endExist && endInput > startExist) {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        'User has busy for another interview, please check calender!'
+      );
+    }
+  });
+
   const interview = await Interview.findByIdAndUpdate(id, interviewData, { new: true });
   if (!interview) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No such interview found');
