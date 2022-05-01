@@ -324,7 +324,6 @@ function UserEditAdd({
               rules={[{ required: true, message: 'Please select Role!' }]}
             >
               <Select name="role" disabled={account?.role !== 'admin' && true}>
-                <Option value="admin">Admin</Option>
                 <Option value="hiringManager">Hiring Manager</Option>
                 <Option value="employee">Employee</Option>
               </Select>
