@@ -12,6 +12,7 @@ const createInterview = async (interviewData) => {
   // check overlap date
   const interviews = await Interview.find({
     interviewDate: { $gte: Date.now() },
+    interviewer: interviewData.interviewer,
   });
   interviews.forEach((interview) => {
     const startInput = moment.utc(interviewData.interviewDate).toDate().getTime();
