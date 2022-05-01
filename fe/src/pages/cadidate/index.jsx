@@ -11,7 +11,7 @@ import {
   setVisibleAddCandi,
 } from '../../redux/stores/cadidate/actions';
 import * as services from '../../services/cadidateServices';
-import { getAllJobs } from '../../services/jobService';
+import { getAllTitleJobs } from '../../services/jobService';
 
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -63,8 +63,11 @@ function CadidatePage(props) {
   }, [jobId, params, getAllCadidates]);
 
   useEffect(() => {
-    getAllJobs({ limit: 1000 }).then((res) => {
-      setjobs(res.data.results);
+    getAllTitleJobs().then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(res.data.message);
+      }
+      setjobs(res.data);
     });
     return () => {
       setjobs([]);
