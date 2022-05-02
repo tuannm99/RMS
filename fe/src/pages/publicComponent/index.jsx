@@ -32,18 +32,16 @@ function Home(props) {
   const loadDataJobs = (param) => {
     getAllPublishJob(param).then((res) => {
       if (hasResponseError(res)) {
-        toast.success(`${res.data.message}`, {
-          autoClose: 3000,
-        });
+        toast.error(`${res.data.message}`);
+        return;
       }
       setdataJob(res.data.results);
     });
 
     getAllPublishJob(param).then((res) => {
       if (hasResponseError(res)) {
-        toast.success(`${res.data.message}`, {
-          autoClose: 3000,
-        });
+        toast.error(`${res.data.message}`);
+        return;
       }
       setDataPage(res.data);
       console.log(dataPage);

@@ -39,8 +39,8 @@ function RecruitPage(props) {
   const [dataJobs, setDataJobs] = useState();
   const { Option } = Select;
   const { userAccount } = props;
-  const [inputMin, setInputMin] = useState('');
-  const [inputMax, setInputMax] = useState('');
+  const [valueSelect, setValueSelect] = useState(null);
+
   const [param, setParam] = useState({
     limit: 12,
     page: 1,
@@ -107,14 +107,16 @@ function RecruitPage(props) {
   };
 
   function handleChange(value) {
+    setValueSelect(value);
     if (value === 'allJob') {
-      const obj = { ...param };
+      const obj = { ...param, page: 1 };
       delete obj['status'];
       setParam(obj);
     } else {
       setParam({
         ...param,
         status: value,
+        page: 1,
       });
     }
   }
@@ -127,28 +129,25 @@ function RecruitPage(props) {
     setLoading(true);
     getAllJobs(param).then((res) => {
       if (hasResponseError(res)) {
-        toast.success(`${res.data.message}`, {
-          autoClose: 3000,
-        });
+        toast.error(`${res.data.message}`);
+        return;
       }
       setDataJobs(res.data);
       setLoading(false);
     });
   };
 
-  const handleDelete = (id) => {
-    deleteJobs(id).then((res) => {
+  const handleDelete = async (id) => {
+    if (valueSelect === 'deleted') {
+      console.log('aaaaaaaaaa');
+    } else {
+      const res = await deleteJobs(id);
       if (hasResponseError(res)) {
-        toast.error(`${res.data.message}`, {
-          autoClose: 3000,
-        });
-      } else {
-        toast.success('Delete Job Successful!', {
-          autoClose: 3000,
-        });
-        loadDataJobs();
+        toast.error(`${res.data.message}`);
+        return;
       }
-    });
+    }
+
     if (
       dataJobs?.totalResults >= param.limit &&
       dataJobs?.totalResults % param.limit === 1
@@ -180,31 +179,19 @@ function RecruitPage(props) {
 
   const onFinish = (values) => {
     const body = { ...values, jobDescription: ckeditorData };
-    if (inputMin < inputMax) {
-      createJobs(body).then((res) => {
-        if (hasResponseError(res)) {
-          toast.error(`${res.data.message}`, {
-            autoClose: 3000,
-          });
-        }
-        toast.success('Create Job Successful!', {
-          autoClose: 3000,
-        });
-        loadDataJobs();
-        onclose();
-      });
-    } else if (inputMin >= inputMax) {
-      toast.error('min salary must be less than max salary!', {
+    createJobs(body).then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(`${res.data.message}`);
+        return;
+      }
+      toast.success('Create Job Successful!', {
         autoClose: 3000,
       });
-    }
-    console.log(inputMin);
-    console.log(inputMax);
+      loadDataJobs();
+      onclose();
+    });
   };
 
-  const onChange = (value) => {
-    console.log(value);
-  };
   const handleChangeItem = () => {
     setSelectedItems(selectedItems);
   };
@@ -382,7 +369,7 @@ function RecruitPage(props) {
                 ]}
               >
                 <Select style={{ width: 300 }}>
-                  <Option value="administration">Administrtion</Option>
+                  <Option value="administration">administration</Option>
                   <Option value="finance">Finance</Option>
                   <Option value="marketing">Maketing</Option>
                   <Option value="sale">Sale</Option>
@@ -504,13 +491,9 @@ function RecruitPage(props) {
               <Form.Item
                 name="minSalary"
                 label="Salary"
-                rules={[{ required: false }]}
+                rules={[{ required: true, message: 'Please Enter min salary' }]}
               >
-                <Input
-                  placeholder="minSalary"
-                  value={inputMin}
-                  onInput={(e) => setInputMin(e.target.value)}
-                />
+                <Input placeholder="minSalary" />
               </Form.Item>
             </Col>
             <Form.Item
@@ -521,16 +504,8 @@ function RecruitPage(props) {
               <Input disabled />
             </Form.Item>
             <Col span={4}>
-              <Form.Item
-                name="maxSalary"
-                label=" "
-                rules={[{ required: false }]}
-              >
-                <Input
-                  placeholder="maxSalary"
-                  value={inputMax}
-                  onInput={(e) => setInputMax(e.target.value)}
-                />
+              <Form.Item name="maxSalary" label=" ">
+                <Input placeholder="maxSalary" />
               </Form.Item>
             </Col>
           </Row>
