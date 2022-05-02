@@ -28,6 +28,7 @@ function ForgotPassPage() {
         toast.error(res.data.message);
         return;
       }
+      form.resetFields();
       toast.success('Please check mail!');
     });
   };
