@@ -149,12 +149,18 @@ function RecruitPage(props) {
         toast.error(`${res.data.message}`);
         return;
       }
+      toast.success('Delete Job Detail Successful!', {
+        autoClose: 3000,
+      });
     } else {
       const res = await deleteJobs(id);
       if (hasResponseError(res)) {
         toast.error(`${res.data.message}`);
         return;
       }
+      toast.success('Move the job to deleted state Successful!', {
+        autoClose: 3000,
+      });
     }
 
     if (
@@ -207,17 +213,6 @@ function RecruitPage(props) {
 
   const handleChangeJobType = () => {
     setSelectedJobType(selectedJobType);
-  };
-
-  const warning = (id) => {
-    Modal.warning({
-      title: 'This is a warning message',
-      content:
-        'This will make the job, candidate, interview disappear forever. Are you sure delete?',
-      onOk() {
-        handleDelete(id);
-      },
-    });
   };
 
   return (
@@ -397,7 +392,7 @@ function RecruitPage(props) {
                 ]}
               >
                 <Select style={{ width: 300 }}>
-                  <Option value="administration">administration</Option>
+                  <Option value="administration">Administration</Option>
                   <Option value="finance">Finance</Option>
                   <Option value="marketing">Maketing</Option>
                   <Option value="sale">Sale</Option>

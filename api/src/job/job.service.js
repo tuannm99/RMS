@@ -10,8 +10,10 @@ const producer = require('../event/producer');
  * @returns {Promise<Job>}
  */
 const createJob = async (jobData) => {
+  if (await Job.isTitleTaken(jobData.title)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Job Title already taken');
+  }
   const jd = new Job(jobData);
-
   // eslint-disable-next-line no-return-await
   return await jd.save();
 };
@@ -112,6 +114,9 @@ const getJobById = async (id) => {
  * @returns {Promise<Job>}
  */
 const editJobById = async (id, jobData) => {
+  if (await Job.isTitleTaken(jobData.title, id)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Job Title already taken');
+  }
   jobData.updatedAt = Date.now();
   const job = await getJobById(id);
   if (!(jobData.title && jobData.unsignedTitle)) {

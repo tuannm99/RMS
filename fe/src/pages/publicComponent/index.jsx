@@ -103,15 +103,6 @@ function Home(props) {
           </div>
         </div>
       </div>
-      {dataPage && (
-        <Pagination
-          pageSize={dataPage?.limit}
-          current={dataPage?.page}
-          total={dataPage?.totalResults}
-          onChange={handleChangeData}
-          className="fr career-Pagination"
-        />
-      )}
       <div className="container career-container">
         <Row gutter={20}>
           {dataJob.map((item) => {
@@ -146,6 +137,18 @@ function Home(props) {
           })}
         </Row>
       </div>
+      <div>
+        {dataPage && (
+          <Pagination
+            pageSize={dataPage?.limit}
+            current={dataPage?.page}
+            total={dataPage?.totalResults}
+            onChange={handleChangeData}
+            className="fr career-Pagination"
+          />
+        )}
+      </div>
+      <div></div>
     </>
   );
 }
