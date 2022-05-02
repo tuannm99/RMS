@@ -19,6 +19,7 @@ import {
   getDataCountCandidate,
   getDataCountRejected,
   getDataCountApproved,
+  getDataChartRole,
 } from '../../services/dashboardServices';
 import { hasResponseError } from '../../utils/utils';
 import { toast } from 'react-toastify';
@@ -36,6 +37,7 @@ function DashboardPage(props) {
   const [dataChart, setDataChart] = useState([]);
   const [dataChartSex, setDataChartSex] = useState([]);
   const [dataSnapshot, setDataSnapshot] = useState([]);
+  const [dataChartRole, setDataChartRole] = useState([]);
   const [dataCountRejected, setDataCountRejected] = useState([]);
   const [DataCountApproved, setDataCountApproved] = useState([]);
   const [key, setKey] = useState(1);
@@ -99,6 +101,14 @@ function DashboardPage(props) {
       setDataChart(res.data);
     });
 
+    getDataChartRole().then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(res.data.message);
+        return;
+      }
+      setDataChartRole(res.data);
+    });
+
     getDataCountRejected().then((res) => {
       if (hasResponseError(res)) {
         return;
@@ -155,6 +165,43 @@ function DashboardPage(props) {
   const configChartSex = {
     appendPadding: 10,
     data: dataChartSex,
+    angleField: 'value',
+    colorField: 'type',
+    radius: 0.7,
+    innerRadius: 0.6,
+    label: {
+      type: 'inner',
+      offset: '-50%',
+      content: '{value}',
+      style: {
+        textAlign: 'center',
+        fontSize: 14,
+      },
+    },
+    interactions: [
+      {
+        type: 'element-selected',
+      },
+      {
+        type: 'element-active',
+      },
+    ],
+    statistic: {
+      title: false,
+      content: {
+        style: {
+          whiteSpace: 'pre-wrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        },
+        content: 'RMS',
+      },
+    },
+  };
+
+  const configChartRole = {
+    appendPadding: 10,
+    data: dataChartRole,
     angleField: 'value',
     colorField: 'type',
     radius: 0.7,
@@ -300,13 +347,24 @@ function DashboardPage(props) {
               <div className="dashBoard-center">
                 <Row className="mt-32 mb-20" gutter={20}>
                   <Col md={{ span: 24 }} xl={{ span: 12 }} className="mb-20">
-                    <div style={{ background: '#FFF', borderRadius: '6px' }}>
+                    <div
+                      className="chard-department"
+                      style={{ background: '#FFF', borderRadius: '6px' }}
+                    >
                       <Pie {...config} />
+                      <h5>department</h5>
                     </div>
                   </Col>
                   <Col md={{ span: 24 }} xl={{ span: 12 }} className="mb-20">
                     <div style={{ background: '#FFF', borderRadius: '6px' }}>
                       <Pie {...configChartSex} />
+                    </div>
+                  </Col>
+                </Row>
+                <Row className="mt-32 mb-20" gutter={20}>
+                  <Col md={{ span: 24 }} xl={{ span: 12 }} className="mb-20">
+                    <div style={{ background: '#FFF', borderRadius: '6px' }}>
+                      <Pie {...configChartRole} />
                     </div>
                   </Col>
                 </Row>

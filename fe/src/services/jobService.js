@@ -45,3 +45,9 @@ export function deleteJobs(id) {
     method: 'DELETE',
   });
 }
+
+export function deleteJobsHard(id) {
+  return request(`${BASE_API}/Jobs/${id}/hard`, {
+    method: 'DELETE',
+  });
+}

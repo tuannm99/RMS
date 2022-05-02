@@ -24,6 +24,13 @@ export function getDataChartSex() {
   });
 }
 
+//get data chart sex
+export function getDataChartRole() {
+  return request(`${BASE_API}/chart/103`, {
+    method: 'GET',
+  });
+}
+
 //snapshot
 export function getDataCountCandidate() {
   return request(`${BASE_API}/chart/countCandidate`, {

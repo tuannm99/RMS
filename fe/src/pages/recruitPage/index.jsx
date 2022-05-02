@@ -8,7 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { getAllJobs, deleteJobs } from '../../services/jobService';
+import {
+  getAllJobs,
+  deleteJobs,
+  deleteJobsHard,
+} from '../../services/jobService';
 import * as action from '../../redux/stores/job/actions';
 import { selectUserInfor } from '../../redux/stores/auth/selectors';
 import { createJobs } from '../../services/jobService';
@@ -33,6 +37,7 @@ import {
   Form,
   Input,
   Spin,
+  Modal,
 } from 'antd';
 
 function RecruitPage(props) {
@@ -139,7 +144,11 @@ function RecruitPage(props) {
 
   const handleDelete = async (id) => {
     if (valueSelect === 'deleted') {
-      console.log('aaaaaaaaaa');
+      const res = await deleteJobsHard(id);
+      if (hasResponseError(res)) {
+        toast.error(`${res.data.message}`);
+        return;
+      }
     } else {
       const res = await deleteJobs(id);
       if (hasResponseError(res)) {
@@ -200,6 +209,17 @@ function RecruitPage(props) {
     setSelectedJobType(selectedJobType);
   };
 
+  const warning = (id) => {
+    Modal.warning({
+      title: 'This is a warning message',
+      content:
+        'This will make the job, candidate, interview disappear forever. Are you sure delete?',
+      onOk() {
+        handleDelete(id);
+      },
+    });
+  };
+
   return (
     <>
       <Row>
@@ -233,7 +253,7 @@ function RecruitPage(props) {
           <Option value="allJob">All Job</Option>
           <Option value="published">Published</Option>
           <Option value="onHold">Hode On</Option>
-          <Option value="deleted">deleted</Option>
+          <Option value="deleted">Deleted</Option>
         </Select>
         <div>
           <Link to={`/career`} target="_blank" className="mr-12">
@@ -324,14 +344,22 @@ function RecruitPage(props) {
                         {item.jobType && <span>{item.jobType[0]}</span>}
                       </div>
                     </div>
-                    {userAccount.role === 'hiringManager' && (
-                      <Popconfirm
-                        title="Sure to delete?"
-                        onConfirm={() => handleDelete(item.id)}
-                      >
-                        <FaTimes className="recruit-card-icons" />
-                      </Popconfirm>
-                    )}
+                    {userAccount.role === 'hiringManager' &&
+                      (valueSelect !== 'deleted' ? (
+                        <Popconfirm
+                          title="Sure to delete?"
+                          onConfirm={() => handleDelete(item.id)}
+                        >
+                          <FaTimes className="recruit-card-icons" />
+                        </Popconfirm>
+                      ) : (
+                        <Popconfirm
+                          title="Delete all information related to this job!"
+                          onConfirm={() => handleDelete(item.id)}
+                        >
+                          <FaTimes className="recruit-card-icons" />
+                        </Popconfirm>
+                      ))}
                   </Card>
                 </div>
               </Col>
