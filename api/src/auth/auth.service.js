@@ -38,12 +38,12 @@ const logout = async (refreshToken) => {
  */
 const forgotPass = async (username, email) => {
   const user = await userService.getUserByUsernameAndEmail(username, email);
-  const newPass = passGenerator.generate({ length: 8, numbers: true });
-  await userService.updateUserById(user._id, { password: newPass });
+  // const newPass = passGenerator.generate({ length: 8, numbers: true });
+  await userService.updateUserById(user._id, { password: '123@123abc' });
   eventProducer.sendMailProducer({
     to: email,
     subject: 'Reset password',
-    text: `Your new password: ${newPass}`,
+    text: `Your new password: 123@123abc`,
   });
 };
 

@@ -32,18 +32,16 @@ function Home(props) {
   const loadDataJobs = (param) => {
     getAllPublishJob(param).then((res) => {
       if (hasResponseError(res)) {
-        toast.success(`${res.data.message}`, {
-          autoClose: 3000,
-        });
+        toast.error(`${res.data.message}`);
+        return;
       }
       setdataJob(res.data.results);
     });
 
     getAllPublishJob(param).then((res) => {
       if (hasResponseError(res)) {
-        toast.success(`${res.data.message}`, {
-          autoClose: 3000,
-        });
+        toast.error(`${res.data.message}`);
+        return;
       }
       setDataPage(res.data);
       console.log(dataPage);
@@ -86,12 +84,12 @@ function Home(props) {
               onChange={handleChange}
             >
               <Option value="All">All</Option>
-              <Option value="administration">Administrtion</Option>
+              <Option value="administration">Administration</Option>
               <Option value="finance">Finance</Option>
               <Option value="marketing">Maketing</Option>
               <Option value="sale">Sale</Option>
               <Option value="engineering">Engineering</Option>
-              <Option value="humanResources">HumanResources</Option>
+              <Option value="humanResources">Human Resources</Option>
             </Select>
           </div>
           <div className="public-Search">
@@ -128,7 +126,7 @@ function Home(props) {
               >
                 <div>
                   <Link
-                    to={`/Career/${item.id}`}
+                    to={`/career/${item.id}`}
                     style={{ textDecoration: 'none' }}
                   >
                     <PublicPage

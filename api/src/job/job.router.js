@@ -11,6 +11,7 @@ router.post('/', checkAuth(ROLES.hiringManager), jobController.addJobPosting);
 router.put('/:id', checkAuth(ROLES.hiringManager), jobController.editJob);
 router.put('/:id/status', checkAuth(ROLES.hiringManager), jobController.changeJobStatus);
 router.delete('/:id', checkAuth(ROLES.hiringManager), jobController.deleteJob);
+router.delete('/:id/hard', checkAuth(ROLES.hiringManager), jobController.hardDeleteJob);
 
 module.exports = router;
 

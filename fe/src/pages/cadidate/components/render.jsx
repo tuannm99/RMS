@@ -290,7 +290,7 @@ export const renderBodyTable = (
       </div>
     </td>
     <td style={{ ...styles.td, fontWeight: '400' }}>
-      {moment.utc(item.updatedAt).format('YYYY-MM-DD').toString()}
+      {moment.utc(item.createdAt).format('YYYY-MM-DD').toString()}
     </td>
     {userAccount?.role === 'hiringManager' && (
       <td style={styles.td}>

@@ -39,6 +39,8 @@ function RecruitPage(props) {
   const [dataJobs, setDataJobs] = useState();
   const { Option } = Select;
   const { userAccount } = props;
+  const [valueSelect, setValueSelect] = useState(null);
+
   const [param, setParam] = useState({
     limit: 12,
     page: 1,
@@ -63,8 +65,6 @@ function RecruitPage(props) {
     engineering: 'Engineering',
   };
 
-  const OPTIONS_TYPE = ['   Full Time', '  Part Time', '  Remote'];
-
   const OPTIONS_SKILL = [
     '  NODEJS',
     '  GAAP',
@@ -88,6 +88,14 @@ function RecruitPage(props) {
     '  WEB-APP',
   ];
 
+  const OPTIONS_JOB_TYPE = [
+    '   Full Time',
+    '   Part Time',
+    '   Internship',
+    '   Seasonal',
+    '   Remote',
+  ];
+
   const beautyDepartment = (val) => {
     let newVal;
     Object.keys(DEPARTMENT).forEach((key) => {
@@ -99,14 +107,16 @@ function RecruitPage(props) {
   };
 
   function handleChange(value) {
+    setValueSelect(value);
     if (value === 'allJob') {
-      const obj = { ...param };
+      const obj = { ...param, page: 1 };
       delete obj['status'];
       setParam(obj);
     } else {
       setParam({
         ...param,
         status: value,
+        page: 1,
       });
     }
   }
@@ -119,28 +129,25 @@ function RecruitPage(props) {
     setLoading(true);
     getAllJobs(param).then((res) => {
       if (hasResponseError(res)) {
-        toast.success(`${res.data.message}`, {
-          autoClose: 3000,
-        });
+        toast.error(`${res.data.message}`);
+        return;
       }
       setDataJobs(res.data);
       setLoading(false);
     });
   };
 
-  const handleDelete = (id) => {
-    deleteJobs(id).then((res) => {
+  const handleDelete = async (id) => {
+    if (valueSelect === 'deleted') {
+      console.log('aaaaaaaaaa');
+    } else {
+      const res = await deleteJobs(id);
       if (hasResponseError(res)) {
-        toast.error(`${res.data.message}`, {
-          autoClose: 3000,
-        });
-      } else {
-        toast.success('Delete Job Successful!', {
-          autoClose: 3000,
-        });
-        loadDataJobs();
+        toast.error(`${res.data.message}`);
+        return;
       }
-    });
+    }
+
     if (
       dataJobs?.totalResults >= param.limit &&
       dataJobs?.totalResults % param.limit === 1
@@ -174,9 +181,8 @@ function RecruitPage(props) {
     const body = { ...values, jobDescription: ckeditorData };
     createJobs(body).then((res) => {
       if (hasResponseError(res)) {
-        toast.error(`${res.data.message}`, {
-          autoClose: 3000,
-        });
+        toast.error(`${res.data.message}`);
+        return;
       }
       toast.success('Create Job Successful!', {
         autoClose: 3000,
@@ -230,7 +236,7 @@ function RecruitPage(props) {
           <Option value="deleted">deleted</Option>
         </Select>
         <div>
-          <Link to={`/Career`} target="_blank" className="mr-12">
+          <Link to={`/career`} target="_blank" className="mr-12">
             <Button type="primary">Career</Button>
           </Link>
           <Button
@@ -276,7 +282,7 @@ function RecruitPage(props) {
                     }
                     actions={[
                       item.status === 'published' ? (
-                        <Link to={`/Career/${item.id}`} target="_blank">
+                        <Link to={`/career/${item.id}`} target="_blank">
                           <div>
                             <GlobalOutlined key="global" className="mr-8" />
                             {item.status}
@@ -363,7 +369,7 @@ function RecruitPage(props) {
                 ]}
               >
                 <Select style={{ width: 300 }}>
-                  <Option value="administration">Administrtion</Option>
+                  <Option value="administration">administration</Option>
                   <Option value="finance">Finance</Option>
                   <Option value="marketing">Maketing</Option>
                   <Option value="sale">Sale</Option>
@@ -387,7 +393,7 @@ function RecruitPage(props) {
                   onChange={handleChangeJobType}
                   style={{ width: '100%' }}
                 >
-                  {OPTIONS_SKILL.map((item) => (
+                  {OPTIONS_JOB_TYPE.map((item) => (
                     <Select.Option key={item} value={item}>
                       {item}
                     </Select.Option>
@@ -485,7 +491,7 @@ function RecruitPage(props) {
               <Form.Item
                 name="minSalary"
                 label="Salary"
-                rules={[{ required: false }]}
+                rules={[{ required: true, message: 'Please Enter min salary' }]}
               >
                 <Input placeholder="minSalary" />
               </Form.Item>
@@ -498,11 +504,7 @@ function RecruitPage(props) {
               <Input disabled />
             </Form.Item>
             <Col span={4}>
-              <Form.Item
-                name="maxSalary"
-                label=" "
-                rules={[{ required: false }]}
-              >
+              <Form.Item name="maxSalary" label=" ">
                 <Input placeholder="maxSalary" />
               </Form.Item>
             </Col>
