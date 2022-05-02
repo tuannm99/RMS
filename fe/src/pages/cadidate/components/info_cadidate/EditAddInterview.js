@@ -84,7 +84,11 @@ function EditAddInterview(props) {
         .then(setLoading(true))
         .then((res) => {
           form.setFieldsValue({
-            Interviewer: res?.data?.interviewer,
+            Interviewer: interviewer.find(
+              (e) => e.id === res?.data?.interviewer
+            )
+              ? res?.data?.interviewer
+              : '',
             interviewDate: moment(res?.data?.interviewDate),
             Stages: res?.data?.stage,
             Duration: res?.data?.duration,
