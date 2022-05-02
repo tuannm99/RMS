@@ -19,6 +19,11 @@ const countRole = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(count);
 });
 
+const countJobStatus = catchAsync(async (req, res) => {
+  const count = await chartService.countJobStatus();
+  res.status(httpStatus.OK).json(count);
+});
+
 const countCandidate = catchAsync(async (req, res) => {
   const count = await chartService.countCandidate();
   res.status(httpStatus.OK).json(count);
@@ -38,6 +43,7 @@ module.exports = {
   countJobByDepartment,
   countSex,
   countRole,
+  countJobStatus,
   countCandidate,
   countCandidateApproved,
   countCandidateRejected,

@@ -58,6 +58,25 @@ const countRole = async () => {
   return chartData;
 };
 
+const countJobStatus = async () => {
+  const chartData = await Job.aggregate([
+    {
+      $group: {
+        _id: '$status',
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        type: '$_id',
+        value: '$count',
+      },
+    },
+  ]);
+  return chartData;
+};
+
 const countCandidate = async () => {
   const candidate = await Candidate.find({});
   const count = candidate.length;
@@ -80,6 +99,7 @@ module.exports = {
   countJobByDepartment,
   countSex,
   countRole,
+  countJobStatus,
   countCandidate,
   countCandidateApproved,
   countCandidateRejected,
