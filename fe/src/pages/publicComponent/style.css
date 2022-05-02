@@ -130,11 +130,8 @@
   left: 3%;
   color: rgb(0, 174, 239);
 }
-.career-container {
-  position: relative;
-}
+
 .career-Pagination {
-  position: absolute;
-  top: 97%;
-  right: 15.5%;
+  margin-right: 130px;
+  padding-bottom: 30px;
 }
