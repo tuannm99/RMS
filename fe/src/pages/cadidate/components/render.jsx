@@ -215,7 +215,13 @@ export const customerTableHead = [
   'More',
 ];
 
-const menuMoreTable = (id, handleDelete, setVisible, setInterviewerId) => (
+const menuMoreTable = (
+  id,
+  handleDelete,
+  setVisible,
+  setInterviewerId,
+  setCadidateId
+) => (
   <Menu>
     <Menu.Item key="Interview">
       <p
@@ -223,6 +229,7 @@ const menuMoreTable = (id, handleDelete, setVisible, setInterviewerId) => (
         onClick={() => {
           setVisible(true);
           setInterviewerId(null);
+          setCadidateId(id);
         }}
       >
         Schedule Interview
@@ -306,7 +313,8 @@ export const renderBodyTable = (
             item.id,
             handleDelete,
             setVisible,
-            setInterviewerId
+            setInterviewerId,
+            setCadidateId
           )}
           placement="bottomRight"
           arrow
