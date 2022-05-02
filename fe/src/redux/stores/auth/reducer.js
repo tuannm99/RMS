@@ -1,4 +1,4 @@
-import { SAVE_LOGIN_DATA, SET_LOADING } from './constants';
+import { SAVE_LOGIN_DATA, SET_LOADING, SET_NAME_USER } from './constants';
 import produce from 'immer';
 
 import { INIT_STATE_LOGIN } from './states';
@@ -7,6 +7,9 @@ export default function authReducers(state = INIT_STATE_LOGIN, action) {
     switch (action.type) {
       case SET_LOADING:
         draft.isLoading = action.payload;
+        break;
+      case SET_NAME_USER:
+        draft.username = action.payload;
         break;
       case SAVE_LOGIN_DATA:
         const authority = action.payload;

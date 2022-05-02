@@ -7,7 +7,10 @@ import login_9 from '../../assets/image/login_9.jpg';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { selectLoading } from '../../redux/stores/auth/selectors';
+import {
+  selectLoading,
+  usernameRedux,
+} from '../../redux/stores/auth/selectors';
 import * as actions from '../../redux/stores/auth/actions';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate, NavLink } from 'react-router-dom';
@@ -16,10 +19,19 @@ function Login(props) {
   /**
    * create state to props
    */
-  const { loginRequest } = props;
-  const { isLoading } = props;
+  const { loginRequest, setNameUser } = props;
+  const { isLoading, user } = props;
+  const [form] = Form.useForm();
 
   const navigation = useNavigate();
+
+  React.useEffect(() => {
+    if (user) {
+      form.setFieldsValue({
+        username: user,
+      });
+    }
+  }, [form, user]);
 
   /**
    * submit form login
@@ -32,6 +44,7 @@ function Login(props) {
     };
     const res = await loginRequest(params);
     if (res) {
+      setNameUser(null);
       navigation('/');
     }
   };
@@ -59,6 +72,7 @@ function Login(props) {
               className="login-form"
               name="normal_login"
               onFinish={onFinish}
+              form={form}
             >
               <Form.Item
                 name="username"
@@ -136,9 +150,11 @@ function Login(props) {
 
 const mapStateToProps = createStructuredSelector({
   isLoading: selectLoading,
+  user: usernameRedux,
 });
 const mapDispatchToProps = (dispatch) => ({
   loginRequest: (payload) => actions.loginRequest(dispatch)(payload),
+  setNameUser: (payload) => dispatch(actions.setNameUser(payload)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

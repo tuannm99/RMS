@@ -2,6 +2,8 @@ const NS_AUTH = 'auth';
 
 const SET_LOADING = `${NS_AUTH}/setLoading`;
 
+const SET_NAME_USER = `${NS_AUTH}/setNameUser`;
+
 const SAVE_LOADING = `${NS_AUTH}/saveLoading`;
 
 const LOGIN_REQUEST = `${NS_AUTH}/loginRequest`;
@@ -16,4 +18,5 @@ export {
   LOGIN_REQUEST,
   SAVE_LOGIN_DATA,
   SAVE_LOGIN_RES,
+  SET_NAME_USER,
 };

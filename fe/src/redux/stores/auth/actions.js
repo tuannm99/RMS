@@ -3,11 +3,19 @@ import {
   SAVE_LOADING,
   SAVE_LOGIN_DATA,
   SET_LOADING,
+  SET_NAME_USER,
 } from './constants';
 
 export function setLoading(payload) {
   return {
     type: SET_LOADING,
+    payload,
+  };
+}
+
+export function setNameUser(payload) {
+  return {
+    type: SET_NAME_USER,
     payload,
   };
 }
