@@ -215,10 +215,16 @@ export const customerTableHead = [
   'More',
 ];
 
-const menuMoreTable = (id, handleDelete, setVisible) => (
+const menuMoreTable = (id, handleDelete, setVisible, setInterviewerId) => (
   <Menu>
     <Menu.Item key="Interview">
-      <p className="mb-0" onClick={() => setVisible(true)}>
+      <p
+        className="mb-0"
+        onClick={() => {
+          setVisible(true);
+          setInterviewerId(null);
+        }}
+      >
         Schedule Interview
       </p>
     </Menu.Item>
@@ -242,7 +248,8 @@ export const renderBodyTable = (
   setCadidateId,
   setVisible,
   userAccount,
-  navigate
+  navigate,
+  setInterviewerId
 ) => (
   <tr key={item.id} style={styles.tr}>
     <td
@@ -295,7 +302,12 @@ export const renderBodyTable = (
     {userAccount?.role === 'hiringManager' && (
       <td style={styles.td}>
         <Dropdown
-          overlay={menuMoreTable(item.id, handleDelete, setVisible)}
+          overlay={menuMoreTable(
+            item.id,
+            handleDelete,
+            setVisible,
+            setInterviewerId
+          )}
           placement="bottomRight"
           arrow
         >
