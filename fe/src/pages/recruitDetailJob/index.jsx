@@ -111,32 +111,21 @@ function DetailRecruitPage(props) {
       jobDescription: ckeditorData === '' ? job.jobDescription : ckeditorData,
     };
     setLoading(true);
-    if (inputMin < inputMax) {
-      updateJobs(jobValue.id, body)
-        .then((res) => {
-          setJob(res.data);
-        })
-        .catch((err) => console.log(err));
-      fetchJob();
-      toast.success('Edit Job Detail Successful!', {
-        autoClose: 3000,
-      });
-    } else if (inputMin === '') {
-      toast.success('Edit Job Detail Successful!', {
-        autoClose: 3000,
-      });
-    } else {
-      toast.error('min salary must be less than max salary!', {
-        autoClose: 3000,
-      });
-    }
+    updateJobs(jobValue.id, body)
+      .then((res) => {
+        setJob(res.data);
+      })
+      .catch((err) => console.log(err));
+    fetchJob();
+    toast.success('Edit Job Detail Successful!', {
+      autoClose: 3000,
+    });
     setLoading(false);
     handleCancel();
   };
 
   const updateStatus = (value) => {
     const body = { status: value };
-
     updateJobs(id, body)
       .then((res) => {
         setJob(res.data);
@@ -222,7 +211,7 @@ function DetailRecruitPage(props) {
                     label="Department"
                   >
                     <Select style={{ width: 300 }}>
-                      <Option value="administration">Administrtion</Option>
+                      <Option value="administration">administration</Option>
                       <Option value="finance">Finance</Option>
                       <Option value="marketing">Maketing</Option>
                       <Option value="sale">Sale</Option>
@@ -350,13 +339,11 @@ function DetailRecruitPage(props) {
                   <Form.Item
                     name="minSalary"
                     label="Salary"
-                    rules={[{ required: false }]}
+                    rules={[
+                      { required: true, message: 'Please Enter min salary' },
+                    ]}
                   >
-                    <Input
-                      placeholder="minSalary"
-                      value={inputMin}
-                      onInput={(e) => setInputMin(e.target.value)}
-                    />
+                    <Input placeholder="minSalary" />
                   </Form.Item>
                 </Col>
 
@@ -364,7 +351,9 @@ function DetailRecruitPage(props) {
                   <Form.Item
                     name="maxSalary"
                     label=" "
-                    rules={[{ required: false }]}
+                    rules={[
+                      { required: true, message: 'Please Enter max salary' },
+                    ]}
                   >
                     <Input
                       placeholder="maxSalary"
