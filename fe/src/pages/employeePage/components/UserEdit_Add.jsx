@@ -181,7 +181,6 @@ function UserEditAdd({
     onclose();
     setChecked(false);
   };
-
   /**
    * style for avatar
    */
@@ -323,7 +322,12 @@ function UserEditAdd({
               label="Role"
               rules={[{ required: true, message: 'Please select Role!' }]}
             >
-              <Select name="role" disabled={account?.role !== 'admin' && true}>
+              <Select
+                name="role"
+                disabled={
+                  (account?.role !== 'admin' || user === account?.id) && true
+                }
+              >
                 <Option value="hiringManager">Hiring Manager</Option>
                 <Option value="employee">Employee</Option>
               </Select>

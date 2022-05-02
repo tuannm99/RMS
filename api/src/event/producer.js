@@ -13,4 +13,8 @@ function sendMailProducer(data) {
   emitter.emit(EVENTS.sendMail, data);
 }
 
-module.exports = { sendMailProducer };
+function deleteJob(job) {
+  emitter.emit('DELETE_JOB', job);
+}
+
+module.exports = { deleteJob, sendMailProducer };
