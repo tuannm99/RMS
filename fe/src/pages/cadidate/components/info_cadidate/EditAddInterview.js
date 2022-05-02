@@ -79,12 +79,16 @@ function EditAddInterview(props) {
   }, [idInterviewer, interviewer, setNameInterviewer]);
 
   useEffect(() => {
-    if (interviewerId) {
+    if (interviewerId && interviewer) {
       getDetailInterviewsServices(cadidate?.id, interviewerId)
         .then(setLoading(true))
         .then((res) => {
           form.setFieldsValue({
-            Interviewer: res?.data?.interviewer,
+            Interviewer: interviewer.find(
+              (e) => e.id === res?.data?.interviewer
+            )
+              ? res?.data?.interviewer
+              : '',
             interviewDate: moment(res?.data?.interviewDate),
             Stages: res?.data?.stage,
             Duration: res?.data?.duration,
@@ -97,7 +101,7 @@ function EditAddInterview(props) {
     } else {
       form.resetFields();
     }
-  }, [interviewerId, cadidate?.id, form]);
+  }, [interviewerId, cadidate?.id, form, interviewer]);
 
   useEffect(() => {
     if (idInterviewer) {
@@ -132,7 +136,6 @@ function EditAddInterview(props) {
     }
     setInterviewer(res.data.results);
   };
-
   const disabledDate = (current) => {
     // Can not select days before today and today
     const now = new Date();
@@ -341,85 +344,87 @@ function EditAddInterview(props) {
           <Row>
             <Col span={24}>
               <Row>
-                {dateInterview && nameInterviewer && (
-                  <>
-                    <Col span={24} className="mt-32 mb-32">
-                      <Typography.Text italic>
-                        Schedule interview of
-                      </Typography.Text>
-                      <Typography.Text
-                        type="success"
-                        className="ml-8"
-                        strong
-                        style={{ fontSize: 24 }}
+                {dateInterview &&
+                  nameInterviewer &&
+                  nameInterviewer[0]?.fullName !== undefined && (
+                    <>
+                      <Col span={24} className="mt-32 mb-32">
+                        <Typography.Text italic>
+                          Schedule interview of
+                        </Typography.Text>
+                        <Typography.Text
+                          type="success"
+                          className="ml-8"
+                          strong
+                          style={{ fontSize: 24 }}
+                        >
+                          {nameInterviewer[0]?.fullName}
+                        </Typography.Text>
+                      </Col>
+                      <div
+                        id="scrollableDiv"
+                        style={{
+                          width: '100%',
+                          overflow: 'auto',
+                          padding: '0 16px',
+                          border: '1px solid rgba(140, 140, 140, 0.35)',
+                          borderRadius: '10px',
+                        }}
                       >
-                        {nameInterviewer[0].fullName}
-                      </Typography.Text>
-                    </Col>
-                    <div
-                      id="scrollableDiv"
-                      style={{
-                        width: '100%',
-                        overflow: 'auto',
-                        padding: '0 16px',
-                        border: '1px solid rgba(140, 140, 140, 0.35)',
-                        borderRadius: '10px',
-                      }}
-                    >
-                      <InfiniteScroll
-                        dataLength={dateInterview.length}
-                        scrollableTarget="scrollableDiv"
-                        endMessage={
-                          <Divider plain>It is all, nothing more 🤐</Divider>
-                        }
-                      >
-                        <List
-                          dataSource={dateInterview}
-                          renderItem={(item) => (
-                            <List.Item key={item.id}>
-                              <Col span={12}>
-                                <Typography.Text type="danger">
-                                  {moment(item.interviewDate).format(
-                                    'YYYY/MM/DD'
-                                  )}
-                                </Typography.Text>
-                                <Typography.Text
-                                  type="danger"
-                                  className="ml-8 mr-8"
-                                >
-                                  -
-                                </Typography.Text>
-                                <Typography.Text type="danger" className="">
-                                  {moment(item.interviewDate).format('HH:mm')}
-                                </Typography.Text>
-                                <Typography.Text
-                                  type="danger"
-                                  className="ml-8 mr-8"
-                                >
-                                  -
-                                </Typography.Text>
-                                <Typography.Text type="danger">
-                                  {item?.duration < 60
-                                    ? `(${item?.duration}Mins)`
-                                    : item?.duration % 60 !== 0
-                                    ? `(${Math.floor(item?.duration / 60)}Hr${
-                                        item?.duration % 60
-                                      }Mins)`
-                                    : `(${item?.duration / 60}Hr)`}
-                                </Typography.Text>
-                              </Col>
-                              <Col span={12}>
-                                <Typography.Text className="fr" strong mark>
-                                  {item?.candidateId.fullName}
-                                </Typography.Text>
-                              </Col>
-                            </List.Item>
-                          )}
-                        />
-                      </InfiniteScroll>
-                    </div>
-                  </>
-                )}
+                        <InfiniteScroll
+                          dataLength={dateInterview.length}
+                          scrollableTarget="scrollableDiv"
+                          endMessage={
+                            <Divider plain>It is all, nothing more 🤐</Divider>
+                          }
+                        >
+                          <List
+                            dataSource={dateInterview}
+                            renderItem={(item) => (
+                              <List.Item key={item.id}>
+                                <Col span={12}>
+                                  <Typography.Text type="danger">
+                                    {moment(item.interviewDate).format(
+                                      'YYYY/MM/DD'
+                                    )}
+                                  </Typography.Text>
+                                  <Typography.Text
+                                    type="danger"
+                                    className="ml-8 mr-8"
+                                  >
+                                    -
+                                  </Typography.Text>
+                                  <Typography.Text type="danger" className="">
+                                    {moment(item.interviewDate).format('HH:mm')}
+                                  </Typography.Text>
+                                  <Typography.Text
+                                    type="danger"
+                                    className="ml-8 mr-8"
+                                  >
+                                    -
+                                  </Typography.Text>
+                                  <Typography.Text type="danger">
+                                    {item?.duration < 60
+                                      ? `(${item?.duration}Mins)`
+                                      : item?.duration % 60 !== 0
+                                      ? `(${Math.floor(item?.duration / 60)}Hr${
+                                          item?.duration % 60
+                                        }Mins)`
+                                      : `(${item?.duration / 60}Hr)`}
+                                  </Typography.Text>
+                                </Col>
+                                <Col span={12}>
+                                  <Typography.Text className="fr" strong mark>
+                                    {item?.candidateId.fullName}
+                                  </Typography.Text>
+                                </Col>
+                              </List.Item>
+                            )}
+                          />
+                        </InfiniteScroll>
+                      </div>
+                    </>
+                  )}
               </Row>
             </Col>
           </Row>
