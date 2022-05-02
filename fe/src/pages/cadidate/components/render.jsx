@@ -220,31 +220,36 @@ const menuMoreTable = (
   handleDelete,
   setVisible,
   setInterviewerId,
-  setCadidateId
+  setCadidateId,
+  userAccount
 ) => (
-  <Menu>
-    <Menu.Item key="Interview">
-      <p
-        className="mb-0"
-        onClick={() => {
-          setVisible(true);
-          setInterviewerId(null);
-          setCadidateId(id);
-        }}
-      >
-        Schedule Interview
-      </p>
-    </Menu.Item>
-    <Menu.Item key="delete">
-      <Popconfirm
-        onConfirm={() => handleDelete(id)}
-        title="Are you sure？"
-        icon={<DeleteOutlined style={{ color: 'red' }} />}
-      >
-        <p className="mb-0">Delete</p>
-      </Popconfirm>
-    </Menu.Item>
-  </Menu>
+  <>
+    {userAccount?.role === 'hiringManager' && (
+      <Menu>
+        <Menu.Item key="Interview">
+          <p
+            className="mb-0"
+            onClick={() => {
+              setVisible(true);
+              setInterviewerId(null);
+              setCadidateId(id);
+            }}
+          >
+            Schedule Interview
+          </p>
+        </Menu.Item>
+        <Menu.Item key="delete">
+          <Popconfirm
+            onConfirm={() => handleDelete(id)}
+            title="Are you sure？"
+            icon={<DeleteOutlined style={{ color: 'red' }} />}
+          >
+            <p className="mb-0">Delete</p>
+          </Popconfirm>
+        </Menu.Item>
+      </Menu>
+    )}
+  </>
 );
 
 export const renderBodyTable = (
@@ -306,22 +311,21 @@ export const renderBodyTable = (
     <td style={{ ...styles.td, fontWeight: '400' }}>
       {moment.utc(item.createdAt).format('YYYY-MM-DD').toString()}
     </td>
-    {userAccount?.role === 'hiringManager' && (
-      <td style={styles.td}>
-        <Dropdown
-          overlay={menuMoreTable(
-            item.id,
-            handleDelete,
-            setVisible,
-            setInterviewerId,
-            setCadidateId
-          )}
-          placement="bottomRight"
-          arrow
-        >
-          <MoreOutlined className="fr fs-24 cu" />
-        </Dropdown>
-      </td>
-    )}
+    <td style={styles.td}>
+      <Dropdown
+        overlay={menuMoreTable(
+          item.id,
+          handleDelete,
+          setVisible,
+          setInterviewerId,
+          setCadidateId,
+          userAccount
+        )}
+        placement="bottomRight"
+        arrow
+      >
+        <MoreOutlined className="fr fs-24 cu" />
+      </Dropdown>
+    </td>
   </tr>
 );
