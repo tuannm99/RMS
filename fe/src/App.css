@@ -22,6 +22,10 @@
   display: none;
 }
 
+.rpv-open__input-wrapper {
+  display: none;
+}
+
 .cu {
   cursor: pointer;
 }
