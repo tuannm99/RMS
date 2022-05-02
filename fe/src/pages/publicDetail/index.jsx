@@ -92,37 +92,35 @@ function HomeDetail(props) {
       firstName: values?.firstName,
       midName: values?.midName,
       lastName: values?.lastName,
-      sex: values?.sex,
-      referral: `${values?.lastName} ${
-        values?.midName === undefined ? '' : values?.midName
-      } ${values?.firstName}`,
       fullName: `${values?.lastName} ${
         values?.midName === undefined ? '' : values?.midName
       } ${values?.firstName}`,
+      referral: `${values?.lastName} ${
+        values?.midName === undefined ? '' : values?.midName
+      } ${values?.firstName}`,
+      sex: values?.sex,
       email: values?.email,
       phone: `${values?.prefix}${values?.phone}`,
       hyperlink: values?.hyperlink,
-      resume: {
-        employer: {
-          designation: '',
-          bussinessName: '',
-          from: '',
-          to: '',
-          summary: '',
-        },
-        education: {
-          degree: '',
-          universityName: '',
-          fieldOfStudy: '',
-          grade: '',
-          from: '',
-          end: '',
-        },
+      employer: {
+        designation: '',
+        bussinessName: '',
+        from: '',
+        to: '',
+        summary: '',
+      },
+      education: {
+        degree: '',
+        universityName: '',
+        fieldOfStudy: '',
+        grade: '',
+        from: '',
+        end: '',
       },
     };
     if (disableEmp) {
-      body.resume = {
-        ...body.resume,
+      body = {
+        ...body,
         employer: {
           designation: values?.designation,
           bussinessName: values?.bussinessName,
@@ -133,8 +131,8 @@ function HomeDetail(props) {
       };
     }
     if (disableEdu) {
-      body.resume = {
-        ...body.resume,
+      body = {
+        ...body,
         education: {
           degree: values?.degree,
           universityName: values?.universityName,
