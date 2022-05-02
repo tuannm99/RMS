@@ -1,7 +1,9 @@
 import React from 'react';
 import { Form, Input, Button, Col, Row, Spin, Carousel } from 'antd';
 import './style.css';
-import bg_login from '../../assets/image/bg_login.jpeg';
+import login_6 from '../../assets/image/login_6.jpg';
+import login_5 from '../../assets/image/login_5.jpg';
+import login_9 from '../../assets/image/login_9.jpg';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -40,13 +42,13 @@ function Login(props) {
         <Col span={18} className="login-left">
           <Carousel autoplay dotPosition="bottom" speed="800">
             <div>
-              <img src={bg_login} alt="" />
+              <img src={login_6} alt="" />
             </div>
             <div>
-              <img src={bg_login} alt="" />
+              <img src={login_9} alt="" />
             </div>
             <div>
-              <img src={bg_login} alt="" />
+              <img src={login_5} alt="" />
             </div>
           </Carousel>
         </Col>
