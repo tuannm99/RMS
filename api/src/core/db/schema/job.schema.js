@@ -52,4 +52,9 @@ jobSchema.plugin(toJSON);
 jobSchema.plugin(paginate);
 jobSchema.plugin(preDate);
 
+jobSchema.statics.isTitleTaken = async function (title, excludeUserId) {
+  const job = await this.findOne({ title, _id: { $ne: excludeUserId } });
+  return !!job;
+};
+
 module.exports = mongoose.model('Job', jobSchema);

@@ -4,5 +4,6 @@ const selectUser = (state) => state.authReducers || INIT_STATE_LOGIN;
 
 const selectLoading = createSelector(selectUser, (state) => state.isLoading);
 const selectUserInfor = createSelector(selectUser, (state) => state.profile);
+const usernameRedux = createSelector(selectUser, (state) => state.username);
 
-export { selectUserInfor, selectLoading };
+export { selectUserInfor, selectLoading, usernameRedux };
