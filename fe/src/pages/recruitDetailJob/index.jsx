@@ -114,12 +114,13 @@ function DetailRecruitPage(props) {
     updateJobs(jobValue.id, body)
       .then((res) => {
         setJob(res.data);
+        fetchJob();
       })
       .catch((err) => console.log(err));
-    fetchJob();
     toast.success('Edit Job Detail Successful!', {
       autoClose: 3000,
     });
+
     setLoading(false);
     handleCancel();
   };
@@ -131,10 +132,10 @@ function DetailRecruitPage(props) {
         setJob(res.data);
       })
       .catch((err) => console.log(err));
-    fetchJob();
     toast.success('update Status Successful!', {
       autoClose: 3000,
     });
+    fetchJob();
   };
 
   return (
@@ -169,7 +170,7 @@ function DetailRecruitPage(props) {
               Hode On
             </Option>
             <Option disabled={job.status === 'deleted'} value="deleted">
-              Delete
+              Deleted
             </Option>
           </Select>
         </div>

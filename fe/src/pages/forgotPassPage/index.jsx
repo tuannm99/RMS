@@ -18,7 +18,7 @@ function ForgotPassPage() {
       email: form.getFieldValue().email,
       username: form.getFieldValue().username,
     };
-    console.log(params);
+
     if (!form.getFieldValue().email || !form.getFieldValue().username) {
       toast.error('Please enter your email and username!');
       return;
