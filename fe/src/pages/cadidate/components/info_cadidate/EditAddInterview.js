@@ -79,7 +79,7 @@ function EditAddInterview(props) {
   }, [idInterviewer, interviewer, setNameInterviewer]);
 
   useEffect(() => {
-    if (interviewerId) {
+    if (interviewerId && interviewer) {
       getDetailInterviewsServices(cadidate?.id, interviewerId)
         .then(setLoading(true))
         .then((res) => {
@@ -101,7 +101,7 @@ function EditAddInterview(props) {
     } else {
       form.resetFields();
     }
-  }, [interviewerId, cadidate?.id, form]);
+  }, [interviewerId, cadidate?.id, form, interviewer]);
 
   useEffect(() => {
     if (idInterviewer) {
