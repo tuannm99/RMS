@@ -18,6 +18,7 @@ function ForgotPassPage() {
       email: form.getFieldValue().email,
       username: form.getFieldValue().username,
     };
+
     if (!form.getFieldValue().email || !form.getFieldValue().username) {
       toast.error('Please enter your email and username!');
       return;
@@ -39,7 +40,7 @@ function ForgotPassPage() {
       </div>
       <Divider />
       <div className="content-mail">
-        <Form autoComplete="off">
+        <Form autoComplete="off" form={form}>
           <Form.Item
             name="username"
             rules={[

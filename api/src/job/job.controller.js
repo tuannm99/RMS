@@ -84,6 +84,11 @@ const deleteJob = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(jobDeleted);
 });
 
+const hardDeleteJob = catchAsync(async (req, res) => {
+  const jobDeleted = await jobService.hardDeleteJobById(req.params.id);
+  res.status(httpStatus.OK).json(jobDeleted);
+});
+
 module.exports = {
   addJobPosting,
   getAllJob,
@@ -92,4 +97,5 @@ module.exports = {
   editJob,
   changeJobStatus,
   deleteJob,
+  hardDeleteJob,
 };
