@@ -6,6 +6,7 @@ import {
   updateJobs,
   deleteJobs,
 } from '../../services/jobService';
+import { hasResponseError } from '../../utils/utils';
 import { DrawerComponent } from '../../components';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -111,16 +112,17 @@ function DetailRecruitPage(props) {
       jobDescription: ckeditorData === '' ? job.jobDescription : ckeditorData,
     };
     setLoading(true);
-    updateJobs(jobValue.id, body)
-      .then((res) => {
-        setJob(res.data);
-        fetchJob();
-      })
-      .catch((err) => console.log(err));
-    toast.success('Edit Job Detail Successful!', {
-      autoClose: 3000,
+    updateJobs(jobValue.id, body).then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(`${res.data.message}`);
+        return;
+      }
+      setJob(res.data);
+      fetchJob();
+      toast.success('Edit Job Detail Successful!', {
+        autoClose: 3000,
+      });
     });
-
     setLoading(false);
     handleCancel();
   };
@@ -129,6 +131,10 @@ function DetailRecruitPage(props) {
     const body = { status: value };
     updateJobs(id, body)
       .then((res) => {
+        if (hasResponseError(res)) {
+          toast.error(`${res.data.message}`);
+          return;
+        }
         setJob(res.data);
       })
       .catch((err) => console.log(err));
@@ -212,7 +218,7 @@ function DetailRecruitPage(props) {
                     label="Department"
                   >
                     <Select style={{ width: 300 }}>
-                      <Option value="administration">administration</Option>
+                      <Option value="administration">Administration</Option>
                       <Option value="finance">Finance</Option>
                       <Option value="marketing">Maketing</Option>
                       <Option value="sale">Sale</Option>
@@ -356,11 +362,7 @@ function DetailRecruitPage(props) {
                       { required: true, message: 'Please Enter max salary' },
                     ]}
                   >
-                    <Input
-                      placeholder="maxSalary"
-                      value={inputMax}
-                      onInput={(e) => setInputMax(e.target.value)}
-                    />
+                    <Input placeholder="maxSalary" />
                   </Form.Item>
                 </Col>
               </Row>

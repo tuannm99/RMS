@@ -149,12 +149,18 @@ function RecruitPage(props) {
         toast.error(`${res.data.message}`);
         return;
       }
+      toast.success('Move the job to deleted state Successful!', {
+        autoClose: 3000,
+      });
     } else {
       const res = await deleteJobs(id);
       if (hasResponseError(res)) {
         toast.error(`${res.data.message}`);
         return;
       }
+      toast.success('Delete Job Detail Successful!', {
+        autoClose: 3000,
+      });
     }
 
     if (
