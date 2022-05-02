@@ -30,8 +30,18 @@ const jobSchema = new mongoose.Schema({
   jobDescription: { type: String },
   shortDes: { type: String },
   experience: { type: String },
-  minSalary: { type: Number, default: 0 },
-  maxSalary: { type: Number, default: 0 },
+  minSalary: {
+    type: Number,
+    min: [0, 'Salary be at least 0, got {VALUE}'],
+  },
+  maxSalary: {
+    type: Number,
+    validate(value) {
+      if (value < this.minSalary) {
+        throw new Error('min salary must less than max salary');
+      }
+    },
+  },
   currency: { type: String },
 
   createdAt: { type: Date, default: Date.now },
