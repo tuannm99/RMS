@@ -300,7 +300,8 @@ function CadidatePage(props) {
                 setCadidateId,
                 setVisible,
                 userAccount,
-                navigate
+                navigate,
+                setInterviewerId
               )
             }
           />
