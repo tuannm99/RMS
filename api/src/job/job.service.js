@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const ApiError = require('../core/apiError');
 const { Job } = require('../core/db/schema');
 const { omit, utf8ToASCII } = require('../core/utils');
+const producer = require('../event/producer');
 
 /**
  * create new job
@@ -136,6 +137,20 @@ const deleteJobById = async (id) => {
   }
 };
 
+/**
+ * delete job by id
+ * @param {objectId} id
+ */
+const hardDeleteJobById = async (id) => {
+  const job = await Job.findById(id);
+  if (!job) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No such job found');
+  }
+
+  await Job.findByIdAndDelete(id);
+  producer.deleteJob(job.toJSON());
+};
+
 module.exports = {
   createJob,
   getAllJob,
@@ -144,4 +159,5 @@ module.exports = {
   getJobById,
   editJobById,
   deleteJobById,
+  hardDeleteJobById,
 };
