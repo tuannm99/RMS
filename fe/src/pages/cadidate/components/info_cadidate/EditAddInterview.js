@@ -162,7 +162,7 @@ function EditAddInterview(props) {
   const durationTime = [
     { value: 15, label: '15 Mins' },
     { value: 30, label: '30 Mins' },
-    { value: 45, label: '55 Mins' },
+    { value: 45, label: '45 Mins' },
     { value: 60, label: '1 Hr' },
     { value: 90, label: '1 Hr 30 Mins' },
     { value: 120, label: '2 Hrs' },
