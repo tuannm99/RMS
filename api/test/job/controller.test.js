@@ -63,7 +63,7 @@ describe('job controller', () => {
         .put(`/api/v1/jobs/${JOBS[0]._id}`)
         .set('Authorization', `Bearer ${adminToken}`)
         .send({
-          title: 'tuan 1231231asdasdsadas2312',
+          title: 'tuan new adas2312',
           department: 'hm',
           jobType: 'full Time',
           location: 'Ha Noi',
@@ -82,8 +82,7 @@ describe('job controller', () => {
         .put(`/api/v1/jobs/${JOBS[0]._id}`)
         .set('Authorization', `Bearer ${hmToken}`)
         .send({
-          title: 'tuan change title',
-          department: 'hm',
+          title: 'tuan change titlsae',
           jobType: 'full Time',
           location: 'Ha Noi',
           jobDescription: 'job very good',
