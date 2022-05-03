@@ -281,7 +281,7 @@ function CadidatePage(props) {
         </Col>
       </Row>
 
-      <div className="employee_content mt-16">
+      <div className="employee_content mt-16 mb-32">
         {loading ? (
           <Col style={{ textAlign: 'center' }} span={24}>
             <Spin tip="loading..." />
