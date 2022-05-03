@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, Button, Menu, Dropdown, Avatar } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  SearchOutlined,
   DownOutlined,
   UserOutlined,
   TeamOutlined,
@@ -12,26 +11,42 @@ import {
   KeyOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import { selectUserInfor } from '../../redux/stores/auth/selectors';
+import { selectUserInfor, imageUser } from '../../redux/stores/auth/selectors';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './styles.css';
-import { imgURL } from '../../utils/utils';
+import { hasResponseError, imgURL } from '../../utils/utils';
 import { logoutRequestService } from '../../services/authServices';
+import { getDetailUsersServices } from '../../services/employeeServices';
 import ModalAddNewCandidate from './ModalAddNewCandidate';
 import { setVisibleAddJob } from '../../redux/stores/job/actions';
 import { compose } from 'recompose';
+import { toast } from 'react-toastify';
 
 const { Header } = Layout;
 
 function HeaderPrivate(props) {
-  const { selectUserInfor, setVisibleAddJob } = props;
+  const { selectUserInfor, setVisibleAddJob, imageUser } = props;
 
   const navigate = useNavigate();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    const getImage = async () => {
+      const res = await getDetailUsersServices(selectUserInfor?.id);
+      if (hasResponseError(res)) {
+        toast.error(`${res.data.message}`);
+        return;
+      }
+      setUser(res?.data?.avatar?.path);
+    };
+    getImage();
+  }, [imageUser, selectUserInfor?.id]);
+
+  console.log(user);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -61,7 +76,7 @@ function HeaderPrivate(props) {
     localStorage.clear();
     navigate('/login');
   };
-
+  console.log(selectUserInfor);
   /**
    * create menu add ...
    */
@@ -126,11 +141,8 @@ function HeaderPrivate(props) {
             </Button>
           </Dropdown>
           <Dropdown className="header-right-avatar mr-16" overlay={menuUser}>
-            {selectUserInfor?.avatar?.path ? (
-              <Avatar
-                size={32}
-                src={`${imgURL}${selectUserInfor?.avatar?.path}`}
-              />
+            {user ? (
+              <Avatar size={32} src={`${imgURL}${user}`} />
             ) : (
               <Avatar className="mr-16" size={32} icon={<UserOutlined />} />
             )}
@@ -148,6 +160,7 @@ function HeaderPrivate(props) {
 
 const mapStateToProps = createStructuredSelector({
   selectUserInfor: selectUserInfor,
+  imageUser: imageUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import * as action from '../../redux/stores/job/actions';
+import { Column } from '@ant-design/plots';
 import {
   AiOutlineUserAdd,
   AiOutlineUserDelete,
@@ -20,6 +21,7 @@ import {
   getDataCountRejected,
   getDataCountApproved,
   getDataChartRole,
+  getDataChartStatus,
 } from '../../services/dashboardServices';
 import { hasResponseError } from '../../utils/utils';
 import { toast } from 'react-toastify';
@@ -38,6 +40,7 @@ function DashboardPage(props) {
   const [dataChartSex, setDataChartSex] = useState([]);
   const [dataSnapshot, setDataSnapshot] = useState([]);
   const [dataChartRole, setDataChartRole] = useState([]);
+  const [dataChartStatus, setDataChartStatus] = useState([]);
   const [dataCountRejected, setDataCountRejected] = useState([]);
   const [DataCountApproved, setDataCountApproved] = useState([]);
   const [key, setKey] = useState(1);
@@ -109,6 +112,14 @@ function DashboardPage(props) {
       setDataChartRole(res.data);
     });
 
+    getDataChartStatus().then((res) => {
+      if (hasResponseError(res)) {
+        toast.error(res.data.message);
+        return;
+      }
+      setDataChartStatus(res.data);
+    });
+
     getDataCountRejected().then((res) => {
       if (hasResponseError(res)) {
         return;
@@ -147,8 +158,35 @@ function DashboardPage(props) {
   };
 
   const config = {
-    appendPadding: 10,
     data: dataChart,
+    xField: 'type',
+    yField: 'value',
+    label: {
+      position: 'middle',
+      style: {
+        fill: '#FFFFFF',
+        opacity: 0.1,
+      },
+    },
+    xAxis: {
+      label: {
+        autoHide: true,
+        autoRotate: false,
+      },
+    },
+    meta: {
+      type: {
+        alias: '类别',
+      },
+      sales: {
+        alias: '销售额',
+      },
+    },
+  };
+
+  const configChartSex = {
+    appendPadding: 10,
+    data: dataChartSex,
     angleField: 'value',
     colorField: 'type',
     radius: 0.8,
@@ -162,9 +200,9 @@ function DashboardPage(props) {
     ],
   };
 
-  const configChartSex = {
+  const configChartRole = {
     appendPadding: 10,
-    data: dataChartSex,
+    data: dataChartRole,
     angleField: 'value',
     colorField: 'type',
     radius: 0.7,
@@ -199,9 +237,9 @@ function DashboardPage(props) {
     },
   };
 
-  const configChartRole = {
+  const configChartStatus = {
     appendPadding: 10,
-    data: dataChartRole,
+    data: dataChartStatus,
     angleField: 'value',
     colorField: 'type',
     radius: 0.7,
@@ -351,8 +389,9 @@ function DashboardPage(props) {
                       className="chard-department"
                       style={{ background: '#FFF', borderRadius: '6px' }}
                     >
-                      <Pie {...config} />
-                      <h5>Chart Department</h5>
+                      <div className="chart-colum">
+                        <Column {...config} />
+                      </div>
                     </div>
                   </Col>
                   <Col md={{ span: 24 }} xl={{ span: 12 }} className="mb-20">
@@ -360,8 +399,8 @@ function DashboardPage(props) {
                       className="chard-sex"
                       style={{ background: '#FFF', borderRadius: '6px' }}
                     >
-                      <Pie {...configChartSex} />
-                      <h5>Chart Department</h5>
+                      <Pie {...configChartStatus} />
+                      <h5>Status</h5>
                     </div>
                   </Col>
                 </Row>
@@ -372,7 +411,17 @@ function DashboardPage(props) {
                       className="chard-department"
                     >
                       <Pie {...configChartRole} />
-                      <h5>Chart Department</h5>
+                      <h5>Role</h5>
+                    </div>
+                  </Col>
+                  <Col md={{ span: 24 }} xl={{ span: 12 }} className="mb-20">
+                    <div
+                      style={{ background: '#FFF', borderRadius: '6px' }}
+                      className="chard-department"
+                    >
+                      <Pie {...configChartSex} />
+
+                      <h5>Gender</h5>
                     </div>
                   </Col>
                 </Row>

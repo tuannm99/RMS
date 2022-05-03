@@ -22,6 +22,11 @@ import {
 import moment from 'moment';
 import { UserOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
+import { imageUser } from '../../../redux/stores/auth/selectors';
+import { setImageUser } from '../../../redux/stores/auth/actions';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 const dateFormat = 'YYYY/MM/DD';
 
@@ -37,6 +42,8 @@ function UserEditAdd({
   checked,
   setChecked,
   account,
+  setImgUser,
+  imgUser,
 }) {
   /**
    * create state
@@ -145,12 +152,12 @@ function UserEditAdd({
       delete body.username;
       if (fileList) {
         formRes.append('avatar', fileList);
-        await services.updateImgUsersServices(user, formRes).then((res) => {
-          if (hasResponseError(res)) {
-            toast.error(`${res.data.message}`);
-            return;
-          }
-        });
+        const res = await services.updateImgUsersServices(user, formRes);
+        if (hasResponseError(res)) {
+          toast.error(`${res.data.message}`);
+          return;
+        }
+        setImgUser(imageUser);
       }
       await services.updateUsersServices(user, body).then((res) => {
         if (hasResponseError(res)) {
@@ -546,5 +553,12 @@ function UserEditAdd({
     </DrawerComponent>
   );
 }
+const mapStateToProps = createStructuredSelector({
+  imgUser: imageUser,
+});
+const mapDispatchToProps = (dispatch) => ({
+  setImgUser: (payload) => dispatch(setImageUser(payload)),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default UserEditAdd;
+export default compose(withConnect)(UserEditAdd);

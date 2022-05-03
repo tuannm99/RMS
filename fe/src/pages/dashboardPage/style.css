@@ -100,14 +100,19 @@
 }
 .chard-department h5 {
   position: absolute;
-  top: 90%;
-  left: 27%;
+  top: 7%;
+  left: 5%;
 }
 .chard-sex {
   position: relative;
 }
 .chard-sex h5 {
   position: absolute;
-  top: 90%;
-  left: 32%;
+  top: 7%;
+  left: 5%;
+}
+.chart-colum {
+  margin: 0 auto;
+  width: 90%;
+  height: 70%;
 }
