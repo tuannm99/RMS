@@ -55,13 +55,28 @@ function Login(props) {
         <Col span={18} className="login-left">
           <Carousel autoplay dotPosition="bottom" speed="800">
             <div>
-              <img src={login_6} alt="" />
+              <img
+                src={
+                  'https://images.pexels.com/photos/3184454/pexels-photo-3184454.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+                }
+                alt=""
+              />
             </div>
             <div>
-              <img src={login_9} alt="" />
+              <img
+                src={
+                  'https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+                }
+                alt=""
+              />
             </div>
             <div>
-              <img src={login_5} alt="" />
+              <img
+                src={
+                  'https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+                }
+                alt=""
+              />
             </div>
           </Carousel>
         </Col>

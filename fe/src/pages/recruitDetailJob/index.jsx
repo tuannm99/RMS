@@ -59,7 +59,6 @@ function DetailRecruitPage(props) {
   const OPTIONS_JOB_TYPE = [
     '   Full Time',
     '   Part Time',
-    '   Internship',
     '   Seasonal',
     '   Remote',
   ];
