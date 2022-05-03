@@ -389,9 +389,8 @@ function DashboardPage(props) {
                       className="chard-department"
                       style={{ background: '#FFF', borderRadius: '6px' }}
                     >
-                      <div className="chart-colum">
-                        <Column {...config} />
-                      </div>
+                      <Pie {...configChartSex} />
+                      <h5>Gender</h5>
                     </div>
                   </Col>
                   <Col md={{ span: 24 }} xl={{ span: 12 }} className="mb-20">
@@ -419,9 +418,9 @@ function DashboardPage(props) {
                       style={{ background: '#FFF', borderRadius: '6px' }}
                       className="chard-department"
                     >
-                      <Pie {...configChartSex} />
-
-                      <h5>Gender</h5>
+                      <div className="chart-colum">
+                        <Column {...config} />
+                      </div>
                     </div>
                   </Col>
                 </Row>

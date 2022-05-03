@@ -10,7 +10,7 @@ function PublicPage(props) {
         <div className={props.title}>
           <h3>{data.title}</h3>
         </div>
-        <div className={props.classDes}>{data.shortDes}</div>
+        <p className={props.classDes}>{data.shortDes}</p>
         <MdLocationOn className="public-detail-icon" />
         <div className={props.classAddress}>
           <span>Available in: &nbsp;{data.location}</span>
