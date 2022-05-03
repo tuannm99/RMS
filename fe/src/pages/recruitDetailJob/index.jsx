@@ -355,13 +355,7 @@ function DetailRecruitPage(props) {
                 </Col>
 
                 <Col span={4}>
-                  <Form.Item
-                    name="maxSalary"
-                    label=" "
-                    rules={[
-                      { required: true, message: 'Please Enter max salary' },
-                    ]}
-                  >
+                  <Form.Item name="maxSalary" label=" ">
                     <Input placeholder="maxSalary" />
                   </Form.Item>
                 </Col>

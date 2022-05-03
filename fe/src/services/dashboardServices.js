@@ -24,9 +24,16 @@ export function getDataChartSex() {
   });
 }
 
-//get data chart sex
+//get data chart role
 export function getDataChartRole() {
   return request(`${BASE_API}/chart/103`, {
+    method: 'GET',
+  });
+}
+
+//get data chart status
+export function getDataChartStatus() {
+  return request(`${BASE_API}/chart/104`, {
     method: 'GET',
   });
 }
