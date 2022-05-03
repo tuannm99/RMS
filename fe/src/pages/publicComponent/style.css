@@ -38,8 +38,14 @@
 .public-des {
   position: absolute;
   width: 90%;
-  text-overflow: ellipsis;
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 9.8em; /* Fallback for non-webkit, line-height * 2 */
+  line-height: 1.6em;
+  -webkit-line-clamp: 6; /* if you change this, make sure to change the fallback line-height and height */
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
   top: 24%;
   left: 5%;
   color: black;
