@@ -157,7 +157,6 @@ function EditAddInterview(props) {
       disabledHours: () => {
         return range(0, 8, 19, 24);
       },
-      disabledSeconds: () => range(0, 60),
     };
   };
   const desc = ['contact', 'test', 'technical', 'cultureFit'];
@@ -302,11 +301,11 @@ function EditAddInterview(props) {
                     >
                       <DatePicker
                         style={{ width: '100%' }}
-                        format="YYYY-MM-DD HH:mm:ss"
+                        format="YYYY-MM-DD HH:mm"
                         disabledDate={disabledDate}
                         disabledTime={disabledDateTime}
                         showTime={{
-                          defaultValue: moment('08:00:00', 'HH:mm:ss'),
+                          defaultValue: moment('08:00:00', 'HH:mm'),
                         }}
                         showNow={false}
                       />

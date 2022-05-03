@@ -4,14 +4,23 @@ import { Button, Divider, Form, Input, Popconfirm } from 'antd';
 import { NavLink } from 'react-router-dom';
 import { forgotRequestService } from '../../services/authServices';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { usernameRedux } from '../../redux/stores/auth/selectors';
+import { setNameUser } from '../../redux/stores/auth/actions';
+
 import {
   UserOutlined,
   MailOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 
-function ForgotPassPage() {
+function ForgotPassPage(props) {
+  const { setNameUser } = props;
   const [form] = Form.useForm();
+  const navigation = useNavigate();
 
   const onFinish = () => {
     const params = {
@@ -28,6 +37,8 @@ function ForgotPassPage() {
         toast.error(res.data.message);
         return;
       }
+      setNameUser(params.username);
+      navigation('/login');
       toast.success('Please check mail!');
     });
   };
@@ -106,4 +117,13 @@ function ForgotPassPage() {
   );
 }
 
-export default ForgotPassPage;
+const mapStateToProps = createStructuredSelector({
+  user: usernameRedux,
+});
+const mapDispatchToProps = (dispatch) => ({
+  setNameUser: (payload) => dispatch(setNameUser(payload)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(ForgotPassPage);
