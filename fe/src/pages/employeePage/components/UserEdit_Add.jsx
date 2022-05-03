@@ -77,7 +77,6 @@ function UserEditAdd({
           languages: res.data.languages,
           employeeType: res.data.jobStatus.employeeType,
           employeeStatus: res.data.jobStatus.employeeStatus,
-          dateOfJoining: moment(res.data.jobStatus.dateOfJoining),
           department: res.data.jobStatus.department,
           primaryTeam: res.data.jobStatus.primaryTeam,
           level: res.data.jobStatus.level,
@@ -535,11 +534,11 @@ function UserEditAdd({
               </Select>
             </Form.Item>
           </Col>
-          <Col span={12}>
+          {/* <Col span={12}>
             <Form.Item name="dateOfJoining" label="Date Of Joining">
               <DatePicker />
             </Form.Item>
-          </Col>
+          </Col> */}
         </Row>
         <Button
           type="primary"
