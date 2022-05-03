@@ -45,7 +45,6 @@ function RecruitPage(props) {
   const { Option } = Select;
   const { userAccount } = props;
   const [valueSelect, setValueSelect] = useState(null);
-
   const [param, setParam] = useState({
     limit: 12,
     page: 1,
@@ -198,6 +197,7 @@ function RecruitPage(props) {
         toast.error(`${res.data.message}`);
         return;
       }
+      formModal.resetFields();
       toast.success('Create Job Successful!', {
         autoClose: 3000,
       });
